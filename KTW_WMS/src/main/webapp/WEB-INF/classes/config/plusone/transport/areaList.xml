@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="areaList" title="areaList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="code" title="area.code" trimSpace="true" />
+				<text id="name" title="area.name" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+area.id,
+area.code,
+area.name
+from Area area 
+where 1=1
+/~code: and area.code like {code}~/ 
+/~name: and area.name like {name}~/ 
+		]]></datasource>
+		<columns>
+			<column id="area.id" title="ID" visible="false"/>
+			<column id="area.code" title="area.code"/>
+			<column id="area.name" title="area.name"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="areaEdit"  iconUrl="new"/>
+			<popup id="edit" title="modify" enableType="single" containId="true" pageId="areaEdit" iconUrl="edit"/>
+		</buttons>
+	</maintainPage>
+</pages>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="outboundDeliveryView" title="outboundDeliveryView" entityClass="com.core.scpwms.server.model.outbound.OutboundDelivery" onClose="refreshParent" width="950" height="500" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="outboundDelivery.id" />
+                <text id="outboundDelivery.obdNumber" title="obdNumber"/>
+				<text id="outboundDelivery.relatedBill1" title="custBillNo"/>
+				<text id="outboundDelivery.plant.name" title="plant"/>
+                <text id="outboundDelivery.owner.name" title="owner"/>
+				<list id="outboundDelivery.orderType.id" title="orderType">
+					<hql><![CDATA[ SELECT
+ot.id,
+ot.name
+FROM OrderType ot
+WHERE 
+ot.disabled = '0' 
+and ot.processType='M3000'
+						]]></hql>
+				</list>
+				<text id="outboundDelivery.customer.name" title="bizOrg"/>
+                <date id="outboundDelivery.etd" title="etd" showDetailTime="false" />
+                <textArea id="outboundDelivery.description" title="title.desc" trimSpace="true" rows="50" cols="600" span="6"/>
+			</inputUIs>
+			<buttons>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select 
+odd.id,
+odd.status,
+odd.lineNo,
+odd.subLineNo,
+odd.sku.code,
+odd.sku.name,
+odd.sku.specs,
+odd.packageDetail.name,
+odd.planQty,
+odd.allocateQty,
+odd.pickUpQty,
+odd.packedQty,
+odd.executeQty,
+odd.invStatus,
+odd.stockDiv,
+odd.sku.tempDiv,
+odd.sku.fixDiv
+from OutboundDeliveryDetail odd
+where 1=1
+and odd.obd.id = {outboundDelivery.id}
+ 			]]></datasource>
+			<columns>
+				<column id="odd.id" title="ID" visible="false" />
+				<column id="odd.status" title="title.status"  format="enumFormat" formatParam="EnuOutboundDeliveryDetailStatus"/>
+                <column id="odd.lineNo" title="lineNo"/>
+                <column id="odd.subLineNo" title="subLineNo"/>
+                <column id="odd.sku.code" title="sku.code"/>
+                <column id="odd.sku.name" title="sku.name"/>
+                <column id="odd.sku.specs" title="specs"/>
+                <column id="odd.packageDetail.name" title="p1000.name"/>
+                <column id="odd.planQty" title="planQty"/>
+                <column id="odd.allocateQty" title="allocateQty"/>
+                <column id="odd.pickUpQty" title="pickQty"/>
+                <column id="odd.packedQty" title="packedQty"/>
+                <column id="odd.executeQty" title="outboundQty"/>
+                <column id="odd.invStatus" title="invStatus"  format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="odd.stockDiv" title="stockDiv"  format="enumFormat" formatParam="EnuStockDiv"/>
+                <column id="odd.tempDiv" title="tempDiv"  format="enumFormat" formatParam="EnuTempDiv"/>
+                <column id="odd.fixDiv" title="fixDiv"  format="enumFormat" formatParam="EnuFixDiv"/>
+			</columns>
+			<buttons>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="cityList" title="cityList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="area" title="area" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+area.id,
+area.code,
+area.name
+FROM Area area 
+WHERE 1=1
+                    ]]></hql>
+                </selectText>
+				<text id="code" title="city.code" trimSpace="true" />
+				<text id="name" title="city.name" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+city.id,
+city.area.code,
+city.area.name,
+city.code,
+city.name
+from City city 
+where 1=1
+/~area: and city.area.id = {area}~/ 
+/~code: and city.code like {code}~/ 
+/~name: and city.name like {name}~/ 
+		]]></datasource>
+		<columns>
+			<column id="city.id" title="ID" visible="false"/>
+			<column id="city.area.code" title="area.code" visible="false"/>
+			<column id="city.area.name" title="area.name"/>
+			<column id="city.code" title="city.code"/>
+			<column id="city.name" title="city.name"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="cityEdit"  iconUrl="new"/>
+			<popup id="edit" title="modify" enableType="single" containId="true" pageId="cityEdit" iconUrl="edit"/>
+		</buttons>
+	</maintainPage>
+</pages>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <editPage id="packageView" title="packageView" entityClass="com.core.scpwms.server.model.common.PackageInfo" onClose="refreshParent" width="700"  height="300" columnNum="6">
+        <inputUIs>
+            <hidden id="pkg.id" />
+            <parttab id="tab_0" title="packInfo" style="CTab" tabHeight="250">
+                <text id="pkg.code" title="packInfo.code"/>
+                <text id="pkg.name" title="packInfo.name"/>
+                <textArea id="pkg.description" title="title.desc" span="6" rows="60" cols="600"/>
+            </parttab>
+            <parttab id="tab_1" title="p1000" style="CTab" tabHeight="250">
+                <text id="pkg.p1000.code" title="packDetail.code" />
+                <text id="pkg.p1000.name" title="packDetail.name" lastElement="true"/>
+                <numberText id="pkg.p1000.coefficient" title="coefficient" />
+                <numberText id="pkg.p1000.precision" title="precision"/>
+                <numberText id="pkg.p1000.volume" title="volume" lastElement="true"/>
+                <numberText id="pkg.p1000.length" title="length"/>
+                <numberText id="pkg.p1000.width" title="width"/>
+                <numberText id="pkg.p1000.height" title="height"/>
+                <checkbox id="pkg.p1000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p1000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p1000.palletInfo.hi" title="hi" lastElement="true" />
+                <numberText id="pkg.p1000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p1000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p1000.palletInfo.height" title="full.pallet.height"/>
+                <text id="pkg.p1000.container.name" title="container"/>
+                <numberText id="pkg.p1000.container.weight" title="container.weight"/>
+                <numberText id="pkg.p1000.container.volume" title="container.volume" />
+            </parttab>
+            <parttab id="tab_21" title="p2100" style="CTab" tabHeight="250">
+                <text id="pkg.p2100.code" title="packDetail.code" />
+                <text id="pkg.p2100.name" title="packDetail.name" lastElement="true"/>
+                <numberText id="pkg.p2100.coefficient" title="coefficient" />
+                <numberText id="pkg.p2100.precision" title="precision"/>
+                <numberText id="pkg.p2100.volume" title="volume" lastElement="true"/>
+                <numberText id="pkg.p2100.length" title="length"/>
+                <numberText id="pkg.p2100.width" title="width"/>
+                <numberText id="pkg.p2100.height" title="height"/>
+                <checkbox id="pkg.p2100.usePallet" title="hasPallet" />
+                <numberText id="pkg.p2100.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p2100.palletInfo.hi" title="hi" lastElement="true" />
+                <numberText id="pkg.p2100.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p2100.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p2100.palletInfo.height" title="full.pallet.height"/>
+                <text id="pkg.p2100.container.name" title="container"/>
+                <numberText id="pkg.p2100.container.weight" title="container.weight"/>
+                <numberText id="pkg.p2100.container.volume" title="container.volume" />
+            </parttab>
+             <parttab id="tab_2" title="p2000" style="CTab" tabHeight="250">
+                <text id="pkg.p2000.code" title="packDetail.code" />
+                <text id="pkg.p2000.name" title="packDetail.name" lastElement="true"/>
+                <numberText id="pkg.p2000.coefficient" title="coefficient" />
+                <numberText id="pkg.p2000.precision" title="precision"/>
+                <numberText id="pkg.p2000.volume" title="volume" lastElement="true"/>
+                <numberText id="pkg.p2000.length" title="length"/>
+                <numberText id="pkg.p2000.width" title="width"/>
+                <numberText id="pkg.p2000.height" title="height"/>
+                <checkbox id="pkg.p2000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p2000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p2000.palletInfo.hi" title="hi" lastElement="true" />
+                <numberText id="pkg.p2000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p2000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p2000.palletInfo.height" title="full.pallet.height"/>
+                <text id="pkg.p2000.container.name" title="container"/>
+                <numberText id="pkg.p2000.container.weight" title="container.weight"/>
+                <numberText id="pkg.p2000.container.volume" title="container.volume" />
+            </parttab>    
+            <parttab id="tab_3" title="p3000" style="CTab" tabHeight="250">
+                <text id="pkg.p3000.code" title="packDetail.code" />
+                <text id="pkg.p3000.name" title="packDetail.name" lastElement="true"/>
+                <numberText id="pkg.p3000.coefficient" title="coefficient" />
+                <numberText id="pkg.p3000.precision" title="precision"/>
+                <numberText id="pkg.p3000.volume" title="volume" lastElement="true"/>
+                <numberText id="pkg.p3000.length" title="length"/>
+                <numberText id="pkg.p3000.width" title="width"/>
+                <numberText id="pkg.p3000.height" title="height"/>
+                <checkbox id="pkg.p3000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p3000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p3000.palletInfo.hi" title="hi" lastElement="true" />
+                <numberText id="pkg.p3000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p3000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p3000.palletInfo.height" title="full.pallet.height"/>
+                <text id="pkg.p3000.container.name" title="container"/>
+                <numberText id="pkg.p3000.container.weight" title="container.weight"/>
+                <numberText id="pkg.p3000.container.volume" title="container.volume" />
+            </parttab>
+            <parttab id="tab_4" title="p4000" style="CTab" tabHeight="250">
+                <text id="pkg.p4000.code" title="packDetail.code" />
+                <text id="pkg.p4000.name" title="packDetail.name" lastElement="true"/>
+                <numberText id="pkg.p4000.coefficient" title="coefficient" />
+                <numberText id="pkg.p4000.precision" title="precision"/>
+                <numberText id="pkg.p4000.volume" title="volume" lastElement="true"/>
+                <numberText id="pkg.p4000.length" title="length"/>
+                <numberText id="pkg.p4000.width" title="width"/>
+                <numberText id="pkg.p4000.height" title="height"/>
+                <checkbox id="pkg.p4000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p4000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p4000.palletInfo.hi" title="hi" lastElement="true" />
+                <numberText id="pkg.p4000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p4000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p4000.palletInfo.height" title="full.pallet.height"/>
+                <text id="pkg.p4000.container.name" title="container"/>
+                <numberText id="pkg.p4000.container.weight" title="container.weight"/>
+                <numberText id="pkg.p4000.container.volume" title="container.volume" />
+            </parttab>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

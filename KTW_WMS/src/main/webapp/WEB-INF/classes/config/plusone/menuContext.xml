@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<menus>
+	<!-- ***********基础信息管理*************  -->
+	<menuItem title="baseMenu" dir="warehouse">
+        <menuItem title="menu_warehouse">
+            <menuItem title="warehouseList" pageId="warehouseList" directKey="m100" />
+            <menuItem title="whAreaList" pageId="whAreaList" directKey="m110"/>
+            <menuItem title="storageTypeList" pageId="storageTypeList" directKey="m120"/>
+            <menuItem title="binPropertiesList" pageId="binPropertiesList" directKey="m130"/>
+            <menuItem title="binList" pageId="binList" directKey="m140"/>
+            <menuItem title="laborGroupList" pageId="laborGroupList" directKey="m150"/>
+            <menuItem title="laborList" pageId="laborList" directKey="m160"/>
+        </menuItem>
+        <menuItem title="menu_user">
+            <menuItem title="plantList" pageId="plantList" directKey="m200"/>
+            <menuItem title="ownerList" pageId="ownerList" directKey="m210"/>
+            <menuItem title="vendorList" pageId="vendorList" directKey="m220"/>
+            <menuItem title="bizOrgList" pageId="bizOrgList" directKey="m230"/>
+        </menuItem>
+        <menuItem title="menu_transport">
+            <menuItem title="carrierList" pageId="carrierList" directKey="m300"/>
+            <menuItem title="areaList" pageId="areaList" directKey="m310"/>
+            <menuItem title="cityList" pageId="cityList" directKey="m320"/>
+            <menuItem title="postcodeList" pageId="postcodeList" directKey="m330"/>
+            <menuItem title="courseList" pageId="courseList" directKey="m340"/>
+        </menuItem>
+        <menuItem title="menu_params">
+            <menuItem title="seqSettingList" pageId="seqSettingList" directKey="m400"/>
+            <menuItem title="otSettingList" pageId="otSettingList" directKey="m410"/>
+        </menuItem> 
+        <menuItem title="menu_sku">
+            <menuItem title="skuList" pageId="skuList" directKey="m500"/>
+            <menuItem title="interCodeList" pageId="interCodeList" directKey="m510"/>
+        </menuItem> 
+    </menuItem>
+    
+    <!-- **************入库管理****************  -->
+    <menuItem title="menu_inbound">
+        <menuItem title="asnList" pageId="asnList" directKey="a100"/>
+        <menuItem title="stockAsnDetailList" pageId="stockAsnDetailList" directKey="a200"/>
+        <menuItem title="throughAsnDetailList" pageId="throughAsnDetailList" directKey="a210"/>
+        <menuItem title="inboundHistoryList" pageId="inboundHistoryList" directKey="a300"/>
+        <menuItem title="unclosedAsnDetailList" pageId="unclosedAsnDetailList" directKey="a300"/>
+        <menuItem title="inboundReport1" pageId="inboundReport1" directKey="ar100"/>
+        <menuItem title="inboundReport2" pageId="inboundReport2" directKey="ar200"/>
+    </menuItem>
+    
+    <!-- **************库内管理****************  -->
+    <menuItem title="menu_inventory">
+        <menuItem title="invList" pageId="invList" directKey="i100"/>
+        <menuItem title="scrapApplyList" pageId="scrapApplyList" directKey="i200"/>
+        <!-- <menuItem title="ownerChangeList" pageId="ownerChangeList" directKey="i300"/> -->
+        <menuItem title="invAdjustList" pageId="invAdjustList" directKey="i400"/>
+        <menuItem title="inventoryHistoryList" pageId="inventoryHistoryList" directKey="i5W00"/>
+        <!-- <menuItem title="abcAnalyse" pageId="abcAnalyse" directKey="i600"/> -->
+    </menuItem>
+    
+    <!-- **************盘点管理****************  -->
+    <menuItem title="menu_count">
+        <menuItem title="countPlanList" pageId="countPlanList" directKey="c100"/>
+        <menuItem title="countRegister" pageId="countRegister" directKey="c200"/>
+        <menuItem title="countConfirm" pageId="countConfirm" directKey="c300"/>
+        <menuItem title="countAdjust" pageId="countAdjust" directKey="c400"/>
+        <menuItem title="countHistory" pageId="countHistory" directKey="c500"/>
+    </menuItem>
+    
+    <!-- **************出库管理****************  -->
+    <menuItem title="menu_outbound">
+		<menuItem title="outboundDeliveryList" pageId="outboundDeliveryList" directKey="b100"/>
+		<menuItem title="outboundDeliveryDetailList" pageId="outboundDeliveryDetailList" directKey="b120"/>
+        <menuItem title="waveList" pageId="waveList" directKey="b200"/>
+		<menuItem title="obdAllocate" pageId="obdAllocate" directKey="b300"/>
+		<menuItem title="outboundDeliveryDetailList4Through" pageId="outboundDeliveryDetailList4Through" directKey="b400"/>
+		<menuItem title="menu_pickListPrintNS">
+			<!-- ヤマト -->
+			<menuItem title="pickListPrint4NS4" pageId="pickListPrint4NS4" directKey="b504"/>
+			<!-- ヤマトクール -->
+			<menuItem title="pickListPrint4NS5" pageId="pickListPrint4NS5" directKey="b505"/>
+			<!-- 福山 -->
+			<menuItem title="pickListPrint4NS6" pageId="pickListPrint4NS6" directKey="b506"/>
+			<!-- 関トラ(常温) -->
+			<menuItem title="pickListPrint4NS1" pageId="pickListPrint4NS1" directKey="b501"/>
+			<!-- 関トラ(冷凍・チルド) -->
+			<menuItem title="pickListPrint4NS2" pageId="pickListPrint4NS2" directKey="b502"/>
+			<!-- <menuItem title="pickListPrint4NS3" pageId="pickListPrint4NS3" directKey="b503"/> -->
+			<!-- <menuItem title="pickListPrint4NS7" pageId="pickListPrint4NS7" directKey="b370"/> -->
+			<menuItem title="pickListPrint4NS8" pageId="pickListPrint4NS8" directKey=""/>
+		</menuItem>
+		
+		<menuItem title="pickCaseList" pageId="pickCaseList" directKey="b600"/>
+		<menuItem title="outboundHistoryList" pageId="outboundHistoryList" directKey="b700"/>
+    </menuItem>
+    
+    <!-- **************辅料管理****************** -->
+    <menuItem title="menu_accessory">
+        <menuItem title="accessorySkuList" pageId="accessorySkuList" directKey="k100"/>
+        <menuItem title="accessoryInvList" pageId="accessoryInvList" directKey="k200"/>
+        <menuItem title="accessoryIOBoundList" pageId="accessoryIOBoundList" directKey="k300"/>
+    </menuItem> 
+    
+    <!-- **************报表统计****************  -->
+    <menuItem title="menu_report">
+        <menuItem title="invReportList" pageId="invReportList" directKey="r100"/>
+        <menuItem title="warningInvList" pageId="warningInvList" directKey="r110"/>
+        <menuItem title="unReceivedList" pageId="unReceivedList" directKey="r200"/>
+        <menuItem title="carrierOrderReport2" pageId="carrierOrderReport2" directKey="r300"/>
+        <!-- <menuItem title="unShippedList" pageId="unShippedList" directKey="r300"/> -->
+    </menuItem>
+    
+    <!-- **************請求管理****************  -->
+    <menuItem title="menu_fee" dir="report">
+    	<menuItem title="companySettingList" pageId="companySettingList" directKey="fe100"/>
+    	<menuItem title="feeTypeList" pageId="feeTypeList" directKey="fe200"/>
+		<menuItem title="requestReport" pageId="requestReport" directKey="fe900"/>
+    </menuItem>
+    
+    <!-- **************データファイル****************  -->
+    <menuItem title="menu_import">
+    	<menuItem title="menu_filein">
+	    	<menuItem title="importMstFileList" pageId="importMstFileList" directKey="f100"/>
+	    	<menuItem title="importAsnFileList" pageId="importAsnFileList" directKey="f200"/>
+	    	<menuItem title="importObdFileList" pageId="importObdFileList" directKey="f300"/>
+    	</menuItem>
+    	<menuItem title="menu_fileout">
+	    	<menuItem title="outportAsnFileList" pageId="outportAsnFileList" directKey="f400"/>
+	    	<menuItem title="outportObdFileList" pageId="outportObdFileList" directKey="f500"/>
+	    	<menuItem title="outportInvFileList" pageId="outportInvFileList" directKey="f600"/>
+	    	<menuItem title="outportCntFileList" pageId="outportCntFileList" directKey="f700"/>
+	    </menuItem>
+    </menuItem>
+
+	<!-- **************系统管理****************  -->
+    <menuItem title="securityMenu" dir="security">
+        <menuItem title="menu_security">
+            <menuItem title="maintainUserPage" pageId="maintainUserPage" directKey="s100"/>
+            <menuItem title="maintainRolePage" pageId="maintainRolePage" directKey="s110"/>
+            <menuItem title="maintainGroupPage" pageId="maintainGroupPage" directKey="s120"/>
+            <menuItem title="roleSetting" pageId="roleSetting" directKey="s130"/>
+            <menuItem title="roleHqlSetting" pageId="roleHqlSetting" directKey="s140"/>
+        </menuItem>
+        
+        <menuItem title="importRuleList" pageId="importRuleList" directKey="s200"/>
+        <menuItem title="exceptionLogList" pageId="exceptionLogList" directKey="s300"/>
+        <menuItem title="quartzList" pageId="quartzList" directKey="s400"/>
+        <menuItem title="infoMessageList" pageId="infoMessageList" directKey="s500"/>
+    </menuItem>
+</menus>

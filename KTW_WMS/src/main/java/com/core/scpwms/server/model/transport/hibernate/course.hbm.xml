@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.transport.Course" table="WMS_COURSE">
+    	<id name="id" column="ID" type="long">
+    		<generator class="native">
+    			<param name="sequence">wseq_course</param>
+    			<param name="parametes">START WITH 1000</param>
+    		</generator>
+    	</id>
+    	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+	 		<column name="WH_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner" unique-key="uk_owner_course">
+	 		<column name="OWNER_ID" />
+	 	</many-to-one>
+    	<property name="code" column="CODE" type="string" length="50" unique-key="uk_owner_course"/>
+    	<property name="name" column="NAME" type="string" length="50"/>
+    </class>
+</hibernate-mapping>
+
+

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <editPage id="waveAutoCreate" title="autoCreateWave" entityClass="com.core.scpwms.server.model.outbound.WaveDoc"  width="500" height="400" onClose="refreshParent" >    
+        <inputUIs>
+			<hidden id="wave.id"/>
+			<selectText id="owner" title="owner" required="true" displayedTableHead="ID,code,name" >
+				<hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+				]]></hql>
+				<eventListeners>
+					<eventListener id="carrier" index="1" refreshUI="true"/>
+				</eventListeners>	
+			</selectText>
+			<date id="etd" title="etd" required="true" showTime="false" defaultCurrentDate="true" />
+			<list id="orderType" title="orderType" required="true" returnType="long">
+				<hql><![CDATA[ SELECT
+ot.id,
+ot.name
+FROM OrderType ot
+WHERE ot.disabled = false 
+and ot.processType='M3000'
+				]]></hql>
+			</list>
+			<selectText id="carrier" title="carrier" required="true" displayedTableHead="ID,code,name" >
+				<hql><![CDATA[SELECT 
+carrier.id,
+carrier.code,
+carrier.name
+FROM Carrier carrier 
+WHERE carrier.disabled = '0'
+and carrier.plant.wh = #{SESSION_WAREHOUSE} 
+and carrier.plant.id = ( select owner.plant.id from Owner owner where owner.id = {owner} )
+				]]></hql>
+			</selectText>
+			<textArea id="description" title="title.desc" trimSpace="true" rows="50" cols="600" span="6"/>
+        </inputUIs>
+        <buttons>
+			<commit id="save" title="autoCreateWave" enableType="none" invisible="false" iconUrl="save"> 
+			<mappings>
+				<mapping id="owner" className="long" />
+				<mapping id="etd" className="date" />
+				<mapping id="orderType" className="long" />
+				<mapping id="carrier" className="long" />
+				<mapping id="description" className="string" />
+			</mappings>
+			<actions>
+			    <action managerName="waveDocManager" methodName="autoCreateWave" parameter="owner,etd,orderType,carrier,description" />
+			</actions>
+			<forwards>
+				<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+				<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+			</forwards>
+			</commit>
+        </buttons>
+    </editPage>
+</pages>

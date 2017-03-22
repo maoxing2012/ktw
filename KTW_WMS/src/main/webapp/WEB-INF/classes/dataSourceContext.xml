@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC
+        "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+        
+<beans>
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+
+		<property name="driverClassName">
+			<value>org.postgresql.Driver</value>
+		</property>
+
+		<property name="url">
+			<!-- <value>jdbc:postgresql://153.127.228.73:5432/KTW_WMS2</value>　-->
+			<!-- <value>jdbc:postgresql://localhost:5432/3pl.demo-mbp.com</value> -->
+			<value>jdbc:postgresql://localhost:5432/KTW_WMS</value>
+		</property>
+
+		<property name="username">
+			<value>postgres</value>
+		</property>
+		<property name="password">
+			<!-- <value>KREHc&amp;S8jez5</value> -->
+			<!-- <value>3plManager</value> -->
+			<value>maoxing</value>
+		</property>
+		<property name="initialSize">
+			<value>5</value>
+		</property>
+		<property name="maxActive">
+			<value>100</value>
+		</property>
+		<property name="maxIdle">
+			<value>50</value>
+		</property>
+		<property name="minIdle">
+			<value>1</value>
+		</property>
+	</bean>
+</beans>

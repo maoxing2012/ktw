@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="qualityDocDetailUnAvailable" title="qualityDocDetailUnAvailable" entityClass="com.core.scpwms.server.model.quality.QualityDocDetail" columnNum="4" width="400" height="380">
+        <inputUIs>
+            <hidden id="qualityDocDetail.id" />
+            <text id="qualityDocDetail.invInfo.bin.binCode" title="bin" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.sku.code" title="sku.code" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.sku.name" title="sku.name" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.sku.specs" title="specs" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.dispLot" title="lotInfo"  readOnly="true"/>
+            <list id="qualityDocDetail.invInfo.invStatus" title="invStatus" enumType="EnuInvStatus" readOnly="true">
+                <hql><![CDATA[ SELECT  
+                    e.enumValue,
+                    e.enumValue
+                    from Enumerate e
+                    where e.enumType='EnuInvStatus'
+                ]]></hql>
+            </list>
+            <numberText id="qualityDocDetail.unExecuteQty" title="unAvailableQty" required="true" />
+            <list id="checkLabor" title="checkLabor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+labor.id, 
+concat(labor.code,labor.name) 
+from Labor labor
+where labor.disabled = false  
+and labor.type='KEEPER'
+and labor.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+        <commit id="unAvailable" title="save" enableType="none" iconUrl="save" >
+                <mappings>
+                    <mapping id="qualityDocDetail" className="com.core.scpwms.server.model.quality.QualityDocDetail" />
+                    <mapping id="qualityDocDetail.unExecuteQty" className="double" />
+                    <mapping id="checkLabor" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="qualityDocManager" methodName="unPass" parameter="qualityDocDetail,qualityDocDetail.unExecuteQty,checkLabor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+        </commit>
+        </buttons>
+    </editPage>
+</pages>

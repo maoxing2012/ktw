@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="pickOrderPublish" title="pickOrderPublish" entityClass="com.core.scpwms.server.model.task.WarehouseOrder" columnNum="2"  width="350" height="420" >
+        <inputUIs>
+            <hidden id="wo.id" />
+            <date id="wo.startDate" title="planStartDate" defaultCurrentDate="false" showTime="true"/>
+            <date id="wo.endDate" title="planEndDate" defaultCurrentDate="false" showTime="true"/>
+            <selectText id="wo.labor.id" title="labor" displayedTableHead="ID,code,name">
+                <hql><![CDATA[ select   
+labor.id, 
+labor.code,
+labor.name    
+from Labor labor
+where 1=1 
+and labor.wh = #{SESSION_WAREHOUSE} 
+and labor.disabled = false 
+                    ]]></hql> 
+            </selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="pickOrderList.ids" className="list"/>
+                    <mapping id="wo.startDate" className="date"/>
+                    <mapping id="wo.endDate" className="date"/>
+                    <mapping id="wo.labor.id" className="long"/>
+                </mappings>
+                <actions>
+                    <action managerName="warehouseOrderManager" methodName="publish" parameter="pickOrderList.ids,wo.startDate,wo.endDate,wo.labor.id"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

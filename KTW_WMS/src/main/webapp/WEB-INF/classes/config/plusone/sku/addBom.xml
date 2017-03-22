@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  addBomV1.0 20130131 MBP DAI -->
+<pages>
+	<editPage id="addBom" title="addBom" entityClass="com.core.scpwms.server.model.common.BomElement"  width="500" height="300" onClose="refreshParent" >
+		<inputUIs>
+			<hidden id="bomElement.id" title="ID" />
+			<selectText id="bomElement.element.id" title="bomElement.element.sku_name" readOnly="false" required="true" displayColumn="3" displayedTableHead="ID,Code,Name">
+				<hql>
+<![CDATA[
+SELECT  
+element.id,
+element.sku_code,
+element.sku_name 
+FROM Sku element
+where element.disabled = '0' 
+and element.id <> {parentSku.id} 
+and element.id NOT IN 
+    (SELECT bom.element.id FROM BomElement bom
+     where bom.parentSku.id = {parentSku.id} 
+    )
+and element.plant.id = {parentSku.plant.id}
+ ]]>
+				</hql>
+				<inputUIs>
+					<text id="element.sku_code" title="bomElement.element.sku_code"/>
+					<text id="element.sku_name" title="bomElement.element.sku_name"/>
+				</inputUIs>
+			</selectText>
+			<text id="bomElement.qty" title="bomElement.qty" required="true" />
+		</inputUIs>
+		<buttons>
+			<!-- Save -->
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+				    <mapping id= "parentSku.id" className= "long"/>
+					<mapping id="parentSku.plant.id"  className="long"/>
+					<mapping id="bomElement" className="com.core.scpwms.server.model.common.BomElement">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="bomManager"  methodName="saveBom"  parameter="parentSku.id,bomElement" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

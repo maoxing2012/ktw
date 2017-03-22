@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <maintainPage id="maintainGroupPage" title="maintainGroupPage" filterCol="true">
+		 <search>
+			 <inputUIs>
+				 <text id="group.code" title="group.code" trimSpace="true"/>
+				 <text id="group.name" title="group.name" trimSpace="true"/>
+			 </inputUIs>
+		 </search>
+	 <datasource type="hql"><![CDATA[select 
+group.id, 
+group.code, 
+group.name
+from Group group 
+where 1=1
+/~group.code:AND group.code like {group.code} ~/
+/~group.name:AND group.name like {group.name} ~/
+	 ]]></datasource>
+		 <columns>
+			 <column id="group.id" title="ID" visible="false"/>
+			 <column id="group.code" title="group.code" typeId="group.code"/>
+			 <column id="group.name" title="group.name" typeId="group.name"/>
+		 </columns>
+		 <buttons>
+			 <popup id="new" title="new" enableType="none" containId="false" pageId="editGroupsPage" iconUrl="add"/>
+			 <popup id="modify" title="edit" enableType="single"  containId="true" pageId="editGroupsPage" iconUrl="edit"/>
+		 	<commit id="delete" title="delete" enableType="multi"  confirmMessage="delete.confirmMessage" iconUrl="delete">
+				 <mappings>
+				 	<mapping id="ids" className="list"/>
+				 </mappings>
+				 <actions>
+				 	<action managerName="roleManager" methodName="deleteGroups" parameter="ids"/>
+				 </actions>
+				 <forwards>
+				 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				 </forwards>
+			 </commit>
+		 <popup id="copy" title="copy" enableType="single" invisible="true" containId="true" pageId="eidtCopyGroupPage"/>
+		 </buttons>
+	 </maintainPage>
+</pages>

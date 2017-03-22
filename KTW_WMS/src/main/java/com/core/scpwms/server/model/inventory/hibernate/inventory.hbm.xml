@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.inventory.Inventory" table="WMS_INVENTORY">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_inventory</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<version name="version" type="long" column="VERSION"/>
+	 	
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WH_ID"/>
+		</many-to-one>
+		<many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID"/>
+        </many-to-one>
+	 	<many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+	 		<column name="BIN_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="quantInv" class="com.core.scpwms.server.model.inventory.QuantInventory">
+	 		<column name="QUANT_INV_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="basePackage" class="com.core.scpwms.server.model.common.PackageDetail">
+	 		<column name="BASE_PACKAGE_ID" />
+	 	</many-to-one>
+        <many-to-one name="container" class="com.core.scpwms.server.model.inventory.ContainerInv">
+            <column name="CONTAINER_INV_ID" />
+        </many-to-one>
+        
+	 	<property name="baseQty" column="BASE_QTY" type="double"/>
+	 	<property name="queuedQty" column="QUEUED_QTY" type="double"/>
+	 	<property name="status" column="STATUS" type="string" length="50"/>
+	 	<property name="inboundDate" column="INBOUND_DATE" type="date"/>
+	 	<property name="trackSeq" column="TRACK_SEQ" type="string" length="255"/>
+	 	<property name="containerSeq" column="CONTAINER_SEQ" type="string" length="255"/>
+	 </class>
+
+</hibernate-mapping>

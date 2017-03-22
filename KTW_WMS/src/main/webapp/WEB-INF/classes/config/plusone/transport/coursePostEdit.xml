@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="coursePostEdit" title="coursePostEdit" entityClass="com.core.scpwms.server.model.transport.Course" onClose="refreshParent" width="950" height="600" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="course.id" />
+                <text id="course.code" title="course.code" trimSpace="true" readOnly="true"  />
+                <textArea id="course.name" title="title.desc" trimSpace="true" rows="50" cols="600" span="6"/>
+			</inputUIs>
+			<buttons>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select 
+cp.id,
+cp.postCode.city.name,
+cp.postCode.addr,
+cp.postCode.postcode
+from CoursePostCode cp
+where 1=1
+and cp.course.id = {courseList.id}
+ 			]]></datasource>
+			<columns>
+				<column id="cp.id" title="ID" visible="false" />
+				<column id="cp.postCode.city.name" title="city.name"/>
+                <column id="cp.postCode.addr" title="town.name"/>
+                <column id="cp.postCode.postcode" title="postcode"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="addPostcode2Course"  iconUrl="new">
+					<enableExpression><![CDATA[(${course.id}>0)]]></enableExpression>
+				</popup>
+				<commit id="deleteDetail" title="deleteDetail" confirmMessage="delete.confirmMessage" enableType="multi" iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list"><entries /></mapping>
+					</mappings>
+					<actions>
+						<action managerName="transportManager" methodName="deletePostcodeFromCourse" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

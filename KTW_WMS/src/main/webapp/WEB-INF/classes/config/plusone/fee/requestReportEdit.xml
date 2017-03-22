@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="requestReportEdit" title="requestReportEdit" entityClass="com.core.scpwms.server.model.fee.RequestReportHead"  width="500" height="300" onClose="refreshParent" >
+		<inputUIs>
+			<hidden id="request.id" />
+                <selectText id="request.owner.id" title="owner" required="true" displayedTableHead="ID,Code,Name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner
+WHERE owner.plant.wh=#{SESSION_WAREHOUSE}
+and owner.disabled = false]]></hql>
+                </selectText>
+                <numberText id="request.targetMonth" title="targetMonth"  trimSpace="true" required="true" validator="positiveInteger" isPrecision="true" length="6"/>
+                <list id="request.termDiv" title="termDiv" required="true" enumType="EnuTermDiv" >
+                    <hql><![CDATA[ SELECT 
+o.enumValue,
+o.enumValue
+FROM Enumerate o
+WHERE o.enumType='EnuTermDiv' 
+                   ]]></hql>
+                </list>
+                <list id="request.accountDateDiv" title="accountDateDiv" required="true" enumType="EnuAccountDateDiv" returnType="long" >
+                    <hql><![CDATA[ SELECT 
+o.enumValue,
+o.enumValue
+FROM Enumerate o
+WHERE o.enumType='EnuAccountDateDiv' 
+					]]></hql>
+               </list>
+               <numberText id="request.baseAmount" title="baseAmount"  trimSpace="true" required="true" validator="integer" defaultValue="0" isPrecision="true" />
+               <numberText id="request.rate" title="taxRate" trimSpace="true" required="true" validator="positiveInteger" isPrecision="true" defaultValue="8" length="2"/>
+			   <selectText id="request.company.id" title="issuer" required="true" displayedTableHead="ID,Code,Name">
+                <hql><![CDATA[ SELECT  
+company.id, 
+company.code, 
+company.name
+FROM Company company  
+WHERE company.disabled = false ]]></hql> 
+         　　　　　　　　　</selectText>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="request" className="com.core.scpwms.server.model.report.RequestReportHead">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="requestReportManager"  methodName="editRequest"  parameter="request" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

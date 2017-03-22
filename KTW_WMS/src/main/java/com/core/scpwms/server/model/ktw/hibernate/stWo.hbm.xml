@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="com.core.scpwms.server.model.asus.StWo" table="WMS_ST_WO">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_stwo</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<property name="stId"  column="ST_ID" type="long" />
+	 	<property name="woId"  column="WO_ID" type="long" />
+	 	<property name="userId"  column="USER_ID" type="long" />
+	 	<property name="stCode"  column="ST_CODE" type="string" length="50"/>
+	 	<property name="woCode"  column="WO_CODE" type="string" length="50"/>
+	 	<property name="userName"  column="USER_NAME" type="string" length="50"/>
+	 </class>
+</hibernate-mapping>

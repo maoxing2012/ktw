@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <!-- <reportPopupPage  id="pickOrderPrint" title="pickOrderPrint" reportFile="cwms1003.raq"  parameter="ids"  width="900" height="600"/> -->
+     <!-- <reportPopupPage  id="pickOrderPrint" title="pickOrderPrint" reportFile="ASUSWMS1003.svf"  parameter="ids"  width="900" height="600"/>  -->
+	 <reportPopupPage  id="pickOrderPrint" title="pickOrderPrint" reportFile="ASUSWMS10031.svf"  parameter="ids"  width="900" height="600"/>
+</pages>

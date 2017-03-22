@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="binGroupModify" title="binGroupModify" entityClass="com.core.scpwms.server.model.warehouse.BinGroup" onClose="refreshParent" width="900" height="500" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="bg.id" />
+				<text id="bg.code" title="bg.code" trimSpace="true" required="true" editModel="uneditable" length="20" />
+				<text id="bg.name" title="bg.name" trimSpace="true" required="true" length="20" />
+				<selectText id="bg.wa.id" title="wa"  required="true" displayedTableHead="ID,Code,Name">
+					<hql><![CDATA[ SELECT   
+wa.id,
+wa.code, 
+wa.name
+FROM WhArea  wa  
+WHERE 1=1 
+and wa.wh = #{SESSION_WAREHOUSE} 
+and wa.disabled = false   
+				 	]]></hql> 
+				</selectText>
+				<list id="bg.role" title="st.role"  trimSpace="true" enumType="EnuStoreRole" required="true">
+					<hql><![CDATA[ SELECT 
+					e.enumValue,
+					e.enumValue 
+					From Enumerate e 
+					where e.enumType = 'EnuStoreRole' 
+					]]></hql>
+				</list>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="binGroup" className="com.core.scpwms.server.model.warehouse.BinGroup" />
+					</mappings>
+					<actions>
+						<action managerName="binGroupManager" methodName="store" parameter="binGroup" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+	                    <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+	                    <forward name="closeWindow" newEnabled="false" editEnabled="false"/>
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+bin.id,
+bin.binCode,
+bin.aisle,
+bin.stack,
+bin.level,
+bin.depth,
+bin.sortIndex,
+bin.description
+from Bin bin ,BinGroup bg
+where 1=1  
+and  bin in elements (bg.bins) 
+and bg.id = {bg.id}
+ 			]]></datasource>
+			<columns>
+				<column id="bin.id" title="ID" visible="false" />
+				<column id="bin.binCode" title="bin.code"/>
+				<column id="bin.aisle" title="aisle"/>
+				<column id="bin.stack" title="stack"/>
+				<column id="bin.level" title="level"/>
+				<column id="bin.depth" title="depth"/>
+				<column id="bin.sortIndex" title="sortIndex"/>
+				<column id="bin.description" title="title.desc"/>
+			</columns>
+			<buttons>
+				<popup id="add" title="add" enableType="none" containId="true" pageId="addBinEdit"  iconUrl="new">
+					<enableExpression><![CDATA[(${bg.id}>0)]]></enableExpression>
+				</popup>
+				<commit id="remove" title="remove" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="bg.id" className="long" />
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="binGroupManager" methodName="removeBin" parameter="bg.id,ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

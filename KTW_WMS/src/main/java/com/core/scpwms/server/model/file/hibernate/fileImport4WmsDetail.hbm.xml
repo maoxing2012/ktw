@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.file.FileImport4WmsDetail" table="WMS_FILE_IMPORT_DETAIL">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_file_import4wmsdetail</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        
+        <many-to-one name="fileImport4Wms" class="com.core.scpwms.server.model.file.FileImport4Wms">
+            <column name="FILE_IMPORT_4WMS_ID"/>
+        </many-to-one>
+        
+        <property name="relatedClassName"  type="string" column="RELATED_CLASS_NAME" length="150"/>
+        <property name="relatedId"  type="long" column="RELATED_ID" />
+     </class>
+</hibernate-mapping>

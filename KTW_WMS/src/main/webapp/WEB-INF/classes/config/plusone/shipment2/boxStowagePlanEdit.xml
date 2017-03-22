@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="boxStowagePlanEdit" title="boxStowagePlanEdit" entityClass="com.core.scpwms.server.model.shipment.StowagePlan" onClose="refreshParent" width="900" height="600" columnNum="8">
+		 <modify>
+		 <inputUIs>
+				<hidden id="stowagePlan.id" />
+				<text id="stowagePlan.stowageNumber" title="stowageNumber" trimSpace="true" editModel="uneditable" length="20" readOnly="true" />
+                <text id="stowagePlan.carrier.name" title="carrier" trimSpace="true" required="true"/>
+				<text id="stowagePlan.carNumber" title="carNumber" trimSpace="true" required="true"/>
+				<text id="stowagePlan.mainDriver" title="driver" trimSpace="true" required="true"/>
+				<textArea id="stowagePlan.description" title="title.desc" rows="50" cols="600" span="7" trimSpace="true"/>
+			</inputUIs>
+			<buttons>
+			</buttons> 
+			</modify>			
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+spd.id,
+spd.obdPack.boxSequence,
+spd.obdPack.status,
+spd.obdPack.obd.relatedBill1,
+spd.obdPack.obd.carrier.name,
+spd.obdPack.baseQty,
+spd.obdPack.length,
+spd.obdPack.width,
+spd.obdPack.height,
+spd.obdPack.weight,
+spd.obdPack.grossWeight,
+spd.obdPack.caseQty
+from StowagePlanDetail spd
+where 1=1 
+and spd.stowagePlan.id = {stowagePlan.id}
+ 			]]></datasource>
+			<columns>
+				<column id="spd.id" title="ID" visible="false" />
+				<column id="spd.obdPack.boxSequence" title="boxSequence"/>
+				<column id="spd.obdPack.status" title="title.status" format="enumFormat" formatParam="EnuPakcageDocStatus"/>
+				<column id="spd.obdPack.obd.relatedBill1" title="tripNumber"/>
+				<column id="spd.obdPack.obd.carrier.name" title="carrier"/>
+				<column id="spd.obdPack.baseQty" title="baseQty"/>
+				<column id="spd.obdPack.length" title="length"/>
+				<column id="spd.obdPack.width" title="width"/>
+				<column id="spd.obdPack.height" title="height"/>
+	            <column id="spd.obdPack.weight" title="weight" />
+	            <column id="spd.obdPack.grossWeight" title="grossWeight" />
+	            <column id="spd.obdPack.caseQty" title="caseQty" />
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" invisible="false" containId="false" pageId="boxStowagePlanAddBox" iconUrl="add">
+                    <enableExpression><![CDATA[${stowagePlan.id} >0]]></enableExpression>
+                </popup>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<enableExpression><![CDATA[(${spd.obdPack.status} == @{EnuPakcageDocStatus.250})]]></enableExpression>
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="stowagePlanManager" methodName="deleteDetailBox" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit> 
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

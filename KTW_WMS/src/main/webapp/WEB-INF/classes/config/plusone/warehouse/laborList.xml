@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="laborList" title="laborList">
+        <search>
+             <inputUIs>
+                <text id="labor.code" title="labor.code" trimSpace="true"/>
+                <text id="labor.name" title="labor.name" trimSpace="true"/>
+                <list id="labor.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select  
+labor.id,
+labor.wh.code,
+labor.code,
+labor.name,
+labor.user.loginName,
+labor.description,
+labor.disabled  
+from Labor labor 
+left join labor.user 
+where 1=1 
+and labor.wh = #{SESSION_WAREHOUSE} 
+/~labor.code: and labor.code like {labor.code}~/ 
+/~labor.name: and labor.name like {labor.name}~/ 
+/~labor.disabled: and labor.disabled = {labor.disabled}~/ 
+		]]></datasource>
+		<columns>
+            <column id="labor.id" title="ID" visible="false"/>
+            <column id="labor.wh.code" title="wh.code" visible="false"/>
+            <column id="labor.code" title="labor.code"/>
+            <column id="labor.name" title="labor.name"/>
+            <column id="labor.user.loginName" title="system.loginName"/>
+            <column id="labor.description" title="title.desc"/>
+            <column id="labor.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+        </columns>
+        <buttons>
+            <popup id="new"  title="new" enableType="none" containId="false"  pageId="laborEdit" iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true"  pageId="laborEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${labor.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" iconUrl="enable">
+                 <enableExpression><![CDATA[(${labor.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="laborManager" methodName="enable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" iconUrl="disable">
+                 <enableExpression><![CDATA[(${labor.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="laborManager" methodName="disable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${labor.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"><entries /></mapping>
+				</mappings>
+				<actions>
+					<action managerName="laborManager" methodName="deleteLabor" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<popup id="view"  title="view" enableType="single" containId="true"  pageId="laborView" iconUrl="view"/>
+        </buttons>
+    </maintainPage>
+</pages>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.user.Plant"  table="WMS_PLANT">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_plant</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID"/>
+        </many-to-one>
+		<property name="code" column="CODE" type="string" not-null="true" unique-key="UK_PLANT" length="50"/>
+		<property name="name" column="NAME" type="string" not-null="true"/>
+		<property name="shortName" column="SHORT_NAME" type="string"/>
+		
+		<component name="contractInfo" class="com.core.business.model.domain.ContractInfo">
+			<property name="linkman" column="LINKMAN" type="string" length="50" />
+			<property name="phone" column="PHONE" type="string" length="50"/>
+			<property name="fax" column="FAX" type="string" length="50"/>
+			<property name="email" column="EMAIL" type="string" length="100"/>
+			<property name="address" column="ADDRESS" type="string" length="255"/>
+            <property name="addressExt" column="ADDRESS_EXT" type="string" length="255"/>
+			<property name="postcode" column="POSTCODE" type="string" length="50"/>
+			<property name="mobile" column="MOBILE" type="string" length="50"/>
+		</component>
+		
+		<many-to-one name="inBountProperties" class="com.core.scpwms.server.model.user.PlantInBountProperties">
+            <column name="IN_PROPERTIES"/>
+        </many-to-one>
+        <many-to-one name="whingProperties" class="com.core.scpwms.server.model.user.PlantWarehousingProperties">
+            <column name="WAREHOUSING_PROPERTIES"/>
+        </many-to-one>
+        <many-to-one name="outBountProperties" class="com.core.scpwms.server.model.user.PlantOutBountProperties">
+            <column name="OUT_PROPERTIES"/>
+        </many-to-one>
+        
+        <property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+    </class>
+</hibernate-mapping>

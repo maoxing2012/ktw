@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.task.WarehouseTaskProcess" table="WMS_WAREHOUSE_TASK_PROCESS">
+    	<id name="id" column="ID" type="long">
+    		<generator class="native">
+    			<param name="sequence">wseq_warehouse_taskprocess</param>
+    			<param name="parametes">START WITH 1000</param>
+    		</generator>
+    	</id>
+    	 	
+    	<property name="whId" type="long" column="WH_ID" />
+    	<property name="ownerId" type="long" column="OWNER_ID" />
+    	<property name="userId" type="long" column="USER_ID" />
+    	
+    	<property name="caseNumberA" type="string" column="CASE_NUM_A" length="50"/>
+    	<property name="caseNumberB" type="string" column="CASE_NUM_B" length="50"/>
+    	<property name="caseNumberC" type="string" column="CASE_NUM_C" length="50"/>
+    	<property name="caseNumberD" type="string" column="CASE_NUM_D" length="50"/>
+    	<property name="caseNumberE" type="string" column="CASE_NUM_E" length="50"/>
+    	<property name="caseNumberF" type="string" column="CASE_NUM_F" length="50"/>
+    	<property name="caseNumberG" type="string" column="CASE_NUM_G" length="50"/>
+    	<property name="caseNumberH" type="string" column="CASE_NUM_H" length="50"/>
+    	<property name="caseNumberI" type="string" column="CASE_NUM_I" length="50"/>
+    </class>
+</hibernate-mapping>
+
+

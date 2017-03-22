@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="feeTypeView" title="feeTypeView" entityClass="com.core.scpwms.server.model.fee.FeeType" width="500" height="450" columnNum="8">
+        <inputUIs>
+            <hidden id="feeType.id" />
+            <text id="feeType.owner.name" title="owner"  />
+			<list id="feeType.processType" title="feeProcessType" enumType="EnuFeeType" returnType="string" lastElement="true">
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuFeeType' 
+                ]]></hql>
+            </list>
+            <numberText id="feeType.priority" title="priority"/>
+            <list id="feeType.tempDiv" title="tempDiv" enumType="EnuTemperatureDiv" returnType="long" >
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuTemperatureDiv' 
+                ]]></hql>
+            </list>
+            <list id="feeType.stockDiv" title="stockDiv" enumType="EnuStockDiv" returnType="long" >
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuStockDiv' 
+                ]]></hql>
+            </list>
+            <textArea id="feeType.description" title="title.desc" rows="50" cols="355" span="3" length="80" trimSpace="true" lastElement="true"/>
+            <numberText id="feeType.fee" title="unitFee" />
+            <list id="feeType.unit" title="unit" enumType="EnuFeeUnit" returnType="string" >
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuFeeUnit' 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

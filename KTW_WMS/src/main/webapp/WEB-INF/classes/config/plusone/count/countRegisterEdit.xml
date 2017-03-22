@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="countRegisterEdit" title="countRegisterNew" entityClass="com.core.scpwms.server.model.count.CountRecord"  width="500" height="300" onClose="refreshParent">
+        <inputUIs>
+            <hidden id="countRecord.id" title="ID" />
+            <selectText id="countPlan" title="countNumber" required="true" displayColumn="2" displayedTableHead="ID,countNumber,owner">
+                    <hql><![CDATA[SELECT
+countPlan.id,
+countPlan.code,
+countPlan.owner.name
+from CountPlan  countPlan  
+where countPlan.status >= 200
+and countPlan.status <999
+and countPlan.warehouse = #{SESSION_WAREHOUSE}
+and countPlan.countMethod <> 'FROM_SKU'
+                    ]]></hql>
+                <eventListeners>
+                    <eventListener id="owner" index="3" refreshUI="true"/>
+                    <eventListener id="sku" index="1" refreshUI="true"/>
+                </eventListeners>
+            </selectText>
+            <text id="owner" title="owner" readOnly="true" />
+            <selectText id="bin" title="bin" required="true" displayedTableHead="ID,code,title.desc" displayColumn="2">
+                    <hql><![CDATA[SELECT
+bin.id, 
+bin.binCode, 
+bin.description   
+from Bin  bin
+where bin.disabled = false
+and bin.storageType.role in ( 'R1000','R3000','R4040' )
+and bin.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+            </selectText>
+            <selectText id="sku" title="sku.code" required="true" displayedTableHead="ID,code,name" displayColumn="2">
+                    <hql><![CDATA[SELECT
+sku.id,
+sku.code,
+sku.name
+from Sku sku
+where sku.disabled = false
+and sku.owner.id = (select cp.owner.id from CountPlan cp where cp.id = {countPlan})
+                    ]]></hql>
+                <eventListeners>
+                    <eventListener id="sku.name" index="3" refreshUI="false"/>
+                </eventListeners>
+            </selectText>
+            <text id="sku.name" title="sku.name" readOnly="true" />
+            <numberText id="countQty" title="countQty"  trimSpace="true" returnType="Double" required="true" />
+            <date id="expDate" title="expDate" required="true" showTime="false"/>
+            <list id="invStatus" title="invStatus" enumType="EnuInvStatus" required="true">
+				<hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where e.enumType = 'EnuInvStatus'
+				]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="countPlan" className="long" />
+                    <mapping id="sku" className="long" />
+                    <mapping id="bin" className="long" />
+                    <mapping id="countQty" className="double" />
+                    <mapping id="expDate" className="date" />
+                    <mapping id="invStatus" className="string" />
+                </mappings>
+                <actions>
+                    <action managerName="countPlanManager" methodName="saveRegister" parameter="countPlan,sku,bin,countQty,expDate,invStatus"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnable="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

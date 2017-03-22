@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="seqSettingList" title="seqSettingList" autoQuery="false">
+         <search>
+             <inputUIs>
+                 <text id="seq.code" title="seqSetting.code" trimSpace="true"/>
+                 <text id="seq.name" title="seqSetting.name" trimSpace="true"/>
+                 <list id="disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[
+select 
+seq.id,
+seq.code,
+seq.name,
+seq.seqLength,
+seq.prefix,
+seq.separator1,
+seq.seqDateFormat,
+seq.separator2,
+seq.seqGenerateBy,
+seq.disabled,
+seq.description
+from SequenceProperties seq 
+where 1=1
+/~seq.code: and seq.code like {seq.code} ~/
+/~seq.name: and seq.name like {seq.name} ~/ 
+/~disabled: and seq.disabled = {disabled} ~/
+         ]]></datasource>
+        <columns>
+            <column id="seq.id" title="ID"  visible="false"/>
+            <column id="seq.code" title="seqSetting.code"/>
+            <column id="seq.name" title="seqSetting.name"/>
+            <column id="seq.seqLength" title="code.length"/>
+            <column id="seq.prefix" title="prefix"/>
+            <column id="seq.separator1" title="separator1"/>
+            <column id="seq.seqDateFormat" title="dateFormat" format="enumFormat" formatParam="SEQDATE_TYPE"/>
+            <column id="seq.separator2" title="separator2"/>
+            <column id="seq.seqGenerateBy" title="seqGenerateBy" format="enumFormat" formatParam="SEQGENERATE_TYPE"/>
+            <column id="seq.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+            <column id="seq.description" title="title.desc"/>
+        </columns>
+        <buttons>   
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="seqSettingEdit" iconUrl="add"/>
+            <popup id="edit" title="edit" enableType="single" containId="true"  pageId="seqSettingEdit" iconUrl="edit">
+                <enableExpression><![CDATA[(${seq.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" iconUrl="enable">
+                <enableExpression><![CDATA[(${seq.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="seqManager" methodName="enableSeq" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <commit id="disable" title="disable" enableType="multi" invisible="false" iconUrl="disable">
+                <enableExpression><![CDATA[(${seq.disabled} == @{BooleanTypeN.false})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="seqManager" methodName="disableSeq" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${seq.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="seqManager" methodName="deleteSeq" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <popup id="view" title="view"  enableType="single" containId="true" pageId="seqSettingView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

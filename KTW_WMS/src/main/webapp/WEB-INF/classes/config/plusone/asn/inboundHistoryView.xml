@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="inboundHistoryView" title="inboundHistoryView" onClose="refreshParent" entityClass="com.core.scpwms.server.model.inbound.AsnDetail" width="1000" height="400">
+		<modify>
+			<inputUIs>
+				<hidden id="asnDetail.id" />
+			</inputUIs>
+			<buttons>
+			</buttons>
+		</modify>
+		<detail autoQuery="true">
+			<datasource><![CDATA[select 
+ih.id,
+ih.asn.owner.name,
+ih.asn.asnNumber,
+ih.asn.relatedBill1,
+ih.detail.lineNo,
+ih.detail.sku.code,
+ih.detail.sku.name,
+ih.detail.sku.specs,
+ih.invInfo.packageDetail.name,
+ih.executeQty,
+ih.detail.stockDiv,
+ih.invInfo.invStatus,
+ih.invInfo.quant.dispLot,
+ih.invInfo.inboundDate,
+ih.labor.name,
+ih.receiveDate
+from InboundHistory ih
+where 1=1  
+and ih.wh = #{SESSION_WAREHOUSE} 
+and ih.detail.id = {asnDetail.id}
+ 			]]></datasource>
+			<columns>
+				<column id="ih.id" title="ID" visible="false" />
+				<column id="ih.asn.owner.name" title="owner"/>
+				<column id="ih.asn.asnNumber" title="asnNumber"/>
+	            <column id="ih.asn.relatedBill1" title="custBillNo"/>
+				<column id="ih.detail.lineNo" title="lineNo"/>
+				<column id="ih.detail.sku.code" title="sku.code"/>
+				<column id="ih.detail.sku.name" title="sku.name"/>
+				<column id="ih.detail.sku.specs" title="specs"/>
+				<column id="ih.invInfo.packageDetail.name" title="p1000.name"/>
+				<column id="ih.executeQty" title="inboundQty"/>
+				<column id="ih.detail.stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv"/>
+				<column id="ih.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+				<column id="ih.invInfo.quant.dispLot" title="expDate"/>
+				<column id="ih.invInfo.inboundDate" title="ata" />
+				<column id="ih.labor.name" title="receiveCheckLabor" />
+				<column id="ih.receiveDate" title="operateTime"/>
+			</columns>
+			<buttons>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

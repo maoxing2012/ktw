@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="countPlanNewDynamic" title="countPlanNewDynamic" entityClass="com.core.scpwms.server.model.count.CountPlan" onClose="refreshParent" width="500" height="400" columnNum="4">
+		<inputUIs>
+			<hidden id="countPlan.id" />
+			<selectText id="countPlan.owner.id" title="owner" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" >
+				<hql><![CDATA[ SELECT 
+owner.id, 
+owner.code,
+owner.name   
+FROM Owner owner  
+WHERE owner.disabled = false
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+			</selectText>
+			<checkbox id="countPlan.blindCount" title="blindCount"/>
+			<textArea id="countPlan.description" title="title.desc" required="true" trimSpace="true" rows="50" cols="600" span="6"/>
+		</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="countPlan" className="com.core.scpwms.server.model.count.CountPlan" />
+					</mappings>
+					<actions>
+						<action managerName="countPlanManager" methodName="newDynamic" parameter="countPlan" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+	</editPage>
+</pages>

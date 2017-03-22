@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="homeWindow" title="homeWindow" autoQuery="false" >
+		<search>
+			<inputUIs>
+				<text id="homeWindow.title" title="homeWindow.title" trimSpace="true" length="10" width="250" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select 
+homeWindow.id,
+homeWindow.title,
+homeWindow.sortIdx,
+homeWindow.width,
+homeWindow.height
+from HomeWindow homeWindow
+where 1=1 
+/~homeWindow.title: and homeWindow.title like {homeWindow.title}~/
+]]></datasource>
+		<columns>
+			<column id="homeWindow.id" title="ID" visible="false" canOrder="false"/>
+			<column id="homeWindow.title" title="homeWindow.title"/>
+			<column id="homeWindow.sortIdx" title="homeWindow.sortIdx"/>
+			<column id="homeWindow.width" title="homeWindow.width"/>
+			<column id="homeWindow.height" title="homeWindow.height"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="homeWindowModify" iconUrl="new"/>
+			<popup id="eidt" title="modify"  enableType="single" containId="true" pageId="homeWindowModify" iconUrl="edit">
+			</popup>
+			<commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<mappings>
+					<mapping id="ids" className="list" />
+				</mappings>
+				<actions>
+					<action managerName="homeManager" methodName="delHome" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

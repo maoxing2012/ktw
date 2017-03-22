@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.core.scpwms.server.model.warehouse.Labor" table="WMS_LABOR">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_labor</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        
+        <many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID" not-null="true" unique-key="UK_LABOR"/>
+        </many-to-one>
+        
+        <property name="code" column="CODE" type="string" not-null="true" length="50" unique-key="UK_LABOR"/>
+        <property name="name" column="NAME" type="string" not-null="true"/>
+        <property name="type" column="TYPE" type="string" length="50"/>
+        
+        <many-to-one name="user" class="com.core.business.model.security.User">
+			<column name="USER_ID"/>
+		</many-to-one>
+		
+        <set name="groups" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="LABOR_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.warehouse.LaborGroupLabor"></one-to-many>
+        </set>
+        
+        <property name="downloadDate" column="DOWNLOAD_DATE" type="timestamp"/>
+        <property name="downloadUser" column="DOWNLOAD_USER" type="string"/>
+        
+        <property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+    </class>
+</hibernate-mapping>
+
+

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <maintainPage id="outportAsnFileList" title="outportAsnFileList"  autoQuery="false">
+        <search>
+            <inputUIs>
+            	<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+                    ]]></hql>
+                </selectText>
+            	<text id="rule.ruleName" title="rule.ruleName" trimSpace="true"/>
+				<list id="fi.status" title="fi.status" enumType="EnuFileProcessStatus">
+					<hql><![CDATA[ SELECT 
+ o.enumValue,o.enumValue
+ FROM Enumerate o   
+ WHERE  o.enumType='EnuFileProcessStatus' AND o.enumValue <> 'DELETE' order by o.id ]]></hql>
+				</list>
+				<text id="orginalName" title="fi.orginalName" trimSpace="true"/>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[SELECT  
+fi.id,
+fiw.owner.name,
+rule.ruleName,
+fi.status,
+fi.orginalName,
+fi.targetName,
+fi.warnningMessage,
+fi.createInfo.updateTime,
+fi.updateInfo.updateTime
+FROM FileImport4Wms fiw
+left join fiw.fileImport fi
+left join fiw.fileImport.importRule rule 
+WHERE 1=1 
+and fiw.wh = #{SESSION_WAREHOUSE} 
+AND fi.status <> 'DELETE'
+and rule.ruleType = 'ASN_OUT'
+/~owner: and fiw.owner.id = {owner}~/
+/~fi.status: AND fi.status = {fi.status}~/    
+/~rule.ruleName: AND rule.ruleName like {rule.ruleName}~/    
+/~orginalName: AND fi.orginalName like {orginalName}~/  
+   ]]></datasource>
+        <columns>
+            <column id="fi.id" title="ID" visible="false"/>
+            <column id="fiw.owner.name" title="owner"/>
+            <column id="rule.ruleName" title="rule.ruleName"/>
+            <column id="fi.status" title="fi.status" format="enumFormat" formatParam="EnuFileProcessStatus"/>
+            <column id="fi.orginalName" title="fi.orginalName"/>
+            <column id="fi.targetName" title="fi.targetName"/>
+            <column id="fi.warnningMessage" title="warnningMessage" />
+            <column id="fi.createInfo.updateTime" title="fi.createInfo.updateTime"/>
+            <column id="fi.updateInfo.updateTime" title="fi.updateInfo.updateTime"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new" enableType="none" containId="false" pageId="outportAsnFile"  iconUrl="new"/>
+            <commit id="delete" title="delete" enableType="multi" containId="true" iconUrl="delete">
+                <enableExpression><![CDATA[${fi.status}==@{EnuFileProcessStatus.UPLOADED}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="importFileManager4Wms" methodName="deleteFile" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+			<commit id="action" title="action" enableType="single" containId="true" iconUrl="action">
+				<enableExpression><![CDATA[${fi.status}==@{EnuFileProcessStatus.UPLOADED}]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="importFileManager4Wms" methodName="dealFile" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="cancel" title="cancel" enableType="single" containId="true" iconUrl="cancel">
+				<enableExpression><![CDATA[${fi.status}==@{EnuFileProcessStatus.COMPLETE}]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="importFileManager4Wms" methodName="cancelFile" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <commit id="downLoad" title="download" enableType="multi" servletURL="do.fileZip" iconUrl="dowm">                
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </maintainPage>
+</pages>

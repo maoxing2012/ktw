@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.common.SequenceProperties"  table="WMS_SEQ_PROPERTIES">
+		<id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_seq_properties</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        
+        <discriminator column="DISCRIMINATOR" type="string"/>
+		<property name="code" column="CODE" type="string" not-null="true" length="50"/>
+		<property name="name" column="NAME" type="string" not-null="true"/>
+		<property name="seqLength" column="SEQ_LENGTH" type="integer"/>
+		<property name="prefix" column="PREFIX" type="string"  length="50"/>
+		<property name="separator1" column="SEPARATOR1" type="string"  length="50"/>
+		<property name="seqDateFormat" column="SEQ_DATE_FORMAT" type="string" length="50"/>
+		<property name="separator2" column="SEPARATOR2" type="string"  length="50"/>
+		<property name="seqGenerateBy" column="SEQ_GENERATE_BY" type="string"  length="50"/>
+		
+		<property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+</hibernate-mapping>

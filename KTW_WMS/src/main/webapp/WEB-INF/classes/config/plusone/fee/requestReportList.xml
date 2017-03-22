@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="requestReport" title="requestReport"  pageLocale="false" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = false
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                 </selectText>
+				<list id="request.status" title="title.status" enumType="EnuRequestReportStatus" returnType="long" multiple="true" defaultValue="100,200,300">
+                    <hql><![CDATA[ SELECT 
+o.enumValue,o.enumValue
+FROM Enumerate o   
+WHERE o.enumType='EnuRequestReportStatus' 
+order by o.id ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[
+select
+request.id
+,request.owner.name
+,request.status
+,request.targetMonth
+,request.termDiv
+,request.accountDateDiv
+,request.baseAmount
+,request.company.name
+,request.createInfo.updateTime
+,request.processDate
+from RequestReportHead request
+where 1=1
+and request.owner.plant.wh=#{SESSION_WAREHOUSE}
+/~owner: and request.owner.id = {owner}~/
+/~request.status: and request.status = {request.status}~/
+			]]></datasource>
+			<columns>
+			<column id="request.id" title="ID" visible="false"/>
+			<column id="request.owner.name" title="owner"/>
+			<column id="request.status" title="title.status"   format="enumFormat" formatParam="EnuRequestReportStatus"/>
+			<column id="request.targetMonth" title="targetMonth"/>
+			<column id="request.termDiv" title="termDiv" format="enumFormat" formatParam="EnuTermDiv"/>
+			<column id="request.accountDateDiv" title="accountDateDiv" format="enumFormat" formatParam="EnuAccountDateDiv"/>
+			<column id="request.baseAmount" title="baseAmount"/>
+			<column id="request.company.name" title="issuer"/>
+			<column id="request.createInfo.updateTime" title="importTime"/>
+			<column id="request.processDate" title="executeTime"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="requestReportEdit" iconUrl="new"/>
+            <popup id="edit" title="modify" enableType="single" containId="true" pageId="requestReportEdit" iconUrl="edit">
+                <enableExpression><![CDATA[(${request.status}==@{EnuRequestReportStatus.100})]]></enableExpression>
+            </popup>
+            <commit id="delete" title="delete" enableType="multi" invisible="false" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${request.status}==@{EnuRequestReportStatus.100})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="requestReportManager" methodName="deleteRequest" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+			<!-- <commit id="action" title="action" enableType="single" invisible="false" iconUrl="action">
+			    <enableExpression><![CDATA[(${request.status}==@{EnuRequestReportStatus.100})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="requestReportManager" methodName="doProcess" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit> -->
+            <commit id="action2" title="action" enableType="single" invisible="false" iconUrl="action">
+			    <enableExpression><![CDATA[(${request.status}==@{EnuRequestReportStatus.100})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="requestReportManager" methodName="doProcess2" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <commit id="cancel" title="cancel" enableType="multi" invisible="false" confirmMessage="cancel.confirmMessage" iconUrl="cancel">
+                <enableExpression><![CDATA[(${request.status}==@{EnuRequestReportStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="requestReportManager" methodName="deleteRequestDetail" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+			<popup id="printRequestReport" title="printRequestReport" enableType="single" containId="true"  pageId="printRequestReport" iconUrl="report" >
+			     <enableExpression><![CDATA[(${request.status}==@{EnuRequestReportStatus.200})]]></enableExpression>
+			</popup>
+			<popup id="view" title="view" enableType="single" containId="true" pageId="requestReportView" iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages>

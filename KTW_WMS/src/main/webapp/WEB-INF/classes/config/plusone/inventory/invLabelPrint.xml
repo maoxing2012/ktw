@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <reportPopupPage id="invLabelPrint" title="invLabelPrint" reportFile="/report/invLabelPrint" parameter="ids"  width="600" height="500" mode="P"/>
+</pages>

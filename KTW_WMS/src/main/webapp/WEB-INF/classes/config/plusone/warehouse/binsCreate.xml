@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="binsCreate" title="batchCreate" entityClass="com.core.scpwms.server.model.warehouse.Bin"  width="520" height="300" onClose="refreshParent" >
+        <inputUIs>
+                <hidden id="binSetting.id" title="ID" />
+                <parttab id="tab_1" title="title.rangeSetting" style="CTab" tabHeight="200" >
+                    <numberText id="aisleFrom" title="aisle.from" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                    <numberText id="aisleTo" title="aisle.to" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                    <numberText id="stackFrom" title="stack.from" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                    <numberText id="stackTo" title="stack.to" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                    <numberText id="depthFrom" title="depth.from" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                    <numberText id="depthTo" title="depth.to" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                    <numberText id="levelFrom" title="level.from" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                    <numberText id="levelTo" title="level.to" validator="positiveIntegerRequired" required="true" forceOverride="true" returnType="Integer"/>
+                </parttab>
+                <parttab id="tab_2" title="title.properties" style="CTab" tabHeight="200" >
+                    <selectText row="1" id="binSetting.properties.id" title="bp" required="true" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[SELECT 
+bp.id,
+bp.code,
+bp.name
+FROM BinProperties bp
+WHERE 1=1
+and bp.wh = #{SESSION_WAREHOUSE}  
+						]]></hql>
+                    </selectText>
+                    <selectText id="binSetting.storageType.id" title="st" required="true" displayedTableHead="ID,Code,Name">
+	                	<hql><![CDATA[ select 
+st.id,
+st.code,
+st.name 
+from StorageType st 
+where 1=1 and st.disabled = '0' 
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+						]]> </hql>
+	                </selectText> 
+                    <checkbox id="binSetting.processProperties.skuMixed" title="skuMix" defaultValue="true"  foreOverride="true"/>
+                    <checkbox id="binSetting.processProperties.lotMixed" title="lotMix" defaultValue="false"  foreOverride="true"/>
+                    <checkbox id="binSetting.processProperties.ownerMixed" title="ownerMix" defaultValue="false"  foreOverride="true"/>
+                    <textArea id="binSetting.description" title="title.desc" trimSpace="true" rows="50" cols="355" span="3" />
+                </parttab>
+                <parttab id="tab_3" title="title.location" style="CTab" tabHeight="200" >
+                    <text id="prefix" title="prefix" forceOverride="true" required="true" trimSpace="true"/>
+                    <numberText id="aisleCount" title="aisleCount" validator="positiveIntegerRequired" forceOverride="true" required="true" returnType="Integer"/>
+                    <text id="aisleString" title="aisleString" forceOverride="true" trimSpace="true"/>
+                    <numberText id="stackCount" title="stackCount" validator="positiveIntegerRequired" forceOverride="true" required="true" returnType="Integer"/>
+                    <text id="stackString" title="stackString" forceOverride="true" trimSpace="true"/>
+                    <numberText id="depthCount" title="depthCount" validator="positiveIntegerRequired" forceOverride="true" required="true" returnType="Integer"/>
+                    <text id="depthString" title="depthString" forceOverride="true" trimSpace="true"/>
+                    <numberText id="levelCount" title="levelCount" validator="positiveIntegerRequired" forceOverride="true" required="true" returnType="Integer"/>                    
+                </parttab>
+        </inputUIs>
+        <buttons>
+            <commit id="createBins" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="aisleFrom" className="int"/>
+                    <mapping id="aisleTo" className="int"/>
+                    <mapping id="stackFrom" className="int"/>
+                    <mapping id="stackTo" className="int"/>
+                    <mapping id="depthFrom" className="int"/>
+                    <mapping id="depthTo" className="int"/>
+                    <mapping id="levelFrom" className="int"/>
+                    <mapping id="levelTo" className="int"/>
+                    <mapping id="binSetting" className="com.core.scpwms.server.model.warehouse.Bin"/>
+                    <mapping id="prefix" className="string"/>
+					<mapping id="aisleCount" className="int"/>
+					<mapping id="aisleString" className="string"/>
+					<mapping id="stackCount" className="int"/>
+					<mapping id="stackString" className="string"/>
+					<mapping id="depthCount" className="int"/>
+					<mapping id="depthString" className="string"/>
+					<mapping id="levelCount" className="int"/>
+                </mappings>
+                <actions>
+                    <action managerName="binSettingManager" methodName="createBins" parameter="aisleFrom,aisleTo,stackFrom,stackTo,depthFrom,depthTo,levelFrom,levelTo,binSetting,prefix,aisleCount,aisleString,stackCount,stackString,depthCount,depthString,levelCount" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

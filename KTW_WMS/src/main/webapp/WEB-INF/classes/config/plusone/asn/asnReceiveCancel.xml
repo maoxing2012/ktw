@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="asnReceiveCancel" title="asnReceiveCancel" entityClass="com.core.scpwms.server.model.inbound.InboundHistory" onClose="refreshParent" width="150"  height="150" columnNum="8">
+		<inputUIs>
+		    <hidden id="ibdHistory.id" />
+		    <textArea id="description" title="title.desc" required="true" trimSpace="true" rows="50" cols="400" span="6"/>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" confirmMessage="cancelReceive.confirmMessage" iconUrl="save">
+				<mappings>
+				    <mapping id="inboundHistoryList.ids" className="list" />
+					<mapping id="description" className="string" />
+				</mappings>
+				<actions>
+ 					<action managerName="asnManager" methodName="cancelReceive" parameter="inboundHistoryList.ids,description" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

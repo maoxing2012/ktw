@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 関トラ　冷蔵冷凍　送り状 -->
+<pages>
+	 <reportPopupPage id="pickList024" title="pickList024" reportFile="/report/pickList04" parameter="ids,carrierCd=%27149%27,tempDiv=0'2'3'4'7"  width="900" height="600" mode=""/>
+</pages>

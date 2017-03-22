@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="warehouseUserGroup" title="warehouseUserGroup" entityClass="com.core.scpwms.server.model.warehouse.Warehouse" onClose="refreshParent" width="600" height="400">
+        <modify>
+            <inputUIs>
+                <hidden id="warehouse.id"/>
+            </inputUIs>
+        </modify>
+        <detail>
+            <datasource><![CDATA[SELECT   
+ugw.id,
+ugw.warehouse.name,
+ugw.userGroup.name 
+from UserGroupWarehouse ugw 
+where 1=1 
+/~warehouse.id: and ugw.warehouse.id = {warehouse.id} ~/
+			]]></datasource>
+            <columns>
+                <column id="ugw.id" title="ID" visible="false"/>
+                <column id="ugw.warehouse.name" title="warehouse.name"/>
+                <column id="ugw.userGroup.name" title="group.name"/>
+            </columns>
+            <buttons>
+                <popup id="add" title="add" enableType="none" containId="false" pageId="warehouseAddUserGroup"  iconUrl="new"/>
+                <commit id="delete" title="delete" enableType="multi"  containId="true" iconUrl="delete">
+                    <mappings>
+                        <mapping id="ids" className="list"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="warehouseManager" methodName="deleteUserGroup" parameter="ids"/>
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+                        <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    </forwards>
+                </commit>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

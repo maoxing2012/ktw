@@ -1,0 +1,83 @@
+/*************导入系统初始数据语句***************/
+insert into USERS values(nextval('seq_user'),'com.core.business.model.security.User','admin','admin','356a192b7913b04c54574d18c28d46e6395428ab',
+'email','T','F','zh',null,null,'plusone',null,null,null,null,null,null,null,null);
+
+insert into wms_wh values(nextval('wseq_wh'),'com.core.scpwms.server.model.warehouse.Warehouse','1000','南大阪新倉庫','南大阪新倉庫','linkMan','tel','fax','email','addr','addr_ext','postCode','cellphone',
+null,'0','description',null,'admin', current_timestamp ,null,'admin', current_timestamp );
+
+insert into global_params values(14,'com.core.business.config.globalparam.GlobalParam', 'VER_INFO','P_STRING','全局变量设置',    'plusone','VERSION 2.0:<BR>仓储管理系统 <BR>MBP Software Group', '', '系统信息','wms');
+insert into global_params values(12,'com.core.business.config.globalparam.GlobalParam', 'clientUserInfo','P_BEAN',  '全局变量设置',    'plusone','', 'userInfoInClient','记录用户信息',  'wms');
+insert into global_params values(1, 'com.core.business.config.globalparam.GlobalParam', 'tempFileDir','P_STRING','临时文件路径配置', 'plusone','d:\\\\tempFile', '', '上传文件存放的临时文件夹', 'wms');
+insert into global_params values(2, 'com.core.business.config.globalparam.GlobalParam', 'imageFileDir','P_STRING','临时文件路径配置', 'plusone','d:\\\\imageFile', '',  '图片存放的文件夹', 'wms');
+insert into global_params values(3, 'com.core.business.config.globalparam.GlobalParam', 'otherFileDir','P_STRING','临时文件路径配置', 'plusone','d:\\\\otherFile', '','需要永久存放的非图片文件的文件夹',  'wms');
+insert into global_params values(4, 'com.core.business.config.globalparam.GlobalParam', 'longTime','P_STRING','页面布局设置',    'plusone','16', '','系统默认长日期格式(yyyyMMddHH:mm:ss)', 'wms');
+insert into global_params values(5, 'com.core.business.config.globalparam.GlobalParam', 'maintainTableDecimal','P_INT',   '页面布局设置',    'plusone','6', '', '维护屏二维表格如果是小数需要保留的小数位数', 'wms');
+insert into global_params values(6, 'com.core.business.config.globalparam.GlobalParam', 'reportURL','P_STRING','报表服务器配置',   'plusone','http://localhost:9084/quiee/reportJsp/showReport.jsp','', 'http://192.168.1.250:8081/report/reportJsp/showReport.jsp','wms');
+insert into global_params values(7, 'com.core.business.config.globalparam.GlobalParam', 'generateSequenceBySP','P_CHAR',  '流水号生成方式',   'plusone','N', '', '是否使用数据库存储过程自动产生流水号(Y－是、N－否)', 'wms');
+insert into global_params values(8, 'com.core.business.config.globalparam.GlobalParam', 'SESSION_WAREHOUSE','P_BEAN',  '全局变量设置',    'plusone','', 'warehouseSession',  '记录用户当前登录的仓库信息', 'wms');
+insert into global_params values(9, 'com.core.business.config.globalparam.GlobalParam', 'clientOtherInfo','P_BEAN',  '全局变量设置',    'plusone','', 'warehouseInfoInClient','前台其他特殊信息显示内容',   'wms');
+insert into global_params values(10,'com.core.business.config.globalparam.GlobalParam', 'SESSION_WAREHOUSE_ID','P_INT',   '全局变量设置',    'plusone','', '','记录用户当前登录的仓库信息', 'wms');
+insert into global_params values(11,'com.core.business.config.globalparam.GlobalParam', 'SESSION_USER_NAME','P_BEAN',  '全局变量设置',    'plusone','', 'userNameSession', '记录当前登录用户信息', 'wms');
+insert into global_params values(13,'com.core.business.config.globalparam.GlobalParam', 'POP_MES','P_CHAR',  '全局变量设置',    'plusone','N', '','是否弹出消息(Y-弹出 N-不弹出)',  'wms');
+insert into global_params values(15,'com.core.business.config.globalparam.GlobalParam', 'EDI_URL','P_STRING','全局变量设置',    'plusone','http://localhost:9084/quiee/reportJsp/showReport.jsp', '', 'EDI访问RUL','wms');
+insert into global_params values(16,'com.core.business.config.globalparam.GlobalParam', 'COL_ORDER','P_STRING','全局变量设置',    'plusone','Y', '', '是否使用拖拽的列(Y-使用 N-不使用)','wms');
+insert into global_params values(11,'com.core.business.config.globalparam.GlobalParam', 'SESSION_USER_CODE','P_BEAN',  '全局变量设置',    'plusone','', 'userCodeSession', '记录当前登录用户信息', 'wms');
+insert into global_params values(19,'com.core.business.config.globalparam.GlobalParam', 'HOME', 'p_STRING', '全局变量设置', 'plusone', 'Y', null, null, null);
+insert into global_params values(20,'com.core.business.config.globalparam.GlobalParam', 'fineReport','P_STRING','FINEREPORT配置',    'plusone','http://10.0.0.205:8081/WebReport/ReportServer', '', '报表服务器URL地址','wms');
+insert into global_params values(21,'com.core.business.config.globalparam.GlobalParam', 'REPORT_DIR', 'P_STRING','全局变量设置','plusone','C:/REPORT_DIR/',null,'报表存放地址','wms' );
+insert into global_params values(22,'com.core.business.config.globalparam.GlobalParam', 'REPORT_SERVER_IP', 'P_STRING','全局变量设置','plusone','172.16.67.12',null,'报表服务器IP','wms' );
+insert into global_params values(23,'com.core.business.config.globalparam.GlobalParam', 'FTP_SH', 'P_STRING','全局变量设置','plusone','153.127.228.42,mitsu,mitsu-ftp',null,'华硕上海FTP信息','wms' );
+insert into global_params values(24,'com.core.business.config.globalparam.GlobalParam', 'FTP_CQ', 'P_STRING','全局变量设置','plusone','153.127.228.42,mitsu,mitsu-ftp',null,'华硕重庆FTP信息','wms' );
+
+
+insert into enumerate values (2016070101,'EnuImportRuleType','MASTER');
+insert into enumerate values (2016070102,'EnuImportRuleType','ASN');
+insert into enumerate values (2016070103,'EnuImportRuleType','OBD');
+
+insert into enumerate values (2016070401,'EnuStockDiv','1');
+insert into enumerate values (2016070402,'EnuStockDiv','2');
+insert into enumerate values (2016070403,'EnuStockDiv','3');
+
+insert into enumerate values (2016070404,'EnuFixDiv','0');
+insert into enumerate values (2016070405,'EnuFixDiv','1');
+
+insert into enumerate values (2016070406,'EnuPackFlg','1');
+insert into enumerate values (2016070407,'EnuPackFlg','2');
+
+insert into enumerate values (2016080501,'EnuWarehouseTaskSingleStatus','0');
+insert into enumerate values (2016080502,'EnuWarehouseTaskSingleStatus','100');
+insert into enumerate values (2016080503,'EnuWarehouseTaskSingleStatus','200');
+insert into enumerate values (2016080504,'EnuWarehouseTaskSingleStatus','999');
+
+insert into enumerate values (2016080801,'EnuCaseType','1');
+insert into enumerate values (2016080802,'EnuCaseType','2');
+insert into enumerate values (2016080803,'EnuCaseType','3');
+
+insert into enumerate values (2016092301,'EnuAsnReportStatus','800');
+insert into enumerate values (2016092302,'EnuAsnReportStatus','900');
+insert into enumerate values (2016092303,'EnuAsnReportStatus','999');
+
+
+insert into enumerate values (2016102101,'EnuRequestReportStatus','0');
+insert into enumerate values (2016102102,'EnuRequestReportStatus','100');
+insert into enumerate values (2016102103,'EnuRequestReportStatus','200');
+insert into enumerate values (2016102104,'EnuRequestReportStatus','300');
+insert into enumerate values (2016102105,'EnuRequestReportStatus','999');
+
+insert into enumerate values (2016102201,'EnuTermDiv','200');
+insert into enumerate values (2016102202,'EnuTermDiv','300');
+insert into enumerate values (2016102203,'EnuTermDiv','400');
+
+
+insert into enumerate values (2016102901,'EnuFeeType','F1000');
+insert into enumerate values (2016102902,'EnuFeeType','F2000');
+insert into enumerate values (2016102903,'EnuFeeType','F3000');
+
+insert into enumerate values (2016102911,'EnuRequestReportStatus','0');
+insert into enumerate values (2016102912,'EnuRequestReportStatus','100');
+insert into enumerate values (2016102913,'EnuRequestReportStatus','200');
+insert into enumerate values (2016102914,'EnuRequestReportStatus','300');
+insert into enumerate values (2016102915,'EnuRequestReportStatus','999');
+
+insert into enumerate values (2016102921,'EnuAccountDateDiv','20');
+insert into enumerate values (2016102922,'EnuAccountDateDiv','31');

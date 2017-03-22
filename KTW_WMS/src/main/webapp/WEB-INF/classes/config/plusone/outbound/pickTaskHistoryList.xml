@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<pages>
+		<maintainPage id="pickTaskHistoryList" title="pickTaskHistoryList"  autoQuery="false">
+			<search>
+	            <inputUIs>
+	            	<text id="tripNumber" title="tripNumber"/>
+	            	<text id="obdNumber" title="obdNumber" trimSpace="true"/>
+	            	<text id="soNumber" title="soNumber"/>
+	            	<text id="taskSequence" title="taskSequence"/>
+	            	<text id="woSequence" title="woSequence"/>
+	            	<date id="operateTimeFrom" title="operateTimeFrom" showTime="true" />
+					<date id="operateTimeTo" title="operateTimeTo" showTime="true" />
+	            </inputUIs>
+	        </search>	
+			<datasource type="hql"><![CDATA[SELECT 
+wh.id,
+wh.wt.obdDetail.obd.relatedBill1,
+wh.wt.obdDetail.obd.obdNumber,
+wh.wt.obdDetail.relatedBill1,
+wh.wt.taskSequence,
+wh.wt.wo.orderSequence,
+wh.wt.processType,
+wh.invInfo.quant.sku.code,
+wh.invInfo.quant.sku.name,
+wh.invInfo.quant.sku.specs,
+wh.invInfo.quant.dispLot,
+wh.invInfo.packageDetail.name,
+wh.executePackQty,
+wh.executeQty,
+wh.invInfo.invStatus,
+wh.invInfo.bin.binCode,
+wh.descBin.binCode,
+wh.operateTime,
+wh.workers
+from WtHistory wh
+where 1=1
+and wh.wt.wh = #{SESSION_WAREHOUSE} 
+and wh.wt.processType = 'PK_REQ'
+/~tripNumber: and wh.wt.obdDetail.obd.relatedBill1 like {tripNumber}~/ 
+/~obdNumber: and wh.wt.obdDetail.obd.obdNumber like {obdNumber}~/ 
+/~soNumber: and wh.wt.obdDetail.relatedBill1 like {soNumber}~/ 
+/~taskSequence: and wh.wt.taskSequence like {taskSequence}~/ 
+/~woSequence: and wh.wt.wo.orderSequence like {woSequence}~/ 
+/~operateTimeFrom: and to_char(wh.operateTime,'yyyy-mm-dd hh24:mi') >= to_char({operateTimeFrom},'yyyy-mm-dd hh24:mi')~/
+/~operateTimeTo: and to_char(wh.operateTime,'yyyy-mm-dd hh24:mi') <= to_char({operateTimeTo},'yyyy-mm-dd hh24:mi')~/
+			]]></datasource>
+		    <columns>
+				<column id="wh.id" title="ID" visible="false" />
+                <column id="wh.wt.obdDetail.obd.relatedBill1" title="tripNumber"/>
+                <column id="wh.wt.obdDetail.obd.obdNumber" title="obdNumber"/>
+                <column id="wh.wt.obdDetail.relatedBill1" title="soNumber"/>
+                <column id="wh.wt.taskSequence" title="taskSequence"/>
+                <column id="wh.wt.wo.orderSequence" title="woSequence"/>
+                <column id="wh.wt.processType" title="processType" format="enumFormat" formatParam="EnuWtProcessType"/>
+                <column id="wh.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="wh.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="wh.invInfo.quant.sku.specs" title="specs"/>
+                <column id="wh.invInfo.quant.dispLot" title="lotInfo"/>
+                <column id="wh.invInfo.packageDetail.name" title="packDetail"/>
+                <column id="wh.executePackQty" title="pickPackQty"/>
+                <column id="wh.executeQty" title="pickQty"/>
+                <column id="wh.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="wh.invInfo.bin.binCode" title="src.bin"/>
+                <column id="wh.descBin.binCode" title="desc.bin"/>
+                <column id="wh.operateTime" title="operateTime"/>
+                <column id="wh.workers" title="worker"/>
+		    </columns>
+		    <buttons>
+		        <popup id="laborKpi" title="laborKpi" enableType="single" containId="true" pageId="putawayLaborKpi" iconUrl="person"/>
+			</buttons>
+		</maintainPage>
+	</pages>

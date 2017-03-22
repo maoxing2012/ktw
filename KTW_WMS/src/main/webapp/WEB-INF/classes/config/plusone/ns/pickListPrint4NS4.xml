@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ヤマト -->
+<pages>
+	<maintainPage id="pickListPrint4NS4" title="pickListPrint4NS4" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+			    <text id="waveNo" title="waveNo" trimSpace="true" />
+				<list id="status" title="title.status" enumType="EnuWaveStatus"  returnType="long" multiple="true" defaultValue="250">
+	                <hql><![CDATA[ select 
+en.enumValue,
+en.enumValue
+from Enumerate en
+where  en.enumType='EnuWaveStatus'  
+						]]>
+	                </hql>
+            	</list>
+			</inputUIs>
+		</search>
+		<datasource type="hql">
+            <![CDATA[select 
+wave.id,
+wave.owner.name,
+wave.waveNumber,
+wave.status,
+wave.etd,
+wave.orderQty,
+wave.skuCount,
+wave.planQty,
+wave.allocatedQty,
+wave.executeQty,
+wave.description
+from WaveDoc wave 
+where 1=1 
+and wave.status >=250
+and wave.wh = #{SESSION_WAREHOUSE} 
+and wave.carrierCodes like '%,8,%'
+/~ owner: and wave.owner.id = {owner}~/ 
+/~ status: and wave.status = {status}~/
+/~ waveNo: and wave.waveNumber like {waveNo}~/
+		]]></datasource>
+		<columns>
+			<column id="wave.id" title="ID" visible="false"  />
+			<column id="wave.owner.name" title="owner" />
+			<column id="wave.waveNumber" title="waveNo" />
+			<column id="wave.status" title="title.status" format="enumFormat" formatParam="EnuWaveStatus"/>
+			<column id="wave.etd" title="etd"/>
+			<column id="wave.orderQty" title="orderCount"/>
+			<column id="wave.skuCount" title="skuCount"/>
+			<column id="wave.planQty" title="planQty" />
+			<column id="wave.allocatedQty" title="allocateQty" />
+			<column id="wave.executeQty" title="pickUpQty" />
+			<column id="wave.description" title="title.desc"/>
+		</columns>
+		<buttons>
+			<commit id="pickList044" title="pickList044" enableType="multi" servletURL="do.fileCreate" iconUrl="dowm">
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="warehouseTaskSingleManager" methodName="createYamatoCsv" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<popup id="pickList041" title="pickList041"  enableType="single" containId="true" pageId="pickList041" iconUrl="report"/>
+			<popup id="pickList043" title="pickList043"  enableType="single" containId="true" pageId="pickList043" iconUrl="report"/>
+            <popup id="pickList042" title="pickList042"  enableType="single" containId="true" pageId="pickList042" iconUrl="report"/>
+            <popup id="batchPickList4D" title="大バッチピッキングリスト(常温)"  enableType="single" containId="true" pageId="batchPickList4D" iconUrl="report"/>
+		</buttons>
+	</maintainPage>
+</pages>

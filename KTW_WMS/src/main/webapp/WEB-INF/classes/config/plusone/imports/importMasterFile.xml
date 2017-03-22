@@ -1,0 +1,4 @@
+<pages>
+    <customPage id="importMasterFile" title="importMasterFile" className="com.core.scpwms.client.custom.page.SimpleUploadFilePage" popup="true" width="400" height="200" onClose="refreshParent">
+    </customPage>
+</pages>

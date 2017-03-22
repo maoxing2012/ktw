@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.inbound.AsnDetail" table="WMS_ASN_DETAIL">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_asn_detail</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<version name="version" type="long" column="VERSION"/>
+		
+		<many-to-one name="asn" class="com.core.scpwms.server.model.inbound.Asn">
+			<column name="ASN_ID"/>
+		</many-to-one>
+        <many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku">
+            <column name="SKU_ID"/>
+        </many-to-one>
+        <many-to-one name="planPackage" class="com.core.scpwms.server.model.common.PackageDetail">
+            <column name="PACKAGE_DETAIL_ID"/>
+        </many-to-one>
+        
+        <property name="status" column="STATUS" type="long"/>
+		<property name="isReported" column="IS_REPORTED" type="boolean"/>
+
+		<property name="lineNo" column="LINE_NO" type="double"/>
+		<property name="subLineNo" column="SUB_LINE_NO" type="int"/>
+		<property name="planQty" column="PLAN_QTY" type="double"/>
+		<property name="executeQty" column="EXECUTE_QTY" type="double"/>
+		<property name="closedQty" column="CLOSED_QTY" type="double"/>
+		
+		<property name="stockDiv" column="STOCK_DIV" type="long" />
+		<property name="invStatus"  column="INV_STATUS" type="string" length="50"/>
+		<property name="actInvStatus"  column="ACT_INV_STATUS" type="string" length="50"/>
+		<property name="expDate" column="EXP_DATE" type="date" />
+		<property name="actExpDate" column="ACT_EXP_DATE" type="date" />
+		
+		<property name="extString1" column="EXT_STRING1" type="string" />  
+		<property name="extString2" column="EXT_STRING2" type="string" />  
+		<property name="extString3" column="EXT_STRING3" type="string" />  
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <property name="extDescription" column="EXT_DESCRIPTION" type="string"/>
+	</class>
+</hibernate-mapping>
+
+

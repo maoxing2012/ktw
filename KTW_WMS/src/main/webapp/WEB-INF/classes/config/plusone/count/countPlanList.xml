@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="countPlanList" title="countPlanList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="countNumber" title="countNumber"  forceOverride="true" trimSpace="true"/>
+				<list id="status" title="title.status" enumType="EnuCountStatus" returnType="long" multiple="true" defaultValue="100,200,300,400">
+					<hql><![CDATA[ SELECT 
+e.enumValue,
+e.enumValue From Enumerate e  
+where e.enumType = 'EnuCountStatus'
+					 ]]></hql>
+				</list>
+				<list id="countMethod" title="countMethod"  forceOverride="false" enumType="EnuCountMethod">
+					<hql><![CDATA[ SELECT 
+e.enumValue,
+e.enumValue From Enumerate e  
+where e.enumType = 'EnuCountMethod'
+					]]></hql>
+				</list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ SELECT 
+ countPlan.id,
+  countPlan.owner.name,
+ countPlan.code,
+ countPlan.planDate,
+ countPlan.countMethod,
+ countPlan.status,
+ countPlan.planQty,
+ countPlan.countQty,
+ countPlan.plusDeltaQty,
+ countPlan.minusDeltaQty,
+ countPlan.skuCount,
+ countPlan.blindCount,
+ countPlan.parrentPlan.code,
+ countPlan.description 
+ from CountPlan countPlan 
+ left join countPlan.parrentPlan 
+ left join countPlan.owner
+ where 1=1 
+ and countPlan.warehouse = #{SESSION_WAREHOUSE} 
+ /~owner: and countPlan.owner.id = {owner}~/ 
+ /~countNumber: and countPlan.code like {countNumber} ~/ 
+ /~status: and countPlan.status = {status} ~/ 
+ /~countMethod: and countPlan.countMethod = {countMethod}~/ 
+ 		]]></datasource>
+		<columns>
+			<column id="countPlan.id" title="ID" visible="false"  />
+			<column id="countPlan.owner.name" title="owner"  />
+			<column id="countPlan.code" title="countNumber"  />
+			<column id="countPlan.planDate" title="planDate"/>
+			<column id="countPlan.countMethod" title="countMethod" format="enumFormat" formatParam="EnuCountMethod"/>
+			<column id="countPlan.status" title="title.status" format="enumFormat" formatParam="EnuCountStatus"/>
+			<column id="countPlan.planQty" title="countPlanQty" />
+			<column id="countPlan.countQty" title="countQty"/>
+			<column id="countPlan.plusDeltaQty" title="plusDeltaQty"/>
+			<column id="countPlan.minusDeltaQty" title="minusDeltaQty"/>
+			<column id="countPlan.skuCount" title="skuCount"/>
+			<column id="countPlan.blindCount" title="blindCount" format="enumFormat" formatParam="BooleanTypeY"/>
+			<column id="countPlan.parrentPlan.code" title="parentCountNumber"/>
+			<column id="countPlan.description" title="title.desc"/>
+		</columns>
+		<buttons>
+			<popup id="newSkuBin" title="countPlanNew" enableType="none" containId="false" pageId="countPlanNew" iconUrl="new"/>
+			<popup id="newAllCount" title="countPlanNewAll" enableType="none" containId="false" pageId="countPlanNewAll" iconUrl="new"/>
+			<popup id="newDynamic" title="countPlanNewDynamic" enableType="none" containId="false" pageId="countPlanNewDynamic" iconUrl="new"/>
+			<popup id="modify" title="modify" enableType="single" containId="true" pageId="countPlanNew" iconUrl="edit">
+				<enableExpression><![CDATA[(${countPlan.status}==@{EnuCountStatus.100}&&(${countPlan.countMethod}==@{EnuCountMethod.FROM_SKU}||${countPlan.countMethod}==@{EnuCountMethod.FROM_BIN}))]]></enableExpression>
+			</popup>
+			<commit id="publish" title="countPublish" enableType="multi" confirmMessage="publish.confirmMessage" iconUrl="action">
+				<enableExpression><![CDATA[(${countPlan.status}==@{EnuCountStatus.100})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="countPlanManager" methodName="publish" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="cancel" title="cancel" enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                    <enableExpression><![CDATA[(${countPlan.status}==@{EnuCountStatus.100}||${countPlan.status}==@{EnuCountStatus.200})]]></enableExpression>
+                    <mappings>
+                        <mapping id="ids" className="list"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="countPlanManager" methodName="cancel" parameter="ids" />
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                    </forwards>
+            </commit>
+			<commit id="close" title="close" enableType="multi" confirmMessage="close.confirmMessage" iconUrl="cancel">
+				<enableExpression><![CDATA[(${countPlan.status}==@{EnuCountStatus.200} || ${countPlan.status}==@{EnuCountStatus.300} || ${countPlan.status}==@{EnuCountStatus.400})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="countPlanManager" methodName="close" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="geneRecordBill" title="geneRecordBill" enableType="single" confirmMessage="geneRecordBill.confirmMessage" iconUrl="action">
+					<enableExpression><![CDATA[(${countPlan.status}==@{EnuCountStatus.300})]]></enableExpression>
+					<mappings>
+						<mapping id="ids" className="list"/>
+					</mappings>
+					<actions>
+						<action managerName="countPlanManager" methodName="geneRecordBill" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+			</commit>
+			<popup id="view" title="countPlanView" enableType="single" containId="true" pageId="countPlanView" iconUrl="view"/>
+			<popup id="countRecordView" title="countRecordView" enableType="single" containId="true" pageId="countRecordView" iconUrl="view"/>
+			<popup id="countPlanPrint" title="countPlanPrint"  enableType="single" containId="true" pageId="countPlanPrint" iconUrl="report">
+				<enableExpression><![CDATA[(${countPlan.status}==@{EnuCountStatus.200}||${countPlan.status}==@{EnuCountStatus.300}||${countPlan.status}==@{EnuCountStatus.400})]]></enableExpression>
+			</popup>
+			<popup id="countResultPrint" title="countResultPrint"  enableType="single" containId="true" pageId="countResultPrint" iconUrl="report">
+				<enableExpression><![CDATA[(${countPlan.status}==@{EnuCountStatus.300}||${countPlan.status}==@{EnuCountStatus.400}||${countPlan.status}==@{EnuCountStatus.999})]]></enableExpression>
+			</popup>
+		</buttons>
+	</maintainPage>
+</pages>

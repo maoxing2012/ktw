@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="createPickOrder" title="createPickOrder" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="tripNumber" title="tripNumber"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obdv.id,
+obdv.tripNumber,
+obdv.carrierName,
+obdv.sumQty,
+obdv.skuCount,
+obdv.sumWeight,
+round(obdv.sumVolume/1000000,4),
+obdv.sumCaseQty
+from OutboundDeliveryAsusView obdv
+where 1=1 
+and obdv.whId=#{SESSION_WAREHOUSE_ID} 
+/~tripNumber: and obdv.tripNumber like {tripNumber}~/ 
+		]]></datasource>
+		<columns>
+			<column id="obdv.id" title="ID"  visible="false"/>
+			<column id="obdv.tripNumber" title="tripNumber"/>
+            <column id="obdv.carrierName" title="carrierName"/>
+            <column id="obdv.sumQty" title="planQty"/>
+            <column id="obdv.skuCount" title="skuCount"/>
+            <column id="obdv.sumWeight" title="sumWeight"/>
+            <column id="obdv.sumVolume" title="sumVolume"/>
+            <column id="obdv.sumCaseQty" title="caseQty"/>
+		</columns>
+		<buttons>
+			<commit id="createPDAWo" title="createPDAWo" enableType="multi" iconUrl="new">
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                     <action managerName="warehouseOrderManager" methodName="createPDAWo" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="createPickCarWo" title="createPickCarWo" enableType="multi" iconUrl="new">
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                     <action managerName="warehouseOrderManager" methodName="createPickCarWo" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+		</buttons>
+	</maintainPage>
+</pages>

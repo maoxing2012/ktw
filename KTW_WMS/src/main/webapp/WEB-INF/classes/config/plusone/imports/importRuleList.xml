@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <maintainPage id="importRuleList" title="importRuleList"  autoQuery="false" >
+        <search>
+            <inputUIs>
+            	<text id="rule.ruleCode" title="rule.ruleCode" trimSpace="true"  length="15"/>
+                <text id="rule.ruleName" title="rule.ruleName" trimSpace="true" length="15"/>
+                <list id="rule.ruleType" title="rule.ruleType" enumType="EnuImportRuleType">
+					<hql><![CDATA[ select  
+ o.enumValue,o.enumValue
+ from Enumerate o   
+ where  o.enumType='EnuImportRuleType'
+  					]]></hql>
+				</list>
+				<list id="rule.fileType" title="rule.fileType" enumType="EnuImportFileType">
+					<hql><![CDATA[ select  
+ o.enumValue,o.enumValue
+ from Enumerate o   
+ where  o.enumType='EnuImportFileType'
+  					]]></hql>
+				</list>
+				<selectText id="whId" title="warehouse" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+wh.id,
+wh.code,
+wh.name
+FROM Warehouse wh 
+WHERE wh.disabled = '0'
+                    ]]></hql>
+                </selectText>
+				<selectText id="ownerId" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+                    ]]></hql>
+                </selectText>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select   
+rule.id,
+rule.fileImportRule.ruleCode,
+rule.fileImportRule.ruleName, 
+rule.fileImportRule.manageName,
+rule.fileImportRule.methodName,
+rule.fileImportRule.ruleType,
+rule.fileImportRule.fileType,
+rule.wh.name,
+rule.owner.name
+FROM FileImportRule4Wms rule 
+left join rule.fileImportRule
+left join rule.wh
+left join rule.owner   
+WHERE 1=1  
+/~rule.ruleCode: AND rule.fileImportRule.ruleCode like {rule.ruleCode}~/ 
+/~rule.ruleName: AND rule.fileImportRule.ruleName like {rule.ruleName}~/ 
+/~rule.ruleType: AND rule.fileImportRule.ruleType = {rule.ruleType}~/   
+/~rule.fileType: AND rule.fileImportRule.fileType = {rule.fileType}~/    
+/~whId: AND rule.wh.id = {whId}~/    
+/~ownerId: AND rule.owner.id = {ownerId}~/    
+   		]]></datasource>
+        <columns>
+            <column id="rule.id" title="ID" visible="false"/>
+            <column id="rule.fileImportRule.ruleCode" title="rule.ruleCode" />
+            <column id="rule.fileImportRule.ruleName" title="rule.ruleName" />
+            <column id="rule.fileImportRule.manageName" title="rule.manageName"/>
+            <column id="rule.fileImportRule.methodName" title="rule.methodName"/>
+            <column id="rule.fileImportRule.ruleType" title="rule.ruleType" format="enumFormat" formatParam="EnuImportRuleType" />
+            <column id="rule.fileImportRule.fileType" title="rule.fileType" format="enumFormat" formatParam="EnuImportFileType" />
+            <column id="rule.wh.name" title="warehouse"/>
+            <column id="rule.owner.name" title="owner"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new" enableType="none" containId="false" pageId="importRuleEdit"  iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true" pageId="importRuleEdit"  iconUrl="edit">
+            	<enableExpression></enableExpression>
+            </popup>
+        </buttons>
+    </maintainPage>
+</pages>

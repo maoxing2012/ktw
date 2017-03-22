@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="ownerChangeDocList" title="ownerChangeDocList" autoQuery="false" columnNum="8" >
+        <search>
+            <inputUIs>
+            	<text id="ownerChangeNumber" title="ownerChangeNumber" trimSpace="true"/>
+            	<text id="custBillNo" title="custBillNo" trimSpace="true"/>
+            	<list id="status" title="title.status" enumType="EnuOwnerChangeDocStatus" returnType="long" multiple="true" defaultValue="100,200,210,300,310,400" >
+                    <hql><![CDATA[ select 
+en.enumValue,
+en.enumValue
+from Enumerate en
+where  en.enumType='EnuOwnerChangeDocStatus'
+                    ]]></hql>
+                </list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+doc.id,
+doc.docSequence,
+doc.relatedBill1,
+doc.status,
+doc.orderType.name,
+doc.srcOwner.code,
+doc.descOwner.code,
+doc.planQty,
+doc.allocateQty,
+doc.executeQty,
+doc.transactionDate,
+doc.createInfo.operatorName,
+doc.description
+from OwnerChangeDoc doc 
+where 1=1
+and doc.wh = #{SESSION_WAREHOUSE}  
+/~ownerChangeNumber: and doc.docSequence like {ownerChangeNumber}~/ 
+/~custBillNo: and doc.relatedBill1 like {custBillNo}~/ 
+/~status: and doc.status={status}~/ 
+		]]></datasource>
+        <columns>
+            <column id="doc.id" title="ID" visible="false" />
+            <column id="doc.docSequence" title="ownerChangeNumber"/>
+            <column id="doc.relatedBill1" title="custBillNo"/>
+            <column id="doc.status" title="title.status" format="enumFormat" formatParam="EnuOwnerChangeDocStatus"/>
+            <column id="doc.orderType.name" title="orderType"/>
+            <column id="doc.srcOwner.code" title="srcOwner"/>
+            <column id="doc.descOwner.code" title="descOwner"/>
+            <column id="doc.planQty" title="planQty"/>
+            <column id="doc.allocateQty" title="allocateQty"/>
+            <column id="doc.executeQty" title="executeQty"/>
+            <column id="doc.transactionDate" title="transactionDate"/>
+            <column id="doc.createInfo.operatorName" title="orderUser"/>
+            <column id="doc.description" title="title.desc"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new" enableType="none" containId="false" pageId="ownerChangeDocEdit" iconUrl="new"/>
+            <popup id="edit" title="edit" enableType="single" containId="true" pageId="ownerChangeDocEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[${doc.status}==@{EnuOwnerChangeDocStatus.100}]]></enableExpression>
+            </popup>
+            <commit id="publish" title="publish" enableType="multi" confirmMessage="publish.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[${doc.status}==@{EnuOwnerChangeDocStatus.100} && ${doc.planQty} > 0]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="ownerChangeDocManager" methodName="publish" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <commit id="cancel" title="cancel" enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${doc.status}==@{EnuOwnerChangeDocStatus.100}||${doc.status}==@{EnuOwnerChangeDocStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="ownerChangeDocManager" methodName="cancel" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <commit id="close" title="close" enableType="multi" confirmMessage="close.confirmMessage" iconUrl="cancel">
+                <enableExpression><![CDATA[${doc.status} == @{EnuOwnerChangeDocStatus.310} ||${doc.status} == @{EnuOwnerChangeDocStatus.400}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="ownerChangeDocManager" methodName="close" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <commit id="allocate" title="allocate"  enableType="single" confirmMessage="allocatePicking.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[${doc.status} == @{EnuOwnerChangeDocStatus.200}||${doc.status} == @{EnuOwnerChangeDocStatus.210}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="allocatePickingHelper" methodName="allocateOwnerDoc" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit> 
+            <commit id="unAllocate" title="unAllocate"  enableType="single" confirmMessage="unAllocatePicking.confirmMessage" iconUrl="reset">
+                <enableExpression><![CDATA[${doc.status} == @{EnuOwnerChangeDocStatus.300}||${doc.status} == @{EnuOwnerChangeDocStatus.210}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="allocatePickingHelper" methodName="unAllocateOwnerDoc" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="execute" title="ownerChangeExecute" enableType="multi" confirmMessage="ownerChangeExecute.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[${doc.status} == @{EnuOwnerChangeDocStatus.300} || ${doc.status} == @{EnuOwnerChangeDocStatus.210}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="ownerChangeDocManager" methodName="docExecute" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <commit id="allocateExecute" title="allocateExecute" enableType="multi" confirmMessage="ownerChangeExecute.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[${doc.status} == @{EnuOwnerChangeDocStatus.200} ]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="ownerChangeDocManager" methodName="allocateExecute" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+            <popup id="view" title="view"  enableType="single" containId="true" pageId="ownerChangeDocView" iconUrl="view"/>
+            <popup id="statusView" title="statusView"  enableType="single" containId="true" pageId="ownerChangeDocStatusView" iconUrl="view"/>
+        </buttons>
+    </maintainPage>
+</pages>

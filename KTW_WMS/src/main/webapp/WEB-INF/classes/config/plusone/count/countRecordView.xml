@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<maintainPage id="countRecordView" title="countRecordView"  autoQuery="true" width="950" height="550">
+		<search>
+			<inputUIs>
+				<text id="sku.code" title="sku.code"/>
+				<text id="sku.name" title="sku.name"/>
+				<text id="binCode" title="binCode"/>
+				<text id="expDate" title="expDate"/>
+			</inputUIs>
+		</search>
+		<datasource><![CDATA[select  
+record.id,
+record.status,
+record.invInfo.owner.name,
+record.invInfo.quant.sku.code,
+record.invInfo.quant.sku.name,
+record.invInfo.quant.lotSequence,
+record.invInfo.quant.dispLot,
+record.invInfo.trackSeq,
+record.invInfo.bin.binCode,
+record.invInfo.invStatus,
+record.invInfo.packageDetail.name,
+record.invBaseQty,
+record.countQuantity,
+record.deltaQuantity,
+record.labor.name,
+record.operator,
+record.occurTime
+from CountRecord record 
+left join record.labor
+where 1=1 
+and record.countPlan.id = {countPlanList.ids} 
+/~sku.code : and record.invInfo.quant.sku.code like {sku.code} ~/
+/~sku.name : and record.invInfo.quant.sku.name like {sku.name} ~/
+/~binCode : and record.invInfo.bin.binCode like {binCode} ~/
+/~expDate : and record.invInfo.quant.dispLot like {expDate} ~/
+ 			]]></datasource>
+		<columns>
+			<column id="record.id" title="ID" visible="false" />
+			<column id="record.status" title="title.status" format="enumFormat" formatParam="EnuCountDetailStatus"/>
+			<column id="record.invInfo.owner.name" title="owner"/>
+			<column id="record.invInfo.quant.sku.code" title="sku.code"/>
+			<column id="record.invInfo.quant.sku.name" title="sku.name"/>
+			<column id="record.invInfo.quant.lotSequence" title="lotSequence"/>
+			<column id="record.invInfo.quant.dispLot" title="expDate"/>
+			<column id="record.invInfo.trackSeq" title="asnNumber"/>
+			<column id="record.invInfo.bin.binCode" title="binCode"/>
+			<column id="record.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="record.invInfo.packageDetail.name" title="p1000.name"/>
+			<column id="record.invBaseQty" title="countPlanQty"/>
+			<column id="record.countQuantity" title="countQty"/>
+			<column id="record.deltaQuantity" title="deltaQty"/>
+			<column id="record.labor.name" title="labor"/>
+			<column id="record.operator" title="operatorName"/>
+			<column id="record.occurTime" title="countTime"/>
+		</columns>
+		<buttons>
+		</buttons>
+	</maintainPage>
+</pages>

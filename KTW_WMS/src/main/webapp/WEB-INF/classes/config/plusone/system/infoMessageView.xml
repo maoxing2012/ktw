@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="infoMessageView" title="infoMessageView" entityClass="com.core.scpwms.server.model.base.InfoMessage" width="350" height="600" >
+        <inputUIs>
+            <hidden id="info.id" />
+                <text id="info.title" title="title" length="100" width="400" trimSpace="true" span="4" />
+                <textArea id="info.content" title="content" rows="100" cols="400" span="4" length="80" trimSpace="true" />
+                <list id="info.infoType" title="infoType" enumType="EnuInfoType" returnType="string">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where e.enumType='EnuInfoType'
+					]]></hql>
+                </list>
+                <text id="info.wh.name" title="wh.name"/>
+                <checkbox id="info.isTop" title="isTop"/>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

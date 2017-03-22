@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.fee.RequestReportDetail" table="WMS_REQUEST_REPORT_DETAIL">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_request_report_detail</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<many-to-one name="head" class="com.core.scpwms.server.model.fee.RequestReportHead">
+			<column name="HEAD_ID" />
+		</many-to-one>
+
+		<many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku">
+			<column name="SKU_ID" />
+		</many-to-one>
+		
+		<many-to-one name="feeType4Stock" class="com.core.scpwms.server.model.fee.FeeType">
+			<column name="FEE_TYPE_4STOCK_ID" />
+		</many-to-one>
+		
+		<many-to-one name="feeType4In" class="com.core.scpwms.server.model.fee.FeeType">
+			<column name="FEE_TYPE_4IN_ID" />
+		</many-to-one>
+		
+		<many-to-one name="feeType4Out" class="com.core.scpwms.server.model.fee.FeeType">
+			<column name="FEE_TYPE_4OUT_ID" />
+		</many-to-one>
+
+		<property name="prevQty1" type="double">
+			<column name="PREV_QTY1" />
+		</property>
+
+		<property name="inboundQty1" type="double">
+			<column name="INBOUND_QTY1" />
+		</property>
+
+		<property name="outboundQty1" type="double">
+			<column name="OUTBOUND_QTY1" />
+		</property>
+
+		<property name="adjustInQty1" type="double">
+			<column name="ADJUST_IN_QTY1" />
+		</property>
+
+		<property name="adjustOutQty1" type="double">
+			<column name="ADJUST_OUT_QTY1" />
+		</property>
+
+		<property name="prevQty2" type="double">
+			<column name="PREV_QTY2" />
+		</property>
+
+		<property name="inboundQty2" type="double">
+			<column name="INBOUND_QTY2" />
+		</property>
+
+		<property name="outboundQty2" type="double">
+			<column name="OUTBOUND_QTY2" />
+		</property>
+
+		<property name="adjustInQty2" type="double">
+			<column name="ADJUST_IN_QTY2" />
+		</property>
+
+		<property name="adjustOutQty2" type="double">
+			<column name="ADJUST_OUT_QTY2" />
+		</property>
+
+		<property name="prevQty3" type="double">
+			<column name="PREV_QTY3" />
+		</property>
+
+		<property name="inboundQty3" type="double">
+			<column name="INBOUND_QTY3" />
+		</property>
+
+		<property name="outboundQty3" type="double">
+			<column name="OUTBOUND_QTY3" />
+		</property>
+
+		<property name="adjustInQty3" type="double">
+			<column name="ADJUST_IN_QTY3" />
+		</property>
+
+		<property name="adjustOutQty3" type="double">
+			<column name="ADJUST_OUT_QTY3" />
+		</property>
+
+		<property name="storagePrice" type="double">
+			<column name="STORAGE_PRICE" />
+		</property>
+
+		<property name="inboundPrice" type="double">
+			<column name="INBOUND_PRICE" />
+		</property>
+
+		<property name="outboundPrice" type="double">
+			<column name="OUTBOUND_PRICE" />
+		</property>
+		
+		<property name="unitWeight" type="double">
+			<column name="UNIT_WEIGHT" />
+		</property>
+		
+		<property name="unitVolume" type="double">
+			<column name="UNIT_VOLUME" />
+		</property>
+		
+		<property name="termNum" type="long">
+            <column name="TERM_NUM" />
+        </property>
+        
+        <!-- <property name="stockQty" type="java.math.BigDecimal" precision="16" scale="4">
+            <column name="STOCK_QTY" />
+        </property>
+        <property name="inboundQty" type="java.math.BigDecimal" precision="16" scale="4">
+            <column name="INBOUND_QTY" />
+        </property>
+        <property name="outboundQty" type="java.math.BigDecimal" precision="16" scale="4">
+            <column name="OUTBOUND_QTY" />
+        </property>
+        
+        <property name="stockAmount" type="java.math.BigDecimal" precision="16" scale="4">
+            <column name="STOCK_AMOUNT" />
+        </property>
+        <property name="inboundAmount" type="java.math.BigDecimal" precision="16" scale="4">
+            <column name="INBOUND_AMOUNT" />
+        </property>
+        <property name="outboundAmount" type="java.math.BigDecimal" precision="16" scale="4">
+            <column name="OUTBOUND_AMOUNT" />
+        </property> -->
+	</class>
+	<query name="deleteRequestReportDetail">
+        <![CDATA[delete RequestReportDetail rrd where head.id = :headId]]>
+    </query>
+</hibernate-mapping>

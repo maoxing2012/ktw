@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="seqSettingEdit" title="seqSettingEdit" entityClass="com.core.scpwms.server.model.common.SequenceProperties"  width="500" height="300" onClose="refreshParent" >
+        <inputUIs>
+            <hidden id="seq.id" title="seq.id" />
+            <text id="seq.code" title="seqSetting.code"  trimSpace="true" required="true" editModel="uneditable"/>
+            <text id="seq.name" title="seqSetting.name"  trimSpace="true" required="true"/>
+            <numberText id="seq.seqLength" title="code.length"  trimSpace="true" returnType="Integer" required="true"/>
+            <text id="seq.prefix" title="prefix"  trimSpace="true"  required="true"/>
+            <text id="seq.separator1" title="separator1"  trimSpace="true"  required="false"/>
+            <list id="seq.seqDateFormat" title="dateFormat" enumType="SEQDATE_TYPE">
+                <hql><![CDATA[select 
+					e.enumValue,
+					e.enumValue
+					from Enumerate e
+					where  e.enumType = 'SEQDATE_TYPE'  
+				]]></hql>
+            </list>
+            <text id="seq.separator2" title="separator2"  trimSpace="true"  required="false"/>
+        	 <list id="seq.seqGenerateBy" title="seqGenerateBy" enumType="SEQGENERATE_TYPE">
+                <hql><![CDATA[select 
+					e.enumValue,
+					e.enumValue
+					from Enumerate e
+					where  e.enumType = 'SEQGENERATE_TYPE'  
+				]]></hql>
+            </list>
+        	<textArea id="seq.description" title="title.desc" trimSpace="true" rows="50" cols="365" span="2" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="seq" className="com.core.scpwms.server.model.common.SequenceProperties">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="seqManager"  methodName="saveSeq"  parameter="seq" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

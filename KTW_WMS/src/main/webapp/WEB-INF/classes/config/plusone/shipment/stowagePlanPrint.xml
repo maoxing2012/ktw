@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <!-- <reportPopupPage  id="stowagePlanPrint" title="stowagePlanPrint" reportFile="cwms1005.raq"  parameter="ids"  width="900" height="600"/> -->
+     <reportPopupPage  id="stowagePlanPrint" title="stowagePlanPrint" reportFile="ASUSWMS1005.svf"  parameter="ids"  width="900" height="600"/>
+</pages>

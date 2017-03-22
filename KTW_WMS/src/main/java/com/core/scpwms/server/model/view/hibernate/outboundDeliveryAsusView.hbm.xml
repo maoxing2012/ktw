@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.view.OutboundDeliveryAsusView" table="OBD_ASUS_VIEW">
+		<id name="id" column="ID" type="long" />
+		<property name="whId" column="WH_ID" type="long" />
+		<property name="obdNumber" column="OBD_NUMBER" type="string" />
+		<property name="tripNumber" column="TRIP_NUMBER" type="string" />
+		<property name="carrierName" column="CARRIER_NAME" type="string" />
+		<property name="sumQty" column="SUM_QTY" type="double" />
+		<property name="skuCount" column="SKU_COUNT" type="double" />
+		<property name="sumWeight" column="SUM_WEIGHT" type="double" />
+		<property name="sumVolume" column="SUM_VOLUME" type="double" />
+		<property name="sumCaseQty" column="SUM_CASE_QTY" type="double" />
+		<property name="countWt" column="COUNT_WT" type="double" />
+	</class>
+</hibernate-mapping>
+
+

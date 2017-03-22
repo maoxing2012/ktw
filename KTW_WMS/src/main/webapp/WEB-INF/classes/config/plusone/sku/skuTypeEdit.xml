@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="skuTypeEdit" title="skuTypeEdit" entityClass="com.core.scpwms.server.model.common.SkuType" width="400" height="400">
+        <inputUIs>
+            <hidden id="skuType.id" />
+            <text id="skuType.code" title="type.code" required="true" editModel="uneditable"/>
+            <list id="skuType.typeKind" title="type.kind" required="true" enumType="EnuSkuType" >
+                <hql><![CDATA[
+					select
+					en.enumValue,
+					en.enumValue
+					from Enumerate en
+					where  en.enumType='EnuSkuType'  ]]>
+                </hql>
+            </list>
+            <text id="skuType.name" title="type.name" width="330" span="2" required="true" />
+            <numberText id="skuType.extDouble1" title="qcRate" trimSpace="true" />
+            <textArea id="skuType.description" title="title.desc" rows="50" cols="330" span="2" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="skuType" className="com.core.scpwms.server.model.common.skuType"/>
+                </mappings>
+                <actions>
+                    <action managerName="skuTypeManager" methodName="saveSkuType" parameter="skuType"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

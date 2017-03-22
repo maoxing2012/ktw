@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="companyView" title="companySettingView" entityClass="com.core.scpwms.server.model.fee.Company" width="500" height="400" >
+		<inputUIs>
+			<hidden id="company.id" />
+			<parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="150" >
+                <text id="company.code" title="company.code"  />
+                <text id="company.name" title="company.name" />
+                <textArea id="company.description" title="title.desc" rows="50" cols="355" span="3" length="80" trimSpace="true" />
+            </parttab>
+            <parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="150" >
+                <text id="company.contractInfo.linkman" title="contractInfo.linkman" />
+                <text id="company.contractInfo.phone" title="contractInfo.phone" />
+                <text id="company.contractInfo.fax" title="contractInfo.fax" />
+                <text id="company.contractInfo.email" title="contractInfo.email" />
+                <text id="company.contractInfo.postcode" title="contractInfo.postcode" />
+                <text id="company.contractInfo.address" title="contractInfo.address" width="355" span="2" length="80" trimSpace="true" />  
+            </parttab>
+            <parttab id="tab_3" title="bankInfo1" style="CTab" tabHeight="150" >
+                <text id="company.bank1.bankName" title="bankName" />
+                <text id="company.bank1.brachName" title="brachName" />
+                <text id="company.bank1.account" title="bankAccount" />
+            </parttab>
+            <parttab id="tab_4" title="bankInfo2" style="CTab" tabHeight="150" >
+                <text id="company.bank2.bankName" title="bankName" />
+                <text id="company.bank2.brachName" title="brachName" />
+                <text id="company.bank2.account" title="bankAccount" />
+            </parttab>
+		</inputUIs>
+	<buttons>
+	</buttons>
+	</editPage>
+</pages>

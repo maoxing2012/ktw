@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="invStatusEdit" title="invStatusEdit" entityClass="com.core.scpwms.server.model.inventory.Inventory" onClose="refreshParent" width="200">
+		<inputUIs>
+			<hidden id="inv.id" />
+			<text id="inv.owner.name" title="owner" readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.code" title="sku.code" readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.name" title="sku.name" readOnly="true" span="3" width="358" />
+            <text id="inv.quantInv.quant.lotSequence" title="lotSequence"  readOnly="true"/>
+            <text id="inv.quantInv.quant.dispLot" title="expDate"  readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.specs" title="specs" readOnly="true"/>
+            <text id="inv.basePackage.name" title="p1000.name" readOnly="true"/>
+            <text id="inv.baseQty" title="baseQty" readOnly="true"/>
+            <text id="inv.queuedQty" title="queuedQty" readOnly="true"/>
+            <text id="inv.bin.binCode" title="bin" readOnly="true"/>
+            <list id="inv.status" title="src.invStatus" enumType="EnuInvStatus" readOnly="true">
+                <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvStatus'
+                    ]]></hql>
+            </list>
+            <numberText id="changeQty" title="changeQty" required="true" />
+            <list id="desc.invStatus" title="desc.invStatus" enumType="EnuInvStatus" required="true">
+                <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvStatus'
+                    ]]></hql>
+            </list>
+            <textArea id="desc" title="title.desc" required="true" trimSpace="true" rows="30" cols="350" span="3"/>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="inv.id" className="long"/>
+					<mapping id="changeQty" className="double"/>
+					<mapping id="desc.invStatus" className="string"/>
+					<mapping id="desc" className="string"/>
+				</mappings>
+				<actions>
+					<action managerName="invManager"  methodName="changeInvStatus"  parameter="inv.id,changeQty,desc.invStatus,desc" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

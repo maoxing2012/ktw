@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="asnList" title="asnList" autoQuery="false" useSum="true">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="asnNumber" title="asnNumber" trimSpace="true"/>
+				<text id="custBillNo" title="custBillNo" trimSpace="true" />
+				<list id="status" title="title.status" enumType="EnuAsnStatus" returnType="long" multiple="true" defaultValue="100,200,300,400">
+                    <hql><![CDATA[ select 
+                        en.enumValue,
+                        en.enumValue
+                        from Enumerate en
+                        where  en.enumType='EnuAsnStatus' ]]>
+                    </hql>
+                </list>
+                <list id="reportStatus" title="reportStatus" enumType="EnuAsnReportStatus" returnType="long" multiple="true" defaultValue="800,900">
+                    <hql><![CDATA[ select 
+                        en.enumValue,
+                        en.enumValue
+                        from Enumerate en
+                        where  en.enumType='EnuAsnReportStatus' ]]>
+                    </hql>
+                </list>
+                <list id="orderType" title="orderType" returnType="long" multiple="true">
+                    <hql><![CDATA[ select  
+orderType.id,
+orderType.name
+from OrderType orderType 
+where orderType.disabled = false
+and orderType.processType='M2000' 
+                   	]]></hql>
+                </list>
+				<date id="etaFrom" title="etaFrom" showTime="false" defaultCurrentDate="false" />
+				<date id="etaTo" title="etaTo" showTime="false" defaultCurrentDate="false" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select 
+asn.id,
+asn.owner.code,
+asn.owner.name,
+asn.asnNumber,
+asn.relatedBill1,
+asn.status,
+coalesce(asn.reportStatus,800),
+asn.orderType.name,
+asn.ediData,
+asn.eta,
+asn.supplier.name,
+asn.bin.binCode,
+asn.skuCount,
+asn.planQty,
+asn.executeQty,
+asn.closedQty,
+asn.description
+from Asn asn 
+left join asn.owner
+left join asn.bin
+left join asn.supplier
+left join asn.orderType
+where 1=1
+and asn.wh=#{SESSION_WAREHOUSE} 
+/~status: and asn.status = {status}~/ 
+/~reportStatus: and coalesce(asn.reportStatus,800) = {reportStatus}~/ 
+/~owner: and asn.owner.id = {owner}~/ 
+/~orderType: and asn.orderType.id = {orderType}~/ 
+/~custBillNo: and asn.relatedBill1 like {custBillNo}~/ 
+/~asnNumber: and asn.asnNumber like {asnNumber}~/ 
+/~etaFrom: and to_char(asn.eta,'YYYY-MM-DD') >= to_char(cast({etaFrom} as timestamp),'YYYY-MM-DD')~/
+/~etaTo: and to_char(asn.eta,'YYYY-MM-DD') <= to_char(cast({etaTo} as timestamp),'YYYY-MM-DD')~/
+		]]></datasource>
+		<columns>
+			<column id="asn.id" title="ID" visible="false"/>
+			<column id="asn.owner.code" title="owner.code" visible="false"/>
+			<column id="asn.owner.name" title="owner.name"/>
+			<column id="asn.asnNumber" title="asnNumber"/>
+			<column id="asn.relatedBill1" title="custBillNo"/>
+			<column id="asn.status" title="title.status"  format="enumFormat" formatParam="EnuAsnStatus"/>
+			<column id="asn.reportStatus" title="reportStatus"  format="enumFormat" formatParam="EnuAsnReportStatus"/>
+			<column id="asn.orderType.name" title="orderType"/>
+			<column id="asn.ediData" title="ediData" format="enumFormat" formatParam="EnuEdiData"/>
+			<column id="asn.eta" title="eta"/>
+			<column id="asn.supplier.name" title="vendor"/>
+			<column id="asn.bin.binCode" title="R1000"/>
+			<column id="asn.skuCount" title="skuCount"/>
+            <column id="asn.planQty" title="planQty"/>
+            <column id="asn.executeQty" title="inboundQty"/>
+            <column id="asn.closedQty" title="closedQty"/>
+			<column id="asn.description" title="title.desc"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="asnEdit" iconUrl="new"/>
+			<popup id="eidt" title="modify"  enableType="single" containId="true" pageId="asnEdit" iconUrl="edit">
+				<enableExpression><![CDATA[(${asn.status}==@{EnuAsnStatus.100})]]></enableExpression>
+			</popup>
+			<popup id="publish" title="publishAsn"  enableType="multi" containId="true" pageId="asnAppointEdit" iconUrl="action">
+				<enableExpression><![CDATA[(${asn.status}==@{EnuAsnStatus.100})]]></enableExpression>
+			</popup>
+			<commit id="cancel" title="cancel" enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${asn.status}==@{EnuAsnStatus.100}||${asn.status}==@{EnuAsnStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="asnManager" methodName="cancel" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete" enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="cancel">
+                <enableExpression><![CDATA[(${asn.status}==@{EnuAsnStatus.0})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="asnManager" methodName="delete" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+			<!-- <commit id="close" title="closeAsn" enableType="single" confirmMessage="closeReceive.confirmMessage" iconUrl="cancel">
+				<enableExpression><![CDATA[(${asn.status}==@{EnuAsnStatus.300} || ${asn.status}==@{EnuAsnStatus.400})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="asnManager" methodName="close" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit> -->
+			<popup id="view" title="view"  enableType="single" containId="true" pageId="asnView" iconUrl="view"/>
+			<popup id="statusView" title="statusView"  enableType="single" containId="true" pageId="asnStatusView" iconUrl="view"/>
+			<popup id="asnPrint" title="asnPrint"  enableType="multi" containId="true" pageId="asnPrint" iconUrl="report"/>
+		</buttons>
+	</maintainPage>
+</pages>

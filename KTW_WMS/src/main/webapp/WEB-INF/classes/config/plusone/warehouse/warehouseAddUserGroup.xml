@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="warehouseAddUserGroup" title="warehouseAddUserGroup" filterCol="true" autoQuery="true" width="600" height="400">
+        <search>
+            <inputUIs>
+             	<hidden id="warehouse.id" />
+                <text id="userGroup.code" title="group.code" trimSpace="true" />
+                <text id="userGroup.name" title="group.name" trimSpace="true" />
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[
+SELECT  
+userGroup.id,
+userGroup.code,
+userGroup.name   
+FROM Group userGroup   
+WHERE 1=1    
+     AND userGroup.id not in (
+     select ugw.userGroup.id  
+     from UserGroupWarehouse ugw where  1=1 
+/~warehouse.id: and ugw.warehouse.id = {warehouse.id} ~/
+     )
+/~userGroup.code: and userGroup.code like {userGroup.code}~/  
+/~userGroup.name: and userGroup.name  like {userGroup.name}~/     
+		]]></datasource>
+        <columns>
+            <column id="userGroup.id" title="ID" visible="false"/>
+            <column id="userGroup.code" title="group.code" typeId="userGroup.code"/>
+            <column id="userGroup.name" title="group.name" typeId="userGroup.name"/>
+        </columns>
+        <buttons>
+            <commit id="save" title="save" enableType="multi" iconUrl="save">
+                <mappings>
+                    <mapping id="warehouse.id" className="long"/>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="warehouseManager" methodName="addUserGroup" parameter="warehouse.id,ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </maintainPage>
+</pages>

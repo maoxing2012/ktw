@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="com.core.scpwms.server.model.warehouse.WarehouseTmsPlatForm" table="WMS_WH_TMS_PLATFORM">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_wh_tms_platform</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+	 		<column name="WH_ID"/>
+	 	</many-to-one>
+	 	
+	 	<property name="tmsPlatFormCd" column ="TMS_PLATFORM_CD" type="string" length="50" />
+	 	<property name="tmsPlatFormNm" column ="TMS_PLATFORM_NM" type="string" />
+	 </class>
+</hibernate-mapping>

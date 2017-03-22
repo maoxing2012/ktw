@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="scrapApplyNew" title="scrapApplyNew" entityClass="com.core.scpwms.server.model.apply.ScrapApply" onClose="refreshParent" width="900" height="500" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="scrapApply.id" />
+				<text id="scrapApply.applyNumber" title="scrapApplyNumber" trimSpace="true" readOnly="true" editModel="uneditable"/>
+				<selectText id="scrapApply.owner.id" title="owner" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" >
+						<hql><![CDATA[ SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = false
+and owner.plant.wh=#{SESSION_WAREHOUSE} 
+						]]></hql>
+				</selectText>
+				<list id="scrapApply.orderType.id" title="orderType" required="true" returnType="long">  
+                    <hql><![CDATA[ select 
+t.id, 
+t.name
+from OrderType t   
+where 1=1 
+and t.disabled=false
+and t.processType='M4050' 
+                        ]]></hql>
+                </list>
+				<textArea id="scrapApply.description" title="title.desc" required="true" rows="50" cols="400" span="6" length="255" trimSpace="true" />
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="scrapApply" className="com.core.scpwms.server.model.apply.ScrapApply" />
+					</mappings>
+					<actions>
+						<action managerName="scrapApplyManager" methodName="save" parameter="scrapApply" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+	                    <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+detail.id,
+detail.invInfo.invStatus,
+detail.invInfo.quant.sku.code,
+detail.invInfo.quant.sku.name,
+detail.invInfo.quant.sku.specs,
+detail.invInfo.bin.binCode,
+detail.invInfo.packageDetail.name,
+detail.qty
+from ScrapApplyDetail detail 
+where 1=1   
+and detail.scrapApply.id = {scrapApply.id}
+ 			]]></datasource>
+			<columns>
+				<column id="detail.id" title="ID" visible="false" />
+                <column id="detail.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="detail.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="detail.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="detail.invInfo.quant.sku.specs" title="specs"/> 
+                <column id="detail.invInfo.bin.binCode" title="binCode"/> 
+                <column id="detail.invInfo.packageDetail.name" title="p1000.name"/> 
+                <column id="detail.qty" title="qty"/>
+			</columns>
+			<buttons>
+				<popup id="add" title="add" enableType="none" containId="false" pageId="scrapApplyByInv"  iconUrl="new">
+					<enableExpression><![CDATA[(${scrapApply.id}>0)]]></enableExpression>
+				</popup>
+				<commit id="delDetail" title="delDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="scrapApplyManager" methodName="deleteDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit> 				  
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

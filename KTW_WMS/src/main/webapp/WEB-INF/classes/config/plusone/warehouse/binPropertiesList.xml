@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="binPropertiesList" title="binPropertiesList" autoQuery="false">
+         <search>
+             <inputUIs>
+                 <text id="binProperties.code" title="bp.code" trimSpace="true"/>
+                 <text id="binProperties.name" title="bp.name" trimSpace="true"/>
+                 <text id="binProperties.description" title="title.desc" trimSpace="true"/>
+                 <list id="binProperties.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                 	<hql><![CDATA[ SELECT 
+						e.enumValue,
+						e.enumValue 
+						From Enumerate e 
+						where e.enumType = 'BooleanTypeN' 
+					]]></hql>
+             	</list>
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[
+select 
+binProperties.id,
+binProperties.code,
+binProperties.name,
+binProperties.disabled,
+binProperties.description,
+binProperties.length,
+binProperties.width,
+binProperties.height,
+binProperties.palletCount,
+binProperties.isLogicBin
+from BinProperties binProperties 
+where 1=1
+and binProperties.wh = #{SESSION_WAREHOUSE} 
+/~binProperties.code: and binProperties.code like {binProperties.code} ~/
+/~binProperties.name: and binProperties.name like {binProperties.name} ~/
+/~binProperties.disabled: and binProperties.disabled = {binProperties.disabled}~/
+/~binProperties.description: and binProperties.description like {binProperties.description}~/
+         ]]></datasource>
+        <columns>
+            <column id="binProperties.id" title="ID" visible="false"/>
+            <column id="binProperties.code" title="bp.code"/>
+            <column id="binProperties.name" title="bp.name"/>
+            <column id="binProperties.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+            <column id="binProperties.description" title="title.desc"/>
+            <column id="binProperties.length" title="bin.length"/>
+            <column id="binProperties.width" title="bin.width"/>
+            <column id="binProperties.height" title="bin.height"/>
+            <column id="binProperties.palletCount" title="palletCount"/>
+            <column id="binProperties.isLogicBin" title="isLogicBin" format="enumFormat" formatParam="BooleanTypeY"/>
+        </columns>
+        <buttons>   
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="binPropertiesEdit" iconUrl="add"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="binPropertiesEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${binProperties.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+			<commit id="enable" title="enable" enableType="multi" invisible="false" iconUrl="enable">
+                 <enableExpression><![CDATA[(${binProperties.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="binPropertiesManager" methodName="enableBinProperties" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" iconUrl="disable">
+                 <enableExpression><![CDATA[(${binProperties.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="binPropertiesManager" methodName="disableBinProperties" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${binProperties.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="binPropertiesManager" methodName="deleteBinProperties" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+             <popup id="view" title="view" enableType="single" containId="true"  pageId="binPropertiesView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

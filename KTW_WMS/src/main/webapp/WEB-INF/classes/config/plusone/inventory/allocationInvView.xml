@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="allocationInvView" title="allocationInvView" entityClass="com.core.scpwms.server.model.inventory.Inventory" onClose="refreshParent" width="780" height="400">
+		<modify>
+			<inputUIs>
+				<hidden id="inv.id" />
+			</inputUIs>
+		</modify>
+		<detail autoQuery="false">
+			<datasource>
+				<![CDATA[select 
+task.id,
+task.status,
+task.invInfo.owner.name,
+task.invInfo.quant.sku.code,
+task.invInfo.quant.sku.name,
+task.invInfo.quant.dispLot,
+(task.planQty-coalesce(task.executeQty,0)) as unExecuteQty,
+task.obdDetail.obd.obdNumber
+from WarehouseTask task 
+left join task.obdDetail
+left join task.obdDetail.obd
+where 1=1
+and task.wh = #{SESSION_WAREHOUSE}
+and (task.planQty-coalesce(task.executeQty,0)) > 0
+and task.invId = {inv.id}
+			]]></datasource>
+			<columns>
+				<column id="task.id" title="ID" visible="false" />
+				<column id="task.status" title="title.status" format="enumFormat" formatParam="EnuWarehouseOrderStatus"/>
+				<column id="task.invInfo.owner.name" title="owner"/>
+				<column id="task.invInfo.quant.sku.code" title="sku.code"/>
+				<column id="task.invInfo.quant.sku.name" title="sku.name"/>
+				<column id="task.invInfo.quant.dispLot" title="lotInfo"/>
+				<column id="unExecuteQty" title="unPickedQty"/>
+				<column id="task.obdDetail.obd.obdNumber" title="obdNumber"/>
+			</columns>
+		</detail>
+	</modifyDetailPage>
+</pages>

@@ -1,0 +1,36 @@
+CREATE OR REPLACE FUNCTION getsequence(keyname character varying, typename character varying)
+  RETURNS bigint AS
+$$
+	DECLARE
+		next_id2 int8;
+		id int8;
+		retValue int8;
+
+BEGIN
+   retValue:=-1;
+
+   SELECT next_id INTO STRICT next_id2 FROM  WMS_SEQUENCE WHERE sequence_key=ltrim(rtrim(keyName)) and SEQUENCE_TYPE=ltrim(rtrim(typeName));
+   UPDATE WMS_SEQUENCE SET next_id=next_id2+1 WHERE   sequence_key=ltrim(rtrim(keyName)) and SEQUENCE_TYPE=ltrim(rtrim(typeName));
+
+   --COMMIT;
+
+   retValue:=next_id2+1;
+   RETURN retValue; 
+EXCEPTION
+   WHEN NO_DATA_FOUND THEN
+             BEGIN
+                  INSERT INTO WMS_SEQUENCE (id,sequence_key,sequence_type,next_id) 
+                  VALUES (nextval('seq_sequence'),keyName,typeName,1);
+                  retValue:=1;
+                  -- COMMIT;
+                  RETURN retValue; 
+             EXCEPTION
+                  WHEN OTHERS THEN RAISE EXCEPTION 'exception1';
+             END;
+    WHEN OTHERS THEN RAISE EXCEPTION 'exception2';
+END;
+$$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION getsequence(character varying, character varying)
+  OWNER TO postgres;

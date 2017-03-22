@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="accessorySkuList" title="accessorySkuList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="accessory.code" title="accessory.code" trimSpace="true" />
+				<text id="accessory.name" title="accessory.name" trimSpace="true" />
+				<list id="accessory.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+e.enumValue,
+e.enumValue 
+From Enumerate e 
+where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[SELECT 
+accessory.id,
+accessory.code,
+accessory.name,
+accessory.specs,
+accessory.brandName,
+accessory.unit,
+accessory.disabled,
+accessory.description 
+FROM Accessory accessory 
+left join accessory.wh 
+left join accessory.it1000 
+left join accessory.it2000 
+left join accessory.it3000 
+WHERE 1=1 
+/~accessory.code: and accessory.code like {accessory.code}~/
+/~accessory.name: and accessory.name like {accessory.name}~/
+/~accessory.disabled: and accessory.disabled = {accessory.disabled}~/
+		]]></datasource>
+		<columns>
+			<column id="accessory.id" title="ID" visible="false" />
+			<column id="accessory.code" title="accessory.code" />
+			<column id="accessory.name" title="accessory.name" />
+			<column id="accessory.specs" title="specs" />
+			<column id="accessory.brandName" title="brandName" />
+			<column id="accessory.unit" title="accessory.unit" />
+			<column id="accessory.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />
+			<column id="accessory.description" title="title.desc" />
+		</columns>
+		<buttons>
+            <popup id="new"  title="new" enableType="none" containId="false"  pageId="accessorySkuEdit" iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true"  pageId="accessorySkuEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[${accessory.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable"  enableType="multi" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                <enableExpression><![CDATA[${accessory.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="accessorySkuManager" methodName="enableAccessorySku" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="disable" title="disable"  enableType="multi" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                <enableExpression><![CDATA[${accessory.disabled}==@{BooleanTypeN.false}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="accessorySkuManager" methodName="disableAccessorySku" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <popup id="view"  title="view" enableType="single" containId="true"  pageId="accessorySkuView" iconUrl="view"/>
+        </buttons>
+	</maintainPage>
+</pages>

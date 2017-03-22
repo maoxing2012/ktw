@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="checkReceive" title="checkReceive" entityClass="com.core.scpwms.server.model.inbound.AsnDetail" columnNum="4"  width="550" height="600" >
+        <inputUIs>
+            <hidden id="asnDetail.id" />
+            <text id="asnDetail.asn.relatedBill1" title="poNumber" readOnly="true" />
+            <text id="asnDetail.asn.owner.name" title="owner.name" readOnly="true" />
+            <text id="asnDetail.sku.code" title="sku.code" span="3" readOnly="true" width="380"/>
+			<text id="asnDetail.sku.name" title="sku.name" span="3" readOnly="true" width="380"/>
+			
+			<text id="asnDetail.sku.properties.packageInfo.p2000.length" title="length" readOnly="true"/>
+			<text id="asnDetail.sku.properties.packageInfo.p2000.width" title="width" readOnly="true"/>
+			<text id="asnDetail.sku.properties.packageInfo.p2000.height" title="height" readOnly="true"/>
+			<text id="asnDetail.sku.grossWeight" title="weight" readOnly="true"/>
+			
+			<text id="asnDetail.sku.properties.packageInfo.p2000.coefficient" title="p2000.coefficient" readOnly="true" lastElement="true"/>
+			
+			<text id="asnDetail.planQty" title="planQty" readOnly="true"/>
+            <numberText id="asnDetail.executeQty" title="inboundQty" readOnly="true"/>
+            
+        </inputUIs>
+        <buttons>
+            <commit id="checkReceive" title="checkReceive" enableType="none" confirmMessage="checkReceive.confirmMessage" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="asnDetail.id" className="long"/>
+                </mappings>
+                <actions>
+                    <action managerName="asnManager" methodName="checkReceive" parameter="asnDetail.id"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

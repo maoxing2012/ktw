@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="laborGroupView" title="laborGroupView" entityClass="com.core.scpwms.server.model.warehouse.LaborGroup" width="650" height="350" onClose="refreshParent">
+	   <modify>
+	        <inputUIs>
+	            <hidden id="laborGroup.id" />
+	            <text id="laborGroup.code" title="lg.code"/>
+	            <text id="laborGroup.name" title="lg.name"/>
+	            <list id="laborGroup.role" title="lg.role" enumType="EnuLaborGroupType">
+	              <hql><![CDATA[ SELECT 
+	                  e.enumValue,
+	                  e.enumValue 
+	                  From Enumerate e 
+	                  where e.enumType = 'EnuLaborGroupType' 
+	                  order by e.enumValue
+	              ]]></hql>
+	            </list>
+	        </inputUIs>
+	        <buttons>
+	        </buttons>
+        </modify>
+	        
+        <detail>
+            <datasource><![CDATA[SELECT   
+lgl.labor.id,
+lgl.labor.code,
+lgl.labor.name 
+from LaborGroupLabor lgl 
+where 1=1 
+and lgl.group.id = {laborGroup.id}
+            ]]></datasource>
+            <columns>
+                <column id="lgl.labor.id" title="ID" visible="false"/>
+                <column id="lgl.labor.code" title="labor.code"/>
+                <column id="lgl.labor.name" title="labor.name"/>
+            </columns>
+            <buttons>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

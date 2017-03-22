@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="homeSetting" title="homeSetting" autoQuery="false" >
+		<search>
+			<inputUIs>
+				<text id="homeSetting.title" title="homeSetting.title" trimSpace="true" length="10" width="250" />
+				<numberText id="homeSetting.lineCnt" title="homeSetting.lineCnt" trimSpace="true" returnType="Integer" length="4" width="50" />
+			    <list id="homeSetting.disabled" title="homeSetting.disabled" enumType="BooleanTypeN" returnType="boolean" width="50">
+                 	<hql><![CDATA[ select  
+						e.enumValue,
+						e.enumValue 
+						from Enumerate e 
+						where e.enumType = 'BooleanTypeN' 
+					]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select 
+homeSetting.id,
+homeSetting.lineCnt,
+homeSetting.title,
+homeSetting.disabled,
+homeSetting.layout 
+from HomeSetting homeSetting
+where 1=1 
+/~homeSetting.title: and homeSetting.title like {homeSetting.title}~/
+/~homeSetting.lineCnt: and homeSetting.lineCnt = {homeSetting.lineCnt}~/
+/~homeSetting.disabled: and homeSetting.disabled = {homeSetting.disabled}~/ 
+]]></datasource>
+		<columns>
+			<column id="homeSetting.id" title="ID" visible="false" canOrder="false"/>
+			<column id="homeSetting.lineCnt" title="homeSetting.lineCnt"/>
+			<column id="homeSetting.title" title="homeSetting.title" />
+			<column id="homeSetting.disabled" title="homeSetting.disabled" format="enumFormat" formatParam="BooleanTypeN" />
+			<column id="homeSetting.layout" title="homeSetting.layout" format="enumFormat" formatParam="LayoutType" />
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="homeSettingModify" iconUrl="new"/>
+			<popup id="eidt" title="modify"  enableType="single" containId="true" pageId="homeSettingModify" iconUrl="edit">
+			</popup>
+			<commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<mappings>
+					<mapping id="ids" className="list" />
+				</mappings>
+				<actions>
+					<action managerName="homeSettingManager" methodName="deleteSetting" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <commit id="enable" title="enable" enableType="single" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                <enableExpression><![CDATA[(${homeSetting.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="homeSettingManager" methodName="enable" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+		</buttons>
+	</maintainPage>
+</pages>

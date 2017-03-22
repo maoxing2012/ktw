@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<pages>
+		<maintainPage id="checkHistoryList" title="checkHistoryList"  autoQuery="false">
+			<search>
+	            <inputUIs>
+	            	<text id="obdNumber" title="obdNumber" trimSpace="true"/>
+	            	<text id="custBillNo" title="custBillNo" trimSpace="true"/>
+	            </inputUIs>
+	        </search>	
+			<datasource type="hql"><![CDATA[SELECT 
+ch.id,
+ch.detail.obd.obdNumber,
+ch.detail.obd.relatedBill1,
+ch.invInfo.quant.sku.code,
+ch.invInfo.quant.sku.name,
+ch.invInfo.quant.sku.specs,
+ch.invInfo.quant.dispLot,
+ch.invInfo.packageDetail.name,
+ch.executePackQty,
+ch.executeQty,
+ch.invInfo.invStatus,
+ch.invInfo.bin.binCode,
+ch.operateTime,
+ch.workers
+from CheckHistory ch
+where 1=1
+and ch.detail.obd.wh = #{SESSION_WAREHOUSE} 
+/~obdNumber: and ch.detail.obd.obdNumber like {obdNumber}~/ 
+/~custBillNo: and ch.detail.obd.relatedBill1 like {custBillNo}~/ 
+			]]></datasource>
+		    <columns>
+				<column id="ch.id" title="ID" visible="false" />
+                <column id="ch.detail.obd.obdNumber" title="obdNumber"/>
+                <column id="ch.detail.obd.relatedBill1" title="custBillNo"/>
+                <column id="ch.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="ch.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="ch.invInfo.quant.sku.specs" title="specs"/>
+                <column id="ch.invInfo.quant.dispLot" title="lotInfo"/>
+                <column id="ch.invInfo.packageDetail.name" title="packDetail"/>
+                <column id="ch.executePackQty" title="checkPackQty"/>
+                <column id="ch.executeQty" title="checkQty"/>
+                <column id="ch.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="ch.invInfo.bin.binCode" title="src.bin"/>
+                <column id="ch.operateTime" title="operateTime"/>
+                <column id="ch.workers" title="worker"/>
+		    </columns>
+		    <buttons>
+		        <popup id="laborKpi" title="laborKpi" enableType="single" containId="true" pageId="checkLaborKpi" iconUrl="person"/>
+			</buttons>
+		</maintainPage>
+	</pages>

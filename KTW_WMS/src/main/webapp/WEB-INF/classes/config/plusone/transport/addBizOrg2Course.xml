@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="addBizOrg2Course" title="addBizOrg2Course" autoQuery="true" onClose="refreshParent" width="1000" height="400" columnNum="8">
+		<search>
+			<inputUIs>
+                <hidden id="course.id" />
+                <text id="bizOrg.code" title="bizOrg.code" trimSpace="true"/>
+                 <text id="bizOrg.name" title="bizOrg.name" trimSpace="true"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+bizOrg.id,
+bizOrg.code,
+bizOrg.name,
+bizOrg.shortName,
+bizOrg.description,
+bizOrg.contractInfo.postcode,
+bizOrg.contractInfo.address,
+bizOrg.contractInfo.addressExt
+from BizOrg bizOrg 
+where 1=1 
+and bizOrg.owner.id = ( select c.owner.id from Course c where c.id = {course.id} )
+and bizOrg.type = 'C'
+and bizOrg.id not in ( select cb.customer.id from CourseBizOrg cb where cb.course.id = {course.id} )
+/~bizOrg.code: and bizOrg.code like {bizOrg.code} ~/
+/~bizOrg.name: and bizOrg.name like {bizOrg.name} ~/ 
+		]]></datasource>
+		<columns>
+			<column id="bizOrg.id" title="ID"  visible="false"/>
+            <column id="bizOrg.code" title="bizOrg.code" />
+            <column id="bizOrg.name" title="bizOrg.name" />
+            <column id="bizOrg.shortName" title="title.shortName" />
+            <column id="bizOrg.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />
+            <column id="bizOrg.description" title="title.desc" />
+            <column id="bizOrg.contractInfo.postcode" title="contractInfo.postcode" /> 
+            <column id="bizOrg.contractInfo.address" title="contractInfo.address1" /> 
+            <column id="bizOrg.contractInfo.addressExt" title="contractInfo.address2" /> 
+		</columns>
+		<buttons>
+			<commit id="add" title="add"  enableType="multi" iconUrl="add">
+				<mappings>
+					<mapping id="course.id" className="long"/>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="transportManager" methodName="addBizOrg2Course" parameter="course.id,ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

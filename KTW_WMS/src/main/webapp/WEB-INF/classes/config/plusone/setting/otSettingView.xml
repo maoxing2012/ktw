@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="otSettingView" title="otSettingView" entityClass="com.core.scpwms.server.model.common.OrderType"  width="500" height="400" onClose="refreshParent" >
+        <inputUIs>
+            <hidden id="ot.id" />
+			<text id="ot.code" title="orderType.code" />
+			<text id="ot.name" title="orderType.name" />
+			<list id="ot.processType" title="processType" enumType="EnuInvProcessType">
+				<hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue
+					from Enumerate e
+					where  e.enumType = 'EnuInvProcessType' 
+				]]></hql>
+			</list>
+			<text id="ot.seqProperties.name" title="seqSetting.name" />
+			<textArea id="ot.description" title="title.desc" rows="50" cols="380" span="3" />
+		</inputUIs>
+		<buttons>
+		</buttons>
+	</editPage>
+</pages>

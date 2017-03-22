@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="ownerView" title="ownerView"  entityClass="com.core.scpwms.server.model.user.Owner"  width="550" height="400" >
+		<inputUIs>
+			<hidden id="owner.id"/>
+			<parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="300" >
+                <text id="owner.plant.name" title="plant"/>
+				<text id="owner.code" title="owner.code"/>
+				<text id="owner.shortName" title="title.shortName"/>
+				<text id="owner.name" title="owner.name"/>
+				<text id="owner.whse" title="owner.whse"/>
+				<textArea id="owner.description" title="title.desc" rows="50" cols="380"  span="3"  trimSpace="true" />
+			</parttab>
+			<parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="300" >
+				<text id="owner.contractInfo.linkman" title="contractInfo.linkman" length="30" trimSpace="true" />
+				<text id="owner.contractInfo.mobile" title="contractInfo.mobile" length="20" trimSpace="true"/>
+				<text id="owner.contractInfo.postcode" title="contractInfo.postcode" length="30" trimSpace="true" />
+				<text id="owner.contractInfo.address" title="contractInfo.address1" width="358" span="3" trimSpace="true" />	
+				<text id="owner.contractInfo.addressExt" title="contractInfo.address2" width="358" span="3" trimSpace="true" />	
+				<text id="owner.contractInfo.email" title="contractInfo.email" length="50" width="358" span="3" trimSpace="true" />
+				<text id="owner.contractInfo.phone" title="contractInfo.phone" length="30" trimSpace="true" />
+				<text id="owner.contractInfo.fax" title="contractInfo.fax" length="20" trimSpace="true" />
+			</parttab>
+		</inputUIs>
+		<buttons>
+		</buttons>
+	</editPage>
+</pages>

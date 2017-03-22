@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="warehouseEdit" title="warehouseEdit" entityClass="com.core.scpwms.server.model.warehouse.Warehouse" width="600" height="500" columnNum="4">
+        <inputUIs>
+            <hidden id="warehouse.id" />
+            <parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="300" >
+                <text id="warehouse.code" title="warehouse.code" required="true" length="20" trimSpace="true" editModel="uneditable"/>
+                <text id="warehouse.shortName" title="title.shortName" length="50" required="true" trimSpace="true"/>
+                <text id="warehouse.name" title="warehouse.name" width="335" span="3" required="true" length="50" trimSpace="true" />
+                <textArea id="warehouse.description" title="title.desc" rows="50" cols="335" span="3" length="80" trimSpace="true" />
+            </parttab>
+            <parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="300" >
+                <text id="warehouse.contractInfo.linkman" title="contractInfo.linkman" length="30" trimSpace="true"/>
+                <text id="warehouse.contractInfo.mobile" title="contractInfo.mobile" length="20" trimSpace="true"/>
+                <text id="warehouse.contractInfo.postcode" title="contractInfo.postcode" length="30" trimSpace="true" />
+                <text id="warehouse.contractInfo.address" title="contractInfo.address1" width="362" span="3" length="80" trimSpace="true"/>
+                <text id="warehouse.contractInfo.addressExt" title="contractInfo.address2" width="362" span="3" length="80" trimSpace="true"/>
+                <text id="warehouse.contractInfo.email" title="contractInfo.email" width="362" span="3" length="50" trimSpace="true" />
+                <text id="warehouse.contractInfo.phone" title="contractInfo.phone" length="30" trimSpace="true"/>
+                <text id="warehouse.contractInfo.fax" title="contractInfo.fax" length="20" trimSpace="true"/>
+            </parttab>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="warehouse" className="com.core.scpwms.server.model.warehouse"/>
+                </mappings>
+                <actions>
+                    <action managerName="warehouseManager" methodName="saveWh" parameter="warehouse"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

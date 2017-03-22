@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="bizOrgView" title="bizOrgView" entityClass="com.core.scpwms.server.model.user.BizOrg" width="500" height="400" >
+        <inputUIs>
+            <hidden id="bizOrg.id" />
+            <parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="200" >
+            	<text id="bizOrg.plant.name" title="plant.name"/>
+            	<text id="bizOrg.owner.name" title="owner.name"/>
+                <text id="bizOrg.code" title="bizOrg.code"/>
+                <text id="bizOrg.shortName" title="title.shortName"/>
+                <text id="bizOrg.name" title="bizOrg.name"/>
+                <textArea id="bizOrg.description" title="title.desc" rows="50" cols="375" span="3"/>
+            </parttab>
+            <parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="200" readOnly="true" >
+                <text id="bizOrg.contractInfo.linkman" title="contractInfo.linkman"  length="30" trimSpace="true"/>
+                <text id="bizOrg.contractInfo.mobile" title="contractInfo.mobile" length="20"  trimSpace="true"/>\
+                <text id="bizOrg.contractInfo.postcode" title="contractInfo.postcode" length="30"  trimSpace="true"/>
+                <text id="bizOrg.contractInfo.address" title="contractInfo.address1" width="358" span="3"  trimSpace="true"/> 
+                <text id="bizOrg.contractInfo.addressExt" title="contractInfo.address2" width="358" span="3"  trimSpace="true"/>  
+                <text id="bizOrg.contractInfo.email" title="contractInfo.email" length="50" width="358" span="3" trimSpace="true"/>
+                <text id="bizOrg.contractInfo.phone" title="contractInfo.phone" length="30"  trimSpace="true"/>
+                <text id="bizOrg.contractInfo.fax" title="contractInfo.fax" length="20"  trimSpace="true"/>
+            </parttab>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

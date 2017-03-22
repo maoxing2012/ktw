@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="lotSettingEdit" title="lotSettingEdit" entityClass="com.core.scpwms.server.model.lot.LotInfo" width="500" height="320" columnNum="8">
+        <inputUIs>
+            <hidden id="lotInfo.id" />
+            <text id="lotInfo.code" title="lotInfo.code" editModel="uneditable" required="true" length="20" trimSpace="true" lastElement="true"/>
+            <text id="lotInfo.name" title="lotInfo.name" required="true" length="100" trimSpace="true" width="355" span="7" lastElement="true"/>
+            <checkbox id="lotInfo.inboundDateLot" title="inboundDateLot" foreOverride="true" lastElement="true"/>
+            <checkbox id="lotInfo.inboundDateInv" title="inboundDateInv" foreOverride="true" lastElement="true"/>
+            <checkbox id="lotInfo.inboundOrderLot" title="inboundOrderLot" foreOverride="true" lastElement="true"/>
+            <checkbox id="lotInfo.inboundOrderInv" title="inboundOrderInv" foreOverride="true" lastElement="true"/>
+            
+            <text id="lotInfo.ldi1.title" title="lotInfo1" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi1.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select  
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi1.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi1.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi2.title" title="lotInfo2" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi2.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi2.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi2.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi3.title" title="lotInfo3" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi3.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi3.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi3.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi4.title" title="lotInfo4" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi4.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi4.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi4.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi5.title" title="lotInfo5" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi5.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi5.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi5.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi6.title" title="lotInfo6" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi6.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi6.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi6.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi7.title" title="lotInfo7" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi7.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi7.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi7.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi8.title" title="lotInfo8" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi8.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi8.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi8.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi9.title" title="lotInfo9" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi9.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi9.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi9.enuCode" title="" length="10" trimSpace="true"/>
+            <text id="lotInfo.ldi10.title" title="lotInfo10" length="10" trimSpace="true"/>
+            <list id="lotInfo.ldi10.inputType" title="" forceOverride="true" forceSpace="true" multiple="false" enumType="LotFieldType">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFieldType' 
+				 ]]></hql>
+            </list>
+            <list id="lotInfo.ldi10.lotType" title="" forceOverride="true" forceSpace="false" multiple="false" enumType="LotFormat">
+                 <hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue 
+					from Enumerate e 
+					where e.enumType = 'LotFormat' 
+				 ]]></hql>
+            </list>
+            <text id="lotInfo.ldi10.enuCode" title="" length="10" trimSpace="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="lotInfo" className="com.core.scpwms.server.model.lot.LotInfo"/>
+                </mappings>
+                <actions>
+                    <action managerName="lotInfoManager" methodName="saveLotInfo" parameter="lotInfo" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons> 
+    </editPage>
+</pages>

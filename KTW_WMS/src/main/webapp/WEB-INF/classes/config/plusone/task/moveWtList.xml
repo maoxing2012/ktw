@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+	<pages>
+		<maintainPage id="moveWtList" title="moveWtList"  autoQuery="false" useSum="true">
+			<search>
+	            <inputUIs>
+	            	<text id="taskSequence" title="taskSequence"/>
+	            	<list id="status" title="title.status" forceOverride="true" enumType="EnuWarehouseOrderStatus" returnType="long" multiple="true" defaultValue="100,200,500,600">
+                        <hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuWarehouseOrderStatus' 
+                        ]]></hql>
+                    </list>
+	            	<text id="woSequence" title="woSequence"/>
+	            	<list id="processType" title="processType" forceOverride="true" forceSpace="true" enumType="EnuWtProcessType">
+		                 <hql><![CDATA[ select 
+e.enumValue,
+e.enumValue 
+from Enumerate e 
+where e.enumType = 'EnuWtProcessType' 
+and e.enumValue like '%PUTAWAY'
+						 ]]></hql>
+		            </list>
+					<text id="src.bin" title="src.bin" trimSpace="true" />
+					<text id="desc.bin" title="desc.bin" trimSpace="true" />
+					<text id="sku.code" title="sku.code" trimSpace="true" />
+					<text id="sku.name" title="sku.name" trimSpace="true" />
+					<date id="operateTimeFrom" title="operateTimeFrom" showTime="true" />
+					<date id="operateTimeTo" title="operateTimeTo" showTime="true" />
+	            </inputUIs>
+	        </search>	
+			<datasource type="hql"><![CDATA[SELECT 
+task.id,
+task.taskSequence,
+task.status,
+task.processType,
+task.planPackQty,
+task.executePackQty,
+task.invInfo.containerSeq,
+task.invInfo.bin.binCode,
+task.descBin.binCode,
+task.invInfo.quant.sku.code,
+task.invInfo.quant.sku.name,
+task.invInfo.quant.lotSequence,
+task.invInfo.quant.dispLot,
+task.invInfo.invStatus,
+task.createInfo.updateTime,
+task.updateInfo.updateTime
+FROM WarehouseTask task
+left join task.wo
+left join task.descBin
+where 1=1 
+and task.wh = #{SESSION_WAREHOUSE}  
+and task.processType like '%PUTAWAY' 
+/~taskSequence: and task.taskSequence like {taskSequence}~/ 
+/~status: and task.status = {status}~/ 
+/~woSequence: and task.wo.orderSequence like {woSequence}~/ 
+/~processType: and task.processType = {processType}~/
+/~src.bin: and task.invInfo.bin.binCode like {src.bin}~/ 
+/~desc.bin: and task.descBin.binCode like {desc.bin}~/
+/~sku.code: and task.invInfo.quant.sku.code like {sku.code}~/
+/~sku.name: and task.invInfo.quant.sku.name like {sku.name}~/
+/~operateTimeFrom: and to_char(task.updateInfo.updateTime,'yyyy-mm-dd hh24:mi') >= to_char({operateTimeFrom},'yyyy-mm-dd hh24:mi')~/
+/~operateTimeTo: and to_char(task.updateInfo.updateTime,'yyyy-mm-dd hh24:mi') <= to_char({operateTimeTo},'yyyy-mm-dd hh24:mi')~/
+			]]></datasource>
+		    <columns>
+				<column id="task.id" title="ID" visible="false"/>
+				<column id="task.taskSequence" title="taskSequence"  />
+				<column id="task.status" title="title.status"  format="enumFormat" formatParam="EnuWarehouseOrderStatus"/>
+				<column id="task.processType" title="processType" format="enumFormat" formatParam="EnuWtProcessType"/>
+				<column id="task.planPackQty" title="planPutawayPackQty"/>
+				<column id="task.executePackQty" title="putawayPackQty"/>
+				<column id="task.invInfo.containerSeq" title="containerSeq"/>
+				<column id="task.invInfo.bin.binCode" title="src.bin"/>
+				<column id="task.descBin.binCode" title="desc.bin"/>
+				<column id="task.invInfo.quant.sku.code" title="sku.code"/>
+				<column id="task.invInfo.quant.sku.name" title="sku.name"/>
+				<column id="task.invInfo.quant.lotSequence" title="lotSequence"/>
+				<column id="task.invInfo.quant.dispLot" title="lotInfo"/>
+				<column id="task.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+				<column id="task.createInfo.updateTime" title="title.createTime"/>
+				<column id="task.updateInfo.updateTime" title="operateTime"/>
+		    </columns>
+		    <buttons>
+		    	<popup id="newPutawayWt" title="newPutawayWt" enableType="none" containId="false" pageId="newPutawayWt" iconUrl="new"/>
+	            <popup id="newReplenishWt" title="newReplenishWt" enableType="none" containId="false" pageId="newReplenishWt" iconUrl="new"/>
+	            <commit id="cancel" title="cancel" enableType="single" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+	                <enableExpression><![CDATA[(${task.status}==@{EnuWarehouseOrderStatus.100})||(${task.status}==@{EnuWarehouseOrderStatus.200})]]></enableExpression>
+	                <mappings>
+	                    <mapping id="ids" className="list" />
+	                </mappings>
+	                <actions>
+	                    <action managerName="warehouseTaskManager" methodName="cancel" parameter="ids" />
+	                </actions>
+	                <forwards>
+	                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+	                </forwards>
+	            </commit>
+	            <popup id="execute" title="execute" enableType="single" containId="true" pageId="putawayTaskExecuteEdit" iconUrl="action">
+				    <enableExpression><![CDATA[(${task.status} == @{EnuWarehouseOrderStatus.200})||(${task.status} == @{EnuWarehouseOrderStatus.500})||(${task.status} == @{EnuWarehouseOrderStatus.600})]]></enableExpression>
+				</popup>
+				<!-- <popup id="batchExecute" title="batchExecute" enableType="multi" containId="true" pageId="putawayTaskBatchExecute" iconUrl="confirm">
+                    <enableExpression><![CDATA[(${task.status} == @{EnuWarehouseOrderStatus.200})||(${task.status} == @{EnuWarehouseOrderStatus.500})||(${task.status} == @{EnuWarehouseOrderStatus.600})]]></enableExpression>
+                </popup>
+                <popup id="close" title="close" enableType="multi" containId="true" pageId="putawayTaskClose" iconUrl="cancel">
+				    <enableExpression><![CDATA[(${task.status} == @{EnuWarehouseOrderStatus.500})||(${task.status} == @{EnuWarehouseOrderStatus.600})]]></enableExpression>
+				</popup> -->
+				<popup id="view" title="view" enableType="single" containId="true" pageId="putawayTaskView" iconUrl="view"/>
+			</buttons>
+		</maintainPage>
+	</pages>

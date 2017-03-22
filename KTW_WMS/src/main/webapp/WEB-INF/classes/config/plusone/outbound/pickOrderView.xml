@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="pickOrderView" title="pickOrderView" entityClass="com.core.scpwms.server.model.task.WarehouseOrder" onClose="refreshParent" width="950"  height="550" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="wo.id" />
+				<text id="wo.orderSequence" title="woSequence"/>
+				<list id="wo.warehouseOrderType" title="orderProcessType" enumType="EnuWOType">  
+	                <hql><![CDATA[ select 
+en.enumValue,
+en.enumValue
+from Enumerate en
+where  en.enumType='EnuWOType'
+and en.enumValue='PICKUP'
+	                       ]]></hql>
+                </list>
+                <text id="wo.st.name" title="st"/>
+				<text id="wo.planQty" title="planQty"/>
+				<text id="wo.executeQty" title="pickQty"/>
+			</inputUIs>
+			<buttons>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+task.id,
+task.taskSequence,
+task.obdDetail.obd.obdNumber,
+task.obdDetail.obd.relatedBill1,
+task.obdDetail.relatedBill1,
+task.processType,
+task.invInfo.packageDetail.name,
+task.planPackQty,
+task.planQty,
+task.executePackQty,
+task.executeQty,
+task.invInfo.bin.binCode,
+task.descBin.binCode,
+task.invInfo.quant.sku.code,
+task.invInfo.quant.sku.name,
+task.invInfo.quant.sku.specs,
+task.invInfo.quant.lotSequence,
+task.invInfo.quant.dispLot,
+task.invInfo.invStatus
+FROM WarehouseTask task
+left join task.labor
+left join task.descBin
+left join task.wo
+left join task.labor
+where 1=1 
+and task.wo.id = {wo.id}
+            ]]></datasource>
+            <columns>
+                <column id="task.id" title="ID" visible="false"/>
+                <column id="task.taskSequence" title="taskSequence"  />
+                <column id="task.obdDetail.obd.obdNumber" title="obdNumber"/>
+                <column id="task.obdDetail.obd.relatedBill1" title="tripNumber"/>
+                <column id="task.obdDetail.relatedBill1" title="soNumber"/>
+                <column id="task.processType" title="processType" format="enumFormat" formatParam="EnuWtProcessType"/>
+                <column id="task.invInfo.packageDetail.name" title="packDetail"/>
+                <column id="task.planPackQty" title="planPackQty"/>
+                <column id="task.planQty" title="planQty"/>
+                <column id="task.executePackQty" title="pickPackQty"/>
+                <column id="task.executeQty" title="pickQty"/>
+                <column id="task.invInfo.bin.binCode" title="src.bin"/>
+                <column id="task.descBin.binCode" title="desc.bin"/>
+                <column id="task.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="task.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="task.invInfo.quant.sku.specs" title="specs"/>
+                <column id="task.invInfo.quant.lotSequence" title="lotSequence"/>
+                <column id="task.invInfo.quant.dispLot" title="lotInfo"/>
+                <column id="task.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			</columns>
+			<buttons>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

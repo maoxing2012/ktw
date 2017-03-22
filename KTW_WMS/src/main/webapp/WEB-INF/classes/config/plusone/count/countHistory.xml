@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="countHistory" title="countHistory" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="countNumber" title="countNumber"  forceOverride="true" trimSpace="true"/>
+				<list id="hisType" title="hisType" enumType="EnuInvenHisType" returnType="string" multiple="true" >
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvenHisType'
+and e.enumValue in ('300','310')
+                    ]]></hql>
+                </list>
+                <text id="bin.code" title="bin.code"  forceOverride="true" trimSpace="true"/>
+                <text id="sku.code" title="sku.code"  forceOverride="true" trimSpace="true"/>
+                <text id="sku.name" title="sku.name"  forceOverride="true" trimSpace="true"/>
+                <text id="expDate" title="expDate"  forceOverride="true" trimSpace="true"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select 
+invHis.id,
+invHis.invInfo.owner.name,
+invHis.orderSeq,
+invHis.hisType,
+invHis.invInfo.bin.binCode,
+invHis.invInfo.quant.sku.code,
+invHis.invInfo.quant.sku.name,
+invHis.invInfo.packageDetail.name,
+invHis.qtyEach,
+invHis.invInfo.quant.lotSequence,
+invHis.invInfo.quant.dispLot,
+invHis.invInfo.inboundDate,
+invHis.invInfo.trackSeq,
+invHis.invInfo.invStatus,
+invHis.operateTime,
+invHis.createInfo.operatorName,
+invHis.operateMemo
+from InventoryHistory invHis
+where 1=1
+and invHis.iot.code = 'CT_DC'
+and invHis.wh = #{SESSION_WAREHOUSE} 
+ /~countNumber: and invHis.orderSeq like {countNumber} ~/ 
+ /~owner: and invHis.invInfo.owner.id = {owner} ~/ 
+ /~bin.code: and invHis.invInfo.bin.binCode like {bin.code} ~/ 
+ /~sku.code: and invHis.invInfo.quant.sku.code like {sku.code} ~/ 
+ /~sku.name: and invHis.invInfo.quant.sku.name like {sku.name} ~/ 
+ /~expDate: and invHis.invInfo.quant.dispLot like {expDate} ~/ 
+ /~hisType: and invHis.hisType = {hisType} ~/ 
+ 		]]></datasource>
+		<columns>
+			<column id="invHis.id" title="ID" visible="false"  />
+			<column id="invHis.invInfo.owner.name" title="owner"/>
+			<column id="invHis.orderSeq" title="countNumber"/>
+			<column id="invHis.hisType" title="hisType" format="enumFormat" formatParam="EnuInvenHisType"/>
+            <column id="invHis.invInfo.bin.binCode" title="bin"/>
+            <column id="invHis.invInfo.quant.sku.code" title="sku.code" />
+            <column id="invHis.invInfo.quant.sku.name" title="sku.name"/>
+			<column id="invHis.invInfo.packageDetail.name" title="p1000.name"  />
+			<column id="invHis.qtyEach" title="baseQty"/>
+			<column id="invHis.invInfo.quant.lotSequence" title="lotSequence"/>
+            <column id="invHis.invInfo.quant.dispLot" title="lotInfo"/>
+			<column id="invHis.invInfo.inboundDate" title="inboundDate" />
+			<column id="invHis.invInfo.trackSeq" title="asnNumber" />
+			<column id="invHis.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="invHis.operateTime" title="operateTime"/>
+			<column id="invHis.createInfo.operatorName" title="operatorName"/>
+			<column id="invHis.operateMemo" title="title.desc"/>
+		</columns>
+		<!-- <buttons>
+			<popup id="view" title="view" enableType="single" containId="true" pageId="countHistoryView" iconUrl="view"/>
+		</buttons> -->
+	</maintainPage>
+</pages>

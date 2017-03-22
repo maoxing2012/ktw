@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='scpwms'>
+  
+  	<inherits name='com.core.scpview.BaseWindow'/>
+  	<entry-point class='com.core.scpwms.client.Scpwms' />
+  
+	 <!-- Style reference -->
+	<stylesheet src="./css/CssMain.css"/>
+
+  	<source path='client' />
+  	<source path='shared' />
+
+
+</module>

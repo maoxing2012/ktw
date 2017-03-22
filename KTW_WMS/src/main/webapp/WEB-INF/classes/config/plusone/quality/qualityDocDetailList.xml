@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="qualityDocDetailList" title="qualityDocDetailList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="qcNumber" title="qcNumber"/> 
+			    <list id="status" title="title.status" enumType="EnuQualityDocDetailStatus" returnType="long" multiple="true" defaultValue="200,210,300">
+                    <hql><![CDATA[ select  
+						e.enumValue,
+						e.enumValue
+						from Enumerate e
+						 where  e.enumType='EnuQualityDocDetailStatus'
+					]]></hql>
+                </list>
+                <text id="skuCode" title="sku.code" trimSpace="true" />
+                <text id="skuName" title="sku.name" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+detail.id, 
+detail.doc.docSequence,
+detail.status,
+detail.invInfo.quant.sku.code,
+detail.invInfo.quant.sku.name,
+detail.invInfo.quant.sku.specs,
+detail.invInfo.quant.lotSequence,
+detail.invInfo.quant.dispLot,
+detail.invInfo.trackSeq,
+detail.invInfo.bin.binCode,
+detail.invInfo.invStatus,
+detail.invInfo.packageDetail.name,
+detail.planPackQty,
+detail.planQty,
+detail.planQty - detail.executeQty as waitQcQty,
+detail.availableQty,
+detail.unAvailableQty,
+detail.returnFactoryQty,
+detail.repairQty,
+detail.sampleQty,
+detail.discardQty,
+detail.planPutawayQty,
+detail.putawayQty
+from QualityDocDetail detail   
+where 1=1 
+and detail.doc.wh = #{SESSION_WAREHOUSE} 
+/~qcNumber: and detail.doc.docSequence like {qcNumber}~/
+/~status: and detail.status = {status}~/
+/~skuCode: and detail.invInfo.quant.sku.code like {skuCode}~/
+/~skuName: and detail.invInfo.quant.sku.name like {skuName}~/
+		]]></datasource>
+		<columns>
+			<column id="detail.id" title="ID" visible="false"/>
+			<column id="detail.doc.docSequence" title="qcNumber"/>
+			<column id="detail.status" title="title.status" format="enumFormat" formatParam="EnuQualityDocDetailStatus"/> 
+			<column id="detail.invInfo.quant.sku.code" title="sku.code"/>
+			<column id="detail.invInfo.quant.sku.name" title="sku.name"/>
+			<column id="detail.invInfo.quant.sku.specs" title="specs"/>
+			<column id="detail.invInfo.quant.lotSequence" title="lotSequence" />
+			<column id="detail.invInfo.quant.dispLot" title="lotInfo"/>
+			<column id="detail.invInfo.trackSeq" title="projectNo"/>
+			<column id="detail.invInfo.bin.binCode" title="bin.code"/> 
+			<column id="detail.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/> 
+			<column id="detail.invInfo.packageDetail.name" title="packDetail"/> 
+			<column id="detail.planPackQty" title="qcPlanPackQty"/> 
+			<column id="detail.planQty" title="qcPlanQty"/> 
+			<column id="waitQcQty" title="waitQcQty"/> 
+			<column id="detail.availableQty" title="availableQty"/>
+            <column id="detail.unAvailableQty" title="unAvailableQty"/>
+            <column id="detail.returnFactoryQty" title="returnFactoryQty"/>
+            <column id="detail.repairQty" title="repairQty"/>
+            <column id="detail.sampleQty" title="sampleQty"/>
+            <column id="detail.discardQty" title="discardQty"/>
+            <column id="detail.planPutawayQty" title="planPutawayQty"/>
+            <column id="detail.putawayQty" title="putawayQty"/>
+		</columns>
+		<buttons>
+		    <popup id="available" title="available" enableType="single" containId="true" pageId="qualityDocDetailAvailable" iconUrl="confirm">
+                <enableExpression><![CDATA[(${detail.status}==@{EnuQualityDocDetailStatus.200} || ${detail.status}==@{EnuQualityDocDetailStatus.210})]]></enableExpression>
+		    </popup>
+		    <popup id="unAvailable" title="unAvailable" enableType="single" containId="true" pageId="qualityDocDetailUnAvailable" iconUrl="action">
+		        <enableExpression><![CDATA[(${detail.status}==@{EnuQualityDocDetailStatus.200} || ${detail.status}==@{EnuQualityDocDetailStatus.210})]]></enableExpression>
+            </popup>
+		    <popup id="returnFactory" title="returnFactory" enableType="single" containId="true" pageId="qualityDocDetailReturnFactory" iconUrl="reset">
+		        <enableExpression><![CDATA[(${detail.status}==@{EnuQualityDocDetailStatus.200} || ${detail.status}==@{EnuQualityDocDetailStatus.210})]]></enableExpression>
+            </popup>
+		    <popup id="repair" title="repair" enableType="single" containId="true" pageId="qualityDocDetailRepair" iconUrl="reaudit">
+		        <enableExpression><![CDATA[(${detail.status}==@{EnuQualityDocDetailStatus.200} || ${detail.status}==@{EnuQualityDocDetailStatus.210})]]></enableExpression>
+            </popup>
+		    <popup id="sample" title="sample" enableType="single" containId="true" pageId="qualityDocDetailSample" iconUrl="check">
+		        <enableExpression><![CDATA[(${detail.status}==@{EnuQualityDocDetailStatus.200} || ${detail.status}==@{EnuQualityDocDetailStatus.210})]]></enableExpression>
+            </popup>
+            <popup id="discard" title="discard" enableType="single" containId="true" pageId="qualityDocDetailDiscard" iconUrl="delete">
+                <enableExpression><![CDATA[(${detail.status}==@{EnuQualityDocDetailStatus.200} || ${detail.status}==@{EnuQualityDocDetailStatus.210})]]></enableExpression>
+            </popup>
+        </buttons>
+	</maintainPage>
+</pages>

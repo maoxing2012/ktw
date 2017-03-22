@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="stowagePlanEdit" title="stowagePlanEdit" entityClass="com.core.scpwms.server.model.shipment.StowagePlan" onClose="refreshParent" width="900" height="600" columnNum="8">
+		 <modify>
+		 <inputUIs>
+				<hidden id="stowagePlan.id" />
+				<text id="stowagePlan.stowageNumber" title="stowageNumber" trimSpace="true" editModel="uneditable" length="20" readOnly="true" />
+				<text id="stowagePlan.carNumber" title="carNumber" trimSpace="true"/>
+				<text id="stowagePlan.mainDriver" title="driver" trimSpace="true" required="true"/>
+				<textArea id="stowagePlan.description" title="title.desc" rows="50" cols="600" span="7" trimSpace="true"/>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="stowagePlan" className="com.core.scpwms.server.model.shipment.StowagePlan" />
+					</mappings>
+					<actions>
+						<action managerName="stowagePlanManager" methodName="save" parameter="stowagePlan" />
+					</actions>
+					<forwards>
+	                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons> 
+			</modify>			
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+spd.id,
+spd.obdDetail.obd.obdNumber, 
+spd.obdDetail.obd.status,
+spd.obdDetail.obd.customer.name,
+spd.obdDetail.obd.endCustomer,
+spd.obdDetail.sku.code,
+spd.obdDetail.sku.name,
+spd.obdDetail.sku.specs,
+spd.obdDetail.packageDetail.name,
+spd.planPackQty,
+spd.planQty,
+spd.obdDetail.lotData
+from StowagePlanDetail spd
+left join spd.obdDetail.obd.customer
+where 1=1 
+and spd.stowagePlan.id = {stowagePlan.id}
+ 			]]></datasource>
+			<columns>
+				<column id="spd.id" title="ID" visible="false" />
+				<column id="spd.obdDetail.obd.obdNumber" title="obdNumber"/>
+				<column id="spd.obdDetail.obd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryStatus"/>
+				<column id="spd.obdDetail.obd.customer.name" title="customer"/>
+				<column id="spd.obdDetail.obd.endCustomer" title="endCustomer"/>
+				<column id="spd.obdDetail.sku.code" title="sku.code"/>
+				<column id="spd.obdDetail.sku.name" title="sku.name"/>
+				<column id="spd.obdDetail.sku.specs" title="specs"/>
+				<column id="spd.obdDetail.packageDetail.name" title="packDetail"/>
+				<column id="spd.planPackQty" title="planPackQty"/>
+				<column id="spd.planQty" title="planQty"/>
+				<column id="spd.obdDetail.lotData" title="lotInfo"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" invisible="false" containId="false" pageId="stowagePlanAddObd" iconUrl="add">
+                    <enableExpression><![CDATA[${stowagePlan.id} >0]]></enableExpression>
+                </popup>
+                <popup id="modifyDetail" title="modifyDetail" enableType="single" containId="true" pageId="stowagePlanDetailEdit" iconUrl="edit">
+                </popup>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="stowagePlanManager" methodName="deleteDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit> 
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

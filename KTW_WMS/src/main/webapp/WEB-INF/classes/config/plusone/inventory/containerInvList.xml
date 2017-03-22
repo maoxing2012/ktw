@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="containerInvList" title="containerInvList" pageLocale="false" autoQuery="false" useSum="true">
+		<search>
+			<inputUIs>
+			    <text id="binCode" title="bin.code" trimSpace="true" />
+			    <text id="containerSeq" title="containerSeq" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+cInv.id,
+cInv.bin.storageType.wa.name,
+cInv.bin.storageType.name,
+cInv.bin.binCode,
+cInv.containerSeq,
+cInv.level,
+cInv.putawayDate,
+(select sum(inv.baseQty) from cInv.invs as inv ) as lotqty
+from ContainerInv cInv 
+where 1=1
+and cInv.bin.wh = #{SESSION_WAREHOUSE}
+/~binCode: and cInv.bin.binCode like {binCode} ~/
+/~containerSeq: and cInv.containerSeq like {containerSeq} ~/
+		]]></datasource>
+		<columns>
+			<column id="cInv.id" title="ID" visible="false"/>
+			<column id="cInv.bin.storageType.wa.name" title="wa"/>
+			<column id="cInv.bin.storageType.name" title="st"/>
+			<column id="cInv.bin.binCode" title="bin.code" />
+			<column id="cInv.containerSeq" title="containerSeq" />
+			<column id="cInv.level" title="level" visible="false"/>
+			<column id="cInv.putawayDate" title="putawayDate" visible="false"/>
+			<column id="lotqty" title="baseQty"/>
+		</columns>
+		<buttons>
+			<popup id="move" title="containerInvMove" enableType="single" containId="true" pageId="containerInvMoveEdit" iconUrl="action"/>
+			<popup id="containerInvView" title="containerInvView" enableType="single" containId="true" pageId="containerInvView" iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages>

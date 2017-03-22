@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="asnDetailClose" title="asnDetailClose" entityClass="com.core.scpwms.server.model.inbound.AsnDetail" columnNum="2"  width="250" height="420" >
+        <inputUIs>
+            <hidden id="asnDetail.id" />
+            <selectText id="reasonCode" title="reasonCode" required="true" displayedTableHead="ID,Code,Name" >
+				<hql><![CDATA[ SELECT  
+rc.id, 
+rc.code,
+rc.name   
+FROM ReasonCode rc  
+WHERE rc.disabled = false
+and rc.type = 'RKBL'
+		 				]]></hql> 
+			</selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="close" title="close" enableType="none" confirmMessage="close.confirmMessage" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="recievingList.ids" className="list"/>
+                    <mapping id="reasonCode" className="long"/>
+                </mappings>
+                <actions>
+                    <action managerName="asnManager" methodName="closeAsnDetail" parameter="recievingList.ids,reasonCode"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

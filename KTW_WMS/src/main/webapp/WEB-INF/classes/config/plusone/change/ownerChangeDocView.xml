@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="ownerChangeDocView" title="ownerChangeDocView" entityClass="com.core.scpwms.server.model.change.OwnerChangeDoc" columnNum="8" onClose="refreshParent" width="900" height="500">
+        <modify>
+            <inputUIs>
+                <hidden id="ownerChangeDoc.id" title="ID"/>
+                <text id="ownerChangeDoc.docSequence" title="ownerChangeNumber"/>
+                <text id="ownerChangeDoc.plant.name" title="plant"/>
+                <text id="ownerChangeDoc.srcOwner.code" title="srcOwner"/>
+                <text id="ownerChangeDoc.descOwner.code" title="descOwner"/>
+                <text id="doc.transactionDate" title="transactionDate"/>
+                <text id="doc.createInfo.operatorName" title="orderUser"/>
+                <textArea id="ownerChangeDoc.description" title="title.desc" rows="50" cols="500" span="7" />
+            </inputUIs>
+            <buttons>
+            </buttons>
+        </modify>
+        <detail autoQuery="true">
+            <datasource><![CDATA[SELECT 
+detail.id,
+detail.status,
+detail.sku.code,
+detail.sku.name,
+detail.sku.specs,
+detail.packageDetail.name,
+detail.planPackQty,
+detail.planQty,
+detail.allocateQty,
+detail.executeQty,
+detail.lotData,
+detail.extString1,
+detail.jdeInvStatus
+FROM OwnerChangeDocDetail detail 
+WHERE 1=1
+and detail.ownerChangeDoc.id = {ownerChangeDoc.id}
+                ]]></datasource>
+            <columns>
+                <column id="detail.id" title="ID" visible="false" />
+                <column id="detail.status" title="title.status" format="enumFormat" formatParam="EnuOwnerChangeDocDetailStatus"/>
+                <column id="detail.sku.code" title="sku.code"/>
+                <column id="detail.sku.name" title="sku.name"/>
+                <column id="detail.sku.specs" title="specs"/>
+                <column id="detail.packageDetail.name" title="packDetail"/>
+                <column id="detail.planPackQty" title="planPackQty"/>
+                <column id="detail.planQty" title="planQty"/>
+                <column id="detail.allocateQty" title="allocateQty"/>
+                <column id="detail.executeQty" title="executeQty"/>
+                <column id="detail.lotData" title="lotInfo"/>
+                <column id="detail.extString1" title="projectNo"/>
+                <column id="detail.jdeInvStatus" title="jdeInvStatus"/>
+            </columns>
+            <buttons>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

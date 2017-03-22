@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.fee.RequestReportHead" table="WMS_REQUEST_REPORT_HEAD">
+        <id name="id" column="ID" type="long">
+           <generator class="native">
+               <param name="sequence">wseq_request_report</param>
+               <param name="parameters">START WITH 1000</param>
+           </generator>
+        </id>
+        <many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID"/>
+        </many-to-one>
+                
+        <property name="baseAmount" type="double">
+            <column name="BASE_AMOUNT" />
+        </property>
+        <property name="sumAmount" type="double">
+            <column name="SUM_AMOUNT" />
+        </property>
+        <property name="status" type="long">
+            <column name="STATUS" />
+        </property>
+        <property name="processDate" type="timestamp" >
+            <column name="PROCESS_DATE"/>
+        </property>
+        <property name="accountDateDiv" type="long" >
+            <column name="ACCOUNT_DATE_DIV"/>
+        </property>
+        <property name="termDiv" type="string">
+            <column name="TERM_DIV" length="10" />
+        </property>
+        <property name="targetMonth" type="integer">
+            <column name="TARGET_MONTH"/>
+        </property>
+        <property name="description" type="string">
+            <column name="DESCRIPTION" length="255"/>
+        </property>
+        <property name="rate" type="integer">
+            <column name="RATE"/>
+        </property>
+        
+        <property name="dayFrom" type="date" >
+            <column name="DAY_FROM"/>
+        </property>
+        
+        <property name="dayTo" type="date" >
+            <column name="DAY_TO"/>
+        </property>
+        
+        <property name="dayF1" type="date" >
+            <column name="DAY_F1"/>
+        </property>
+        <property name="dayF2" type="date" >
+            <column name="DAY_F2"/>
+        </property>
+        <property name="dayF3" type="date" >
+            <column name="DAY_F3"/>
+        </property>
+        
+        <property name="dayT1" type="date" >
+            <column name="DAY_T1"/>
+        </property>
+        <property name="dayT2" type="date" >
+            <column name="DAY_T2"/>
+        </property>
+        <property name="dayT3" type="date" >
+            <column name="DAY_T3"/>
+        </property>
+        
+        <property name="term21F" type="date" >
+           <column name="TERM_21F"/>
+        </property>
+        <property name="term21T" type="date" >
+            <column name="TERM_21T"/>
+        </property>
+        <property name="term22F" type="date" >
+            <column name="TERM_22F"/>
+        </property>
+        <property name="term22T" type="date" >
+            <column name="TERM_22T"/>
+        </property>
+        
+        <many-to-one name="company" class="com.core.scpwms.server.model.fee.Company">
+            <column name="COMPANY_ID"/>
+        </many-to-one>
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="qualityDocView" title="qualityDocView" entityClass="com.core.scpwms.server.model.quality.QualityDoc" onClose="refreshParent" width="900"  height="500" columnNum="4">
+        <modify>
+            <inputUIs>
+                <hidden id="qualityDoc.id" />
+                <text id="qualityDoc.docSequence" title="qcNumber"/>
+                <text id="qualityDoc.plant.name" title="plant"/>
+                <textArea id="qualityDoc.description" title="title.desc" rows="50" cols="400" span="3" />
+            </inputUIs>
+            <buttons>
+            </buttons>
+        </modify>
+        <detail autoQuery="false">
+            <datasource><![CDATA[select  
+detail.id,
+detail.invInfo.invStatus,
+detail.invInfo.quant.sku.code,
+detail.invInfo.quant.sku.name,
+detail.invInfo.quant.sku.specs,
+detail.invInfo.quant.lotSequence,
+detail.invInfo.quant.dispLot,
+detail.invInfo.bin.binCode,
+detail.invInfo.packageDetail.name,
+detail.planPackQty,
+detail.planQty,
+detail.availableQty,
+detail.unAvailableQty,
+detail.returnFactoryQty,
+detail.repairQty,
+detail.sampleQty,
+detail.planPutawayQty,
+detail.putawayQty
+from QualityDocDetail detail 
+where 1=1   
+and detail.doc.id = {qualityDoc.id}
+            ]]></datasource>
+            <columns>
+                <column id="detail.id" title="ID" visible="false" />
+                <column id="detail.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="detail.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="detail.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="detail.invInfo.quant.sku.specs" title="specs"/>
+                <column id="detail.invInfo.quant.lotSequence" title="lotSequence"/>
+                <column id="detail.invInfo.quant.dispLot" title="lotInfo"/>
+                <column id="detail.invInfo.bin.binCode" title="bin.code"/> 
+                <column id="detail.invInfo.packageDetail.name" title="packDetail"/> 
+                <column id="detail.planPackQty" title="qcPlanPackQty"/> 
+                <column id="detail.planQty" title="qcPlanQty"/> 
+                <column id="detail.availableQty" title="availableQty"/>
+	            <column id="detail.unAvailableQty" title="unAvailableQty"/>
+	            <column id="detail.returnFactoryQty" title="returnFactoryQty"/>
+	            <column id="detail.repairQty" title="repairQty"/>
+	            <column id="detail.sampleQty" title="sampleQty"/>
+	            <column id="detail.planPutawayQty" title="planPutawayQty"/>
+	            <column id="detail.putawayQty" title="putawayQty"/>
+            </columns>
+            <buttons>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

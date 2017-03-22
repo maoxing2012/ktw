@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="importFileResultList" title="importFileResultList" entityClass="com.core.business.model.imports.FileImport" onClose="refreshParent" width="900"  height="550" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="fi.id" />
+				<text id="fi.warnningMessage" title="warnningMessage" forceOverride="true" readOnly="true"  width="360" span="2"  trimSpace="true" />
+			</inputUIs>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+fd.id,
+fd.rowNo, 
+fd.note1, 
+fd.note2,
+fd.note3, 
+fd.note4, 
+fd.note5,
+fd.note6,  
+fd.note7, 
+fd.note8, 
+fd.note9,  
+fd.note10 
+FROM FileErrorDetail fd 
+WHERE 1=1    
+AND fd.file.id = {fi.id}
+ ]]></datasource>
+			<columns>
+				<column id="fd.id" title="ID" visible="false"/>
+	            <column id="fd.rowNo" title="rowNo"/>
+	            <column id="fd.note1" title="note1"/>
+	            <column id="fd.note2" title="note2"/>
+	            <column id="fd.note3" title="note3"/>
+	            <column id="fd.note4" title="note4"/>
+	            <column id="fd.note5" title="note5"/>
+	            <column id="fd.note6" title="note6"/>
+	            <column id="fd.note7" title="note7"/>
+	            <column id="fd.note8" title="note8"/>
+	            <column id="fd.note9" title="note9"/>
+	            <column id="fd.note10" title="note10"/>
+			</columns>
+		</detail>
+	</modifyDetailPage>
+</pages>

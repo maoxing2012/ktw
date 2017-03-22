@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="skuEdit" title="skuEdit" entityClass="com.core.scpwms.server.model.common.Sku"  width="550" height="680" onClose="refreshParent">
+        <inputUIs>
+            <hidden id="sku.id" title="ID" />
+            <parttab id="tab_0" title="title.baseInfo" style="CTab" tabHeight="300">
+                <text id="sku.code" title="sku.code" required="true" editModel="uneditable"/>
+                <text id="sku.name" title="sku.name" required="true" span="3" width="358" />
+                <selectText id="sku.plant.id" title="plant" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" >
+                	<hql><![CDATA[SELECT 
+plant.id,
+plant.code,
+plant.name  
+FROM Plant plant 
+WHERE plant.disabled = false
+and plant.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+                    <eventListeners>
+						<eventListener id="sku.owner.id" index="1" refreshUI="true"/>
+						<eventListener id="sku.defSupplier.id" index="1" refreshUI="true"/>
+					</eventListeners>
+                </selectText>
+                <selectText id="sku.owner.id" title="owner" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.id = {sku.plant.id}
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+						]]></hql>
+                </selectText>
+                <text id="sku.code1" title="JAN"/>
+                <text id="sku.brandName" title="brandName"/>
+                <list id="sku.tempDiv" title="tempDiv" enumType="EnuTemperatureDiv" required="true" returnType="long">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+                <list id="sku.stockDiv" title="stockDiv" enumType="EnuStockDiv" required="true" returnType="long">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuStockDiv' 
+                    ]]></hql>
+                </list>
+                <list id="sku.fixDiv" title="fixDiv" enumType="EnuFixDiv" required="true" returnType="long">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuFixDiv' 
+                    ]]></hql>
+                </list>
+                <selectText id="sku.defSupplier.id" title="vendor" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[SELECT 
+b.id,
+b.code,
+b.name
+FROM BizOrg b 
+WHERE b.disabled = '0' 
+and b.type = 'V'
+and b.plant.id = {sku.plant.id}
+						]]></hql>
+                </selectText>
+            </parttab>
+            <parttab id="tab_1" title="title.specs" style="CTab" tabHeight="300">
+                <text id="sku.specs" title="specs"/>
+                <numberText id="sku.grossWeight" title="grossWeight" />
+                <numberText id="sku.volume" title="volume" lastElement="true" />
+                
+                <text id="sku.properties.packageInfo.p1000.code" title="p1000.code" required="true"/>
+                <text id="sku.properties.packageInfo.p1000.name" title="p1000.name" required="true" lastElement="true"/>
+                
+                <numberText id="sku.properties.packageInfo.p2100.coefficient" title="p2100.coefficient" />
+                <text id="sku.properties.packageInfo.p2100.code" title="p2100.code"/>
+                <text id="sku.properties.packageInfo.p2100.name" title="p2100.name" lastElement="true"/>
+                
+                <numberText id="sku.properties.packageInfo.p2000.coefficient" title="p2000.coefficient" />
+                <text id="sku.properties.packageInfo.p2000.code" title="p2000.code"/>
+                <text id="sku.properties.packageInfo.p2000.name" title="p2000.name" lastElement="true"/>
+                
+                <numberText id="sku.properties.packageInfo.p3000.coefficient" title="p3000.coefficient" />
+                <text id="sku.properties.packageInfo.p3000.code" title="p3000.code"/>
+                <text id="sku.properties.packageInfo.p3000.name" title="p3000.name" lastElement="true"/>
+                
+            </parttab>
+            <parttab id="tab_2" title="title.other" style="CTab" tabHeight="300">
+            	 <checkbox id="sku.properties.useExpire" title="useExpire" defaultValue="true" />
+	             <numberText id="sku.properties.purchaseLeadTime" title="purchaseLeadTime" />
+	             <numberText id="sku.properties.alertLeadingDays" title="alertLeadingDays" />
+	             <numberText id="sku.properties.dayOfExpiry" title="dayOfExpiry" lastElement="true"/>
+	             
+	             <numberText id="sku.properties.safetyStockLower" title="safetyStockLower" />
+	             <numberText id="sku.properties.safetyStockUpper" title="safetyStockUpper" lastElement="true"/>
+	             
+	             <text id="sku.properties.baseCheckQty4NS" title="baseCheckQty4NS" />
+	             <text id="sku.properties.baseUnitCode4NS" title="baseUnitCode4NS" />
+	             <text id="sku.properties.baseUnitName4NS" title="baseUnitName4NS" />
+	             <list id="sku.properties.packFlg4NS" title="packFlg4NS" enumType="EnuPackFlg" returnType="long">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuPackFlg' 
+                    ]]></hql>
+                </list>
+            </parttab>
+        </inputUIs>
+        <buttons>
+            <commit id="saveSku" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="sku" className="com.core.scpwms.server.model.common.Sku"/>
+                </mappings>
+                <actions>
+                    <action managerName="skuManager"  methodName="saveSku"  parameter="sku" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

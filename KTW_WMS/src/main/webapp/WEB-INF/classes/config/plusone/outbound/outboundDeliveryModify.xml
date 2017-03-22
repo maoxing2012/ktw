@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="outboundDeliveryModify" title="outboundDeliveryModify" entityClass="com.core.scpwms.server.model.outbound.OutboundDelivery" onClose="refreshParent" width="950" height="600" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="outboundDelivery.id" />
+                <text id="outboundDelivery.obdNumber" title="obdNumber" trimSpace="true" readOnly="true"  />
+				<text id="outboundDelivery.relatedBill1" title="custBillNo" forceOverride="true" trimSpace="true" />
+                <selectText id="outboundDelivery.plant.id" title="plant" required="true" displayedTableHead="ID,code,name" >
+					<hql><![CDATA[ SELECT 
+plant.id,
+plant.code,
+plant.name
+FROM Plant plant 
+WHERE plant.disabled = '0' 
+						]]></hql>
+					<eventListeners>
+						<eventListener id="outboundDelivery.owner.id" index="1" refreshUI="true"/>
+						<eventListener id="outboundDelivery.carrier.id" index="1" refreshUI="true"/>
+						<eventListener id="outboundDelivery.customer.id" index="1" refreshUI="true"/>
+					</eventListeners>						
+				</selectText>
+				<selectText id="outboundDelivery.owner.id" title="owner" required="true" displayedTableHead="ID,Code,Name" editModel="uneditable">
+					<hql><![CDATA[ SELECT  
+owner.id, 
+owner.code,
+owner.name   
+FROM Owner owner  
+WHERE owner.disabled = false 
+and owner.plant.id = {outboundDelivery.plant.id}
+		 				]]></hql> 
+	 				<eventListeners>
+						<eventListener id="outboundDelivery.customer.id" index="1" refreshUI="true"/>
+					</eventListeners>		
+				</selectText>
+				<list id="outboundDelivery.orderType.id" title="orderType" required="true">
+					<hql><![CDATA[ SELECT
+ot.id,
+ot.name
+FROM OrderType ot
+WHERE 
+ot.disabled = '0' 
+and ot.processType='M3000'
+						]]></hql>
+				</list>
+				<selectText id="outboundDelivery.carrier.id" title="carrier" displayedTableHead="ID,code,name" required="true">
+                    <hql><![CDATA[ select  
+carrier.id, 
+carrier.code, 
+carrier.name
+from Carrier carrier 
+where carrier.disabled = false 
+and carrier.plant.id={outboundDelivery.plant.id}
+                        ]]></hql>
+                </selectText>
+                <selectText id="outboundDelivery.customer.id" title="bizOrg" displayedTableHead="ID,code,name" required="true">
+                    <hql><![CDATA[ select  
+customer.id, 
+customer.code,
+customer.name   
+FROM BizOrg customer  
+WHERE customer.disabled = false
+and customer.type = 'C'
+and customer.owner.id = {outboundDelivery.owner.id}
+                        ]]></hql>
+                </selectText>
+                <date id="outboundDelivery.etd" title="etd" showDetailTime="false" defaultCurrentDate="false" required="true" trimSpace="true" />
+                <textArea id="outboundDelivery.description" title="title.desc" trimSpace="true" rows="50" cols="600" span="6"/>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="outboundDelivery" className="com.core.scpwms.server.model.outbound.OutboundDelivery" />
+					</mappings>
+					<actions>
+						<action managerName="outboundDeliveryManager" methodName="save" parameter="outboundDelivery" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select 
+odd.id,
+odd.extString2,
+odd.lineNo,
+odd.subLineNo,
+odd.sku.code,
+odd.sku.name,
+odd.sku.specs,
+odd.packageDetail.name,
+odd.planQty,
+odd.invStatus,
+odd.stockDiv,
+odd.sku.tempDiv,
+odd.sku.fixDiv,
+odd.obd.ediData
+from OutboundDeliveryDetail odd
+where 1=1
+and odd.obd.id = {outboundDelivery.id}
+ 			]]></datasource>
+			<columns>
+				<column id="odd.id" title="ID" visible="false" />
+				<column id="odd.extString2" title="NS伝票No."/>
+                <column id="odd.lineNo" title="lineNo"/>
+                <column id="odd.subLineNo" title="subLineNo"/>
+                <column id="odd.sku.code" title="sku.code"/>
+                <column id="odd.sku.name" title="sku.name"/>
+                <column id="odd.sku.specs" title="specs"/>
+                <column id="odd.packageDetail.name" title="p1000.name"/>
+                <column id="odd.planQty" title="planQty"/>
+                <column id="odd.invStatus" title="invStatus"  format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="odd.stockDiv" title="stockDiv"  format="enumFormat" formatParam="EnuStockDiv"/>
+                <column id="odd.tempDiv" title="tempDiv"  format="enumFormat" formatParam="EnuTempDiv"/>
+                <column id="odd.fixDiv" title="fixDiv"  format="enumFormat" formatParam="EnuFixDiv"/>
+                <column id="odd.obd.ediData" title="ediData" format="enumFormat" formatParam="EnuEdiData"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="outboundDeliveryDetailEdit"  iconUrl="new">
+					<enableExpression><![CDATA[(${outboundDelivery.id}>0)]]></enableExpression>
+				</popup>
+				<popup id="modifyDetail" title="modifyDetail" enableType="single" containId="true" pageId="outboundDeliveryDetailEdit"  iconUrl="edit">
+                </popup>
+				<commit id="deleteDetail" title="deleteDetail" confirmMessage="delete.confirmMessage" enableType="multi" iconUrl="delete">
+					<enableExpression><![CDATA[(${odd.obd.ediData}==@{EnuEdiData.0})]]></enableExpression>
+					<mappings>
+						<mapping id="ids" className="list"><entries /></mapping>
+					</mappings>
+					<actions>
+						<action managerName="outboundDeliveryManager" methodName="deleteDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

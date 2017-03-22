@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.task.WarehouseTaskSingle" table="WMS_WAREHOUSE_TASK_SINGLE">
+    	<id name="id" column="ID" type="long">
+    		<generator class="native">
+    			<param name="sequence">wseq_warehouse_tasksingle</param>
+    			<param name="parametes">START WITH 1000</param>
+    		</generator>
+    	</id>
+    	 	
+    	<many-to-one name="waveDoc" class="com.core.scpwms.server.model.outbound.WaveDoc">
+    		<column name="WAVE_DOC_ID"/>
+    	</many-to-one>
+    	
+    	<many-to-one name="wt" class="com.core.scpwms.server.model.task.WarehouseTask">
+    		<column name="WT_ID"/>
+    	</many-to-one>
+    	
+    	<property name="qty" type="double" column="QTY" />
+    	<property name="pickQty" type="double" column="PICK_QTY" />
+    	<property name="checkQty" type="double" column="CHECK_QTY" />
+    	
+    	<property name="relatedBill1" type="string" column="RELATED_BII1" />
+    	<property name="relatedBill2" type="string" column="RELATED_BII2" />
+    	<property name="relatedBill3" type="string" column="RELATED_BII3" />
+    	<property name="inx" type="long" column="INX" />
+    	<property name="caseType" type="long" column="CASE_TYPE" />
+    	<property name="status" type="long" column="STATUS" />
+    	<property name="obdId" type="long" column="OBD_ID" />
+    	
+    	<many-to-one name="labor" class="com.core.scpwms.server.model.warehouse.Labor">
+    		<column name="LABOR_ID"/>
+    	</many-to-one>
+    	
+    	<many-to-one name="checkLabor" class="com.core.scpwms.server.model.warehouse.Labor">
+    		<column name="CHECK_LABOR_ID"/>
+    	</many-to-one>
+    	
+    	<property name="operateTime" type="timestamp" column="OPERATE_TIME" />
+    	<property name="checkTime" type="timestamp" column="CHECK_TIME" />
+    </class>
+</hibernate-mapping>
+
+

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.warehouse.UserGroupWarehouse" table="WMS_UG_WH">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_ug_wh</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+		<property name="description" column="DESCRIPTION" type="string"/>
+		
+		<many-to-one name="userGroup" class="com.core.business.model.security.Group">
+			<column name="UG_ID" not-null="true" unique-key="UK_UG_WH"/>
+		</many-to-one>
+		<many-to-one name="warehouse" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WH_ID" not-null="true" unique-key="UK_UG_WH"/>
+		</many-to-one>
+	 </class>
+</hibernate-mapping>

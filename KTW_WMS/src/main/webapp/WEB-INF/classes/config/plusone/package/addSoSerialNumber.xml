@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="addSoSerialNumber" title="addSoSerialNumber" entityClass="com.core.scpwms.server.model.pack.OutboundPackageDetail" width="300"  height="800" columnNum="2">
+        <inputUIs>
+            <hidden id="obdPackDetail.id" />
+            <textArea id="serialNumberFrom" title="serialNumberFrom" required="true" trimSpace="true" rows="200" cols="600"/>
+            <text id="serialNumberTo" title="serialNumberTo" trimSpace="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="obdPackDetail.id" className="long" />
+                    <mapping id="serialNumberFrom" className="string" />
+                    <mapping id="serialNumberTo" className="string" />
+                </mappings>
+                <actions>
+                    <action managerName="serialNumberManager" methodName="addSerialNumber" parameter="obdPackDetail.id,serialNumberFrom,serialNumberTo" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

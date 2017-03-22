@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="infoMessageEdit" title="infoMessageEdit" entityClass="com.core.scpwms.server.model.base.InfoMessage" width="350" height="600" >
+        <inputUIs>
+            <hidden id="info.id" />
+                <text id="info.title" title="title" required="true" length="100" width="400" trimSpace="true" span="4" />
+                <textArea id="info.content" title="content" required="true" rows="100" cols="400" span="4" length="510" trimSpace="true" />
+                <list id="info.infoType" title="infoType" required="true" enumType="EnuInfoType" returnType="string">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where e.enumType='EnuInfoType'
+					]]></hql>
+                </list>
+                <selectText id="info.wh.id" title="warehouse" displayedTableHead="ID,Code,name" >
+                    <hql><![CDATA[SELECT 
+wh.id,
+wh.code,
+wh.name 
+FROM Warehouse wh
+WHERE 1=1 
+and wh.disabled = '0' 
+						]]></hql>
+                </selectText>
+                <checkbox id="info.isTop" title="isTop"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="info" className="com.core.scpwms.server.model.base.InfoMessage"/>
+                </mappings>
+                <actions>
+                    <action managerName="infoMessageManager" methodName="save" parameter="info"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

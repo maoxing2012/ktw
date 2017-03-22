@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="exceptionLogEdit" title="exceptionLogEdit"   entityClass="com.core.business.model.exception.ExceptionLog"  width="500" height="100" onClose="refreshParent" >
+		<inputUIs>
+			<hidden id="exceptionLog.id" title="exceptionLog.id" />
+				<text id="exceptionLog.operUserId" title="ID" forceOverride="true"    trimSpace="true" />
+				<text id="exceptionLog.operUserName" title="exceptionLog.operUserName"     trimSpace="true" lastElement="true" />
+				<text id="exceptionLog.operPageName" title="exceptionLog.operPageName"  trimSpace="true"/>
+				<text id="exceptionLog.operPageId" title="exceptionLog.operPageId"  forceOverride="true"   trimSpace="true"  lastElement="true"  />
+				<text id="exceptionLog.operComponentName" title="exceptionLog.operComponentName"  forceOverride="true"   trimSpace="true" />
+				<text id="exceptionLog.operComponentId" title="exceptionLog.operComponentId"  forceOverride="true"    trimSpace="true"   lastElement="true" />
+				<textArea id="exceptionLog.operException" title="exceptionLog.operException"  span="2" rows="100" cols="375"  lastElement="true" />
+				<text id="exceptionLog.operExceptionMess" title="exceptionLog.operExceptionMess"  forceOverride="true" width="375" span="2"    lastElement="true"  />
+				<date id="exceptionLog.operDate" title="exceptionLog.operDate" forceOverride="false"  showTime="false" defaultCurrentDate="false" />
+		</inputUIs>
+	</editPage>
+</pages>
+
+

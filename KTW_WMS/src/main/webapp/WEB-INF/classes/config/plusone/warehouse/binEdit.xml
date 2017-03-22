@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="binEdit" title="binEdit" entityClass="com.core.scpwms.server.model.warehouse.Bin"  width="600" height="300" onClose="refreshParent" >
+        <inputUIs>
+                <hidden id="bin.id" title="ID" />
+                <parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="220" >
+	                <text id="bin.binCode" title="bin.code" trimSpace="true"  required="true" editModel="uneditable"/>
+	                <selectText id="bin.properties.id" title="bp" required="true" displayedTableHead="ID,Code,name" >
+                        <hql><![CDATA[SELECT 
+bp.id,
+bp.code,
+bp.name 
+FROM BinProperties bp
+WHERE 1=1 
+and bp.wh = #{SESSION_WAREHOUSE} 
+and bp.disabled = '0' 
+						]]></hql>
+                    </selectText>
+	                <selectText id="bin.storageType.id" title="st" required="true" displayedTableHead="ID,Code,Name">
+	                	<hql><![CDATA[ select 
+st.id,
+st.code,  
+st.name
+from StorageType st 
+where st.disabled = '0' 
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+						]]> </hql>
+	                </selectText>
+                    <checkbox id="bin.processProperties.skuMixed" title="skuMix" defaultValue="true"  foreOverride="true"/>
+                    <checkbox id="bin.processProperties.lotMixed" title="lotMix" defaultValue="false"  foreOverride="true"/>
+                    <checkbox id="bin.processProperties.ownerMixed" title="ownerMix" defaultValue="false"  foreOverride="true"/>
+                    <textArea id="bin.description" title="title.desc" trimSpace="true" rows="50" cols="355" span="2" />
+                </parttab>
+                <parttab id="tab_2" title="title.location" style="CTab" tabHeight="220" >
+                    <numberText id="bin.aisle" title="aisle"  forceOverride="true" returnType="int"/>
+                    <numberText id="bin.stack" title="stack"  forceOverride="true" returnType="int"/>
+                    <numberText id="bin.depth" title="depth"  forceOverride="true" returnType="int"/>
+                    <numberText id="bin.level" title="level"  forceOverride="true" returnType="int"/>
+                </parttab>
+        </inputUIs>
+        <buttons>
+            <commit id="saveBin" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="bin" className="com.core.scpwms.server.model.warehouse.Bin">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="binSettingManager"  methodName="saveBin"  parameter="bin" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

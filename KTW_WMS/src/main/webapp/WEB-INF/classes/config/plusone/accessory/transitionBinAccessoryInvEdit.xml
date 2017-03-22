@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="transitionBinAccessoryInvEdit" title="invStatusChange" entityClass="com.core.scpwms.server.model.accessory.AccessoryInventory" width="520" height="400" onClose="refreshParent" >
+		<inputUIs>
+			<hidden id="aInv.id" title="ID" />
+			<text id="aInv.accessory.code" title="accessory.code" readOnly="true" />
+			<text id="aInv.accessory.name" title="accessory.name" readOnly="true" />
+			<list id="aInv.status" title="src.invStatus" trimSpace="true" enumType="EnuInvStatus" readOnly="true">
+					<hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuInvStatus' 
+				]]></hql>
+			</list>
+			<list id="status" title="desc.invStatus" trimSpace="true" enumType="EnuInvStatus" returnType="string" required="true">
+					<hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuInvStatus' 
+and e.enumValue not in ( select ai.status from AccessoryInventory ai where ai.id = ${aInv.id} )
+				]]></hql>
+			</list>
+			<numberText id="aInv.baseQty" title="inventoryQty" readOnly="true" />
+			<numberText id="transQty" title="transQty" required="true" />
+			<textArea id="description" title="title.desc" trimSpace="true" rows="50" cols="380" span="3" />
+		</inputUIs>
+		<buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="aInv.id" className="long"/>
+                    <mapping id="transQty" className="double" />
+                    <mapping id="description" className="string" />
+                    <mapping id="status" className="string" />
+                </mappings>
+                <actions>
+                    <action managerName="accessoryInventoryManager"  methodName="saveAiStatus"  parameter="aInv.id, transQty, description, status" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+	</editPage>	
+</pages>

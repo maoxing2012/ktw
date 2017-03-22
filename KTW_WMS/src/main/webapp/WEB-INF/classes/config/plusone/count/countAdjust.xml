@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="countAdjust" title="countAdjust" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="countNumber" title="countNumber"  forceOverride="true" trimSpace="true"/>
+                <text id="sku.code" title="sku.code"  forceOverride="true" trimSpace="true"/>
+                <text id="sku.name" title="sku.name"  forceOverride="true" trimSpace="true"/>
+                <text id="expDate" title="expDate"  forceOverride="true" trimSpace="true"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select  
+inv.id,
+case when inv.baseQty < 0 then '' when inv.baseQty > 0 then '▲' end as typeName,
+inv.owner.name,
+inv.containerSeq,
+inv.quantInv.quant.sku.code,
+inv.quantInv.quant.sku.name,
+inv.basePackage.name,
+inv.baseQty*(-1),
+inv.quantInv.quant.lotSequence,
+inv.quantInv.quant.dispLot,
+inv.inboundDate,
+inv.trackSeq,
+inv.status
+from Inventory inv 
+left join inv.owner
+where 1=1  
+and inv.wh=#{SESSION_WAREHOUSE}
+and inv.bin.storageType.role='R8020' 
+/~owner: and record.invInfo.owner.id = {owner} ~/
+/~countNumber: and inv.containerSeq like {countNumber} ~/
+/~sku.code: and inv.quantInv.quant.sku.code like {sku.code} ~/
+/~sku.name: and inv.quantInv.quant.sku.name like {sku.name} ~/
+/~expDate: and inv.quantInv.quant.dispLot like {expDate} ~/
+ 		]]></datasource>
+		<columns>
+			<column id="inv.id" title="ID" visible="false"/>
+			<column id="typeName" title="countStatus"/>
+			<column id="inv.owner.name" title="owner"/>
+			<column id="inv.containerSeq" title="countNumber"/>
+			<column id="inv.quantInv.quant.sku.code" title="sku.code"/>
+            <column id="inv.quantInv.quant.sku.name" title="sku.name"/>
+            <column id="inv.basePackage.name" title="p1000.name"/>
+            <column id="inv.baseQty" title="baseQty"/>
+			<column id="inv.quantInv.quant.lotSequence" title="lotSequence"/>
+            <column id="inv.quantInv.quant.dispLot" title="expDate"/>
+			<column id="inv.inboundDate" title="inboundDate"/>
+			<column id="inv.trackSeq" title="asnNumber"/>
+			<column id="inv.status" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+		</columns>
+		<buttons>
+		    <popup id="invConfirm" title="invConfirm" enableType="multi" containId="true" pageId="countAdjustEdit" iconUrl="action">
+		    </popup>
+		</buttons>
+	</maintainPage>
+</pages>

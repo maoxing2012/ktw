@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.rules.PickUpRule" table="WMS_RULE_PICKUP">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_rule_pickup</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WAREHOUSE_ID" not-null="true" unique-key="UK_WH_RULE_PICKUP"/>
+		</many-to-one>
+		<property name="priority" type="integer" >
+			<column name="PRIORITY" not-null="true" unique-key="UK_WH_RULE_PICKUP" />
+		</property>
+		<many-to-one name="descBinGroup" class="com.core.scpwms.server.model.warehouse.BinGroup" >
+			<column name="DESC_BINS_ID"/>
+		</many-to-one>
+		<many-to-one name="descBin" class="com.core.scpwms.server.model.warehouse.Bin" >
+			<column name="DESC_BIN_ID"/>
+		</many-to-one>
+		<many-to-one name="srcBin" class="com.core.scpwms.server.model.warehouse.Bin" >
+			<column name="SRC_BIN_ID" />
+		</many-to-one>
+		
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+			<column name="PLANT_ID" not-null="true" unique-key="UK_WH_RULE_PICKUP"/>
+		</many-to-one>
+		<many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku" >
+			<column name="SKU_ID" />
+		</many-to-one>
+		<many-to-one name="iot" class="com.core.scpwms.server.model.common.OrderType" >
+			<column name="ORDER_TYPE_ID" />
+		</many-to-one>		
+		<many-to-one name="abcProperties" class="com.core.scpwms.server.model.common.AbcProperties" >
+			<column name="ABC_ID" />
+		</many-to-one>	
+        <many-to-one name="bType" class="com.core.scpwms.server.model.common.SkuType" >
+            <column name="B_TYPE_ID" />
+        </many-to-one>
+        <many-to-one name="mType" class="com.core.scpwms.server.model.common.SkuType" >
+            <column name="M_TYPE_ID" />
+        </many-to-one> 
+        <many-to-one name="lType" class="com.core.scpwms.server.model.common.SkuType" >
+            <column name="L_TYPE_ID" />
+        </many-to-one> 
+		<many-to-one name="packageInfo" class="com.core.scpwms.server.model.common.PackageInfo" >
+			<column name="PKG_ID" />
+		</many-to-one>
+		<many-to-one name="packageDetail" class="com.core.scpwms.server.model.common.PackageDetail" >
+			<column name="PKG_DETAIL_ID" />
+		</many-to-one>		
+	    		
+		<property name="useQtyLimit" column="BE_QTY_LIMIT" type="boolean" />
+		<property name="qtyLimit" column="QTY_LIMIT" type="double"/>
+		<property name="qtyLowerLimit" column="QTY_LIMIT_LOWER" type="double"/>
+		<property name="targetBins" column="TARGET_BINS" type="string" />
+		<property name="binConditions" column="BIN_CONDITION" type="string" />
+		<property name="pickUpConditions" column="PICKUP_CONDITIONS" type="string" />
+		<property name="crossDock" column="CROSS_DOCK" type="boolean" />
+		<property name="invStatus" column="INV_STATUS" type="string" length="50"/>
+		<property name="usePackLimit" column="BE_PACK_LIMIT" type="boolean" />
+		<property name="packageLevel" column="PACKAGE_LEVEL" type="string" length="30"/>
+		<property name="packageLevelEnd" column="PACKAGE_LEVEL_END" type="string" length="30"/>
+		<property name="enoughInv" column="BE_ENOUGH_INV" type="boolean" />
+		<property name="brandName" column="BRAND_NAME" type="string" length="50"/>
+		
+		<property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+</hibernate-mapping>
+
+

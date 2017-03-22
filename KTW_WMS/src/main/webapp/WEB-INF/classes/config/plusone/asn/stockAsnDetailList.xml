@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="stockAsnDetailList" title="stockAsnDetailList" pageLocale="false" autoQuery="false" useSum="true">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="asnNumber" title="asnNumber" trimSpace="true"/>
+				<text id="custBillNo" title="custBillNo" trimSpace="true" />
+				<list id="status" title="title.status" enumType="EnuAsnDetailStatus" returnType="long" multiple="true" defaultValue="200,300">
+                    <hql><![CDATA[ select 
+en.enumValue,
+en.enumValue
+from Enumerate en
+where  en.enumType='EnuAsnDetailStatus' 
+and en.enumValue in ( '200','300','400' ) ]]>
+                    </hql>
+                </list>
+				<text id="sku.code" title="sku.code" trimSpace="true" />
+				<text id="sku.name" title="sku.name" trimSpace="true" />
+				<list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource><![CDATA[select  
+asnDetail.id,
+asnDetail.asn.owner.name,
+asnDetail.asn.asnNumber,
+asnDetail.asn.relatedBill1,
+asnDetail.status,
+asnDetail.lineNo,
+asnDetail.subLineNo,
+asnDetail.sku.code,
+asnDetail.sku.name,
+asnDetail.sku.specs,
+asnDetail.planPackage.name,
+asnDetail.planQty,
+asnDetail.executeQty,
+asnDetail.closedQty,
+asnDetail.sku.tempDiv,
+asnDetail.sku.fixDiv,
+asnDetail.expDate,
+asnDetail.actExpDate,
+asnDetail.invStatus,
+asnDetail.actInvStatus
+from AsnDetail asnDetail
+where 1=1  
+and asnDetail.asn.wh = #{SESSION_WAREHOUSE} 
+and asnDetail.status in (200,300,400)
+and asnDetail.stockDiv = 1
+/~owner: and asnDetail.asn.owner.id = {owner}~/ 
+/~asnNumber: and asnDetail.asn.asnNumber like {asnNumber}~/
+/~custBillNo: and asnDetail.asn.relatedBill1 like {custBillNo}~/
+/~status: and asnDetail.status = {status}~/ 
+/~sku.code: and asnDetail.sku.code like {sku.code}~/ 
+/~sku.name: and asnDetail.sku.name like {sku.name}~/ 
+/~tempDiv: and asnDetail.sku.tempDiv = {tempDiv}~/ 
+
+ 		]]></datasource>
+		<columns>
+			<column id="asnDetail.id" title="ID" visible="false" />
+			<column id="asnDetail.asn.owner.name" title="owner"/>
+			<column id="asnDetail.asn.asnNumber" title="asnNumber"/>
+			<column id="asnDetail.asn.relatedBill1" title="custBillNo"/>
+			<column id="asnDetail.status" title="title.status"  format="enumFormat" formatParam="EnuAsnDetailStatus"/>
+            <column id="asnDetail.lineNo" title="lineNo"/>
+            <column id="asnDetail.subLineNo" title="subLineNo"/>
+            <column id="asnDetail.sku.code" title="sku.code"/>
+            <column id="asnDetail.sku.name" title="sku.name"/>
+            <column id="asnDetail.sku.specs" title="specs"/>
+            <column id="asnDetail.planPackage.name" title="p1000.name"/>
+            <column id="asnDetail.planQty" title="planQty" canSum="true"/>
+            <column id="asnDetail.executeQty" title="inboundQty" canSum="true"/>
+            <column id="asnDetail.closedQty" title="closedQty" canSum="true"/>
+			<column id="asnDetail.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv" />
+			<column id="asnDetail.sku.fixDiv" title="fixDiv" format="enumFormat" formatParam="EnuFixDiv"/>
+            <column id="asnDetail.expDate" title="planExpDate"/>
+            <column id="asnDetail.actExpDate" title="expDate"/>
+            <column id="asnDetail.invStatus" title="planInvStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+            <column id="asnDetail.actInvStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+		</columns>
+		<buttons>
+			<popup id="asnReceive" title="asnReceive" enableType="single" containId="true" pageId="asnReceive" iconUrl="action">
+				<enableExpression><![CDATA[(${asnDetail.status}==@{EnuAsnDetailStatus.200}||${asnDetail.status}==@{EnuAsnDetailStatus.300})&&(${asnDetail.planQty}>0)]]></enableExpression>
+			</popup>
+			
+			<popup id="batchRecive" title="batchRecive" enableType="multi" containId="true" pageId="asnBatchReceive" iconUrl="confirm">
+				<enableExpression><![CDATA[(${asnDetail.status}==@{EnuAsnDetailStatus.200}||${asnDetail.status}==@{EnuAsnDetailStatus.300})&&(${asnDetail.planQty}>0)]]></enableExpression>
+			</popup>
+			
+			<popup id="forceCloseAsnDetail" title="forceCloseAsnDetail" enableType="multi" containId="true" pageId="forceCloseAsnDetail" iconUrl="cancel">
+				<enableExpression><![CDATA[(${asnDetail.status}==@{EnuAsnDetailStatus.200}||${asnDetail.status}==@{EnuAsnDetailStatus.300})&&(${asnDetail.planQty}>0)]]></enableExpression>
+			</popup>
+			
+			<popup id="inboundHistoryView" title="inboundHistoryView"  enableType="single" containId="true" pageId="inboundHistoryView" iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages>

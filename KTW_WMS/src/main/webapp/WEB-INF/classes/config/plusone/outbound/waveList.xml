@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="waveList" title="waveList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+			    <text id="waveNo" title="waveNo" trimSpace="true" />
+				<list id="status" title="title.status" enumType="EnuWaveStatus"  returnType="long" multiple="true" defaultValue="100,200,210,220,250,300">
+	                <hql><![CDATA[ select 
+en.enumValue,
+en.enumValue
+from Enumerate en
+where  en.enumType='EnuWaveStatus'  
+						]]>
+	                </hql>
+            	</list>
+			</inputUIs>
+		</search>
+		<datasource type="hql">
+            <![CDATA[select 
+wave.id,
+wave.owner.code,
+wave.owner.name,
+wave.waveNumber,
+wave.status,
+wave.etd,
+wave.carrier.name,
+wave.orderQty,
+wave.skuCount,
+wave.planQty,
+wave.allocatedQty,
+wave.executeQty,
+wave.description
+from WaveDoc wave 
+left join wave.carrier
+where 1=1 
+and wave.wh = #{SESSION_WAREHOUSE} 
+/~ owner: and wave.owner.id = {owner}~/ 
+/~ status: and wave.status = {status}~/
+/~ waveNo: and wave.waveNumber like {waveNo}~/
+		]]></datasource>
+		<columns>
+			<column id="wave.id" title="ID" visible="false"  />
+			<column id="wave.owner.code" title="owner.code" visible="false"/>
+			<column id="wave.owner.name" title="owner" />
+			<column id="wave.waveNumber" title="waveNo" />
+			<column id="wave.status" title="title.status" format="enumFormat" formatParam="EnuWaveStatus"/>
+			<column id="wave.etd" title="etd"/>
+			<column id="wave.carrier.name" title="carrier"/>
+			<column id="wave.orderQty" title="orderCount"/>
+			<column id="wave.skuCount" title="skuCount"/>
+			<column id="wave.planQty" title="planQty" />
+			<column id="wave.allocatedQty" title="allocateQty" />
+			<column id="wave.executeQty" title="pickUpQty" />
+			<column id="wave.description" title="title.desc"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="waveModify" iconUrl="new"/>
+			<popup id="autoCreate" title="autoCreateWave" enableType="none" containId="false" pageId="waveAutoCreate" iconUrl="new"/>
+			<popup id="modify" title="modify" enableType="single" containId="true" pageId="waveModify" iconUrl="edit">
+				<enableExpression><![CDATA[${wave.status}==@{EnuWaveStatus.100}]]></enableExpression>
+			</popup>
+            <commit id="publish" title="publish"  enableType="multi" confirmMessage="enable.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[${wave.status}==@{EnuWaveStatus.100}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="waveDocManager" methodName="publish" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+			<commit id="cancel" title="cancel" enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${wave.status}==@{EnuWaveStatus.200} || ${wave.status}==@{EnuWaveStatus.100})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="waveDocManager" methodName="cancel" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="close" title="close" enableType="multi" confirmMessage="close.confirmMessage" iconUrl="cancel">
+				<enableExpression><![CDATA[${wave.status}==@{EnuWaveStatus.300}&&${wave.executeQty}-${wave.allocatedQty}==0]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="waveDocManager" methodName="close" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <commit id="allocate" title="allocate"  enableType="single" confirmMessage="allocatePick.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[${wave.status} == @{EnuWaveStatus.200}||${wave.status} == @{EnuWaveStatus.210} ]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="allocatePickingHelper" methodName="allocateWaveDoc" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="unAllocate" title="unAllocate"  enableType="multi" confirmMessage="unAllocatePick.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[${wave.status}==@{EnuWaveStatus.210}||${wave.status} == @{EnuWaveStatus.220} ]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="allocatePickingHelper" methodName="unAllocateWaveDoc" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <!-- <popup id="autoCreateWo" title="autoCreatePickWo" enableType="single" containId="true" pageId="autoCreatePickWo" iconUrl="edit">
+                <enableExpression><![CDATA[(${wave.status}==@{EnuWaveStatus.210}||${wave.status} == @{EnuWaveStatus.220})&&(${wave.owner.code} != 'NS')]]></enableExpression>
+            </popup> -->
+            <commit id="createWts" title="個口確定"  enableType="single" iconUrl="action">
+                <enableExpression><![CDATA[(${wave.status}==@{EnuWaveStatus.210}||${wave.status} == @{EnuWaveStatus.220})&&(${wave.owner.code} == '1000') ]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskSingleManager" methodName="createWarehouseTaskSingle" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="cancelWts" title="個口取消"  enableType="single" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[${wave.status}==@{EnuWaveStatus.250} && ${wave.owner.code} == '1000' ]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskSingleManager" methodName="cancelWavehouseTaskSingle" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <popup id="view" title="view" enableType="single" containId="true" pageId="waveView" iconUrl="view"/>
+            <popup id="wtView" title="allocateView" enableType="single" containId="true" pageId="allocateView" iconUrl="view"/>
+			<popup id="statusView" title="statusView" enableType="single" containId="true" pageId="waveStatusView" iconUrl="view"/>
+			<popup id="batchPickListAll" title="大バッチピッキングリスト(全温度帯)"  enableType="multi" containId="true" pageId="batchPickListAll" iconUrl="report">
+				<enableExpression><![CDATA[${wave.status}==@{EnuWaveStatus.250}]]></enableExpression>
+			</popup>
+		</buttons>
+	</maintainPage>
+</pages>

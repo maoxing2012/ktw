@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.edi.EdiRequest" table="WMS_BIZ_REQUEST">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">SEQ_BIZ_REQUEST</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <!-- base configure -->
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <property name="companyId" type="long" column="COMPANY_Id" not-null="true"/>
+        <property name="billNo" type="string" column="BILL_NO" length="50"/>
+        <property name="bizType" type="string" column="BIZ_TYPE" length="5" not-null="true"/>
+        <property name="calBackSystem" type="string" column="CALBACK_SYSTEM" length="20" />
+        <property name="calBackURL" type="string" column="CALBACK_URL" length="100" />
+		<property name="requestDate" column="REQUEST_DATE" type="timestamp" not-null="true"/>    
+		<property name="sync" type="boolean" column="SYNC" not-null="true"/>
+		<property name="history" type="boolean" column="HISTORY" not-null="true"/>
+        <property name="status" type="long" column="STATUS" not-null="true"/>
+        <property name="paramClassName" type="string" column="CLASS_NAME" length="100" />
+        
+        <property name="errorMessage" column="ERROR_MESSAGE" type="org.springframework.orm.hibernate3.support.ClobStringType"/>
+        <property name="jsonParam" column="JSON_PARAM" type="org.springframework.orm.hibernate3.support.ClobStringType"/>
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+        
+     </class>
+</hibernate-mapping>

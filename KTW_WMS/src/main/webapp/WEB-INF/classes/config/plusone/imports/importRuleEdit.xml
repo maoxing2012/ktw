@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="importRuleEdit"  title="importRuleEdit"   entityClass="com.core.scpwms.server.model.file.FileImportRule4Wms"  width="500" height="100" onClose="refreshParent" >
+		<inputUIs>
+			<hidden id="rule.id" reserve="false"/>
+			<text id="rule.fileImportRule.ruleCode" title="rule.ruleCode" forceOverride="true"  required="true" trimSpace="true"  />
+			<text id="rule.fileImportRule.ruleName" title="rule.ruleName" forceOverride="true"  required="true" trimSpace="true"/>
+			<text id="rule.fileImportRule.manageName" title="rule.manageName" forceOverride="true"  required="true" trimSpace="true" charCase=""/>
+			<text id="rule.fileImportRule.methodName" title="rule.methodName" forceOverride="true"  required="true" trimSpace="true" charCase=""/>
+			<list id="rule.fileImportRule.ruleType" title="rule.ruleType" enumType="EnuImportRuleType" required="true">
+				<hql><![CDATA[ select  
+o.enumValue,
+o.enumValue 
+FROM Enumerate o   
+WHERE  o.enumType='EnuImportRuleType' 
+				]]></hql>
+			</list>
+			<list id="rule.fileImportRule.fileType" title="rule.fileType" enumType="EnuImportFileType" required="true">
+				<hql><![CDATA[ select  
+o.enumValue,
+o.enumValue 
+FROM Enumerate o   
+WHERE  o.enumType='EnuImportFileType' 
+				]]></hql>
+			</list>
+			<selectText id="rule.wh.id" title="warehouse" displayedTableHead="ID,Code,Name" >
+                    <hql><![CDATA[SELECT 
+wh.id,
+wh.code,
+wh.name
+FROM Warehouse wh 
+WHERE wh.disabled = false
+						]]></hql>
+            </selectText>
+            <selectText id="rule.owner.id" title="owner" displayedTableHead="ID,Code,Name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name 
+FROM Owner owner 
+WHERE owner.disabled = false
+						]]></hql>
+            </selectText>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save"   enableType="none" invisible="false"  iconUrl="save">
+				<mappings>
+					<mapping id="rule" className="com.core.scpwms.server.model.file.FileImportRule4Wms">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="importFileRuleManager4Wms"  methodName="save"  parameter="rule" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>
+
+

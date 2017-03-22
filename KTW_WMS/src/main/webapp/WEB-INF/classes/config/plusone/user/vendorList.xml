@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="vendorList" title="vendorList" autoQuery="false">
+         <search>
+             <inputUIs>
+             	 <selectText id="plant" title="plant" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+plant.id,
+plant.code,
+plant.name
+FROM Plant plant 
+WHERE plant.disabled = '0'
+                    ]]></hql>
+                 </selectText>
+                 <text id="vendor.code" title="vendor.code" trimSpace="true"/>
+                 <text id="vendor.name" title="vendor.name" trimSpace="true"/>
+                 <list id="vendor.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[
+select 
+bizOrg.id,
+bizOrg.plant.code,
+bizOrg.plant.name,
+bizOrg.code,
+bizOrg.name,
+bizOrg.shortName,
+bizOrg.disabled,
+bizOrg.description,
+bizOrg.contractInfo.linkman,
+bizOrg.contractInfo.mobile,
+bizOrg.contractInfo.phone,
+bizOrg.contractInfo.fax,
+bizOrg.contractInfo.email,
+bizOrg.contractInfo.postcode,
+bizOrg.contractInfo.address,
+bizOrg.contractInfo.addressExt
+from BizOrg bizOrg 
+where 1=1 
+and bizOrg.plant.wh = #{SESSION_WAREHOUSE} 
+and bizOrg.type = 'V'
+/~plant: and bizOrg.plant.id = {plant} ~/
+/~vendor.code: and bizOrg.code like {vendor.code} ~/
+/~vendor.name: and bizOrg.name like {vendor.name} ~/ 
+/~vendor.disabled: and bizOrg.disabled = {vendor.disabled}~/    
+         ]]></datasource>
+        <columns>
+            <column id="bizOrg.id" title="ID"  visible="false"/>
+            <column id="bizOrg.plant.code" title="plant.code" visible="false"/>
+            <column id="bizOrg.plant.name" title="plant.name" />
+            <column id="bizOrg.code" title="vendor.code" />
+            <column id="bizOrg.name" title="vendor.name" />
+            <column id="bizOrg.shortName" title="title.shortName" />
+            <column id="bizOrg.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />
+            <column id="bizOrg.description" title="title.desc" />
+            <column id="bizOrg.contractInfo.linkman" title="contractInfo.linkman" />
+            <column id="bizOrg.contractInfo.mobile" title="contractInfo.mobile" />
+            <column id="bizOrg.contractInfo.phone" title="contractInfo.phone" />
+            <column id="bizOrg.contractInfo.fax" title="contractInfo.fax" />
+            <column id="bizOrg.contractInfo.email" title="contractInfo.email" />
+            <column id="bizOrg.contractInfo.postcode" title="contractInfo.postcode" /> 
+            <column id="bizOrg.contractInfo.address" title="contractInfo.address1" /> 
+            <column id="bizOrg.contractInfo.addressExt" title="contractInfo.address2" /> 
+        </columns>
+        <buttons>   
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="vendorEdit" iconUrl="add"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="vendorEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                 <enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="bizOrgManager" methodName="enableBizOrg" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                 <enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="bizOrgManager" methodName="disableBizOrg" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="bizOrgManager" methodName="deleteBizOrg" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+             <popup id="view" title="view"  enableType="single" containId="true" pageId="vendorView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

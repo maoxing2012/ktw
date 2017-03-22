@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="countHistoryView" title="countHistoryView" entityClass="com.core.scpwms.server.model.history.InventoryHistory"  width="500" height="300" onClose="refreshParent">
+        <inputUIs>
+			<hidden id="inventoryHistory.id" />
+			<text id="inventoryHistory.bin.binCode" title="countHistory.binCode" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.quant.sku.sku_code" title="sku.sku_code" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.quant.sku.sku_name" title="sku.sku_code" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.quant.lotSequence" title="countHistory.quant.lot" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.quant.dispLot" title="countHistory.quant.lotSequence" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.qtyEach" title="countHistory.qtyEach" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.qtyPkg" title="countHistory.qtyPkg" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.packageDetail.name" title="countHistory.pkgInfo.name" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.orderSeq" title="countHistory.orderSeq" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.iot.name" title="countHistory.iot" trimSpace="true" readOnly="true"/>
+			<text id="inventoryHistory.operateTime" title="countHistory.operateTime" trimSpace="true" readOnly="true"/>
+			<text id="labor.laborName" title="title.labor" trimSpace="true" readOnly="true"/>
+			<textArea id="inventoryHistory.operateMemo" title="countHistory.operateMemo" trimSpace="true" rows="80" cols="400" span="3" readOnly="true"/>
+        </inputUIs> 
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>
+

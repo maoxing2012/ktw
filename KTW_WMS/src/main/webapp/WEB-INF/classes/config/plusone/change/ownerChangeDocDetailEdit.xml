@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <editPage id="ownerChangeDocDetailEdit" title="ownerChangeDocDetailEdit" entityClass="com.core.scpwms.server.model.change.OwnerChangeDocDetail"  width="500" height="300" onClose="refreshParent" useLot="true">
+        <inputUIs>
+            <hidden id="ownerChangeDocDetail.id"/>
+            <hidden id="ownerChangeDocDetail.plant.id"/>
+            <selectText id="ownerChangeDocDetail.sku.id" title="sku.code" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" lotEvent="true">
+                <hql><![CDATA[ SELECT 
+sku.id,
+sku.code,
+sku.name
+FROM Sku sku 
+WHERE sku.disabled = false
+AND sku.plant.id = {ownerChangeDoc.plant.id} 
+                ]]></hql>
+                <eventListeners>
+                    <eventListener id="ownerChangeDocDetail.sku.name" index="3" refreshUI="true"/>
+                    <eventListener id="ownerChangeDocDetail.packageDetail.id" index="1" refreshUI="true"/>
+                </eventListeners>
+            </selectText>
+            <text id="ownerChangeDocDetail.sku.name" title="sku.name" readOnly="true"/>
+            <list id="ownerChangeDocDetail.packageDetail.id" title="packDetail" editModel="uneditable" required="true" displayColumn="2">
+                <hql><![CDATA[ SELECT 
+pd.id,
+pd.name 
+FROM 
+PackageDetail pd 
+WHERE
+pd.coefficient > 0 
+AND pd.packageInfo.id= (select sku.properties.packageInfo.id from Sku sku where sku.id = {ownerChangeDocDetail.sku.id}) 
+                ]]></hql>
+            </list> 
+            <numberText id="ownerChangeDocDetail.planPackQty" title="planPackQty" required="true"/>
+            <text id="ownerChangeDocDetail.extString1" title="projectNo" editModel="uneditable" length="30"/>
+            <text id="ownerChangeDocDetail.jdeInvStatus" title="jdeInvStatus" editModel="uneditable" length="3"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+	                <mapping id="ownerChangeDoc.id" className="long" />
+					<mapping id="ownerChangeDocDetail" className="com.core.scpwms.server.model.change.ownerChangeDocDetail" />
+					<mapping id="lotData" />
+                </mappings>
+                <actions>
+                    <action managerName="ownerChangeDocManager"  methodName="saveDetail"  parameter="ownerChangeDoc.id,ownerChangeDocDetail,lotData" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

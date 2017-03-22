@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="skuSupplierEdit" title="skuSupplierEdit" autoQuery="true">
+        <search>
+             <inputUIs>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+ss.id,
+ss.supplier.code,
+ss.supplier.name,
+ss.defSupplier   
+from SkuSupplier ss 
+where 1=1 
+and ss.supplier.type = 'V' 
+and ss.sku.id = {skuList.ids} 
+		]]></datasource>
+		<columns>
+            <column id="ss.id" title="ID" visible="false"/>
+			<column id="ss.supplier.code" title="supplier.code"/>
+			<column id="ss.supplier.name" title="supplier.name"/>
+			<column id="ss.defSupplier" title="sku.defSupplier" format="enumFormat" formatParam="BooleanTypeY" />
+        </columns>
+        <buttons>
+            <popup id="add" title="add" pageId="addSkuSuppliers" iconUrl="new"/>
+			<commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+				    <action managerName="skuSupplierManager" methodName="deleteSuppliers" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+			<commit id="default" title="default" enableType="single" confirmMessage="defaultSupplier.confirmMessage" iconUrl="userGroup">
+				<enableExpression><![CDATA[(${ss.defSupplier}!=@{BooleanTypeY.true})]]></enableExpression>
+				<mappings>
+					<mapping id="skuList.ids" className="list"/>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+				    <action managerName="skuSupplierManager" methodName="defaultSupplier" parameter="skuList.ids,ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+        </buttons>
+    </maintainPage>
+</pages>

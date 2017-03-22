@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.edi.SoapInfo" table="WMS_SOAP_INFO">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">SEQ_SOAP_INFO</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <property name="accessIp" type="string" column="ACCESS_IP"/>
+        <property name="status" type="long" column="STATUS" />
+        <property name="xmlContent" column="XML_CONTENT" type="org.springframework.orm.hibernate3.support.ClobStringType"/>
+        <property name="relatedSoapInfoId" type="long" column="RELATED_SOAP_INFO_ID" />
+        <property name="type" type="string" column="SOAP_TYPE" length="50" />
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+        
+     </class>
+</hibernate-mapping>

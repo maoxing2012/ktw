@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="invMoveEdit" title="invMoveEdit" entityClass="com.core.scpwms.server.model.inventory.Inventory" width="400" height="380">
+		<inputUIs>
+			<hidden id="inv.id" />
+            <text id="inv.owner.name" title="owner" readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.code" title="sku.code" readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.name" title="sku.name" readOnly="true" span="3" width="358" />
+            <text id="inv.quantInv.quant.lotSequence" title="lotSequence"  readOnly="true"/>
+            <text id="inv.quantInv.quant.dispLot" title="expDate"  readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.specs" title="specs" readOnly="true"/>
+            <text id="inv.basePackage.name" title="p1000.name" readOnly="true"/>
+            <text id="inv.baseQty" title="baseQty" readOnly="true"/>
+            <text id="inv.queuedQty" title="queuedQty" readOnly="true"/>
+            <text id="inv.bin.binCode" title="bin" readOnly="true"/>
+            <selectText id="descBin" title="descBin" required="true" displayedTableHead="ID,Code,title.desc" displayColumn="2">
+                <hql><![CDATA[ SELECT
+bin.id,
+bin.binCode,
+bin.description 
+FROM Bin bin
+WHERE bin.disabled = '0'
+and (bin.lockStatus is null or bin.lockStatus = 'LOCK_T2' )
+and bin.storageType.role in ( 'R1000', 'R3000', 'R4040')
+and bin.wh =#{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </selectText>
+            <numberText id="moveQty" title="moveQty" required="true" validator="positiveDouble" returnType="Double" />
+            <selectText id="labor" title="labor" displayedTableHead="ID,code,name" required="true">
+				<hql><![CDATA[SELECT 
+lgl.labor.id, 
+lgl.labor.code,
+lgl.labor.name
+from LaborGroupLabor lgl
+where lgl.group.role='STOCK'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+and lgl.labor.disabled = '0'
+                    ]]></hql>
+			</selectText>
+            <textArea id="desc" title="title.desc" trimSpace="true" rows="30" cols="350" span="3"/>
+		</inputUIs>
+		<buttons>
+		<commit id="invMove" title="invMove" enableType="none" iconUrl="save" >
+				<mappings>
+				    <mapping id="inv.id" className="long" />
+					<mapping id="descBin" className="long" />
+					<mapping id="moveQty" className="double" />
+					<mapping id="labor" className="long" />
+					<mapping id="desc" className="string" />
+				</mappings>
+				<actions>
+					<action managerName="invManager" methodName="invMove" parameter="inv.id,descBin,moveQty,labor,desc" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+		</commit>
+		</buttons>
+	</editPage>
+</pages>

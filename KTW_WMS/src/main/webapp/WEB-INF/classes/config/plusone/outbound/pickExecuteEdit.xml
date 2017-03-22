@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="pickExecuteEdit" title="pickExecuteEdit" entityClass="com.core.scpwms.server.model.task.WarehouseTask" width="400" height="300">
+        <inputUIs>          
+            <hidden id="task.id" />
+            <text id="task.invInfo.quant.sku.code" title="sku.code" readOnly="true"/>
+            <text id="task.invInfo.quant.sku.name" title="sku.name" span="3" readOnly="true" width="355"/>
+            <text id="task.invInfo.packageDetail.name" title="packDetail" readOnly="true"/>
+            <list id="task.invInfo.invStatus" title="invStatus" enumType="EnuInvStatus" readOnly="true">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where e.enumType = 'EnuInvStatus'
+                    ]]></hql>
+            </list>
+            <text id="task.invInfo.quant.dispLot" title="lotInfo" readOnly="true"/>
+            <text id="task.descBin.binCode" title="descBin" readOnly="true"/>
+            <numberText id="task.unExecutePackQty" title="pickPackQty" required="true"/>
+            <selectText id="task.invInfo.bin.id" title="srcBin" required="true" displayedTableHead="ID,Code,title.desc" displayColumn="2">
+                    <hql><![CDATA[ SELECT
+bin.id,
+bin.binCode,
+bin.description 
+FROM Bin bin
+WHERE bin.disabled = '0'
+and bin.id not in ( select wt.descBin.id from WarehouseTask wt where wt.id = {task.id} )
+and (bin.lockStatus is null or bin.lockStatus = 'LOCK_T1' )
+and bin.storageType.role not in( 'R8020','R8010','R8040','R4020','R5000')
+and bin.wh =#{SESSION_WAREHOUSE}
+                    ]]></hql>
+            </selectText>
+            <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role='RECEIVE'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+and lgl.labor.disabled = '0'
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+        <commit id="save" title="save" enableType="none" iconUrl="save" >
+                <mappings>
+                    <mapping id="task" className="com.core.scpwms.server.model.task.WarehouseTask" />
+                    <mapping id="labor" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskManager" methodName="pickTaskExecute" parameter="task,labor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+        </commit>
+        </buttons>
+    </editPage>
+</pages>

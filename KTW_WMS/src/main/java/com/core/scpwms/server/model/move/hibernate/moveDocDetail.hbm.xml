@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.core.scpwms.server.model.move.MoveDocDetail" table="WMS_MOVE_DOC_DETAIL">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_move_doc_detail</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <many-to-one name="doc" class="com.core.scpwms.server.model.move.MoveDoc">
+        	<column name="DOC_ID"/>
+        </many-to-one>
+        
+        <property name="planQty" column="PLAN_QTY" type="double"/>
+        <property name="planPackQty" column="PLAN_PACK_QTY" type="double"/>
+        <property name="planPutawayQty" column="PLAN_PUTAWAY_QTY" type="double"/>
+        <property name="putawayQty" column="PUTAWAY_QTY" type="double"/>
+        
+        <property name="inventoryId" column="INV_ID" type="long"/>
+        
+        <component name="invInfo" class="com.core.scpwms.server.domain.InventoryInfo">
+            <many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+                <column name="OWNER_ID"/>
+            </many-to-one>
+            <many-to-one name="packageDetail" class="com.core.scpwms.server.model.common.PackageDetail">
+                <column name="PACKAGE_DETAIL_ID"/>
+            </many-to-one>
+            <many-to-one name="quant" class="com.core.scpwms.server.model.inventory.Quant">
+                <column name="QUANT_ID"/>
+            </many-to-one>
+            <many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+                <column name="BIN_ID"/>
+            </many-to-one>
+            <many-to-one name="reasonCode" class="com.core.scpwms.server.model.common.ReasonCode">
+	            <column name="REASON_CODE_ID" />
+	        </many-to-one>
+            <property name="containerSeq" column="CONTAINER_SEQ" type="string"/>
+            <property name="inboundDate" column="INBOUND_DATE" type="date"/>
+            <property name="palletSeq" column="PALLET_SEQ" type="string"/>
+            <property name="trackSeq" column="TRACK_SEQ" type="string" length="255"/>
+            <property name="invStatus" type="string" column="INV_STATUS" length="50"/>
+        </component>
+    </class>
+</hibernate-mapping>
+
+

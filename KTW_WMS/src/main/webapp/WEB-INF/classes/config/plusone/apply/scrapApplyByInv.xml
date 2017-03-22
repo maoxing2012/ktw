@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="scrapApplyByInv" title="scrapApplyByInv" onClose="refreshParent" autoQuery="true" width="1000" height="400">
+		<search>
+            <inputUIs>
+                <text id="binCode" title="bin.code" trimSpace="true" />
+                <text id="skuCode" title="sku.code" trimSpace="true" />
+                <text id="skuName" title="sku.name" trimSpace="true" />
+            </inputUIs>
+        </search>
+		<datasource type="hql"><![CDATA[select 
+inv.id,
+inv.owner.name,
+inv.status,
+inv.bin.binCode,
+inv.quantInv.quant.sku.code,
+inv.quantInv.quant.sku.name,
+inv.baseQty - inv.queuedQty as usableQty
+from Inventory inv 
+where 1=1
+and inv.wh = #{SESSION_WAREHOUSE}
+and inv.status = 'SCRAP'
+and (inv.baseQty - inv.queuedQty) > 0
+and inv.owner.id = (select sa.owner.id from ScrapApply sa where sa.id = {scrapApply.id})
+/~binCode : and inv.bin.binCode like {binCode}~/
+/~skuCode: and inv.sku.code like {skuCode} ~/ 
+/~skuName: and inv.sku.name like {skuName} ~/ 
+		]]></datasource>
+		<columns>
+			<column id="inv.id" title="ID" visible="false"/>
+            <column id="inv.owner.name" title="owner"/>
+            <column id="inv.status" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+            <column id="inv.bin.binCode" title="bin.code" />
+            <column id="inv.quantInv.quant.sku.code" title="sku.code"/>
+            <column id="inv.quantInv.quant.sku.name" title="sku.name"/>
+            <column id="usableQty" title="usableQty"/>
+		</columns>
+		<buttons> 
+            <commit id="add" title="add" enableType="multi" confirmMessage="addToScrapApply.confirmMessage"  iconUrl="new">
+                <mappings>
+                    <mapping id="scrapApply.id" className="long" />
+                    <mapping id="ids" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="scrapApplyManager" methodName="addDetail" parameter="scrapApply.id,ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+                </forwards>
+            </commit> 
+		</buttons>
+	</maintainPage>
+</pages>

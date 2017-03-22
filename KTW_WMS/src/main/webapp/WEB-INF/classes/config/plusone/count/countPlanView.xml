@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="countPlanView" title="countPlanView" entityClass="com.core.scpwms.server.model.count.CountPlan" onClose="refreshParent" width="900" height="550" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="countPlan.id" />
+					<text id="countPlan.code" title="countNumber" />
+					<text id="countPlan.owner.name" title="owner" />
+					<list id="countPlan.countMethod" title="countMethod"  forceOverride="false" enumType="EnuCountMethod" >
+					<hql><![CDATA[ select 
+e.enumValue,
+e.enumValue 
+from Enumerate e  
+where e.enumType = 'EnuCountMethod'
+					 ]]></hql>
+					</list>
+                    <checkbox id="countPlan.blindCount" title="blindCount"/>
+					<textArea id="countPlan.description" title="title.desc" forceOverride="true" span="6" trimSpace="true" rows="50" cols="500"/>
+			</inputUIs>
+			<buttons>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+detail.id,
+detail.bin.storageType.name,
+detail.bin.storageType.wa.name,
+detail.bin.binCode,
+detail.sku.name
+from CountDetail detail 
+left join detail.countPlan 
+left join detail.bin 
+left join detail.sku
+left join detail.bin.storageType
+left join detail.bin.storageType.wa
+where 1=1
+and detail.countPlan.id = {countPlan.id}  
+            ]]></datasource>
+            <columns>
+                <column id="detail.id" title="ID" visible="false" />
+                <column id="detail.bin.storageType.name" title="storageType"/>
+                <column id="detail.bin.storageType.wa.name" title="wa"/>
+                <column id="detail.bin.binCode" title="bin"/>
+                <column id="detail.sku.name" title="sku"/>
+            </columns>  
+			<buttons>
+			</buttons> 
+		</detail>
+	</modifyDetailPage>
+</pages>

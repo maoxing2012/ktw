@@ -1,0 +1,695 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-12-20T15:01:33 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="720" pageHeight="360" orientation="Landscape" columnWidth="676" leftMargin="34" rightMargin="10" topMargin="3" bottomMargin="0" uuid="e5db3e28-49e2-4d31-b64a-3337a2d93682">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://153.127.228.73:9090/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin"/>
+	<property name="ireport.jasperserver.reportUnit" value="/report/pickList03"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="ireport.jasperserver.report.resource" value="/report/pickList03_files/main_jrxml"/>
+	<parameter name="ids" class="java.lang.String">
+		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
+	</parameter>
+	<parameter name="obdType" class="java.lang.String">
+		<defaultValueExpression><![CDATA["'2'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="carrierCd" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="tempDiv" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[--- 納品書（0:自社伝票、1:専用、2:CS統一伝票）（head部）
+select
+t.*
+from(
+select distinct
+	  1										as fixedClum
+	, wOutboundDelivery.wave_doc_id			as waveDocId
+	, wOutboundDelivery.id					as wOdbId   	
+	, wCarrier.code			                as carrierCode		-- 項No.20(送り状番号)
+	, wSku.temp_div							as tempDiv		-- 温度帯区分	
+	, temp.billType        					as obdExtString1	-- 項No.34(専用伝票区分)
+	, temp.caseType						    as caseType		-- 個口タイプ 1:散件　2:单箱 3：整箱	
+	, (case when temp.caseType = 1 then 1 else 2 end) as caseType1  -- 個口タイプ 1:整箱　2:箱												  
+	, temp.groupId						    as taskSingleBii3	-- 代表groupId
+	, case when temp.caseType >= 2 then temp.skuCode else '' end as skuCode --代表商品
+	, case when temp.caseType >= 2 then temp.binCode else '' end as binCode --代表库位
+	, wOutboundDeliveryDetail.ext_string2	as extString2		-- 項No.5(伝票No) distinct用
+	
+	, substring(split_part(wOutboundDeliveryDetail.ext_string1, ',', 45), 1, 13)	as extString1_45_1	-- 項No.45(得意先名)先頭13文字まで
+	, substring(split_part(wOutboundDeliveryDetail.ext_string1, ',', 45), 14)	    as extString1_45_2	-- 項No.45(得意先名)14文字以降
+	, substring(split_part(wOutboundDeliveryDetail.ext_string1, ',', 46) 
+		|| split_part(wOutboundDeliveryDetail.ext_string1, ',', 47), 1, 13) 	    as extString1_46_47_1	-- 項No.46、47(得意先店名＋得意先部署名)先頭13文字まで
+	, substring(split_part(wOutboundDeliveryDetail.ext_string1, ',', 46) 
+		|| split_part(wOutboundDeliveryDetail.ext_string1, ',', 47), 14) 	as extString1_46_47_2	-- 項No.46、47(得意先店名＋得意先部署名)14文字以降
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 56)   			as extString1_56	-- 項No.56(社店コード)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 60)   			as extString1_60	-- 項No.60(分類コード)
+	, wOutboundDelivery.related_bill2						                as relatedBill2		-- 項No.5(代表伝票No)	
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 53)   			as extString1_53	-- 項No.53(取引先コード)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 71)   			as extString1_71	-- 項No.71(担当営業所住所１)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 69)   			as extString1_69	-- 項No.69(会社名)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 70)   			as extString1_70	-- 項No.70(担当営業所名)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 73)   			as extString1_73	-- 項No.73(担当営業所電話番号)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 76)   			as extString1_76	-- 項No.76(担当者名)
+	, case when split_part(wOutboundDeliveryDetail.ext_string1, ',', 41) = '' then null
+	  else cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 41) as date) end	as extString1_41	-- 項No.41(伝票日付)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 19)   			as extString1_19	-- 項No.19(出荷倉庫名)
+	, wCarrier.name									as carrierName		-- 項No.21(運送便名)
+	, wOutboundDelivery.related_bill1			   			as related_bill1	-- 項No.23(受注名)
+	, case when split_part(wOutboundDeliveryDetail.ext_string1, ',', 25) = '' then null 
+	  else cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 25) as date) end as extString1_25	-- 項No.25(出荷日)YY/MM/DD
+	, case when split_part(wOutboundDeliveryDetail.ext_string1, ',', 27) = '' then null  
+	  else cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 27) as date) end as eta          	-- 項No.27(納品指定日)YY/MM/DD
+	
+	, ltrim(trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 44)), '0')	as extString1_44	-- 項No.44(得意先コード)先頭ゼロ除く	
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 31)   			as extString1_31	-- 項No.31(備考（伝票）)
+	
+	, case when rtrim(trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 58)), '012345679') = '' then -- 数字の判断
+			ltrim(trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 58)), '0')		
+		else
+			trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 58))
+	end										as extString1_58	-- 項No.58(伝票区分)数値の場合、先頭ゼロ除く、セロのみの場合、印字しない
+	
+	, case when rtrim(trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 29)), '012345679') = '' then -- 数字の判断
+			ltrim(trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 29)), '0')
+		else
+			trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 29))
+	end										as extString1_29	-- 項No.29(注文No.) 数値の場合、先頭ゼロ除く、セロのみの場合、印字しない	
+	
+	, rtrim(rtrim(trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 77)), '様分'), 
+		'様')									as extString1_77	-- 項No.77(納品先部門名)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 42)   			as extString1_42	-- 項No.42(消費税区分)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 17)   			as extString1_17	-- 項No.17(配送区分)	
+
+-------------------------出 荷 案 内(控)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 18)   			as extString1_18	-- 項No.18(倉庫コード)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 68)   			as extString1_68	-- 項No.68(担当営業所コード)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 7)			    as extString1_7		-- 項No.7(納品先名)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 8) 			    as extString1_8		-- 項No.8(店名)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 9)			    as extString1_9		-- 項No.9(部署名)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 45)			    as extString1_45	-- 項No.45(得意先名)
+	, ltrim(trim(split_part(wOutboundDeliveryDetail.ext_string1, ',', 6)), '0')	as extString1_6 -- 項No.6((納品先コード)先頭ゼロ除く
+-------------------------納品書
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 50)   			as extString1_50	-- 項No.50(得意先郵便番号)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 48)   			as extString1_48	-- 項No.48(得意先住所1)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 49)   			as extString1_49	-- 項No.49(得意先住所2)
+	, cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 27) as date)   	as extString1_27 -- 項No.27(納品指定日)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 64)   			as extString1_64	-- 項No.64(汎用項目3)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 109)   			as extString1_109	-- 項No.109(税区分)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 107)   			as extString1_107	-- 項No.107(税率)
+	, split_part(wOutboundDeliveryDetail.ext_string1, ',', 51)   			as extString1_51	-- 項No.51(得意先電話番号)	
+from 
+	wms_wave_doc wWaveDoc											-- 波次单		
+	inner join wms_outbound_delivery wOutboundDelivery							-- 出库单
+		on (wWaveDoc.id = wOutboundDelivery.wave_doc_id)
+	left outer join wms_carrier wCarrier									-- 承运商
+		on (wOutboundDelivery.carrier_id = wCarrier.id)
+	left outer join wms_biz_org wBizOrg									-- 业务角色
+		on (wOutboundDelivery.custmoer_id = wBizOrg.id)			
+	left outer join wms_outbound_delivery_detail wOutboundDeliveryDetail
+		on (wOutboundDelivery.id = wOutboundDeliveryDetail.obd_id)
+	left outer join wms_sku wSku										-- 物料商品信息
+		on (wOutboundDeliveryDetail.sku_id = wSku.id)
+
+	inner join (
+		select 
+		obd.id as obdId, 
+		obd.ext_string1 as billType,
+		wts.case_type as caseType,
+		wts.related_bii3 as groupId,
+		min(sku.code) as skuCode,
+		min(bin.code) as binCode
+		 from wms_warehouse_task_single wts  
+		 left join wms_warehouse_task wt on wts.wt_id = wt.id
+		 left join wms_bin bin on wt.bin_id = bin.id 
+		 left join wms_quant quant on wt.quant_id = quant.id
+		 left join wms_sku sku on quant.sku = sku.id
+		 left join wms_wave_doc wv on wts.wave_doc_id = wv.id 
+		 left join wms_outbound_delivery obd on wts.obd_id = obd.id 
+		 left join wms_carrier c on obd.carrier_id = c.id
+		 where 1=1
+		 and wv.id =  ($P!{ids})
+		 and (c.code in ($P!{carrierCd}) or $P{carrierCd} is null)  	
+		 and (trim(obd.ext_string1) in ($P!{obdType}) or $P{obdType} is null)
+		 and wts.inx = 1 
+		 group by 
+		 obd.id,
+		 wts.case_type,	
+		 wts.related_bii3
+		 order by 
+		 wts.case_type,
+		 wts.related_bii3
+	)temp on wOutboundDelivery.id = temp.obdId
+where
+	1 = 1
+	and (case when wCarrier.code = '149' then -- 関西トラの場合
+		(wSku.temp_div in ($P!{tempDiv}) or $P{tempDiv} is null) else 1 = 1 end)			-- 温度帯区分(1=常温;1以外は冷凍・チルドとする)		
+)t
+where 1=1
+order by  
+	1
+	, t.tempDiv -- 温度帯区分	
+	, t.obdExtString1 -- 納品書タイプ 0:自社伝票/2:CS統一伝票/1:出荷案内
+	, t.caseType1 -- 箱类型（散箱->箱）
+	, case when t.tempDiv in (1,5) then t.binCode else '' end --常温 库位从大到小
+	, case when t.tempDiv not in (1,5) then t.binCode else '' end --非常温 库位从小到大
+	, t.skuCode --商品
+	, t.caseType -- 1:散件　2:单箱 3：整箱
+	, t.taskSingleBii3 -- groupId
+	, t.extString2 --伝票Ｎｏ]]>
+	</queryString>
+	<field name="fixedclum" class="java.lang.Integer"/>
+	<field name="wavedocid" class="java.lang.Long"/>
+	<field name="wodbid" class="java.lang.Long"/>
+	<field name="carriercode" class="java.lang.String"/>
+	<field name="tempdiv" class="java.lang.Long"/>
+	<field name="obdextstring1" class="java.lang.String"/>
+	<field name="casetype" class="java.lang.Long"/>
+	<field name="tasksinglebii3" class="java.lang.String"/>
+	<field name="extString2" class="java.lang.String"/>
+	<field name="extstring1_45_1" class="java.lang.String"/>
+	<field name="extstring1_45_2" class="java.lang.String"/>
+	<field name="extstring1_46_47_1" class="java.lang.String"/>
+	<field name="extstring1_46_47_2" class="java.lang.String"/>
+	<field name="extstring1_56" class="java.lang.String"/>
+	<field name="extstring1_60" class="java.lang.String"/>
+	<field name="relatedbill2" class="java.lang.String"/>
+	<field name="extstring1_53" class="java.lang.String"/>
+	<field name="extstring1_71" class="java.lang.String"/>
+	<field name="extstring1_69" class="java.lang.String"/>
+	<field name="extstring1_70" class="java.lang.String"/>
+	<field name="extstring1_73" class="java.lang.String"/>
+	<field name="extstring1_76" class="java.lang.String"/>
+	<field name="extstring1_41" class="java.sql.Date"/>
+	<field name="extstring1_19" class="java.lang.String"/>
+	<field name="carriername" class="java.lang.String"/>
+	<field name="related_bill1" class="java.lang.String"/>
+	<field name="extstring1_25" class="java.sql.Date"/>
+	<field name="eta" class="java.sql.Date"/>
+	<field name="extstring1_44" class="java.lang.String"/>
+	<field name="extstring1_31" class="java.lang.String"/>
+	<field name="extstring1_58" class="java.lang.String"/>
+	<field name="extstring1_29" class="java.lang.String"/>
+	<field name="extstring1_77" class="java.lang.String"/>
+	<field name="extstring1_42" class="java.lang.String"/>
+	<field name="extstring1_17" class="java.lang.String"/>
+	<group name="RowGroup" isStartNewPage="true">
+		<groupExpression><![CDATA[$V{REPORT_COUNT}]]></groupExpression>
+		<groupHeader>
+			<band height="252">
+				<subreport isUsingCache="true">
+					<reportElement positionType="FixRelativeToBottom" x="-34" y="0" width="720" height="252" uuid="688190fd-48e6-45c4-9ca6-32ff900c2fcf">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<subreportParameter name="waveDocId">
+						<subreportParameterExpression><![CDATA[$F{wavedocid}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="wodbId">
+						<subreportParameterExpression><![CDATA[$F{wodbid}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="extString2">
+						<subreportParameterExpression><![CDATA["'" + $F{extString2} + "'"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="carrierCd">
+						<subreportParameterExpression><![CDATA["'" + $F{carriercode} + "'"]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="tempDiv">
+						<subreportParameterExpression><![CDATA[$F{tempdiv}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA["pickList03-detail.jrxml"]]></subreportExpression>
+				</subreport>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="321" y="193" width="175" height="11" isPrintWhenDetailOverflows="true" uuid="75d9c49d-9fc1-4e97-813a-6f7775878647">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{carriername}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="212" y="193" width="109" height="11" isPrintWhenDetailOverflows="true" uuid="f4bcf599-c71b-441d-b999-b2d0f5b40c25"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{extstring1_19}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="324" y="205" width="172" height="10" isPrintWhenDetailOverflows="true" uuid="8020544d-35e7-4398-b24b-ae93f9acdcc9"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[IF(EQUALS($F{extstring1_77}, ""), "", $F{extstring1_77} + "様分")]]></textFieldExpression>
+				</textField>
+				<textField pattern="yy/MM/dd" isBlankWhenNull="true">
+					<reportElement positionType="Float" x="267" y="226" width="54" height="11" isPrintWhenDetailOverflows="true" uuid="9cbaedab-7cc5-4e85-851e-2c9090d04ce9">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{eta}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="212" y="204" width="112" height="11" isPrintWhenDetailOverflows="true" uuid="45f9e1b7-8036-4e04-84bf-9947e2ba3a24">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[IF(EQUALS($F{extstring1_29}, ""), "", "発注No.：" + $F{extstring1_29})]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="322" y="226" width="75" height="11" isPrintWhenDetailOverflows="true" uuid="b3a150b0-c0e2-4784-8edd-947b849a3836">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{extstring1_44}]]></textFieldExpression>
+				</textField>
+				<textField pattern="yy/MM/dd" isBlankWhenNull="true">
+					<reportElement x="212" y="226" width="54" height="11" isPrintWhenDetailOverflows="true" uuid="aa8a2515-df10-4c97-8428-9c9ab98bae1c">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{extstring1_25}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="213" y="215" width="184" height="11" isPrintWhenDetailOverflows="true" uuid="6222cd5f-977b-44a7-b732-8979061f8c9c">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{related_bill1}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement positionType="Float" x="212" y="237" width="218" height="11" isPrintWhenDetailOverflows="true" uuid="2f2387da-5ac7-4f55-825c-30cad0664013">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="IPAexゴシック" size="10"/>
+						<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{extstring1_31}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="105">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="16" y="80" width="144" height="12" printWhenGroupChanges="RowGroup" uuid="90e650dd-c2de-4c7f-ae87-2fd2b941a9c2">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_46_47_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="16" y="53" width="144" height="13" printWhenGroupChanges="RowGroup" uuid="69915c2b-14f4-4d85-8373-a388bc8df417">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_45_1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="180" y="75" width="88" height="26" printWhenGroupChanges="RowGroup" uuid="f0362d9a-b525-4ac8-84f2-26e387a2cd26">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box leftPadding="0">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_56}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="268" y="75" width="33" height="26" printWhenGroupChanges="RowGroup" uuid="15d972e6-6daa-4a6f-add0-e87dbe8be016">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_60}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="305" y="75" width="15" height="26" printWhenGroupChanges="RowGroup" uuid="4eb97a04-e34a-4133-ab8e-a766e32b4b0a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_58}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="324" y="75" width="54" height="26" printWhenGroupChanges="RowGroup" uuid="e790fb8b-6245-49d7-8950-82b917dd3f48">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extString2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="381" y="75" width="48" height="26" printWhenGroupChanges="RowGroup" uuid="fdd12a19-4ac9-4a3b-96d3-df8e45da2253">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_53}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="457" y="49" width="156" height="13" printWhenGroupChanges="RowGroup" uuid="e59a5eda-7965-48bb-aaeb-409e40f4f81a">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_71}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yy" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="607" y="75" width="14" height="27" printWhenGroupChanges="RowGroup" uuid="2ce2e439-c55e-4da1-9c23-783053dce670">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_41}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="622" y="75" width="14" height="27" printWhenGroupChanges="RowGroup" uuid="4ec83ba0-fa0e-40f9-ab47-283f42bf5b4e">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_41}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd" isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="637" y="75" width="14" height="27" printWhenGroupChanges="RowGroup" uuid="b548a85e-d13a-4086-94fa-53551023dafc">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="MS PGothic" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_41}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="16" y="66" width="144" height="13" printWhenGroupChanges="RowGroup" uuid="b870cafc-71da-4b31-b3fb-88229707e668">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_45_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="16" y="92" width="144" height="12" printWhenGroupChanges="RowGroup" uuid="c66af5f9-bc07-49f9-ad3c-2da4d233e720">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_46_47_2}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="457" y="62" width="79" height="13" printWhenGroupChanges="RowGroup" uuid="c8b36669-0615-41be-9a74-ce815c4f1e69">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_69}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="457" y="75" width="148" height="13" printWhenGroupChanges="RowGroup" uuid="4e6ae5c4-65fa-4fd0-b556-5440a349602b">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEL：" + $F{extstring1_73}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="457" y="88" width="148" height="13" printWhenGroupChanges="RowGroup" uuid="770befd6-64cd-479d-8f16-e493a46c22c8">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["担当：" + $F{extstring1_76}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="536" y="62" width="77" height="13" printWhenGroupChanges="RowGroup" uuid="20a42cfe-4c28-4050-97db-624fd6209ee2">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_70}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="625" y="47" width="60" height="13" printWhenGroupChanges="RowGroup" uuid="3517d6bc-1f65-4b25-bbde-1f5d54e33807">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF(EQUALS($F{extstring1_17}, "4"), "Sパック", "")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="530" y="21" width="40" height="13" printWhenGroupChanges="RowGroup" uuid="8672854f-cd44-4e5c-ae57-a35599b8f9c2">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="IPAexゴシック" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF(EQUALS($F{extstring1_42}, "0"), "外税", IF(EQUALS($F{extstring1_42}, "1"), "内税", IF(EQUALS($F{extstring1_42}, "2"), "", "")))]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+</jasperReport>

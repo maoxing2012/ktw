@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="importFileEdit"  title="importFileEdit" entityClass="com.core.business.model.imports.FileImport"  width="500" height="100" >
+		<inputUIs>
+			<hidden id="fi.id" reserve="false"/>
+			<textArea id="fi.warnningMessage" title="fi.warnningMessage" span="2" rows="100" cols="450" length="300"/>
+		</inputUIs>
+		<buttons>
+			
+		</buttons>
+	</editPage>
+</pages>
+
+

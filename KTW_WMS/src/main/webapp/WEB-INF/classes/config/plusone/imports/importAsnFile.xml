@@ -1,0 +1,4 @@
+<pages>
+    <customPage id="importAsnFile" title="importAsnFile" className="com.core.scpwms.client.custom.page.SimpleUploadFilePage2" popup="true" width="400" height="200" onClose="refreshParent">
+    </customPage>
+</pages>

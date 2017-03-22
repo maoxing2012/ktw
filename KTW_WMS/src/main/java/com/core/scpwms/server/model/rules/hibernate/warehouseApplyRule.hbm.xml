@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.rules.WarehouseApplyRule" table="WMS_WH_APPLAY_RULE">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_rule_wh</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<version name="version" type="long" column="VERSION"/>
+		
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WAREHOUSE_ID" not-null="true" unique-key="UK_WH_RULE"/>
+		</many-to-one>
+		
+		<many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku">
+			<column name="SKU_ID" not-null="true" unique-key="UK_WH_RULE"/>
+		</many-to-one>
+		
+		<property name="priority" type="integer" >
+			<column name="PRIORITY" not-null="true" unique-key="UK_WH_RULE" />
+		</property>
+		
+		<property name="maxStock" column="MAX_STOCK" type="double" />
+		<property name="minStock" column="MIN_STOCK" type="double"/>
+		<property name="stock" column="STOCK" type="double"/>
+		
+		<set name="supplierRules" lazy="true" inverse="true" cascade="all-delete-orphan">
+			<key column="WH_APPLAY_RULE_ID"/>
+			<one-to-many class="com.core.scpwms.server.model.rules.SupplierRule"/>
+		</set>
+		
+		<property name="alive" column="IS_ALIVE" type="boolean" />
+		
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+        
+	</class>
+	
+</hibernate-mapping>
+
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.inventory.InventoryDaily" table="WMS_INVENTORY_DAILY">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_inventory_daily</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WH_ID"/>
+		</many-to-one>
+		<many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID"/>
+        </many-to-one>
+	 	<many-to-one name="quant" class="com.core.scpwms.server.model.inventory.Quant">
+	 		<column name="QUANT_ID" />
+	 	</many-to-one>        
+	 	<property name="baseQty" column="BASE_QTY" type="double"/>
+	 	<property name="status" column="STATUS" type="string" length="50"/>
+	 	<property name="trackSeq" column="TRACK_SEQ" type="string" length="255"/>
+	 	
+	 	<property name="ownerCode" column="OWNER_CODE" type="string" length="50"/>
+	 	<property name="dispLot" column="DISP_LOT" type="string" length="255"/>
+	 	<property name="statusCode" column="STATUS_CODE" type="string" length="50"/>
+	 	<property name="skuCode" column="SKU_CODE" type="string" length="50"/>
+	 	
+	 	<property name="invVersion" column="INV_VERSION" type="string" length="50"/>
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	 	
+	 </class>
+
+</hibernate-mapping>

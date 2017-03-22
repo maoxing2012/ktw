@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.common.PackageDetail" table="WMS_PACKAGE_DETAIL">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_pkgdetail</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <property name="code" column="CODE" type="string" length="50"/>
+        <property name="name" column="NAME" type="string"/>
+        <property name="packageLevel" column="PACKAGE_LEVEL" type="string"/>
+            
+        <many-to-one name="packageInfo" class="com.core.scpwms.server.model.common.PackageInfo">
+            <column name="PACKAGE_ID"/>
+        </many-to-one>
+
+        <property name="length" type="double" column="LENGTH"/>
+        <property name="width" type="double" column="WIDTH"/>
+        <property name="height" type="double" column="HEIGHT"/>
+        <property name="volume" type="double" column="VOLUME"/>
+        <property name="coefficient" type="double" column="COEFFICIENT"/>
+        <property name="precision" type="long" column="PRECISION"/>
+        <property name="usePallet" type="boolean" column="USEPALLET"/>
+        
+        <many-to-one name="container" class="com.core.scpwms.server.model.common.Container">
+            <column name="CONTAINER_ID"/>
+        </many-to-one>
+        
+        <component name="palletInfo" class="com.core.scpwms.server.model.common.PalletInfo">
+            <property name="ti" type="int" column="TI"/>
+            <property name="hi" type="int" column="HI"/>
+            <property name="length" type="double" column="PLT_LENGTH"/>
+            <property name="width" type="double" column="PLT_WIDTH"/>
+            <property name="height" type="double" column="PLT_HEIGHT"/>
+        </component>
+        
+     </class>
+</hibernate-mapping>

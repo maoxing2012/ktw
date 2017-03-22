@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="binGroupList" title="binGroupList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="bg.code" title="bg.code" trimSpace="true" />
+				<text id="bg.name" title="bg.name" trimSpace="true" />
+				<list id="bg.wa.id" title="wa" returnType="long">
+	                <hql><![CDATA[ SELECT
+						wa.id,
+						wa.name
+						FROM WhArea wa
+						WHERE  wa.disabled=  '0'
+						and wa.wh = #{SESSION_WAREHOUSE}   
+					]]></hql>
+	            </list>
+	            <list id="bg.role" title="st.role"  trimSpace="true" enumType="EnuStoreRole">
+	                 <hql><![CDATA[ SELECT 
+						e.enumValue,
+						e.enumValue 
+						From Enumerate e 
+						where e.enumType = 'EnuStoreRole' 
+					 ]]></hql>
+	            </list>
+				<list id="bg.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                 	<hql><![CDATA[ SELECT 
+						e.enumValue,
+						e.enumValue 
+						From Enumerate e 
+						where e.enumType = 'BooleanTypeN' 
+					]]></hql>
+             	</list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+bg.id,
+bg.wh.code,
+bg.wa.code,
+bg.wa.name,
+bg.role,
+bg.code,
+bg.name,
+bg.disabled 
+from BinGroup bg 
+where 1=1
+and bg.wh = #{SESSION_WAREHOUSE} 
+/~bg.wa.id: and bg.wa.id = {bg.wa.id}~/ 
+/~bg.role: and bg.role = {bg.role}~/ 
+/~bg.code: and bg.code like {bg.code}~/ 
+/~bg.name: and bg.name like {bg.name}~/ 
+/~bg.disabled: and bg.disabled = {bg.disabled}~/
+		]]></datasource>
+		<columns>
+			<column id="bg.id" title="ID" visible="false"/>
+			<column id="bg.wh.code" title="wh.code" visible="false"/>
+			<column id="bg.wa.code" title="wa.code" visible="false"/>
+			<column id="bg.wa.name" title="wa"/>
+			<column id="bg.role" title="st.role" format="enumFormat" formatParam="EnuStoreRole"/>
+			<column id="bg.code" title="bg.code"/>
+			<column id="bg.name" title="bg.name"/>		
+			<column id="bg.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="binGroupModify" iconUrl="new"/>
+			<popup id="edit" title="edit"  enableType="single" containId="true" pageId="binGroupModify" iconUrl="edit">
+				<enableExpression><![CDATA[(${bg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+			</popup>
+			<commit id="enable" title="enable" pageLocale="false"  enableType="multi" confirmMessage="enable.confirmMessage" iconUrl="enable">
+				<enableExpression><![CDATA[(${bg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"><entries /> </mapping>
+				</mappings>
+				<actions>
+					<action managerName="binGroupManager" methodName="enableBinGroup" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="disable" title="disable"  enableType="multi" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                <enableExpression><![CDATA[(${bg.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="binGroupManager" methodName="disableBinGroup" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${bg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"><entries /></mapping>
+				</mappings>
+				<actions>
+					<action managerName="binGroupManager" methodName="deleteBinGroup" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <popup id="view" title="view" enableType="single" containId="true" pageId="binGroupView" iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages>

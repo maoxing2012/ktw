@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="asnAppointEdit" title="asnAppointEdit" entityClass="com.core.scpwms.server.model.inbound.Asn" columnNum="2"  width="350" height="420" >
+        <inputUIs>
+            <hidden id="asn.id" />
+            <selectText id="asn.bin.id" title="R1000" required="true" displayedTableHead="ID,code,title.desc" lastElement="true" displayColumn="2">
+				<hql><![CDATA[ SELECT  
+bin.id, 
+bin.binCode, 
+bin.description 
+from Bin bin
+where bin.disabled = false  
+and bin.properties.wh = #{SESSION_WAREHOUSE} 
+and bin.storageType.role in ('R1000') 
+				]]></hql> 
+			</selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="asnList.ids" className="list"/>
+                    <mapping id="asn.bin.id" className="long"/>
+                </mappings>
+                <actions>
+                    <action managerName="asnManager" methodName="publish" parameter="asnList.ids,asn.bin.id"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

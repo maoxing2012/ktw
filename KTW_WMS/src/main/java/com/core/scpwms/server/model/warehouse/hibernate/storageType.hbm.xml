@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.warehouse.StorageType" table="WMS_STORAGE_TYPE">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_storage_type</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	
+	 	<discriminator column="DISCRIMINATOR" type="string"/>
+	 	
+	 	<many-to-one name="wa" class="com.core.scpwms.server.model.warehouse.WhArea">
+	 		<column name="WA_ID" not-null="true" />
+	 	</many-to-one>
+	 	
+	 	<property name="code" column="CODE" type="string" not-null="true" length="50"/>
+	 	<property name="name" column="NAME" type="string" not-null="true"/>
+	 	<property name="role" column="ROLE" type="string" length="50"/>
+	 	<property name="maskFormat" column="MASK_FORMAT" type="string" length="50"/>
+	 	<property name="disabled" column="DISABLED" type="boolean"/>
+	 	<property name="tempDiv" column="TEMP_DIV" type="long" />
+	 	
+	 	<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	 </class>
+
+</hibernate-mapping>

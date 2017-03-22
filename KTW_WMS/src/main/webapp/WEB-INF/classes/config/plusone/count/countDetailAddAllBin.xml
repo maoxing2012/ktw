@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="countDetailAddAllBin" title="countDetailAddAllBin" entityClass="com.core.scpwms.server.model.count.CountDetail" width="300" height="300" columnNum="2">
+        <inputUIs>
+            <hidden id="countDetail.id" />
+            <checkbox id="onlyInventoryBin" title="onlyInventoryBin" defaultValue="true" foreOverride="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="addAllBin" title="addAllBin" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="countPlan.id" className="long" />
+                    <mapping id="onlyInventoryBin" className="boolean" />
+                </mappings>
+                <actions>
+                    <action managerName="countPlanManager" methodName="addAllBin" parameter="countPlan.id,onlyInventoryBin"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

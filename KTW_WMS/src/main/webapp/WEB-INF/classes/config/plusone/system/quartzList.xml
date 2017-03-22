@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="quartzList" title="quartzList" autoQuery="false" filterCol="true">
+         <search>
+             <inputUIs>
+				 <text id="quartzId" title="quartzId" trimSpace="true"/>
+             </inputUIs>
+         </search>
+         <dbclick button="modify"/>
+         <datasource type="hql" ><![CDATA[
+select 
+qz.id,
+qz.quartzId,
+qz.managerId,
+qz.methodId,
+qz.params,
+qz.lastExecuteDate,
+qz.cronExpression,
+qz.jobStatus,
+qz.disabled,
+qz.quartzDesc 
+from BaseQuartzSetting qz  
+where 1=1   
+/~qz.quartzId: and qz.quartzId like {qz.quartzId} ~/
+         ]]></datasource>
+        <columns>
+            <column id="qz.id" title="ID" visible="false"/>
+            <column id="qz.quartzId" title="quartzId" typeId="quartzId"/>
+            <column id="qz.managerId" title="managerId" />
+            <column id="qz.methodId" title="methodId"/>
+            <column id="qz.params" title="params"/>
+            <column id="qz.lastExecuteDate" title="lastExecuteDate"/>
+            <column id="qz.cronExpression" title="cronExpression" />
+            <column id="qz.jobStatus" title="jobStatus" format="enumFormat" formatParam="EnuJobStatus"/>
+            <column id="qz.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+            <column id="qz.quartzDesc" title="title.desc"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new" enableType="none" containId="false"  pageId="quartzEdit" iconUrl="new"/>
+            <popup id="edit" title="edit" enableType="single" containId="true"  pageId="quartzEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${qz.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="single" invisible="false" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                 <enableExpression><![CDATA[(${qz.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="baseDataJobProxy" methodName="enable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="single" invisible="false" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                 <enableExpression><![CDATA[(${qz.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="baseDataJobProxy" methodName="disable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete" enableType="multi" invisible="false" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                 <enableExpression><![CDATA[(${qz.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="baseQuartzManager" methodName="delete" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="runNow" title="runNow" enableType="single" invisible="false" confirmMessage="execute.confirmMessage" iconUrl="action">
+                 <enableExpression><![CDATA[(${qz.jobStatus}==@{EnuJobStatus.0})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="baseDataJobProxy" methodName="executeNow" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <popup id="view"  title="view" enableType="single" containId="true"  pageId="quartzLogView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

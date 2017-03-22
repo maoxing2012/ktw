@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="fileImportRuleEdit" title="fileImportRuleEdit"  entityClass="com.core.business.model.imports.FileImportRule" columnNum="4" width="450" height="320" >
+		<inputUIs>
+			<hidden id="fileImportRule.id"/>
+			<text id="fileImportRule.ruleCode" title="fileImportRule.ruleCode" editModel="uneditable" required="true" length="20" trimSpace="true" />
+			<text id="fileImportRule.ruleName" title="fileImportRule.ruleName" required="true" length="50" trimSpace="true" lastElement="true"/>
+			<text id="fileImportRule.manageName" title="fileImportRule.manageName" length="50" required="true" trimSpace="true"/>
+			<text id="fileImportRule.methodName" title="fileImportRule.methodName" length="30" required="true" trimSpace="true" lastElement="true"/>
+			<list id="fileImportRule.fileType" title="fileImportRule.fileType" required="true" enumType="EnuImportFileType" lastElement="true">
+				<hql>
+				<![CDATA[SELECT  
+					e.enumValue,e.enumValue    
+					FROM Enumerate e WHERE e.enumType='EnuImportFileType']]>
+				</hql>
+			</list>
+			<textArea id="fileImportRule.memo" title="fileImportRule.memo" span="2" rows="80" cols="350" length="200"/>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="fileImportRule" className="com.core.business.model.imports.FileImportRule">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

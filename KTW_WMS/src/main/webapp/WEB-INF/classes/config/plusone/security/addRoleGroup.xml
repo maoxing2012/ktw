@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <maintainPage id="addRoleGroup" title="addRoleGroup" autoQuery="true" filterCol="true" width="600" height="300">
+		 <search>
+			 <inputUIs>
+				 <text id="group.code" title="group.code" forceOverride="true"  trimSpace="true"/>
+				 <text id="group.name" title="group.name" forceOverride="true"  trimSpace="true"/>
+			 </inputUIs>
+		 </search>
+	 <datasource type="hql"><![CDATA[select 
+g.id, 
+g.code, 
+g.name
+from Group g,Role role 
+where 1=1
+/~role.id: and role.id = {role.id}~/
+and g not in elements (role.groups) 
+/~group.code: and g.code like {group.code}~/ 
+/~group.name: and g.name like {group.name}~/
+		]]></datasource>
+		<columns>
+			 <column id="g.id" title="group.id" visible="false"/>
+			 <column id="g.code" title="group.code" typeId="group.code"/>
+			 <column id="g.name" title="group.name" typeId="group.name"/>
+		</columns>
+	 	<buttons>
+				<commit id="addGroups" title="add" enableType="multi" iconUrl="save">
+					<mappings>
+						<mapping id="role.id" className="long"/>
+	 					<mapping id="ids" className="list"/>
+					</mappings>
+					<actions>
+						<action managerName="roleManager" methodName="addRoleGroups" parameter="role.id,ids"/>
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+	 					<forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+					</forwards>
+				</commit>
+			</buttons>
+	 </maintainPage>
+</pages>

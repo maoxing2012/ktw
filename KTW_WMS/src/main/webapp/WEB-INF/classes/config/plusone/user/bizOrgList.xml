@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="bizOrgList" title="bizOrgList" autoQuery="false">
+         <search>
+             <inputUIs>
+                 <selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+                    ]]></hql>
+                 </selectText>
+                 <text id="bizOrg.code" title="bizOrg.code" trimSpace="true"/>
+                 <text id="bizOrg.name" title="bizOrg.name" trimSpace="true"/>
+                 <text id="postcode" title="contractInfo.postcode" trimSpace="true"/>
+                 <text id="address" title="contractInfo.address" trimSpace="true"/>
+                 <text id="course.code" title="course.code" trimSpace="true" />
+                 <list id="bizOrg.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[
+select 
+bizOrg.id,
+bizOrg.owner.code,
+bizOrg.owner.name,
+bizOrg.code,
+bizOrg.name,
+bizOrg.shortName,
+bizOrg.disabled,
+bizOrg.description,
+bizOrg.contractInfo.linkman,
+bizOrg.contractInfo.mobile,
+bizOrg.contractInfo.phone,
+bizOrg.contractInfo.fax,
+bizOrg.contractInfo.email,
+bizOrg.contractInfo.postcode,
+bizOrg.contractInfo.address,
+bizOrg.contractInfo.addressExt,
+( select max(cb.course.code) from CourseBizOrg cb where cb.customer.id = bizOrg.id ) as courseCode
+from BizOrg bizOrg 
+left join bizOrg.plant
+left join bizOrg.owner
+where 1=1 
+and bizOrg.plant.wh = #{SESSION_WAREHOUSE} 
+and bizOrg.type = 'C'
+/~plant: and bizOrg.plant.id = {plant} ~/
+/~owner: and bizOrg.owner.id = {owner} ~/
+/~bizOrg.code: and bizOrg.code like {bizOrg.code} ~/
+/~bizOrg.name: and bizOrg.name like {bizOrg.name} ~/ 
+/~postcode: and bizOrg.contractInfo.postcode like {postcode} ~/ 
+/~address: and (CONCAT(bizOrg.contractInfo.address, bizOrg.contractInfo.addressExt)) like {address} ~/ 
+/~bizOrg.disabled: and bizOrg.disabled = {bizOrg.disabled}~/    
+/~course.code: and exists(select cb.id from CourseBizOrg cb where cb.customer.id = bizOrg.id and cb.course.code like {course.code} ) ~/ 
+         ]]></datasource>
+        <columns>
+            <column id="bizOrg.id" title="ID"  visible="false"/>
+            <column id="bizOrg.owner.code" title="owner.code" visible="false"/>
+            <column id="bizOrg.owner.name" title="owner.name" />
+            <column id="bizOrg.code" title="bizOrg.code" />
+            <column id="bizOrg.name" title="bizOrg.name" />
+            <column id="bizOrg.shortName" title="title.shortName" />
+            <column id="bizOrg.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />
+            <column id="bizOrg.description" title="title.desc" />
+            <column id="bizOrg.contractInfo.linkman" title="contractInfo.linkman" />
+            <column id="bizOrg.contractInfo.mobile" title="contractInfo.mobile" />
+            <column id="bizOrg.contractInfo.phone" title="contractInfo.phone" />
+            <column id="bizOrg.contractInfo.fax" title="contractInfo.fax" />
+            <column id="bizOrg.contractInfo.email" title="contractInfo.email" />
+            <column id="bizOrg.contractInfo.postcode" title="contractInfo.postcode" /> 
+            <column id="bizOrg.contractInfo.address" title="contractInfo.address1" /> 
+            <column id="bizOrg.contractInfo.addressExt" title="contractInfo.address2" /> 
+            <column id="courseCode" title="course.code" /> 
+        </columns>
+        <buttons>   
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="bizOrgEdit" iconUrl="add"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="bizOrgEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" iconUrl="enable">
+                 <enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="bizOrgManager" methodName="enableBizOrg" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" iconUrl="disable">
+                 <enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="bizOrgManager" methodName="disableBizOrg" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="bizOrgManager" methodName="deleteBizOrg" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+             <popup id="view" title="view"  enableType="single" containId="true" pageId="bizOrgView" iconUrl="view"/>
+             <commit id="resetCourse" title="コース設定"  enableType="multi" iconUrl="edit">
+				<enableExpression><![CDATA[(${bizOrg.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="transportManager" methodName="resetCourse" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+        </buttons>
+     </maintainPage>
+</pages>

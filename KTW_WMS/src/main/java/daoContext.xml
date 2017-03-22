@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC
+        "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- edi -->
+	<bean id="soapInfoHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/edi/hibernate/soapInfo.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- quarz -->
+    <bean id="quarzHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/quartz/hibernate/quartzSetting.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="quartzExecuteLogHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/quartz/hibernate/quartzExecuteLog.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+	<!-- warehouse -->
+    <bean id="whHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/warehouse.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="warehousePropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/warehouseProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="ugWarehouseHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/ugWarehouse.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="whAreaHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/whArea.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="storageTypeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/storageType.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="binPropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/binProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="binHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/bin.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="binInvInfoHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/binInvInfo.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="binGroupHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/binGroup.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="binBinGroupHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/binBinGroup.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- labor -->
+    <bean id="laborHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/labor.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="laborGroupHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/laborGroup.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="laborGroupLaborHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/warehouse/hibernate/laborGroupLabor.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- user -->
+    <bean id="plantHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/plant.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="plantWarehousingPropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/plantWarehousingProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="plantInBountPropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/plantInBountProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="plantOutBountPropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/plantOutBountProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="ownerHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/owner.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="carrierHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/carrier.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="bizOrgHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/bizOrg.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="bizOrgPropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/bizOrgProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="addresseeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/addressee.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="addresseeCodeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/user/hibernate/addresseeCode.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- SKU -->
+    <bean id="packageInfoHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/packageInfo.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="packageDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/packageDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="skuTypeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/skuType.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="containerHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/container.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="sequencePropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/sequenceProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="orderTypeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/orderType.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="abcPropertiesHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/abcProperties.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="skuSupplierHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/skuSupplier.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="skuHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/sku.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="reasonCodeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/reasonCode.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="skuInterCodeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/common/hibernate/skuInterCode.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- LOT -->
+    <bean id="lotEnumerateHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/lot/hibernate/lotEnumerate.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="lotEnumerateDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/lot/hibernate/lotEnumerateDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="lotInfoHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/lot/hibernate/lotInfo.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- rule -->
+    <bean id="pickUpRuleHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/rules/hibernate/pickUpRule.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="putAwayRuleHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/rules/hibernate/putAwayRule.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="orderTypeRuleHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/rules/hibernate/orderTypeRule.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="waveRuleHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/rules/hibernate/waveRule.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="cycleCountRuleHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/rules/hibernate/cycleCountRule.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- base -->
+    <bean id="orderStatusHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/base/hibernate/orderStatus.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="infoMessageHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/base/hibernate/infoMessage.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- inbound -->
+    <bean id="asnHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inbound/hibernate/asn.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="asnDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inbound/hibernate/asnDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="inboundHistoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inbound/hibernate/inboundHistory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- inventory -->
+    <bean id="quantHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inventory/hibernate/quant.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="quantInventoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inventory/hibernate/quantInventory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="containerInvHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inventory/hibernate/containerInv.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="inventoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inventory/hibernate/inventory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- history -->
+    <bean id="inventoryHistoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/history/hibernate/inventoryHistory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- outbound -->
+    <bean id="outboundDeliveryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/outbound/hibernate/outboundDelivery.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="outboundDeliveryDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/outbound/hibernate/outboundDeliveryDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="outboundHistoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/outbound/hibernate/outboundHistory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="waveDocHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/outbound/hibernate/waveDoc.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="waveDocDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/outbound/hibernate/waveDocDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- task -->
+    <bean id="warehouseOrderHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/task/hibernate/warehouseOrder.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="warehouseTaskHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/task/hibernate/warehouseTask.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="warehouseTaskSingleHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/task/hibernate/warehouseTaskSingle.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="warehouseTaskProcessHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/task/hibernate/warehouseTaskProcess.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="wtHistoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/task/hibernate/wtHistory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- apply -->
+    <bean id="scrapApplyHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/apply/hibernate/scrapApply.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="scrapApplyDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/apply/hibernate/scrapApplyDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- count -->
+    <bean id="countPlanHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/count/hibernate/countPlan.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="countDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/count/hibernate/countDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="countRecordHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/count/hibernate/countRecord.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- accessory -->
+    <bean id="accessoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/accessory/hibernate/accessory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="accessoryInventoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/accessory/hibernate/accessoryInventory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="accessoryInventoryHistoryHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/accessory/hibernate/accessoryInventoryHistory.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="ediHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/edi/hibernate/ediRequest.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="inventoryVersionHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/inventory/hibernate/inventoryDaily.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- pack -->
+    
+    <!-- file -->
+    <bean id="fileImport4WmsHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/file/hibernate/fileImport4Wms.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="fileImport4WmsDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/file/hibernate/fileImport4WmsDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <bean id="fileImportRule4WmsHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/file/hibernate/fileImportRule4Wms.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- temp -->
+    <bean id="asnMultiProcessHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/temp/hibernate/asnMultiProcess.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- fee -->
+    <bean id="companyHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/fee/hibernate/company.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="requestReportHeadHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/fee/hibernate/requestReportHead.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="requestReportDetailHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/fee/hibernate/requestReportDetail.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="feeTypeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/fee/hibernate/feeType.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+    <!-- transport -->
+    <bean id="areaHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/transport/hibernate/area.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="cityHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/transport/hibernate/city.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="courseHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/transport/hibernate/course.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="courseBizOrgHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/transport/hibernate/courseBizOrg.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="coursePostCodeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/transport/hibernate/coursePostCode.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    <bean id="postCodeHibernateMappingResource" class="com.core.db.server.dao.hibernate.HibernateMappingResource">
+        <constructor-arg>
+            <value>com/core/scpwms/server/model/transport/hibernate/postCode.hbm.xml</value>
+        </constructor-arg>
+    </bean>
+    
+</beans>

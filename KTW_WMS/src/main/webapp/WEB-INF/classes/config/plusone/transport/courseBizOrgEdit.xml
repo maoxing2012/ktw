@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="courseBizOrgEdit" title="courseBizOrgEdit" entityClass="com.core.scpwms.server.model.transport.Course" onClose="refreshParent" width="950" height="600" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="course.id" />
+                <text id="course.code" title="course.code" trimSpace="true" readOnly="true"  />
+                <textArea id="course.name" title="title.desc" trimSpace="true" rows="50" cols="600" span="6"/>
+			</inputUIs>
+			<buttons>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select 
+cb.id,
+cb.customer.code,
+cb.customer.name,
+cb.customer.contractInfo.postcode,
+cb.customer.contractInfo.address,
+cb.customer.contractInfo.addressExt
+from CourseBizOrg cb
+where 1=1
+and cb.course.id = {courseList.id}
+ 			]]></datasource>
+			<columns>
+				<column id="cb.id" title="ID" visible="false" />
+				<column id="cb.customer.code" title="bizOrg.code"/>
+                <column id="cb.customer.name" title="bizOrg.name"/>
+                <column id="cb.customer.contractInfo.postcode" title="postcode"/>
+                <column id="cb.customer.contractInfo.address" title="contractInfo.address1"/>
+                <column id="cb.customer.contractInfo.addressExt" title="contractInfo.address2"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="addBizOrg2Course"  iconUrl="new">
+					<enableExpression><![CDATA[(${course.id}>0)]]></enableExpression>
+				</popup>
+				<commit id="deleteDetail" title="deleteDetail" confirmMessage="delete.confirmMessage" enableType="multi" iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list"><entries /></mapping>
+					</mappings>
+					<actions>
+						<action managerName="transportManager" methodName="deleteBizOrgFromCourse" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

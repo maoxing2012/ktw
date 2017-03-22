@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.inbound.Asn" table="WMS_ASN">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_asn</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<version name="version" type="long" column="VERSION"/>
+		
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WAREHOUSE_ID"/>
+		</many-to-one>
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+			<column name="PLANT_ID"/>
+		</many-to-one>
+		<many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID"/>
+        </many-to-one>
+        <many-to-one name="supplier" class="com.core.scpwms.server.model.user.BizOrg">
+			<column name="SUPPLIER_ID"/>
+		</many-to-one>
+        <many-to-one name="carrier" class="com.core.scpwms.server.model.user.Carrier">
+            <column name="CARRIER_ID"/>
+        </many-to-one>
+        <many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType">
+			<column name="ORDER_TYPE_ID"/>
+		</many-to-one>
+		<many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+			<column name="BIN_ID"/>
+		</many-to-one>
+        
+		<property name="asnNumber" column="ASN_NUMBER" type="string" length="50"/>
+		<property name="relatedBill1" column="RELATED_BILL1" type="string" length="50"/>
+		<property name="relatedBill2" column="RELATED_BILL2" type="string" length="50"/>
+		<property name="relatedBill3" column="RELATED_BILL3" type="string" length="50"/>
+		<property name="transNumber" column="TRANS_NUMBER" type="string" length="50"/>
+		<property name="ediData" column="EDIDATA" type="boolean"/>
+		<property name="status" column="STATUS" type="long"/>
+		<property name="reportStatus" column="REPORT_STATUS" type="long"/>
+		
+		<property name="transactionDate" column="TRANSACTION_DATE" type="timestamp"/>
+		<property name="publishDate" column="PUBLISH_DATE" type="timestamp"/>
+		<property name="eta" column="ETA" type="date" />
+		<property name="revieveStart" column="REVIEVESTART" type="timestamp"/>
+        <property name="finishStart" column="FINISHSTART" type="timestamp"/>
+        
+		<component name="shipFrom" class="com.core.business.model.domain.ContractInfo">
+            <property name="linkman" column="LINKMAN" type="string" length="50" />
+            <property name="phone" column="PHONE" type="string" length="50"/>
+            <property name="fax" column="FAX" type="string" length="50"/>
+            <property name="email" column="EMAIL" type="string" length="100"/>
+            <property name="address" column="ADDRESS" type="string" length="255"/>
+            <property name="addressExt" column="ADDRESS_EXT" type="string" length="255"/>
+            <property name="postcode" column="POSTCODE" type="string" length="50"/>
+            <property name="mobile" column="MOBILE" type="string" length="50"/>
+            <property name="code" column="CODE" type="string" length="50"/>
+        </component>
+        
+		<property name="planQty" column="PLAN_QTY" type="double" />
+		<property name="executeQty" column="EXECUTE_QTY" type="double" />
+		<property name="closedQty" column="CLOSED_QTY" type="double" />
+        <property name="sumPrice" column="SUM_PRICE" type="double"/>
+        <property name="sumWeight" column="SUM_WEIGHT" type="double"/>
+        <property name="sumVolume" column="SUM_VOLUME" type="double"/>
+        <property name="skuCount" column="SKU_COUNT" type="double"/>
+        
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <property name="extDescription" column="EXT_DESCRIPTION" type="string"/>
+        
+        <property name="extString1" column="EXT_STRING1" type="string" />  
+		<property name="extString2" column="EXT_STRING2" type="string" />  
+		<property name="extString3" column="EXT_STRING3" type="string" />  
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+        
+        <set name="details" table="WMS_ASN_DETAIL" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="ASN_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.inbound.AsnDetail"/>
+        </set>
+	</class>
+</hibernate-mapping>
+
+

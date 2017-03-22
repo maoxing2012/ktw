@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.inventory.ContainerInv" table="WMS_CONTAINER_INV">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_containerinv</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<property name="containerSeq" column="CONTAINER_SEQ" type="string" /> 
+	 	<property name="palletSeq" column="PALLET_SEQ" type="string" /> 
+	 	<property name="bePallet" column="BE_PALLET" type="boolean" /> 
+	 	<property name="remark" column="REMARK" type="string" /> 
+	 	<property name="putawayDate" column="PUTAWAY_DATE" type="timestamp" />
+	 	<property name="level" column="LEV" type="long"/>
+	 	
+	 	<many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+	 		<column name="BIN_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="container" class="com.core.scpwms.server.model.common.Container">
+            <column name="CONTAINER_ID" />
+        </many-to-one>
+	 	
+		<set name="invs" lazy="true" inverse="true" cascade="all-delete-orphan" >
+        	<key column="CONTAINER_INV_ID"/>
+        	<one-to-many class="com.core.scpwms.server.model.inventory.Inventory"/>
+        </set> 	 	
+	 </class>
+
+</hibernate-mapping>

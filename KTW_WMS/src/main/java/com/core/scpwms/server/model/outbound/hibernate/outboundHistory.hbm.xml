@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.outbound.OutboundHistory" table="WMS_OUTBOUND_HISTORY">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_outbound_history</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID" />
+        </many-to-one>
+		<many-to-one name="obd" class="com.core.scpwms.server.model.outbound.OutboundDelivery">
+            <column name="OBD_ID" />
+        </many-to-one>
+		<many-to-one name="detail" class="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail">
+			<column name="OBD_DETAIL_ID"/>
+		</many-to-one>
+		 <many-to-one name="labor" class="com.core.scpwms.server.model.warehouse.Labor">
+            <column name="LABOR_ID"/>
+        </many-to-one>
+        
+        <property name="shipDate" column="SHIP_DATE" type="timestamp"/>
+        <property name="executeQty" column="EXECUTE_QTY" type="double"/>
+		
+        <component name="invInfo" class="com.core.scpwms.server.domain.InventoryInfo">
+            <many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+                <column name="OWNER_ID"/>
+            </many-to-one>
+            <many-to-one name="packageDetail" class="com.core.scpwms.server.model.common.PackageDetail">
+                <column name="PACKAGE_DETAIL_ID"/>
+            </many-to-one>
+            <many-to-one name="quant" class="com.core.scpwms.server.model.inventory.Quant">
+                <column name="QUANT_ID"/>
+            </many-to-one>
+            <many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+                <column name="BIN_ID"/>
+            </many-to-one>
+            <many-to-one name="reasonCode" class="com.core.scpwms.server.model.common.ReasonCode">
+	            <column name="REASON_CODE_ID" />
+	        </many-to-one>
+            <property name="containerSeq" column="CONTAINER_SEQ" type="string"/>
+            <property name="inboundDate" column="INBOUND_DATE" type="date"/>
+            <property name="palletSeq" column="PALLET_SEQ" type="string"/>
+            <property name="trackSeq" column="TRACK_SEQ" type="string" length="255"/>
+            <property name="invStatus" type="string" column="INV_STATUS" length="50"/>
+        </component>
+		
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+	
+</hibernate-mapping>
+
+

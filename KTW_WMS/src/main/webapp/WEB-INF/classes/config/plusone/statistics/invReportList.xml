@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+ <report  id="invReportList" title="invReportList" reportFile="/report/invReportList" columnNum="8" parameter="ownerId,tempDiv,skuId" >
+	<inputUIs>
+		<selectText id="ownerId" title="owner" displayedTableHead="ID,code,name" required="true">
+			<hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+			]]></hql>
+			<eventListeners>
+				<eventListener id="skuId" index="1" refreshUI="true"/>
+			</eventListeners>
+        </selectText>
+        <list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="false">
+             <hql><![CDATA[ SELECT 
+                 e.enumValue,
+                 e.enumValue 
+                 From Enumerate e 
+                 where e.enumType = 'EnuTemperatureDiv' 
+             ]]></hql>
+         </list>
+         <selectText id="skuId" title="sku.code" editModel="uneditable" displayedTableHead="ID,Code,Name" displayColumn="2">
+				<hql><![CDATA[ SELECT 
+sku.id,
+sku.code,
+sku.name
+FROM Sku sku 
+WHERE sku.disabled = false
+AND sku.owner.id = {ownerId} 
+				]]></hql>
+			<eventListeners>
+				<eventListener id="sku.name" index="3" refreshUI="true"/>
+			</eventListeners>
+		</selectText>
+		<text id="sku.name" title="sku.name" readOnly="true"/>
+	</inputUIs>
+ </report>
+</pages>

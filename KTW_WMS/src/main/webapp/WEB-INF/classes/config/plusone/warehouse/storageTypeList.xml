@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="storageTypeList" title="storageTypeList" autoQuery="false">
+        <search>
+            <inputUIs>
+                <list id="st.wa.id" title="wa" returnType="long">
+	                <hql><![CDATA[ SELECT
+						wa.id,
+						wa.name
+						FROM WhArea wa
+						WHERE  disabled='0'
+						and wa.wh = #{SESSION_WAREHOUSE}   
+					]]></hql>
+	            </list>
+                <text id="st.code" title="st.code"  trimSpace="true" />
+                <text id="st.name" title="st.name"  trimSpace="true"/>
+                <list id="st.role" title="st.role"  trimSpace="true" enumType="EnuStoreRole">
+                 <hql><![CDATA[ SELECT 
+						e.enumValue,
+						e.enumValue 
+						From Enumerate e 
+						where e.enumType = 'EnuStoreRole' 
+					]]></hql>
+             	</list>
+                <list id="st.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[ select 
+st.id,
+st.wa.name,
+st.code,
+st.name,
+st.role,
+st.tempDiv,
+st.disabled
+from StorageType st   
+where 1=1 
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+/~st.wa.id: and st.wa.id = {st.wa.id}~/ 
+/~st.code: and st.code like {st.code}~/ 
+/~st.name: and st.name like {st.name}~/ 
+/~st.role: and st.role = {st.role}~/ 
+/~st.disabled: and st.disabled = {st.disabled}~/ 
+		]]></datasource>
+        <columns>
+            <column id="st.id" title="ID" visible="false" />
+            <column id="st.wa.name" title="wa.name"/>
+            <column id="st.code" title="st.code"/>
+            <column id="st.name" title="st.name"/>
+            <column id="st.role" title="st.role"  format="enumFormat" formatParam="EnuStoreRole"/>
+            <column id="st.tempDiv" title="tempDiv"  format="enumFormat" formatParam="EnuTemperatureDiv"/>
+            <column id="st.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new" enableType="none" containId="false" pageId="storageTypeEdit" iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true" pageId="storageTypeEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${st.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" iconUrl="enable">
+                 <enableExpression><![CDATA[(${st.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="stManager" methodName="enableST" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disabled" title="disable" enableType="multi" iconUrl="disable">
+                 <enableExpression><![CDATA[(${st.disabled} == @{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="stManager" methodName="disabledST" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${st.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="stManager" methodName="deleteST" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+        </buttons>
+    </maintainPage>
+</pages>

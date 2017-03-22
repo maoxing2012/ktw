@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="skuAddInterCode" title="skuAddInterCode" entityClass="com.core.scpwms.server.model.common.SkuInterCode"  width="400" height="300" onClose="refreshParent" >
+		<inputUIs>
+			<hidden id="barCode.id" title="ID" />
+			<selectText id="ownerId" title="owner" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" >
+				<hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name  
+FROM Owner owner 
+WHERE owner.disabled = false
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+				]]></hql>
+				<eventListeners>
+					<eventListener id="skuId" index="1" refreshUI="true"/>
+				</eventListeners>
+			</selectText>
+			<selectText id="skuId" title="sku" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" >
+				<hql><![CDATA[SELECT 
+sku.id,
+sku.code,
+sku.name
+FROM Sku sku 
+WHERE sku.disabled = '0'
+and sku.owner.id = {ownerId}
+				]]></hql>
+			</selectText>
+			<list id="packageLevel" title="packageLevel" enumType="EnuPackageLevel" required="true" returnType="string">
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuPackageLevel' 
+                ]]></hql>
+            </list>
+			<text id="barCode" title="barCode" required="true" />
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+				    <mapping id="skuId" className= "long"/>
+					<mapping id="barCode"  className="string"/>
+					<mapping id="packageLevel"  className="string"/>
+				</mappings>
+				<actions>
+					<action managerName="skuManager"  methodName="addInterCode"  parameter="skuId,barCode,packageLevel" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

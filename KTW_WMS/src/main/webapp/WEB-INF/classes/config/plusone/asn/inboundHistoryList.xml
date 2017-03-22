@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="inboundHistoryList" title="inboundHistoryList" pageLocale="false" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="asnNumber" title="asnNumber" trimSpace="true"/>
+				<text id="custBillNo" title="custBillNo" trimSpace="true" />
+				<text id="sku.code" title="sku.code" trimSpace="true" />
+				<text id="sku.name" title="sku.name" trimSpace="true" />
+				<text id="expDate" title="expDate" trimSpace="true" />
+				<list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+				<list id="stockDiv" title="stockDiv" forceOverride="true" enumType="EnuStockDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuStockDiv' 
+                    ]]></hql>
+                </list>
+                <list id="invStatus" title="invStatus" enumType="EnuInvStatus" returnType="string" multiple="true">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvStatus'
+                    ]]></hql>
+                </list>
+				<date id="ataFrom" title="ataFrom" showTime="false" defaultCurrentDate="false" />
+                <date id="ataTo" title="ataTo" showTime="false" defaultCurrentDate="false" />
+			</inputUIs>
+		</search>
+		<datasource><![CDATA[select  
+ih.id,
+ih.asn.owner.name,
+ih.asn.asnNumber,
+ih.asn.relatedBill1,
+ih.detail.lineNo,
+ih.detail.sku.code,
+ih.detail.sku.name,
+ih.detail.sku.specs,
+ih.invInfo.packageDetail.name,
+ih.detail.planQty,
+ih.executeQty,
+ih.detail.sku.tempDiv,
+ih.detail.stockDiv,
+ih.invInfo.invStatus,
+ih.invInfo.quant.dispLot,
+ih.invInfo.inboundDate,
+ih.labor.name,
+ih.receiveDate
+from InboundHistory ih
+where 1=1  
+and ih.wh = #{SESSION_WAREHOUSE} 
+/~asnNumber: and ih.asn.asnNumber like {asnNumber}~/
+/~custBillNo: and ih.asn.relatedBill1 like {custBillNo}~/
+/~sku.code: and ih.detail.sku.code like {sku.code}~/ 
+/~sku.name: and ih.detail.sku.name like {sku.name}~/ 
+/~tempDiv: and ih.detail.sku.tempDiv = {tempDiv}~/ 
+/~stockDiv: and ih.detail.stockDiv = {stockDiv}~/ 
+/~expDate: and ih.invInfo.quant.dispLot like {expDate}~/ 
+/~owner: and ih.asn.owner.id = {owner}~/ 
+/~ataFrom: and to_char(ih.invInfo.inboundDate,'YYYY-MM-DD') >= to_char(cast({ataFrom} as timestamp),'YYYY-MM-DD')~/
+/~ataTo: and to_char(ih.invInfo.inboundDate,'YYYY-MM-DD') <= to_char(cast({ataTo} as timestamp),'YYYY-MM-DD')~/
+/~invStatus: and ih.invInfo.invStatus = {invStatus}~/
+ 		]]></datasource>
+		<columns>
+			<column id="ih.id" title="ID" visible="false" />
+			<column id="ih.asn.owner.name" title="owner"/>
+			<column id="ih.asn.asnNumber" title="asnNumber"/>
+            <column id="ih.asn.relatedBill1" title="custBillNo"/>
+			<column id="ih.detail.lineNo" title="lineNo"/>
+			<column id="ih.detail.sku.code" title="sku.code"/>
+			<column id="ih.detail.sku.name" title="sku.name"/>
+			<column id="ih.detail.sku.specs" title="specs"/>
+			<column id="ih.invInfo.packageDetail.name" title="p1000.name"/>
+			<column id="ih.detail.planQty" title="planQty"/>
+			<column id="ih.executeQty" title="inboundQty"/>
+			<column id="ih.detail.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv" />
+			<column id="ih.detail.stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv"/>
+			<column id="ih.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="ih.invInfo.quant.dispLot" title="expDate"/>
+			<column id="ih.invInfo.inboundDate" title="ata" />
+			<column id="ih.labor.name" title="receiveCheckLabor" />
+			<column id="ih.receiveDate" title="operateTime"/>
+		</columns>
+		<buttons>
+		    <popup id="asnReceiveCancel" title="asnReceiveCancel" enableType="multi" containId="true" pageId="asnReceiveCancel" iconUrl="delete"/>
+		    <popup id="asnLabelPrint" title="asnLabelPrint"  enableType="multi" containId="true" pageId="asnLabelPrint" iconUrl="report"/>
+		</buttons>
+	</maintainPage>
+</pages>

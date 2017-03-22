@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="cityEdit" title="cityEdit"  entityClass="com.core.scpwms.server.model.transport.City"  width="500" height="400">
+		<inputUIs>
+			<hidden id="city.id"/> 
+			<selectText id="city.area.id" title="area" required="true" displayedTableHead="ID,Code,Name">
+				<hql><![CDATA[ select 
+area.id,
+area.code,  
+area.name
+from Area area 
+where 1=1]]> </hql>
+			</selectText>
+			<text id="city.code" title="city.code"  required="true" editModel="uneditable" trimSpace="true"/>
+			<text id="city.name" title="city.name"  required="true"  trimSpace="true"/>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="city" className="com.core.scpwms.server.model.transport.City"/>
+				</mappings>
+				<actions>
+					<action managerName="transportManager" methodName="storeCity" parameter="city" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

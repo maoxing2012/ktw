@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.user.PlantInBountProperties" table="WMS_PLANT_IN_PROPERTIES">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_inproperties</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID"/>
+        </many-to-one> 
+        
+        <many-to-one name="packageInfo" class="com.core.scpwms.server.model.common.PackageInfo">
+        	<column name="PACKAGE_INFO_ID"></column>
+        </many-to-one>
+        
+        <many-to-one name="packageDetail" class="com.core.scpwms.server.model.common.PackageDetail">
+        	<column name="PACKAGE_DETAIL_ID"></column>
+        </many-to-one>
+		
+		<property name="allocateType" column="ALLOCATE_TYPE" type="string" length="50" />
+		<property name="inboundLabel" column="IN_BOUND_LABEL" type="string" length="50" />
+		<property name="preAllocate" column="PRE_ALL_OCATE" type="boolean"/>
+		<property name="ibQtyLimit" column="IBQTY_LIMIT" type="boolean"/>
+		<property name="ibLimit" column="IB_LIMIT" type="double"/>
+		
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+		
+	</class>
+	
+</hibernate-mapping>

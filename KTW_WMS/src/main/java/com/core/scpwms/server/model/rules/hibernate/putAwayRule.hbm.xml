@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.rules.PutAwayRule" table="WMS_RULE_PUTAWAY">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_rule_putaway</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WAREHOUSE_ID" not-null="true" unique-key="UK_WH_RULE_PUTAWAY"/>
+		</many-to-one>
+		<property name="priority" type="integer" >
+			<column name="PRIORITY" not-null="true" unique-key="UK_WH_RULE_PUTAWAY" />
+		</property>
+		<many-to-one name="descBinGroup" class="com.core.scpwms.server.model.warehouse.BinGroup" >
+			<column name="DESC_BINS_ID" not-null="false"/>
+		</many-to-one>
+		<many-to-one name="descBin" class="com.core.scpwms.server.model.warehouse.Bin" >
+			<column name="DESC_BIN_ID" not-null="false"/>
+		</many-to-one>
+		<many-to-one name="srcBin" class="com.core.scpwms.server.model.warehouse.Bin" >
+			<column name="SRC_BIN_ID" not-null="false"/>
+		</many-to-one>
+		
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+			<column name="PLANT_ID" not-null="true" unique-key="UK_WH_RULE_PUTAWAY"/>
+		</many-to-one>
+		<many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku" >
+			<column name="SKU_ID" not-null="false"/>
+		</many-to-one>	
+		<many-to-one name="abcProperties" class="com.core.scpwms.server.model.common.AbcProperties" >
+			<column name="ABC_ID" not-null="false"/>
+		</many-to-one>	
+        <many-to-one name="bType" class="com.core.scpwms.server.model.common.SkuType" >
+            <column name="B_TYPE_ID" not-null="false"/>
+        </many-to-one>
+        <many-to-one name="mType" class="com.core.scpwms.server.model.common.SkuType" >
+            <column name="M_TYPE_ID" not-null="false"/>
+        </many-to-one> 
+        <many-to-one name="lType" class="com.core.scpwms.server.model.common.SkuType" >
+            <column name="L_TYPE_ID" not-null="false"/>
+        </many-to-one> 
+		<many-to-one name="packageInfo" class="com.core.scpwms.server.model.common.PackageInfo" >
+			<column name="PKG_ID" not-null="false"/>
+		</many-to-one>
+		<many-to-one name="packageDetail" class="com.core.scpwms.server.model.common.PackageDetail" >
+			<column name="PKG_DETAIL_ID" not-null="false"/>
+		</many-to-one>
+		
+		<property name="binSelPriority1" column="BIN_SEL_P1" type="string" length="20"/>
+        <property name="binSelPriority2" column="BIN_SEL_P2" type="string" length="20"/>
+        <property name="binSelPriority3" column="BIN_SEL_P3" type="string" length="20"/>
+        <property name="binSelPriority4" column="BIN_SEL_P4" type="string" length="20"/>
+        <property name="binValidate1" column="BIN_V1" type="string" length="20"/>
+        <property name="binValidate2" column="BIN_V2" type="string" length="20"/>
+        <property name="binValidate3" column="BIN_V3" type="string" length="20"/>
+        <property name="binValidate4" column="BIN_V4" type="string" length="20"/>
+        
+        <property name="invStatus" column="INV_STATUS" type="string" length="20"/>
+		<property name="targetBins" column="TARGET_BINS" type="string" insert="false" update="false"/>
+		<property name="binConditions" column="BIN_CONDITIONS" type="string" insert="false" update="false"/>
+		<property name="binValidates" column="BIN_VALIDATES" type="string" insert="false" update="false"/>
+		<property name="putAwayConditions" column="PUTAWAY_CONDITIONS" type="string" insert="false" update="false"/>
+		<property name="packageLevel" column="PACKAGE_LEVEL" type="string" length="50"/>
+		<property name="brandName" column="BRAND_NAME" type="string" length="50"/>
+	    <property name="onlySameLot" column="ONLY_SAME_LOT" type="boolean"/>
+	    
+	    <many-to-one name="ot" class="com.core.scpwms.server.model.common.OrderType" >
+            <column name="ORDER_TYPE_ID" />
+        </many-to-one>
+	    
+        <set name="ots" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="PUTAWAY_RULE_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.rules.OrderTypeRule"/>
+        </set>
+		
+		<component name="ruleMain" class="com.core.scpwms.server.model.rules.PutAwayRuleMain">
+		      <property name="hasPallet" column="HAS_PALLET" type="string" length="20" />
+              <property name="useQtyLimit" column="BE_QTY_LIMIT" type="boolean" />
+              <property name="qtyLimit" column="QTY_LIMIT" type="double"/>
+              <property name="qtyLowerLimit" column="QTY_LIMIT_LOWER" type="double"/>
+              
+              <property name="usePalletLimit" column="BE_PALLET_LIMIT" type="boolean" />
+              <property name="palletQtyLimit" column="PALLET_QTY_LIMIT" type="double"/>
+              <property name="palletQtyLowerLimit" column="PALLET_QTY_LIMIT_LOWER" type="double"/>
+        </component>
+        
+        <component name="ruleLot" class="com.core.scpwms.server.model.rules.PutAwayRuleLot">
+            <!-- <component name="lotData1" class="com.core.scpwms.server.model.lot.LotInputData">
+                <property name="property1" column="PRO1_1" type="string"/>
+                <property name="property2" column="PRO1_2" type="string"/>
+                <property name="property3" column="PRO1_3" type="string"/>
+                <property name="property4" column="PRO1_4" type="string"/>
+                <property name="property5" column="PRO1_5" type="string"/>
+                <property name="property6" column="PRO1_6" type="string"/>
+                <property name="property7" column="PRO1_7" type="string"/>
+                <property name="property8" column="PRO1_8" type="string"/>
+                <property name="property9" column="PRO1_9" type="string"/>
+                <property name="property10" column="PRO1_10" type="string"/>
+            </component>
+            
+            <component name="lotData2" class="com.core.scpwms.server.model.lot.LotInputData">
+                <property name="property1" column="PRO2_1" type="string"/>
+                <property name="property2" column="PRO2_2" type="string"/>
+                <property name="property3" column="PRO2_3" type="string"/>
+                <property name="property4" column="PRO2_4" type="string"/>
+                <property name="property5" column="PRO2_5" type="string"/>
+                <property name="property6" column="PRO2_6" type="string"/>
+                <property name="property7" column="PRO2_7" type="string"/>
+                <property name="property8" column="PRO2_8" type="string"/>
+                <property name="property9" column="PRO2_9" type="string"/>
+                <property name="property10" column="PRO2_10" type="string"/>
+            </component>
+            
+            <property name="opt_start1" column="OPT1_1" type="string"/>
+            <property name="opt_start2" column="OPT1_2" type="string"/>
+            <property name="opt_start3" column="OPT1_3" type="string"/>
+            <property name="opt_start4" column="OPT1_4" type="string"/>
+            <property name="opt_start5" column="OPT1_5" type="string"/>
+            <property name="opt_start6" column="OPT1_6" type="string"/>
+            <property name="opt_start7" column="OPT1_7" type="string"/>
+            <property name="opt_start8" column="OPT1_8" type="string"/>
+            <property name="opt_start9" column="OPT1_9" type="string"/>
+            <property name="opt_start10" column="OPT1_10" type="string"/>
+            
+            <property name="opt_end1" column="OPT2_1" type="string"/>
+            <property name="opt_end2" column="OPT2_2" type="string"/>
+            <property name="opt_end3" column="OPT2_3" type="string"/>
+            <property name="opt_end4" column="OPT2_4" type="string"/>
+            <property name="opt_end5" column="OPT2_5" type="string"/>
+            <property name="opt_end6" column="OPT2_6" type="string"/>
+            <property name="opt_end7" column="OPT2_7" type="string"/>
+            <property name="opt_end8" column="OPT2_8" type="string"/>
+            <property name="opt_end9" column="OPT2_9" type="string"/>
+            <property name="opt_end10" column="OPT2_10" type="string"/> -->
+        </component>  
+        
+        <property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+	
+</hibernate-mapping>
+
+

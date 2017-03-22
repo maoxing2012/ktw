@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<maintainPage id="binGroupView" title="binGroupView" autoQuery="true" width="800" height="600">
+        <search>
+            <inputUIs>
+                <numberText id="aisleFrom" title="aisle.from" returnType="Integer"/>
+                <numberText id="stackFrom" title="stack.from" returnType="Integer"/>
+                <numberText id="depthFrom" title="depth.from" returnType="Integer"/>
+                <numberText id="levelFrom" title="level.from" returnType="Integer"/>
+                <numberText id="aisleTo" title="aisle.to" returnType="Integer"/>
+                <numberText id="stackTo" title="stack.to" returnType="Integer"/>
+                <numberText id="depthTo" title="depth.to" returnType="Integer"/>
+                <numberText id="levelTo" title="level.to" returnType="Integer"/>
+                <text id="bin.code" title="bin.code"/>
+            </inputUIs>
+        </search>
+        <datasource type="hql">
+        <![CDATA[select 
+bbg.bin.id,
+bbg.bin.binCode,
+bbg.bin.barCode,
+bbg.bin.lockStatus,
+bbg.bin.lockReason,
+bbg.bin.aisle,
+bbg.bin.stack,
+bbg.bin.level,
+bbg.bin.depth,
+bbg.bin.sortIndex,
+bbg.bin.description,
+bbg.bin.processProperties.skuMixed,
+bbg.bin.processProperties.lotMixed,
+bbg.bin.processProperties.supplierMixed
+from BinBinGroup bbg
+where 1=1  
+and bbg.binGroup.id = {binGroupList.ids}
+and bbg.bin.disabled <> true
+ /~bin.code: and bbg.bin.binCode like {bin.code}~/
+ /~aisleFrom: and bbg.bin.aisle >= {aisleFrom}~/ 
+ /~aisleTo: and bbg.bin.aisle <= {aisleTo}~/
+ /~stackFrom: and bbg.bin.stack >= {stackFrom}~/ 
+ /~stackTo: and bbg.bin.stack <= {stackTo}~/
+ /~depthFrom: and bbg.bin.depth >= {depthFrom}~/ 
+ /~depthTo: and bbg.bin.depth <= {depthTo}~/
+ /~levelFrom: and bbg.bin.level >= {levelFrom}~/ 
+ /~levelTo: and bbg.bin.level <= {levelTo}~/
+        ]]></datasource>
+        <columns> 
+            <column id="bbg.bin.id" title="ID" visible="false"  />
+            <column id="bbg.bin.binCode" title="bin.code"/>
+            <column id="bbg.bin.barCode" title="bin.barcode"/>
+            <column id="bbg.bin.lockStatus" title="lockStatus"  format="enumFormat" formatParam="EnuBinLockType"/>
+            <column id="bbg.bin.lockReason" title="lockReason"/>
+            <column id="bbg.bin.aisle" title="aisle" />
+            <column id="bbg.bin.stack" title="stack" />
+            <column id="bbg.bin.level" title="level" />
+            <column id="bbg.bin.depth" title="depth" />
+            <column id="bbg.bin.sortIndex" title="sortIndex"  />
+            <column id="bbg.bin.description" title="title.desc"  />
+            <column id="bbg.bin.processProperties.skuMixed" title="skuMix" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="bbg.bin.processProperties.lotMixed" title="lotMix" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="bbg.bin.processProperties.supplierMixed" title="supplierMix" format="enumFormat" formatParam="BooleanTypeY"/>
+        </columns>
+        <buttons>
+        </buttons>
+    </maintainPage>
+</pages>

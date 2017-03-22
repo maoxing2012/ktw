@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="pickTaskBatchExecute" title="pickTaskBatchExecute" entityClass="com.core.scpwms.server.model.task.WarehouseTask" width="300"  height="150" columnNum="8">
+        <inputUIs>
+            <hidden id="task.id" />
+            <selectText id="labor" title="pickLabor" displayedTableHead="ID,code,name" required="true">
+				<hql><![CDATA[SELECT 
+lgl.labor.id, 
+lgl.labor.code,
+lgl.labor.name
+from LaborGroupLabor lgl
+where lgl.group.role='STOCK'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+and lgl.labor.disabled = '0'
+                    ]]></hql>
+			</selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="batchPick" title="batchPick" enableType="none" confirmMessage="batchPick.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="pickCaseList.ids" className="list" />
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskSingleManager" methodName="pickExecute" parameter="pickCaseList.ids,labor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="lotEnuSettingEdit" title="lotEnuSettingEdit" entityClass="com.core.scpwms.server.model.lot.LotEnumerate" onClose="refreshParent" width="600" height="450" columnNum="4">
+		<modify>
+			<inputUIs>
+				<hidden id="enu.id" />
+				<text id="enu.enuCode" title="lotEnuSetting.enuCode"  trimSpace="true"  required="true" width="200" editModel="uneditable"/>
+	            <text id="enu.enuDisp" title="lotEnuSetting.enuDisp"  trimSpace="true"  required="true" width="200"/>
+	        	<textArea id="enu.description" title="title.desc" span="2" rows="50" cols="455"  trimSpace="true"/>
+			</inputUIs>
+			<buttons> 
+				<commit id="save" title="save" enableType="none" iconUrl="save"> 
+					<mappings>
+						<mapping id="lotEnum" className="com.core.scpwms.server.model.lot.LotEnumerate" />
+					</mappings>
+					<actions>
+						<action managerName="lotEnumerateManager" methodName="saveLotEnumerate" parameter="lotEnum" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+	                    <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+	                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select 
+detail.id,
+detail.lineNo, 
+detail.code,
+detail.name 
+from LotEnumerateDetail detail
+where 1=1 
+and detail.lotEnumerate.id = {enu.id} 
+ 			]]></datasource>
+			<columns>
+				<column id="detail.id" title="ID" visible="false" />
+				<column id="detail.lineNo" title="detail.lineNo"/>
+				<column id="detail.code" title="detail.code"/>
+				<column id="detail.name" title="title.baseDesc"/>
+			</columns>
+			<buttons>
+				<popup id="add" title="add" enableType="none" containId="true" pageId="addLotEnumerateDetailEdit"  iconUrl="new">
+					<enableExpression><![CDATA[(${enu.id}>0)]]></enableExpression>
+				</popup>
+				<popup id="modify" title="modify" enableType="single" containId="true" pageId="addLotEnumerateDetailEdit" iconUrl="edit"/>
+				
+				<commit id="remove" title="remove" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="lotEnumerateManager" methodName="removeDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

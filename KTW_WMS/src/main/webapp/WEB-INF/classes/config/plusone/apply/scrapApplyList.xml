@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="scrapApplyList" title="scrapApplyList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="applyNumber" title="scrapApplyNumber"/> 
+			    <list id="status" title="title.status" enumType="EnuApplyStatus" returnType="long" multiple="true" defaultValue="100,200,300">
+                    <hql><![CDATA[ select  
+						e.enumValue,
+						e.enumValue
+						from Enumerate e
+						where e.enumType='EnuApplyStatus'
+					]]></hql>
+                </list>
+                <list id="scrapApply.orderType.id" title="orderType" returnType="long" multiple="true" >  
+                    <hql><![CDATA[ select 
+t.id, 
+t.name
+from OrderType t   
+where 1=1 
+and t.disabled=false
+and t.processType='M4050' 
+                        ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+scrapApply.id, 
+scrapApply.owner.name,
+scrapApply.applyNumber,
+scrapApply.status,
+scrapApply.orderType.name,
+scrapApply.applyDate,
+scrapApply.skuCount,
+scrapApply.qty,
+scrapApply.description 
+from ScrapApply scrapApply
+where 1=1 
+and scrapApply.wh = #{SESSION_WAREHOUSE} 
+/~owner: and scrapApply.owner.id = {owner}~/ 
+/~scrapApply.orderType.id: and scrapApply.orderType.id = {scrapApply.orderType.id}~/ 
+/~applyNumber: and scrapApply.applyNumber like {applyNumber}~/ 
+/~scrapApply.type: and scrapApply.type = {scrapApply.type}~/ 
+/~status: and scrapApply.status = {status}~/
+		]]></datasource>
+		<columns>
+			<column id="scrapApply.id" title="ID" visible="false"/>
+			<column id="scrapApply.owner.name" title="owner"/>
+			<column id="scrapApply.applyNumber" title="scrapApplyNumber"/>
+			<column id="scrapApply.status" title="title.status" format="enumFormat" formatParam="EnuApplyStatus"/> 
+			<column id="scrapApply.orderType.name" title="orderType"/>
+			<column id="scrapApply.applyDate" title="applyDate"/>
+			<column id="scrapApply.skuCount" title="skuCount"/>
+			<column id="scrapApply.qty" title="qty" /> 
+			<column id="scrapApply.description" title="title.desc"/> 
+		</columns>
+		<buttons>   
+			<popup id="new" title="new" enableType="none" containId="false" pageId="scrapApplyNew" iconUrl="new"/>
+			<popup id="eidt" title="modify"  enableType="single" containId="true" pageId="scrapApplyNew" iconUrl="edit">
+				<enableExpression><![CDATA[(${scrapApply.status}==@{EnuApplyStatus.100})]]></enableExpression>
+			</popup>
+            <commit id="publish" title="apply" enableType="multi" iconUrl="action">
+				<enableExpression><![CDATA[(${scrapApply.status}==@{EnuApplyStatus.100})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="scrapApplyManager" methodName="publish" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <commit id="cancel" title="cancel"  enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${scrapApply.status}==@{EnuApplyStatus.100}||${scrapApply.status}==@{EnuApplyStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="scrapApplyManager" methodName="cancel" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="execute" title="execute" enableType="multi" confirmMessage="execute.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[(${scrapApply.status}==@{EnuApplyStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="scrapApplyManager" methodName="execute" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <popup id="view"  title="view"  enableType="single"  containId="true" pageId="scrapApplyView" iconUrl="view"/>
+            <popup id="statusView" title="statusView"  enableType="single" containId="true" pageId="scrapApplyStatusView" iconUrl="view"/>
+        </buttons>
+	</maintainPage>
+</pages>

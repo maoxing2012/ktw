@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <customPage id="doSwitchWareHouse" title="doSwitchWareHouse" className="com.core.scpwms.client.custom.page.SwitchWarehouse" popup="true" width="400" height="200"/>
+</pages>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <pages>
+        <maintainPage id="pickTaskExecute" title="pickTaskExecute"  autoQuery="false" useSum="true">
+            <search>
+                <inputUIs>
+                	<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+	                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+	                    ]]></hql>
+	                </selectText>
+				    <text id="obdNumber" title="obdNumber" trimSpace="true" />
+				    <text id="custBillNo" title="custBillNo" trimSpace="true" />
+				    <text id="woSequence" title="woSequence"/>
+                    <list id="status" title="title.status" forceOverride="true" enumType="EnuWarehouseOrderStatus" returnType="long" multiple="true" defaultValue="200,500,600">
+                        <hql><![CDATA[ SELECT  
+en.enumValue,
+en.enumValue
+from Enumerate en
+where en.enumType = 'EnuWarehouseOrderStatus'  
+and en.enumValue in ('200','500','600','700')
+                        ]]></hql>
+                    </list>
+                    <text id="sku.code" title="sku.code" trimSpace="true" />
+					<text id="sku.name" title="sku.name" trimSpace="true" />
+                </inputUIs>
+            </search>   
+            <datasource type="hql"><![CDATA[SELECT 
+task.id,
+task.invInfo.owner.name,
+task.obdDetail.obd.obdNumber,
+task.obdDetail.obd.relatedBill1,
+task.wo.orderSequence,
+task.status,
+task.obdDetail.lineNo,
+task.obdDetail.subLineNo,
+task.invInfo.packageDetail.name,
+task.planQty,
+task.executeQty,
+task.invInfo.bin.binCode,
+task.descBin.binCode,
+task.invInfo.quant.sku.code,
+task.invInfo.quant.sku.name,
+task.invInfo.quant.dispLot,
+task.invInfo.invStatus,
+task.labor.name,
+task.operateTime
+FROM WarehouseTask task
+left join task.wo
+left join task.descBin
+left join task.labor
+where 1=1 
+and task.wh = #{SESSION_WAREHOUSE} 
+and task.processType = 'PK_REQ'  
+and task.status in (200,500,600,700) 
+/~owner: and task.invInfo.owner.id = {owner}~/ 
+/~status: and task.status = {status}~/ 
+/~woSequence: and task.wo.orderSequence like {woSequence}~/ 
+/~obdNumber: and task.obdDetail.obd.obdNumber like {obdNumber}~/ 
+/~custBillNo: and task.obdDetail.obd.relatedBill1 like {custBillNo}~/ 
+/~src.bin: and task.invInfo.bin.binCode like {src.bin}~/ 
+/~desc.bin: and task.descBin.binCode like {desc.bin}~/
+/~sku.code: and task.invInfo.quant.sku.code like {sku.code}~/
+/~sku.name: and task.invInfo.quant.sku.name like {sku.name}~/
+            ]]></datasource>
+            <columns>
+                <column id="task.id" title="ID" visible="false"/>
+                <column id="task.invInfo.owner.name" title="owner"/>
+                <column id="task.obdDetail.obd.obdNumber" title="obdNumber"/>
+                <column id="task.obdDetail.obd.relatedBill1" title="custBillNo"/>
+                <column id="task.wo.orderSequence" title="woSequence"/>
+                <column id="task.status" title="title.status" format="enumFormat" formatParam="EnuWarehouseOrderStatus"/>
+                <column id="task.obdDetail.lineNo" title="lineNo"/>
+                <column id="task.obdDetail.subLine" title="subLineNo"/>
+                <column id="task.invInfo.packageDetail.name" title="p1000.name"/>
+                <column id="task.planQty" title="planQty" canSum="true"/>
+                <column id="task.executeQty" title="pickQty" canSum="true"/>
+                <column id="task.invInfo.bin.binCode" title="src.bin"/>
+                <column id="task.descBin.binCode" title="desc.bin"/>
+                <column id="task.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="task.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="task.invInfo.quant.dispLot" title="expDate"/>
+                <column id="task.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="task.labor.name" title="labor.name" />
+                <column id="task.operateTime" title="operateTime" />
+            </columns>
+            <buttons>
+            	<!-- <popup id="lockPickWt" title="lockPickWt" enableType="single" containId="true" pageId="lockPickWt" iconUrl="action">
+                    <enableExpression><![CDATA[${task.labor.name} == '-']]></enableExpression>
+                </popup>
+                <commit id="unlockPickWt" title="unlockPickWt" enableType="multi" iconUrl="cancel">
+                    <enableExpression><![CDATA[${task.labor.name} != '-']]></enableExpression>
+                    <mappings>
+                        <mapping id="ids" className="list"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="warehouseTaskManager" methodName="unlockPickWt" parameter="ids" />
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                    </forwards>             
+                </commit> -->
+                <popup id="pick" title="pickExecute" enableType="single" containId="true" pageId="pickExecuteEdit" iconUrl="action">
+                    <enableExpression><![CDATA[((${task.status} == @{EnuWarehouseOrderStatus.500}) || (${task.status} == @{EnuWarehouseOrderStatus.600}))]]></enableExpression>
+                </popup>
+                <popup id="batchPick" title="batchPick" enableType="multi" containId="true" pageId="pickTaskBatchExecute" iconUrl="confirm">
+                    <enableExpression><![CDATA[((${task.status} == @{EnuWarehouseOrderStatus.500}) || (${task.status} == @{EnuWarehouseOrderStatus.600}))]]></enableExpression>
+                </popup>
+                <commit id="close" title="close" enableType="single" confirmMessage="close.confirmMessage" iconUrl="cancel">
+                    <enableExpression><![CDATA[(${task.status} == @{EnuWarehouseOrderStatus.500} || ${task.status} == @{EnuWarehouseOrderStatus.600} )]]></enableExpression>
+                    <mappings>
+                        <mapping id="ids" className="list"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="warehouseTaskManager" methodName="close" parameter="ids" />
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                    </forwards>             
+                </commit>
+                <popup id="pickTaskHistoryView" title="pickTaskHistoryView"  enableType="single" containId="true" pageId="pickTaskHistoryView" iconUrl="view"/>
+            </buttons>
+        </maintainPage>
+    </pages>

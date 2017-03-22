@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="warehouseView" title="warehouseView" entityClass="com.core.scpwms.server.model.warehouse.Warehouse" width="600" height="320" columnNum="4">
+        <inputUIs>
+            <hidden id="warehouse.id" />
+            <parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="300" >
+                <text id="warehouse.code" title="warehouse.code"/>
+                <text id="warehouse.shortName" title="title.shortName"/>
+                <text id="warehouse.name" title="warehouse.name" width="335" span="3" />
+                <textArea id="warehouse.description" title="title.desc" rows="50" cols="335" span="3"/>
+            </parttab>
+            <parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="300" >
+                <text id="warehouse.contractInfo.linkman" title="contractInfo.linkman"/>
+                <text id="warehouse.contractInfo.mobile" title="contractInfo.mobile"/>
+                <text id="warehouse.contractInfo.postcode" title="contractInfo.postcode"/>
+                <text id="warehouse.contractInfo.address" title="contractInfo.address1" width="362" span="3"/>
+                <text id="warehouse.contractInfo.addressExt" title="contractInfo.address2" width="362" span="3"/>
+                <text id="warehouse.contractInfo.email" title="contractInfo.email" width="362" span="3"/>
+                <text id="warehouse.contractInfo.phone" title="contractInfo.phone"/>
+                <text id="warehouse.contractInfo.fax" title="contractInfo.fax"/>
+                
+            </parttab>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

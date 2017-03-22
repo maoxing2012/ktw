@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="containerEdit" title="containerEdit" entityClass="com.core.scpwms.server.model.common.Container" width="500" height="400">
+        <inputUIs>
+            <hidden id="container.id" reserve="false"/>
+            <text id="container.code" title="container.code" required="true" editModel="uneditable"/>
+            <text id="container.name" title="container.name"  required="true"/>
+            <list id="container.containerType" title="container.type" enumType="EnuContainerType" required="true">
+                       <hql><![CDATA[ select   
+                           e.enumValue, 
+                           e.enumValue   
+                           from Enumerate e   
+                           where  e.enumType = 'EnuContainerType'
+                       ]]></hql>
+            </list>
+            <numberText id="container.weight" title="container.weight" defaultValue="0"/>
+            <numberText id="container.length" title="length" />
+            <numberText id="container.width" title="width" />
+            <numberText id="container.height" title="height" />
+            <textArea id="container.description" title="title.desc" rows="50" cols="390" span="3" length="80" trimSpace="true" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="container" className="com.core.scpwms.server.model.common.Container"/>
+                </mappings>
+                <actions>
+                    <action managerName="containerManager" methodName="saveContainer" parameter="container"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

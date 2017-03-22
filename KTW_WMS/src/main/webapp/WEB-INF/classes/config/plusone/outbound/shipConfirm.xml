@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="shipConfirm" title="shipConfirm" autoQuery="true" onClose="refreshParent" width="1000" height="400">
+        <search>
+            <inputUIs>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+odd.id,
+odd.lineNo,
+odd.status,
+odd.sku.code,
+odd.sku.name,
+odd.sku.specs,
+odd.packageDetail.name,
+odd.pickUpQty - odd.executeQty as toExecuteQty,
+odd.executeQty,
+odd.planPackQty,
+odd.planQty,
+odd.allocateQty,
+odd.pickUpQty,
+odd.lotData
+from OutboundDeliveryDetail odd
+where 1=1
+and odd.obd.id = {outboundDeliveryShipList.ids}
+and (coalesce(odd.pickUpQty,0) - coalesce(odd.executeQty,0) > 0)
+        ]]></datasource>
+        <columns>
+            <column id="odd.id" title="ID" visible="false" />
+            <column id="odd.lineNo" title="lineNo" />
+            <column id="odd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryDetailStatus"/>
+            <column id="odd.sku.code" title="sku.code"/>
+            <column id="odd.sku.name" title="sku.name"/>
+            <column id="odd.sku.specs" title="specs"/>
+            <column id="odd.packageDetail.name" title="packDetail"/>
+            <column id="toExecuteQty" title="toShipQty"/>
+            <column id="odd.executeQty" title="shipedQty"/>
+            <column id="odd.planPackQty" title="planPackQty"/>
+            <column id="odd.planQty" title="planQty"/>
+            <column id="odd.allocateQty" title="allocateQty"/>
+            <column id="odd.pickUpQty" title="pickUpQty"/>
+            <column id="odd.lotData" title="lotInfo"/>
+        </columns>
+        <buttons>
+            <popup id="shipConfirm" title="shipConfirm" enableType="single" containId="true" pageId="shipSingleConfirm" iconUrl="action">
+                <enableExpression><![CDATA[(${odd.status} == @{EnuOutboundDeliveryDetailStatus.860}||${odd.status} == @{EnuOutboundDeliveryDetailStatus.850})]]></enableExpression>
+            </popup>
+            <popup id="shipBatchConfirm" title="shipBatchConfirm" enableType="multi" containId="true" pageId="shipBatchConfirm" iconUrl="confirm">
+                <enableExpression><![CDATA[(${odd.status} == @{EnuOutboundDeliveryDetailStatus.860}||${odd.status} == @{EnuOutboundDeliveryDetailStatus.850})]]></enableExpression>
+            </popup>
+        </buttons>
+    </maintainPage>
+</pages>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="qualityDocDetailEdit" title="qualityDocDetailEdit" entityClass="com.core.scpwms.server.model.quality.QualityDocDetail" onClose="refreshParent" width="200">
+        <inputUIs>
+            <hidden id="qualityDocDetail.id" />
+            <text id="qualityDocDetail.invInfo.quant.sku.code" title="sku.code" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.sku.name" title="sku.name" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.sku.specs" title="specs" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.lotSequence" title="lotSequence" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.quant.dispLot" title="lotInfo" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.bin.binCode" title="binCode" readOnly="true"/>
+            <text id="qualityDocDetail.invInfo.packageDetail.name" title="packDetail"  readOnly="true"/>
+            <numberText id="qualityDocDetail.planPackQty" title="qcPlanPackQty" required="true" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="qualityDocDetail" className="com.core.scpwms.server.model.quality.QualityDocDetail"/>
+                    <mapping id="qualityDocDetail.planPackQty" className="double"/>
+                </mappings>
+                <actions>
+                    <action managerName="qualityDocManager"  methodName="editDetail"  parameter="qualityDocDetail,qualityDocDetail.planPackQty" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

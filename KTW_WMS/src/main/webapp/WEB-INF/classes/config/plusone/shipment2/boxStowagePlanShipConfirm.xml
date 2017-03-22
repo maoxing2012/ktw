@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="boxStowagePlanShipConfirm" title="boxStowagePlanShipConfirm" autoQuery="true" onClose="refreshParent" width="650" height="400">
+        <search>
+            <inputUIs>
+                <text id="boxSequence" title="boxSequence" trimSpace="true" />
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+obdPack.id,
+obdPack.boxSequence,
+obdPack.status,
+obdPack.obd.relatedBill1,
+obdPack.obd.carrier.name,
+obdPack.baseQty,
+obdPack.length,
+obdPack.width,
+obdPack.height
+from OutboundPackage obdPack
+where 1=1 
+and obdPack.stowagePlan.id = {boxStowagePlanList.ids}        
+/~boxSequence: and obdPack.boxSequence like {boxSequence}~/
+        ]]></datasource>
+        <columns>
+            <column id="obdPack.id" title="ID" visible="false" />
+			<column id="obdPack.boxSequence" title="boxSequence"/>
+			<column id="obdPack.status" title="title.status" format="enumFormat" formatParam="EnuPakcageDocStatus"/>
+			<column id="obdPack.obd.relatedBill1" title="tripNumber"/>
+			<column id="obdPack.obd.carrier.name" title="carrier"/>
+			<column id="obdPack.baseQty" title="baseQty"/>
+			<column id="obdPack.length" title="length"/>
+			<column id="obdPack.width" title="width"/>
+			<column id="obdPack.height" title="height"/>
+        </columns>
+        <buttons>
+            <popup id="shipBatchConfirm" title="shipBatchConfirm" enableType="multi" containId="true" pageId="boxStowagePlanShipBatchConfirm" iconUrl="confirm">
+                <enableExpression><![CDATA[(${obdPack.status} == @{EnuPakcageDocStatus.200})]]></enableExpression>
+            </popup>
+        </buttons>
+    </maintainPage>
+</pages>

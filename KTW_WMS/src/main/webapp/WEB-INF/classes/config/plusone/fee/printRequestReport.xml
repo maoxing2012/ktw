@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <reportPopupPage id="printRequestReport" title="printRequestReport" reportFile="/report/requestBill1" parameter="ids" width="900" height="600"/>
+</pages>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="stowagePlanShipConfirm" title="stowagePlanShipConfirm" autoQuery="true" onClose="refreshParent" width="650" height="400">
+        <search>
+            <inputUIs>
+                <text id= "obdNumber" title="obdNumber" trimSpace="true"/>
+                <text id= "custBillNo" title="custBillNo" trimSpace="true"/>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+spd.id,
+spd.obdDetail.obd.obdNumber,
+spd.obdDetail.obd.relatedBill1,
+spd.obdDetail.lineNo,
+spd.obdDetail.status,
+spd.obdDetail.sku.code,
+spd.obdDetail.sku.name,
+spd.obdDetail.sku.specs,
+spd.obdDetail.packageDetail.name,
+spd.executeQty,
+spd.planPackQty,
+spd.planQty,
+spd.obdDetail.lotData
+from StowagePlanDetail spd
+left join spd.obdDetail
+left join spd.obdDetail.obd
+left join spd.obdDetail.owner
+left join spd.obdDetail.sku
+left join spd.obdDetail.packageDetail
+where 1=1
+and spd.stowagePlan.id = {stowagePlanList.ids}
+and (coalesce(spd.planQty,0) - coalesce(spd.executeQty,0) > 0)
+/~obdNumber: and spd.obdDetail.obd.obdNumber like {obdNumber} ~/
+/~custBillNo: and spd.obdDetail.obd.relatedBill1 like {custBillNo} ~/
+        ]]></datasource>
+        <columns>
+            <column id="spd.id" title="ID" visible="false" />
+            <column id="spd.obdDetail.obd.obdNumber" title="obdNumber"/>
+            <column id="spd.obdDetail.obd.relatedBill1" title="custBillNo"/>
+            <column id="spd.obdDetail.lineNo" title="lineNo"/>
+            <column id="spd.obdDetail.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryDetailStatus"/>
+            <column id="spd.obdDetail.sku.code" title="sku.code"/>
+            <column id="spd.obdDetail.sku.name" title="sku.name"/>
+            <column id="spd.obdDetail.sku.specs" title="specs"/>
+            <column id="spd.obdDetail.packageDetail.name" title="packDetail"/>
+            <column id="spd.executeQty" title="shipedQty"/>
+            <column id="spd.planPackQty" title="planPackQty"/>
+            <column id="spd.planQty" title="planQty"/>
+            <column id="spd.obdDetail.lotData" title="lotInfo"/>
+        </columns>
+        <buttons>
+            <popup id="shipConfirm" title="shipConfirm" enableType="single" containId="true" pageId="stowagePlanShipSingleConfirm" iconUrl="action">
+                <enableExpression><![CDATA[(${spd.obdDetail.status} == @{EnuOutboundDeliveryDetailStatus.860}||${spd.obdDetail.status} == @{EnuOutboundDeliveryDetailStatus.850})]]></enableExpression>
+            </popup>
+            <popup id="shipBatchConfirm" title="shipBatchConfirm" enableType="multi" containId="true" pageId="stowagePlanShipBatchConfirm" iconUrl="confirm">
+                <enableExpression><![CDATA[(${spd.obdDetail.status} == @{EnuOutboundDeliveryDetailStatus.860}||${spd.obdDetail.status} == @{EnuOutboundDeliveryDetailStatus.850})]]></enableExpression>
+            </popup>
+        </buttons>
+    </maintainPage>
+</pages>

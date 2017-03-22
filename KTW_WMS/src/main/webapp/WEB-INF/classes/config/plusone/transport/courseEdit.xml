@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="courseEdit" title="courseEdit"  entityClass="com.core.scpwms.server.model.transport.Course"  width="500" height="400">
+		<inputUIs>
+			<hidden id="course.id"/> 
+			<selectText id="course.owner.id" title="owner" displayedTableHead="ID,code,name" required="true">
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </selectText>
+            <text id="course.code" title="course.code" required="true" editModel="uneditable" trimSpace="true"/>
+			<textArea id="course.name" title="title.desc"  trimSpace="true" rows="50" cols="600" span="6"/>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="course" className="com.core.scpwms.server.model.transport.Course"/>
+				</mappings>
+				<actions>
+					<action managerName="transportManager" methodName="storeCourse" parameter="course" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

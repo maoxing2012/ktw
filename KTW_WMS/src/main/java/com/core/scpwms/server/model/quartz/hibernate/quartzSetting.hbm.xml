@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.quartz.BaseQuartzSetting" table="WMS_QUARTZ">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_quartz</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string" />
+		<property name="quartzId" column="TASK_TRIGGER_ID" type="string" />
+		<property name="quartzDesc" column="QZ_DESCRIPTION" type="string" />
+		<property name="managerId" column="TASK_MANAGER_ID" type="string" />
+		<property name="methodId" column="TASK_METHOD_ID" type="string" />
+		<property name="lastExecuteDate" column="LAST_EXE_DATE" type="timestamp" />
+		<property name="cronExpression" column="CRON_EXPRESSION" type="string" />
+		<property name="disabled" column="DISABLED" type="boolean" />
+		<property name="jobStatus" column="JOB_STATUS" type="long" />
+		<property name="params" column="PARAMS" type="string" />
+
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50" />
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>
+
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+			<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50" />
+			<property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+		</component>
+	</class>
+</hibernate-mapping>

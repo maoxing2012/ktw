@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="outboundPackageView" title="outboundPackageView" entityClass="com.core.scpwms.server.model.pack.OutboundPackage" onClose="refreshParent" width="1000" height="400" columnNum="8">
+		 <modify>
+		 <inputUIs>
+				<hidden id="outboundPackage.id" />
+				<text id="outboundPackage.boxSequence" title="boxSequence" />
+				<text id="outboundPackage.stowagePlan.stowageNumber" title="stowageNumber" />
+				<numberText id="outboundPackage.caseQty" title="caseQty" />
+				<numberText id="outboundPackage.length" title="length" />
+	            <numberText id="outboundPackage.width" title="width" />
+	            <numberText id="outboundPackage.height" title="height" />
+	            <numberText id="outboundPackage.grossWeight" title="weight" />
+			</inputUIs>
+			<buttons>
+			</buttons> 
+			</modify>			
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+opd.id,
+opd.obdDetail.relatedBill1, 
+opd.obdDetail.sku.code,
+opd.obdDetail.sku.name,
+opd.packQty,
+opd.baseQty,
+opd.planCheckQty,
+opd.checkQty,
+opd.obdDetail.lotData
+from OutboundPackageDetail opd
+where 1=1 
+and opd.obdPackage.id = {outboundPackage.id}
+ 			]]></datasource>
+			<columns>
+				<column id="opd.id" title="ID" visible="false" />
+				<column id="opd.obdDetail.relatedBill1" title="soNumber"/>
+				<column id="opd.obdDetail.sku.code" title="sku.code"/>
+				<column id="opd.obdDetail.sku.name" title="sku.name"/>
+				<column id="opd.packQty" title="planPackQty"/>
+				<column id="opd.baseQty" title="planQty"/>
+				<column id="opd.planCheckQty" title="planCheckQty"/>
+            	<column id="opd.checkQty" title="checkQty"/>
+				<column id="opd.obdDetail.lotData" title="lotInfo"/>
+			</columns>
+			<buttons>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

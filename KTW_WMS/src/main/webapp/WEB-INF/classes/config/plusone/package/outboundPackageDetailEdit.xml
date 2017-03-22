@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="outboundPackageDetailEdit" title="outboundPackageDetailEdit" entityClass="com.core.scpwms.server.model.pack.OutboundPackageDetail" columnNum="4"  width="500" height="400" >
+        <inputUIs>
+            <hidden id="outboundPackageDetail.id" />
+            <text id="outboundPackageDetail.obdDetail.obd.relatedBill1" title="tripNumber" readOnly="true"/>
+            <text id="outboundPackageDetail.obdDetail.relatedBill1" title="soNumber"  readOnly="true"/>
+            <text id="outboundPackageDetail.obdDetail.sku.code" title="sku.code"  readOnly="true"/>
+            <text id="outboundPackageDetail.obdDetail.sku.name" title="sku.name"  readOnly="true"/>
+            <text id="outboundPackageDetail.checkQty" title="checkQty" readOnly="true"/>
+            <numberText id="outboundPackageDetail.packQty" title="planPackQty" required="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="outboundPackageDetail" className="com.core.scpwms.server.model.pack.OutboundPackageDetail"/>
+                </mappings>
+                <actions>
+                    <action managerName="packingManager" methodName="editPackageDetail" parameter="outboundPackageDetail"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

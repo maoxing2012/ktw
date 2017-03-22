@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="invStatusBatchChange" title="invStatusBatchChange" entityClass="com.core.scpwms.server.model.inventory.Inventory" width="400" height="380">
+		<inputUIs>
+			<hidden id="inv.id" />
+            <list id="desc.invStatus" title="desc.invStatus" enumType="EnuInvStatus" required="true">
+                <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvStatus'
+                    ]]></hql>
+            </list>
+            <textArea id="desc" title="title.desc" required="true" trimSpace="true" rows="30" cols="350" span="3"/>
+		</inputUIs>
+		<buttons>
+		<commit id="invMove" title="invMove" enableType="none" iconUrl="save" >
+				<mappings>
+					<mapping id="invAdjustList.ids" className="list"/>
+					<mapping id="desc.invStatus" className="string" />
+					<mapping id="desc" className="string" />
+				</mappings>
+				<actions>
+					<action managerName="invManager" methodName="batchChangeInvStatus" parameter="invAdjustList.ids,desc.invStatus,desc" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+		</commit>
+		</buttons>
+	</editPage>
+</pages>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ヤマトクール　CS伝票 -->
+<pages>
+	 <reportPopupPage id="pickList053" title="pickList053" reportFile="/report/pickList03" parameter="ids,carrierCd=%2781%27"  width="900" height="600" mode=""/>
+</pages>

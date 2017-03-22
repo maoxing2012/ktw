@@ -1,0 +1,83 @@
+WS-Security是解决Web Service安全问题的规范，大多数商业的Java EE应用服务器都实现了WS-Security规范
+Apache WSS4J是WS-Security的开源实现
+XFire通过Apache的WSS4J对WS-Security提供支
+
+
+如何实现用户名/密码验证
+见 http://www.educity.cn/wenda/371946.html
+说的很明白
+
+
+如何实现Webservice的密钥验证
+有3个步骤
+1.生成密钥
+2.配置服务端的InHandler
+3.配置客户端的OutHandler
+
+----------1.生成密钥---------
+下载http://BouncyCastle.org  bcprov-jdk×××××.jar 
+放置在 JAVA_HOME/jre/lib/ext 下
+
+修改 JAVA_HOME/jre/lib/security 下面的java.security
+添加一行 
+security.provider.*=org.bouncycastle.jce.provider.BouncyCastleProvider
+
+生成一对密钥并保存到 privatestore.jks 密码库的密码是mbpstore 密钥名称是 ws_security 密钥的密码是 mbppass 采用RSA算法 指定证书拥有者信息是ws_security
+keytool -genkey -alias ws_security -keypass mbppass -keystore privatestore.jks -storepass mbpstore -dname "cn=ws_security" -keyalg RSA
+
+自签名
+keytool -selfcert -alias ws_security -keystore privatestore.jks -storepass mbpstore -keypass mbppass
+
+导出公钥
+keytool -export -alias ws_security -file key.rsa -keystore privatestore.jks -storepass mbpstore
+
+导入公钥到 publicstore.jks这个密码库中 密码库密码是 mbpstore
+keytool -import -alias ws_security  -file key.rsa -keystore publicstore.jks -storepass mbpstore
+
+privatestore.jks这个就是给客户端调用WS的数字证书
+
+----------2.配置服务端的InHandle---------
+创建 insecurity.properties
+org.apache.ws.security.crypto.provider=org.apache.ws.security.components.crypto.Merlin
+org.apache.ws.security.crypto.merlin.keystore.type=jks
+#访问publicstore的密码
+org.apache.ws.security.crypto.merlin.keystore.password=mbpstore
+#存放公钥的库地址
+org.apache.ws.security.crypto.merlin.file=WEB-INF/classes/xfire/publicstore.jks
+
+
+需要引入 wss4j 和 xmlsec 两个jar包
+其中wss4j和xfire有匹配的问题 1.2.5的xfire需要1.5.*的wss4j,1.2.6的xfire需要1.6.*的
+
+在xfire的配置文件添加Hanlder
+<bean id="wss4jInHandler" class="org.codehaus.xfire.security.wss4j.WSS4JInHandler" >
+		<property name="properties">
+			<props>
+				<prop key="action">Signature</prop>
+				<prop key="signaturePropFile">WEB-INF/classes/xfire/insecurity.properties</prop>
+				<!-- <prop key="decryptionPropFile">/WEB-INF/classes/xfire/insecurity.properties</prop> -->
+			</props>
+		</property>
+   </bean>
+
+----------3.配置客户端的OutHandler---------
+需要引入wss4j xmlsec xalan3个jar包
+把privatestore.jks放在目录下
+建一个outsecurity.properties
+org.apache.ws.security.crypto.provider=org.apache.ws.security.components.crypto.Merlin
+org.apache.ws.security.crypto.merlin.keystore.type=jks
+#访问私钥库的密码
+org.apache.ws.security.crypto.merlin.keystore.password=mbpstore
+#私钥密码
+org.apache.ws.security.crypto.merlin.alias.password=mbppass
+#私钥名
+org.apache.ws.security.crypto.merlin.keystore.alias=ws_security
+#私钥库所在地址
+org.apache.ws.security.crypto.merlin.file=META-INF/xfire/privatestore.jks
+
+具体实现代码见XFireClient工程
+------------------------------------------
+参考文献
+http://blog.csdn.net/xymyeah/article/details/3888924
+http://www.blogjava.net/javainthink/archive/2007/01/22/95249.html
+http://blog.chinaunix.net/uid-17102734-id-2830223.html

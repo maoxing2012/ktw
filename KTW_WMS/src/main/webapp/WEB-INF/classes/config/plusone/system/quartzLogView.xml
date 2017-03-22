@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="quartzLogView" title="quartzLogView" autoQuery="true" width="650" height="400">
+		<search>
+			<inputUIs></inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+log.id,
+log.insertDate,
+log.info1,
+log.info2,
+log.info3,
+log.info4,
+log.info5,
+log.info6,
+log.info7,
+log.info8,
+log.info9,
+log.info10
+from QuartzExecuteLog log 
+where 1=1
+and log.baseQuartzSetting.id = {quartzList.ids}
+        ]]></datasource>
+		<columns>
+			<column id="log.id" title="ID" visible="false" />
+			<column id="log.insertDate" title="operateTime" />
+			<column id="log.info1" title="log.info1" />
+			<column id="log.info2" title="log.info2" />
+			<column id="log.info3" title="log.info3" />
+			<column id="log.info4" title="log.info4" />
+			<column id="log.info5" title="log.info5" />
+			<column id="log.info6" title="log.info6" />
+			<column id="log.info7" title="log.info7" />
+			<column id="log.info8" title="log.info8" />
+			<column id="log.info9" title="log.info9" />
+			<column id="log.info10" title="log.info10" />
+		</columns>
+		<buttons></buttons>
+	</maintainPage>
+</pages>

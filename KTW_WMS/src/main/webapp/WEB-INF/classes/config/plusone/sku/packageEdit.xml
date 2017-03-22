@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <editPage id="packageEdit" title="packageEdit" entityClass="com.core.scpwms.server.model.common.PackageInfo" onClose="refreshParent" width="750"  height="300" columnNum="6">
+    
+        <inputUIs>
+            <hidden id="pkg.id" />
+            
+            <parttab id="tab_0" title="packInfo" style="CTab" tabHeight="250">
+                <text id="pkg.code" title="packInfo.code" required="true" trimSpace="true" />
+                <text id="pkg.name" title="packInfo.name" required="true" trimSpace="true" />
+                <textArea id="pkg.description" title="title.desc" span="6" rows="60" cols="600"   length="85"/>
+            </parttab>
+            
+            <parttab id="tab_1" title="p1000" style="CTab" tabHeight="250">
+                <text id="pkg.p1000.code" title="packDetail.code"  trimSpace="true" required="true"/>
+                <text id="pkg.p1000.name" title="packDetail.name"  trimSpace="true" required="true" lastElement="true"/>
+                
+                <numberText id="pkg.p1000.coefficient" title="coefficient" defaultValue="1" trimSpace="true" readOnly="true"/>
+                <numberText id="pkg.p1000.precision" title="precision"  defaultValue="0" />
+                <numberText id="pkg.p1000.volume" title="volume"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p1000.length" title="length"  trimSpace="true" />
+                <numberText id="pkg.p1000.width" title="width"  trimSpace="true" />
+                <numberText id="pkg.p1000.height" title="height"  trimSpace="true" />
+                
+                <checkbox id="pkg.p1000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p1000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p1000.palletInfo.hi" title="hi" lastElement="true" />
+                <numberText id="pkg.p1000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p1000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p1000.palletInfo.height" title="full.pallet.height"/>
+                
+                <selectText id="pkg.p1000.container.id" title="container" displayedTableHead="ID,Code,Name" >
+	                <hql><![CDATA[ SELECT  
+container.id, 
+container.code, 
+container.name,
+container.weight,
+container.volume
+FROM Container container  
+WHERE container.disabled = false   
+	                        ]]></hql> 
+	                <inputUIs>
+	                    <text id="container.code" title="container.code"  length="15"/>
+	                    <text id="container.name" title="container.name"  length="15"/>
+	                </inputUIs>
+	                <eventListeners>
+	                    <eventListener id="pkg.p1000.container.weight" index="4" />
+	                    <eventListener id="pkg.p1000.container.volume" index="5" />
+	                </eventListeners>
+                </selectText>
+                <numberText id="pkg.p1000.container.weight" title="container.weight" readOnly="true"/>
+                <numberText id="pkg.p1000.container.volume" title="container.volume" readOnly="true"/>
+            </parttab>
+            
+            <parttab id="tab_21" title="p2100" style="CTab" tabHeight="250">
+                <text id="pkg.p2100.code" title="packDetail.code"  trimSpace="true" />
+                <text id="pkg.p2100.name" title="packDetail.name"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p2100.coefficient" title="coefficient"  trimSpace="true" />
+                <numberText id="pkg.p2100.precision" title="precision"  defaultValue="0" />
+                <numberText id="pkg.p2100.volume" title="volume"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p2100.length" title="length"  trimSpace="true" />
+                <numberText id="pkg.p2100.width" title="width"  trimSpace="true" />
+                <numberText id="pkg.p2100.height" title="height"  trimSpace="true" />
+                
+                
+                <checkbox id="pkg.p2100.usePallet" title="hasPallet" />
+                <numberText id="pkg.p2100.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p2100.palletInfo.hi" title="hi"  />
+                
+                <numberText id="pkg.p2100.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p2100.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p2100.palletInfo.height" title="full.pallet.height" lastElement="true"/>
+                
+                <selectText id="pkg.p2100.container.id" title="container" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[ SELECT  
+container.id, 
+container.code, 
+container.name,
+container.weight,
+container.volume
+FROM Container container  
+WHERE container.disabled = false   
+                        ]]></hql> 
+                        <inputUIs>
+                            <text id="container.code" title="container.code"  length="15"/>
+                            <text id="container.name" title="container.name"  length="15"/>
+                        </inputUIs>
+                        <eventListeners>
+	                        <eventListener id="pkg.p2100.container.weight" index="4" />
+	                        <eventListener id="pkg.p2100.container.volume" index="5" />
+	                    </eventListeners>
+                </selectText>
+                <numberText id="pkg.p2100.container.weight" title="container.weight"/>
+                <numberText id="pkg.p2100.container.volume" title="container.volume" />
+            </parttab>
+            
+             <parttab id="tab_2" title="p2000" style="CTab" tabHeight="250">
+                <text id="pkg.p2000.code" title="packDetail.code"  trimSpace="true" />
+                <text id="pkg.p2000.name" title="packDetail.name"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p2000.coefficient" title="coefficient"  trimSpace="true" />
+                <numberText id="pkg.p2000.precision" title="precision"  defaultValue="0" />
+                <numberText id="pkg.p2000.volume" title="volume"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p2000.length" title="length"  trimSpace="true" />
+                <numberText id="pkg.p2000.width" title="width"  trimSpace="true" />
+                <numberText id="pkg.p2000.height" title="height"  trimSpace="true" />
+                
+                
+                <checkbox id="pkg.p2000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p2000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p2000.palletInfo.hi" title="hi"  />
+                
+                <numberText id="pkg.p2000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p2000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p2000.palletInfo.height" title="full.pallet.height" lastElement="true"/>
+                
+                <selectText id="pkg.p2000.container.id" title="container" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[ SELECT  
+container.id, 
+container.code, 
+container.name,
+container.weight,
+container.volume 
+FROM Container container  
+WHERE container.disabled = false   
+                        ]]></hql> 
+                        <inputUIs>
+                            <text id="container.code" title="container.code"  length="15"/>
+                            <text id="container.name" title="container.name"  length="15"/>
+                        </inputUIs>
+                        <eventListeners>
+                            <eventListener id="pkg.p2000.container.weight" index="4" />
+                            <eventListener id="pkg.p2000.container.volume" index="5" />
+                        </eventListeners>
+                </selectText>
+                <numberText id="pkg.p2000.container.weight" title="container.weight"/>
+                <numberText id="pkg.p2000.container.volume" title="container.volume" />
+            </parttab>    
+                                  
+            <parttab id="tab_3" title="p3000" style="CTab" tabHeight="250">
+                <text id="pkg.p3000.code" title="packDetail.code"  trimSpace="true" />
+                <text id="pkg.p3000.name" title="packDetail.name"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p3000.coefficient" title="coefficient"  trimSpace="true" />
+                <numberText id="pkg.p3000.precision" title="precision"  defaultValue="0" />
+                <numberText id="pkg.p3000.volume" title="volume"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p3000.length" title="length"  trimSpace="true" />
+                <numberText id="pkg.p3000.width" title="width"  trimSpace="true" />
+                <numberText id="pkg.p3000.height" title="height"  trimSpace="true" />
+                
+                
+                <checkbox id="pkg.p3000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p3000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p3000.palletInfo.hi" title="hi"  />
+                
+                <numberText id="pkg.p3000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p3000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p3000.palletInfo.height" title="full.pallet.height" lastElement="true"/>
+                
+                <selectText id="pkg.p3000.container.id" title="container" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[ SELECT  
+container.id, 
+container.code, 
+container.name,
+container.weight,
+container.volume  
+FROM Container container  
+WHERE container.disabled = false   
+                        ]]></hql> 
+                        <inputUIs>
+                            <text id="container.code" title="container.code"  length="15"/>
+                            <text id="container.name" title="container.name"  length="15"/>
+                        </inputUIs>
+                        <eventListeners>
+                            <eventListener id="pkg.p3000.container.weight" index="4" />
+                            <eventListener id="pkg.p3000.container.volume" index="5" />
+                        </eventListeners>
+                </selectText>
+                <numberText id="pkg.p3000.container.weight" title="container.weight"/>
+                <numberText id="pkg.p3000.container.volume" title="container.volume" />
+            </parttab>
+            
+            <parttab id="tab_4" title="p4000" style="CTab" tabHeight="250">
+                <text id="pkg.p4000.code" title="packDetail.code"  trimSpace="true" />
+                <text id="pkg.p4000.name" title="packDetail.name"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p4000.coefficient" title="coefficient"  trimSpace="true" />
+                <numberText id="pkg.p4000.precision" title="precision"  defaultValue="0" />
+                <numberText id="pkg.p4000.volume" title="volume"  trimSpace="true" lastElement="true"/>
+                
+                <numberText id="pkg.p4000.length" title="length"  trimSpace="true" />
+                <numberText id="pkg.p4000.width" title="width"  trimSpace="true" />
+                <numberText id="pkg.p4000.height" title="height"  trimSpace="true" />
+                
+                
+                <checkbox id="pkg.p4000.usePallet" title="hasPallet" />
+                <numberText id="pkg.p4000.palletInfo.ti" title="ti"  />
+                <numberText id="pkg.p4000.palletInfo.hi" title="hi"  />
+                
+                <numberText id="pkg.p4000.palletInfo.length" title="full.pallet.length"  />
+                <numberText id="pkg.p4000.palletInfo.width" title="full.pallet.width"  />
+                <numberText id="pkg.p4000.palletInfo.height" title="full.pallet.height" lastElement="true"/>
+                
+                <selectText id="pkg.p4000.container.id" title="container" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[ SELECT  
+container.id, 
+container.code, 
+container.name,
+container.weight,
+container.volume 
+FROM Container container  
+WHERE container.disabled = false   
+                        ]]></hql> 
+                        <inputUIs>
+                            <text id="container.code" title="container.code"  length="15"/>
+                            <text id="container.name" title="container.name"  length="15"/>
+                        </inputUIs>
+                        <eventListeners>
+                            <eventListener id="pkg.p4000.container.weight" index="4" />
+                            <eventListener id="pkg.p4000.container.volume" index="5" />
+                        </eventListeners>
+                </selectText>
+                <numberText id="pkg.p4000.container.weight" title="container.weight"/>
+                <numberText id="pkg.p4000.container.volume" title="container.volume" />
+            </parttab>
+        </inputUIs>
+        <buttons>
+            <commit id="savePackageDetial" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="pkg" className="com.core.scpwms.server.model.common.PackageInfo">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="packageManager"  methodName="savePackageInfo"  parameter="pkg" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

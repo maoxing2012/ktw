@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="bomList" title="bomList" filterCol="true">
+		<search>
+			<inputUIs>
+			<text id="parentSku.sku_code" title="sku.sku_code" trimSpace="true"/>
+			<text id="parentSku.sku_name" title="sku.sku_name" trimSpace="true"/>
+			<selectText id="parentSku.plant.id" title="title.plant"  displayedTableHead="ID,plant.code,plant.name" >
+					<hql><![CDATA[SELECT 
+plant.id,
+plant.code,
+plant.name
+FROM Plant plant 
+WHERE plant.disabled = '0'
+order by plant.code
+					]]></hql>
+					<inputUIs>
+						<text id="rmcode" title="plant.code" trimSpace="true"/>
+						<text id="rmname" title="plant.name" trimSpace="true"/>
+					</inputUIs>
+			</selectText>
+			<list id="parentSku.disabled" title="title.disabled" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                        order by e.enumValue
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+parentSku.id,
+parentSku.sku_code,
+parentSku.sku_name,
+parentSku.plant.name,
+parentSku.properties.lotInfo.description,
+parentSku.properties.packageInfo.name,
+parentSku.specs,
+parentSku.it1000.name,
+parentSku.it2000.name,
+parentSku.it3000.name,
+parentSku.it4000.name,
+parentSku.grossWeight,
+parentSku.netWeight,
+parentSku.tareWeight,
+parentSku.length,
+parentSku.width,
+parentSku.height,
+parentSku.volume,
+parentSku.price,
+parentSku.disabled 
+from Sku parentSku 
+left join parentSku.it1000 
+left join parentSku.it2000 
+left join parentSku.it3000 
+left join parentSku.it4000 
+left join parentSku.properties.lotInfo 
+left join parentSku.properties.packageInfo
+where  1=1 
+and parentSku.isBom='1' 
+/~parentSku.sku_code: and parentSku.sku_code like {parentSku.sku_code}~/ 
+/~parentSku.sku_name: and parentSku.sku_name like {parentSku.sku_name}~/ 
+/~parentSku.plant.id: and parentSku.plant.id = {parentSku.plant.id}~/ 
+/~parentSku.disabled: and parentSku.disabled = {parentSku.disabled}~/
+order by parentSku.sku_code
+]]>
+		</datasource>
+		<columns>
+			<column id="parentSku.id" title="ID" visible="false" />
+			<column id="parentSku.sku_code" title="sku.sku_code" typeId="parentSku.sku_code"/>
+			<column id="parentSku.sku_name" title="sku.sku_name" typeId="parentSku.sku_name"/>
+            <column id="parentSku.plant.name" title="title.plant" typeId="parentSku.plant.id"/>
+            <column id="parentSku.properties.lotInfo.description" title="sku.properties.lotInfo" />
+            <column id="parentSku.properties.packageInfo.name" title="pkg.name" />
+			<column id="parentSku.specs" title="parentSku.specs" />
+			<column id="parentSku.it1000.name" title="parentSku.it1000.name" />
+			<column id="parentSku.it2000.name" title="parentSku.it2000.name" />
+			<column id="parentSku.it3000.name" title="parentSku.it3000.name" />
+			<column id="parentSku.it4000.name" title="parentSku.it4000.name" />
+			<column id="parentSku.grossWeight" title="parentSku.grossWeight" />
+			<column id="parentSku.netWeight" title="parentSku.netWeight" />
+			<column id="parentSku.tareWeight" title="parentSku.tareWeight" />
+			<column id="parentSku.length" title="parentSku.length" />
+			<column id="parentSku.width" title="parentSku.width" />
+			<column id="parentSku.height" title="parentSku.height" />
+			<column id="parentSku.volume" title="parentSku.volume" />
+			<column id="parentSku.price" title="parentSku.price" />
+			<column id="parentSku.disabled" title="title.disabled" format="enumFormat" formatParam="BooleanTypeN" typeId="parentSku.disabled"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="bomEdit" iconUrl="new"/>
+			<popup id="modify" title="modify" enableType="single" containId="true" pageId="bomEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[${parentSku.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+            </popup>
+            <commit id="enableBom" title="enable"  enableType="multi" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                <enableExpression><![CDATA[${parentSku.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="bomManager" methodName="enableBom" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="disableBom" title="disable"  enableType="multi" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                <enableExpression><![CDATA[${parentSku.disabled}==@{BooleanTypeN.false}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="bomManager" methodName="disableBom" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[${parentSku.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="seqManager" methodName="deleteSeq" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

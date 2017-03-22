@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="boxStowagePlanNew" title="boxStowagePlanNew" entityClass="com.core.scpwms.server.model.shipment.StowagePlan" width="600" height="500" columnNum="6">
+        <inputUIs>
+            <hidden id="stowagePlan.id" />
+			<selectText id="stowagePlan.carrier.id" title="carrier" displayedTableHead="ID,code,name" required="true">
+                    <hql><![CDATA[ select  
+carrier.id, 
+carrier.code, 
+carrier.name
+from Carrier carrier 
+where carrier.disabled = '0' 
+                        ]]></hql>
+            </selectText>
+			<text id="stowagePlan.carNumber" title="carNumber" trimSpace="true" required="true"/>
+			<text id="stowagePlan.mainDriver" title="driver" trimSpace="true" required="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+					<mapping id="stowagePlan" className="com.core.scpwms.server.model.shipment.StowagePlan" />
+				</mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="save" parameter="stowagePlan" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

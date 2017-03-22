@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="qualityDocEdit" title="qualityDocEdit" entityClass="com.core.scpwms.server.model.quality.QualityDoc" onClose="refreshParent" width="900"  height="500" columnNum="4">
+		<modify>
+			<inputUIs>
+				<hidden id="qualityDoc.id" />
+				<text id="qualityDoc.docSequence" title="qcNumber" forceOverride="true" readOnly="true" trimSpace="true" />
+				<selectText id="qualityDoc.plant.id" title="plant" required="true" displayedTableHead="ID,plant.code,plant.name" editModel="uneditable">
+					<hql><![CDATA[ SELECT  
+plant.id, 
+plant.code,
+plant.name   
+FROM Plant plant  
+WHERE plant.disabled = false   
+ 					]]></hql>
+				</selectText>
+				<textArea id="qualityDoc.description" title="title.desc" rows="50" cols="400" span="3" length="255" trimSpace="true" />
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="qualityDoc" className="com.core.scpwms.server.model.quality.QualityDoc" />
+					</mappings>
+					<actions>
+						<action managerName="qualityDocManager" methodName="save" parameter="qualityDoc" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+detail.id,
+detail.invInfo.invStatus,
+detail.invInfo.quant.sku.code,
+detail.invInfo.quant.sku.name,
+detail.invInfo.quant.sku.specs,
+detail.invInfo.quant.lotSequence,
+detail.invInfo.quant.dispLot,
+detail.invInfo.bin.binCode,
+detail.invInfo.packageDetail.name,
+detail.planPackQty,
+detail.planQty
+from QualityDocDetail detail 
+where 1=1   
+and detail.doc.id = {qualityDoc.id}
+ 			]]></datasource>
+			<columns>
+				<column id="detail.id" title="ID" visible="false" />
+                <column id="detail.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="detail.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="detail.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="detail.invInfo.quant.sku.specs" title="specs"/>
+                <column id="detail.invInfo.quant.lotSequence" title="lotSequence"/>
+                <column id="detail.invInfo.quant.dispLot" title="lotInfo"/>
+                <column id="detail.invInfo.bin.binCode" title="bin.code"/> 
+                <column id="detail.invInfo.packageDetail.name" title="packDetail"/> 
+                <column id="detail.planPackQty" title="qcPlanPackQty"/> 
+                <column id="detail.planQty" title="qcPlanQty"/> 
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="qualityDocDetailByInv"  iconUrl="new">
+                    <enableExpression><![CDATA[(${qualityDoc.id}>0)]]></enableExpression>
+                </popup>
+                <popup id="modifyDetail" title="modifyDetail" enableType="single" containId="true" pageId="qualityDocDetailEdit" iconUrl="edit"/>
+                <commit id="delDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+                    <mappings>
+                        <mapping id="ids" className="list" />
+                    </mappings>
+                    <actions>
+                        <action managerName="qualityDocManager" methodName="deleteDetail" parameter="ids" />
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                    </forwards>
+                </commit>   
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="accessoryInvList" title="accessoryInvList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="aInv.accessory.code" title="accessory.code" />
+				<text id="aInv.accessory.name" title="accessory.name" />
+				<selectText id="aInv.bin.id" title="bin" displayedTableHead="ID,Code,Name" displayColumn="2">
+					<hql><![CDATA[ SELECT 
+bin.id,
+bin.binCode,
+bin.description 
+FROM Bin bin  
+WHERE bin.disabled = false
+and bin.storageType.role='R8040' 
+and bin.wh = #{SESSION_WAREHOUSE}
+					]]></hql>
+				</selectText>
+				<list id="aInv.status" title="invStatus" trimSpace="true" enumType="EnuInvStatus" returnType="string">
+					<hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuInvStatus' 
+					]]></hql>
+				</list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[SELECT 
+aInv.id,
+aInv.accessory.code,
+aInv.accessory.name,
+aInv.baseQty,
+aInv.accessory.unit,
+aInv.bin.binCode,
+aInv.status 
+FROM AccessoryInventory aInv 
+left join aInv.accessory 
+left join aInv.bin 
+WHERE 1=1 
+and aInv.wh = #{SESSION_WAREHOUSE} 
+/~aInv.accessory.code: AND aInv.accessory.code like {aInv.accessory.code}~/
+/~aInv.accessory.name: AND aInv.accessory.name like {aInv.accessory.name}~/
+/~aInv.bin.id: AND aInv.bin.id like {aInv.bin.id}~/
+/~aInv.status: AND aInv.status = {aInv.status}~/
+		]]></datasource>
+		<columns>
+			<column id="aInv.id" title="ID" visible="false" />
+			<column id="aInv.accessory.code" title="accessory.code" />
+			<column id="aInv.accessory.name" title="accessory.name" />
+			<column id="aInv.baseQty" title="baseQty" />
+			<column id="aInv.accessory.unit" title="unit" />
+			<column id="aInv.bin.binCode" title="bin" />
+			<column id="aInv.status" title="invStatus" format="enumFormat" formatParam="EnuInvStatus" />
+		</columns>
+		<buttons>
+			<popup id="inboundAccessory" title="inboundAccessory" enableType="none" containId="none" pageId="inboundAccessoryEdit"  iconUrl="new"/>
+			<popup id="outboundAccessory" title="outboundAccessory" enableType="single" containId="true" pageId="outboundAccessoryEdit" iconUrl="delete" />
+			<popup id="adjustBinAccessoryInv" title="invMove" enableType="single" containId="true" pageId="adjustBinAccessoryInvEdit"  iconUrl="action"/>
+			<popup id="transitionBinAccessoryInv" title="invStatusChange" enableType="single" containId="true" pageId="transitionBinAccessoryInvEdit" iconUrl="action" />
+		</buttons>
+	</maintainPage>
+</pages>

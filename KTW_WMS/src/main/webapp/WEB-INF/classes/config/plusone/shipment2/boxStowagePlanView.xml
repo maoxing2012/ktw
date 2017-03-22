@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="boxStowagePlanView" title="boxStowagePlanView" entityClass="com.core.scpwms.server.model.shipment.StowagePlan" onClose="refreshParent" width="900" height="600" columnNum="8">
+		 <modify>
+		 <inputUIs>
+				<hidden id="stowagePlan.id" />
+				<text id="stowagePlan.stowageNumber" title="stowageNumber" trimSpace="true" editModel="uneditable" length="20" readOnly="true" />
+				<text id="stowagePlan.carNumber" title="carNumber" trimSpace="true"/>
+				<text id="stowagePlan.mainDriver" title="driver" trimSpace="true" required="true"/>
+				<textArea id="stowagePlan.description" title="title.desc" rows="50" cols="600" span="7" trimSpace="true"/>
+			</inputUIs>
+			<buttons>
+			</buttons> 
+			</modify>			
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+obdPack.id,
+obdPack.boxSequence, 
+obdPack.status,
+obdPack.packQty,
+obdPack.baseQty,
+obdPack.skuCount,
+obdPack.orderCount,
+obdPack.weight,
+round(obdPack.length*obdPack.width*obdPack.height,4)
+from OutboundPackage obdPack
+where 1=1 
+and obdPack.stowagePlan.id = {stowagePlan.id}
+ 			]]></datasource>
+			<columns>
+				<column id="obdPack.id" title="ID" visible="false" />
+				<column id="obdPack.boxSequence" title="boxSequence"/>
+				<column id="obdPack.status" title="title.status" format="enumFormat" formatParam="EnuPakcageDocStatus"/>
+				<column id="obdPack.packQty" title="packQty"/>
+				<column id="obdPack.baseQty" title="baseQty"/>
+				<column id="obdPack.skuCount" title="skuCount"/>
+				<column id="obdPack.orderCount" title="orderCount"/>
+				<column id="obdPack.weight" title="weight"/>
+				<column id="obdPack.volume" title="volume"/>
+			</columns>
+			<buttons>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.common.Sku" table="WMS_SKU">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_sku</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID" not-null="true" unique-key="UK_SKU"/>
+        </many-to-one>
+        <many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID" not-null="true" unique-key="UK_SKU"/>
+        </many-to-one>
+        
+        <property name="code" column="CODE" type="string" not-null="true" unique-key="UK_SKU" length="50"/>
+        <property name="name" column="NAME" type="string" not-null="true"/>
+        
+        <property name="code1" column="CODE1" type="string" length="50"/>
+        <property name="code2" column="CODE2" type="string" length="50"/>
+        <property name="specs" column="SPECS" type="string"/>
+        <property name="brandCode" column="BRAND_CODE" type="string" length="50"/>
+        <property name="brandName" column="BRAND_NAME" type="string"/>
+        
+        <many-to-one name="defSupplier" class="com.core.scpwms.server.model.user.BizOrg">
+            <column name="DEF_SUPPLIER"/>
+        </many-to-one>
+        <many-to-one name="it1000" class="com.core.scpwms.server.model.common.SkuType">
+            <column name="IT1000"/>
+        </many-to-one>
+        <many-to-one name="it2000" class="com.core.scpwms.server.model.common.SkuType">
+            <column name="IT2000"/>
+        </many-to-one> 
+        <many-to-one name="it3000" class="com.core.scpwms.server.model.common.SkuType">
+            <column name="IT3000"/>
+        </many-to-one> 
+        <many-to-one name="it4000" class="com.core.scpwms.server.model.common.SkuType">
+            <column name="IT4000"/>
+        </many-to-one>
+        <many-to-one name="abcType" class="com.core.scpwms.server.model.common.AbcProperties">
+            <column name="ABC_TYPE"/>
+        </many-to-one>
+        
+        <property name="grossWeight" type="double" column="GROSS_WEIGHT"/>
+        <property name="netWeight" type="double" column="NET_WEIGHT"/>
+        <property name="tareWeight" type="double" column="TARE_WEIGHT"/>
+        <property name="length" type="double" column="LENGTH"/>
+        <property name="width" type="double" column="WIDTH"/>
+        <property name="height" type="double" column="HEIGHT"/>
+        <property name="volume" type="double" column="VOLUME"/>
+        <property name="metric" column="METRIC" type="double"/> 
+        <property name="square" column="SQUARE" type="double"/>
+        
+        <property name="price" type="double" column="PRICE"/>
+        <property name="price_ext1" type="double" column="PRICE_EXT1"/>
+        <property name="price_ext2" type="double" column="PRICE_EXT2"/>
+        <property name="deadWeight" type="string" column="DEAD_WEIGHT"/>
+        <property name="tempDiv" type="long" column="TEMP_DIV" />
+        <property name="stockDiv" type="long" column="STOCK_DIV" />
+        <property name="fixDiv" column="FIX_DIV" type="long"/>
+ 		<property name="hubif" column="HUB_IF" type="boolean"/>
+        <property name="isBom" column="IS_BOM" type="boolean"/>
+       
+	    <component name="properties" class="com.core.scpwms.server.model.common.SkuProperties">
+	        <many-to-one name="lotInfo" class="com.core.scpwms.server.model.lot.LotInfo">
+	       	   <column name="LOT_INFO_ID" />
+	        </many-to-one>
+			<many-to-one name="packageInfo" class="com.core.scpwms.server.model.common.PackageInfo">
+                <column name="PACK_INFO_ID" />
+			</many-to-one>
+			<many-to-one name="inboundPkg" class="com.core.scpwms.server.model.common.PackageDetail">
+                <column name="IN_PACK_DETAIL_ID" />
+			</many-to-one>
+			<many-to-one name="outboundPkg" class="com.core.scpwms.server.model.common.PackageDetail">
+                <column name="OUT_PACK_DETAIL_ID" />
+			</many-to-one>
+			<many-to-one name="replenishmentPkg" class="com.core.scpwms.server.model.common.PackageDetail">
+                <column name="APPLY_PACK_DETAIL_ID" />
+			</many-to-one>
+			<property name="useExpire" column="USE_EXPIRE" type="boolean" />
+			<property name="dayOfExpiry" column="DAY_OF_EXPIRY" type="int"/>
+			<property name="alertLeadingDays" column="WARNING_LEADING_DAYS" type="int"/>
+			<property name="safetyStockUpper" column="SAFETY_STOCK_UPPER" type="double"/>
+			<property name="safetyStockLower" column="SAFETY_STOCK_LOWER" type="double"/>
+			<property name="purchaseLeadTime" column="PURCHASE_LEADTIME" type="int"/>
+			
+			<property name="lotExpireKey" column="LOT_EXPIRE_KEY" type="string" length="50"/>
+			<property name="lotDeadLineKey" column="LOT_DEADLINE_KEY" type="string" length="50"/>
+			<property name="toc" column="TURN_OVER" type="string" length="20"/>
+			
+			<property name="splitPallet" column="SPLIT_PALLET" type="boolean"/>
+			<property name="splitPackage" column="SPLIT_PACKAGE" type="boolean"/>
+			
+			<property name="baseCheckQty4NS" column="BASE_CHECKQTY_4NS" type="double"/>
+			<property name="baseUnitCode4NS" column="BASE_UNITCODE_4NS" type="string" length="50"/>
+			<property name="baseUnitName4NS" column="BASE_UNITNAME_4NS" type="string" length="50"/>
+			<property name="packFlg4NS" column="PACK_FLG_4NS" type="long"/>
+	    </component>
+	    
+	    <property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+     </class>
+</hibernate-mapping>

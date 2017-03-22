@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="outboundPackageAddObd" title="outboundPackageAddObd" autoQuery="true" width="800" height="400">
+		<search>
+			<inputUIs>
+				<text id="checkBin" title="checkBin" trimSpace="true" />
+                <text id="obdNumber" title="obdNumber" trimSpace="true" />
+                <text id="custBillNo" title="custBillNo" trimSpace="true" />
+                <selectText id="customer.id" title="customer" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[ SELECT 
+customer.id,
+customer.code,
+customer.name
+FROM BizOrg customer 
+WHERE customer.disabled = '0'
+                    ]]></hql>
+                </selectText>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obd.id,
+obd.descBin.binCode,
+obd.obdNumber,
+obd.status,
+obd.pickUpQty - obd.packedQty as toPackQty,
+obd.planQty,
+obd.pickUpQty,
+obd.relatedBill1,
+obd.customer.name,
+obd.endCustomer,
+obd.orderType.name,
+obd.stockDate,
+obd.eta,
+obd.description
+from OutboundDelivery obd 
+left join obd.descBin
+left join obd.customer
+where 1=1 
+and obd.wh=#{SESSION_WAREHOUSE} 
+and ((coalesce(obd.pickUpQty,0) - coalesce(obd.packedQty,0)) > 0 or (coalesce(obd.packedQty,0) - coalesce(obd.closedPackQty,0)) > 0 )
+and obd.status in (800)
+and obd.shipMethod in ('11','40')
+/~obdNumber: and obd.obdNumber like {obdNumber}~/
+/~custBillNo: and obd.relatedBill1 like {custBillNo}~/
+/~customer.id: and obd.customer.id = {customer.id}~/
+/~checkBin: and obd.descBin.binCode like {checkBin}~/
+		]]></datasource>
+		<columns>
+			<column id="obd.id" title="ID" visible="false"  />
+			<column id="obd.descBin.binCode" title="checkBin" />
+            <column id="obd.obdNumber" title="obdNumber" />
+            <column id="obd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryStatus"/>
+            <column id="toPackQty" title="toPackQty" />
+            <column id="obd.planQty" title="planQty" />
+            <column id="obd.pickUpQty" title="pickUpQty" />
+            <column id="obd.relatedBill1" title="custBillNo" />
+            <column id="obd.customer.name" title="customer" />
+            <column id="obd.endCustomer" title="endCustomer" />
+            <column id="obd.orderType.name" title="orderType" />
+            <column id="obd.stockDate" title="stockDate" />
+            <column id="obd.eta" title="obd.eta" />
+            <column id="obd.description" title="title.desc" />
+		</columns>
+		<buttons>
+			<commit id="add" title="add"  enableType="multi" confirmMessage="add.confirmMessage" iconUrl="new">
+				<mappings>
+					<mapping id="outboundPackage.id" className="long" /> 
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="packingManager" methodName="addObds" parameter="outboundPackage.id,ids" />
+				</actions>
+				<forwards>					
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

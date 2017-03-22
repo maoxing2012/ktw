@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="addPostcode2Course" title="addPostcode2Course" autoQuery="true" onClose="refreshParent" width="1000" height="400" columnNum="8">
+		<search>
+			<inputUIs>
+                <hidden id="course.id" />
+                <text id="postcode" title="postcode" trimSpace="true" />
+				<text id="area.name" title="area.name" trimSpace="true" />
+				<text id="city.name" title="city.name" trimSpace="true" />
+				<text id="town.name" title="town.name" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+postcode.id,
+postcode.postcode,
+postcode.city.code,
+postcode.city.area.name,
+postcode.city.name,
+postcode.addr
+from PostCode postcode 
+where 1=1
+and postcode.id not in ( select cpc.postCode.id from CoursePostCode cpc where cpc.course.id = {course.id} )
+/~postcode: and postcode.postcode like {postcode}~/ 
+/~area.name: and postcode.city.area.name like {area.name}~/ 
+/~city.name: and postcode.city.name like {city.name}~/ 
+/~town.name: and postcode.addr like {town.name}~/ 
+		]]></datasource>
+		<columns>
+			<column id="postcode.id" title="ID" visible="false"/>
+			<column id="postcode.postcode" title="postcode"/>
+			<column id="postcode.city.code" title="city.code" visible="false"/>
+			<column id="postcode.city.area.name" title="area.name"/>
+			<column id="postcode.city.name" title="city.name"/>
+			<column id="postcode.addr" title="town.name"/>
+		</columns>
+		<buttons>
+			<commit id="add" title="add"  enableType="multi" iconUrl="add">
+				<mappings>
+					<mapping id="course.id" className="long"/>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="transportManager" methodName="addPostcode2Course" parameter="course.id,ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

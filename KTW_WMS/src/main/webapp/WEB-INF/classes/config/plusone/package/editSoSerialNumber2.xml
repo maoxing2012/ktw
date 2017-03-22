@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="editSoSerialNumber2" title="editSoSerialNumber2" entityClass="com.core.scpwms.server.model.asus.SoSerialNumber" columnNum="2"  width="350" height="420" >
+        <inputUIs>
+            <hidden id="ssn.id" />
+			<text id="ssn.serialNumber" title="serialNumber"  trimSpace="true" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="ssn.id" className="long"/>
+                    <mapping id="ssn.serialNumber" className="string"/>
+                </mappings>
+                <actions>
+                    <action managerName="serialNumberManager" methodName="editSoSerialNumber" parameter="ssn.id,ssn.serialNumber"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

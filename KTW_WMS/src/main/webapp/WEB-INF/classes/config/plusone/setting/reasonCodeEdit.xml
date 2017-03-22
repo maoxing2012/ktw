@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="reasonCodeEdit" title="reasonCodeEdit" entityClass="com.core.scpwms.server.model.common.ReasonCode" width="400" height="300">
+		<inputUIs>
+			<hidden id="reasonCode.id" />
+			<text id="reasonCode.code" title="reasonCode.code" required="true" length="20" trimSpace="true" editModel="uneditable" />
+			<text id="reasonCode.name" title="reasonCode.name" required="true" length="50" trimSpace="true" />
+			<list id="reasonCode.type" title="reasonCode.type" required="true" enumType="EnuInvStatus" returnType="string">
+				<hql><![CDATA[SELECT 
+e.enumValue,
+e.enumValue 
+FROM Enumerate e 
+WHERE e.enumType = 'EnuInvStatus' 
+and e.enumValue <> 'AVAILABLE'
+                    ]]></hql>
+			</list>
+			<textArea id="reasonCode.description" title="title.desc" rows="50" cols="335" span="3" length="80" trimSpace="true" />
+		</inputUIs>
+		<buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="reasonCode" className="com.core.scpwms.server.model.common.ReasonCode"/>
+                </mappings>
+                <actions>
+                    <action managerName="reasonCodeManager" methodName="saveReasonCode" parameter="reasonCode"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+	</editPage>
+</pages>

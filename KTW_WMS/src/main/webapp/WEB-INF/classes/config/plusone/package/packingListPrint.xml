@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <!-- <reportPopupPage  id="asnPrint" title="asnPrint" reportFile="cwms1001.raq"  parameter="ids"  width="900" height="600"/> -->
+	 <reportPopupPage  id="packingListPrint" title="packingListPrint" reportFile="ASUSWMS4004.svf"  parameter="ids"  width="900" height="600" />
+</pages>

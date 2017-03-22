@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="homeSettingModify" title="homeSettingModify" entityClass="com.core.business.model.home.HomeSetting" width="400" height="300">
+        <inputUIs>
+            <hidden id="homeSetting.id"/>
+			<numberText id="homeSetting.lineCnt" title="homeSetting.lineCnt" trimSpace="true" returnType="Integer" length="4" width="50" required="true" lastElement="true"/>
+			<list id="homeSetting.layout" title="homeSetting.layout" forceOverride="true" enumType="LayoutType" lastElement="true" returnType="string" width="200" emptyValue="false" defaultValue="default">
+                <hql><![CDATA[ select 
+					en.enumValue,
+					en.enumValue
+					from Enumerate en
+					where  en.enumType='LayoutType'  ]]>
+                </hql>
+           	</list>
+            <textArea id="homeSetting.title" title="homeSetting.title" forceOverride="true" trimSpace="true"  rows="40" cols="200" length="250" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="hs" className="com.core.db.server.model.Entity.HomeSetting"/>
+                </mappings>
+                <actions>
+                    <action managerName="homeSettingManager" methodName="saveSetting" parameter="hs"/>
+                </actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+        </buttons>
+    </editPage>
+</pages>

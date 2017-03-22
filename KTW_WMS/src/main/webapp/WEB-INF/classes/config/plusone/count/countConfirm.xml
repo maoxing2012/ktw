@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="countConfirm" title="countConfirm" autoQuery="false">
+		<search>
+		    <inputUIs>
+		    	<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="countNumber" title="countNumber"  forceOverride="true" trimSpace="true"/>
+	            <text id="bin.code" title="bin.code"  forceOverride="true" trimSpace="true"/>
+	            <text id="sku.code" title="sku.code"  forceOverride="true" trimSpace="true"/>
+	            <text id="sku.name" title="sku.name"  forceOverride="true" trimSpace="true"/>
+	            <text id="expDate" title="expDate"  forceOverride="true" trimSpace="true"/>
+            </inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select  
+record.id,
+case when record.deltaQuantity > 0 then '' when record.deltaQuantity < 0 then '▲' end as typeName,
+record.countPlan.owner.name,
+record.countPlan.code,
+record.invInfo.bin.binCode,
+record.invInfo.quant.sku.code,
+record.invInfo.quant.sku.name,
+record.invInfo.packageDetail.name,
+record.invBaseQty,
+record.countQuantity,
+record.deltaQuantity,
+record.invInfo.quant.lotSequence,
+record.invInfo.quant.dispLot,
+record.invInfo.inboundDate,
+record.invInfo.trackSeq,
+record.invInfo.invStatus
+from CountRecord record 
+where 1=1 
+and record.status = 210
+and record.deltaQuantity <> 0
+and record.countPlan.warehouse = #{SESSION_WAREHOUSE}
+/~owner.id : and record.invInfo.owner.id = {owner.id} ~/
+/~countNumber :and record.countPlan.code like {countNumber} ~/
+/~bin.code : and record.invInfo.bin.binCode like {bin.code} ~/
+/~sku.code : and record.invInfo.quant.sku.code like {sku.code} ~/
+/~sku.name : and record.invInfo.quant.sku.name like {sku.name} ~/
+/~expDate : and record.invInfo.quant.dispLot like {expDate} ~/
+ 		]]></datasource>
+		<columns>
+			<column id="record.id" title="ID" visible="false" />
+			<column id="typeName" title="countStatus"/>
+			<column id="record.countPlan.owner.name" title="owner"/>
+            <column id="record.countPlan.code" title="countNumber"/>
+            <column id="record.invInfo.bin.binCode" title="bin"/>
+            <column id="record.invInfo.quant.sku.code" title="sku.code"/>
+            <column id="record.invInfo.quant.sku.name" title="sku.name"/>
+            <column id="record.invInfo.packageDetail.name" title="p1000.name"/>
+            <column id="record.invBaseQty" title="countPlanQty"/>
+            <column id="record.countQuantity" title="countQuantity"/>
+            <column id="record.deltaQuantity" title="deltaQty"/>
+            <column id="record.invInfo.quant.lotSequence" title="lotSequence"/>
+            <column id="record.invInfo.quant.dispLot" title="expDate"/>
+            <column id="record.invInfo.inboundDate" title="inboundDate"/>
+            <column id="record.invInfo.trackSeq" title="asnNumber"/>
+            <column id="record.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+        </columns>
+		<buttons>
+			<popup id="countConfirm" title="countConfirm" enableType="multi" containId="true"  pageId="countConfirmEdit" iconUrl="action"/>
+		</buttons>
+	</maintainPage>
+</pages>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<pages>
+		<maintainPage id="outboundHistoryList" title="outboundHistoryList"  autoQuery="false">
+			<search>
+	            <inputUIs>
+	            	<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    	<hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+	                    ]]></hql>
+	                </selectText>
+				    <text id="obdNumber" title="obdNumber" trimSpace="true" />
+				    <text id="custBillNo" title="custBillNo" trimSpace="true" />
+				    <text id="waveNumber" title="waveNumber" trimSpace="true" />
+				    <text id="carrier.code" title="carrier.code" trimSpace="true" isPrecision="true"/>
+				    <text id="bizOrg.code" title="bizOrg.code" trimSpace="true" isPrecision="true"/>
+					<text id="skuCode" title="sku.code" trimSpace="true" isPrecision="true"/>
+				    <date id="etd" title="etd" showTime="false" />
+				    <date id="ataFrom" title="shipDateFrom" showTime="false" />
+					<date id="ataTo" title="shipDateTo" showTime="false" />
+	            	<date id="ata.from" title="shipTimeFrom" showTime="true" />
+					<date id="ata.to" title="shipTimeTo" showTime="true" />
+	            </inputUIs>
+	        </search>	
+			<datasource type="hql"><![CDATA[SELECT 
+oh.id,
+oh.invInfo.owner.name,
+oh.detail.obd.obdNumber,
+oh.detail.obd.relatedBill1,
+oh.detail.obd.orderType.name,
+oh.detail.obd.waveDoc.waveNumber,
+oh.detail.obd.carrier.code,
+oh.detail.obd.carrier.name,
+oh.detail.obd.customer.code,
+oh.detail.obd.customer.name,
+sku.code,
+sku.name,
+sku.specs,
+oh.invInfo.quant.dispLot,
+oh.invInfo.invStatus,
+oh.executeQty,
+
+case when p2000.coefficient > 0 
+then floor(oh.executeQty/p2000.coefficient) else 0 end as shipQtyCs,
+p2000.name,
+
+case when (p2000.coefficient > 0 and p2100.coefficient > 0)
+then floor((oh.executeQty - p2000.coefficient * (floor(oh.executeQty/p2000.coefficient)))/p2100.coefficient)
+when (p2000.coefficient <= 0 and p2100.coefficient > 0)
+then floor(oh.executeQty/p2100.coefficient)
+else 0 end as shipQtyBl,
+p2100.name,
+
+case when (p2000.coefficient > 0 and p2100.coefficient > 0)
+then (oh.executeQty - p2000.coefficient * (floor(oh.executeQty/p2000.coefficient)) - p2100.coefficient * (floor((oh.executeQty - p2000.coefficient * (floor(oh.executeQty/p2000.coefficient)))/p2100.coefficient)))
+when (p2000.coefficient <= 0 and p2100.coefficient > 0)
+then (oh.executeQty - p2100.coefficient * (floor(oh.executeQty/p2100.coefficient)))
+when (p2000.coefficient > 0 and p2100.coefficient <= 0)
+then (oh.executeQty - p2000.coefficient * (floor(oh.executeQty/p2000.coefficient)))
+else oh.executeQty end as shipQtyBr,
+p1000.name,
+
+oh.detail.obd.etd,
+oh.shipDate
+from OutboundHistory oh
+left join oh.detail.sku sku
+left join oh.detail.sku.properties.packageInfo.p2000 p2000
+left join oh.detail.sku.properties.packageInfo.p2100 p2100
+left join oh.detail.sku.properties.packageInfo.p1000 p1000
+left join oh.detail.obd.waveDoc
+left join oh.detail.obd.carrier
+left join oh.detail.obd.customer
+where 1=1
+and oh.detail.obd.wh = #{SESSION_WAREHOUSE} 
+/~owner: and oh.invInfo.owner.id = {owner}~/ 
+/~obdNumber: and oh.detail.obd.obdNumber like {obdNumber}~/ 
+/~custBillNo: and oh.detail.obd.relatedBill1 like {custBillNo}~/ 
+/~waveNumber: and oh.detail.obd.waveDoc.waveNumber like {waveNumber}~/ 
+/~carrier.code: and oh.detail.obd.carrier.code = {carrier.code}~/ 
+/~bizOrg.code: and oh.detail.obd.customer.code = {bizOrg.code}~/ 
+/~skuCode: and sku.code = {skuCode}~/ 
+/~etd: and to_char(oh.detail.obd.etd,'YYYY-MM-DD') = to_char(cast({etd} as timestamp),'YYYY-MM-DD')~/
+/~ata.from: and to_char(oh.shipDate,'yyyy-mm-dd hh24:mi') >= to_char(cast({ata.from} as timestamp),'yyyy-mm-dd hh24:mi')~/
+/~ata.to: and to_char(oh.shipDate,'yyyy-mm-dd hh24:mi') <= to_char(cast({ata.to} as timestamp),'yyyy-mm-dd hh24:mi')~/
+/~ataFrom: and to_char(oh.shipDate,'YYYY-MM-DD') >= to_char(cast({ataFrom} as timestamp),'YYYY-MM-DD')~/
+/~ataTo: and to_char(oh.shipDate,'YYYY-MM-DD') <= to_char(cast({ataTo} as timestamp),'YYYY-MM-DD')~/
+			]]></datasource>
+		    <columns>
+				<column id="oh.id" title="ID" visible="false" />
+                <column id="oh.invInfo.owner.name" title="owner"/>
+                <column id="oh.detail.obd.obdNumber" title="obdNumber"/>
+                <column id="oh.detail.obd.relatedBill1" title="custBillNo"/>
+                <column id="oh.detail.obd.orderType.name" title="orderType"/>
+                <column id="oh.detail.obd.waveDoc.waveNumber" title="waveNumber"/>
+                
+                <column id="oh.detail.obd.carrier.code" title="carrier.code"/>
+                <column id="oh.detail.obd.carrier.name" title="carrier.name"/>
+                <column id="oh.detail.obd.customer.code" title="bizOrg.code"/>
+                <column id="oh.detail.obd.customer.name" title="bizOrg.name"/>
+                
+                <column id="sku.code" title="sku.code"/>
+                <column id="sku.name" title="sku.name"/>
+                <column id="sku.specs" title="specs"/>
+                <column id="oh.invInfo.quant.dispLot" title="expDate"/>
+                <column id="oh.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="oh.executeQty" title="shipQty"/>
+                <column id="shipQtyCs" title="shipQtyCs"/>
+                <column id="p2000.name" title="p2000.name"/>
+                <column id="shipQtyBl" title="shipQtyBl"/>
+                <column id="p2100.name" title="p2100.name"/>
+                <column id="shipQtyBr" title="shipQtyBr"/>
+                <column id="p1000.name" title="p1000.name"/>
+                <column id="oh.detail.obd.etd" title="etd"/>
+                <column id="oh.shipDate" title="shipTime"/>
+		    </columns>
+		</maintainPage>
+	</pages>

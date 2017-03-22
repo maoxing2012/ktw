@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="companySettingEdit" title="companySettingEdit" entityClass="com.core.scpwms.server.model.fee.Company" width="500" height="450" >
+        <inputUIs>
+            <hidden id="company.id" />
+            <parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="150" >
+                <text id="company.code" title="company.code"  editModel="uneditable" required="true" length="10" trimSpace="true" />
+                <text id="company.name" title="company.name" required="true" width="355" span="3" length="20" trimSpace="true" />
+                <textArea id="company.description" title="title.desc" rows="50" cols="355" span="3" length="80" trimSpace="true" />
+            </parttab>
+            <parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="150" >
+                <text id="company.contractInfo.linkman" title="contractInfo.linkman" length="30" trimSpace="true"  />
+                <text id="company.contractInfo.phone" title="contractInfo.phone" length="20" trimSpace="true" />
+                <text id="company.contractInfo.fax" title="contractInfo.fax" length="20" trimSpace="true"/>
+                <text id="company.contractInfo.email" title="contractInfo.email" length="50" trimSpace="true" />
+                <text id="company.contractInfo.postcode" title="contractInfo.postcode" length="30" trimSpace="true" />
+                <text id="company.contractInfo.address" title="contractInfo.address" width="355" span="2" length="80" trimSpace="true" />  
+            </parttab>
+            <parttab id="tab_3" title="bankInfo1" style="CTab" tabHeight="150" >
+                <text id="company.bank1.bankName" title="bankName" length="30" trimSpace="true"  />
+                <text id="company.bank1.brachName" title="brachName" length="30" trimSpace="true"  />
+                <text id="company.bank1.account" title="bankAccount" length="30" trimSpace="true"  />
+            </parttab>
+            <parttab id="tab_4" title="bankInfo2" style="CTab" tabHeight="150" >
+                <text id="company.bank2.bankName" title="bankName" length="30" trimSpace="true"  />
+                <text id="company.bank2.brachName" title="brachName" length="30" trimSpace="true"  />
+                <text id="company.bank2.account" title="bankAccount" length="30" trimSpace="true"  />
+            </parttab>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="company" className="com.core.scpwms.server.model.company"/>
+                </mappings>
+                <actions>
+                    <action managerName="companyManager" methodName="store" parameter="company"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

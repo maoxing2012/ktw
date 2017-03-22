@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="newPutawayWt" title="newPutawayWt" entityClass="com.core.scpwms.server.model.task.WarehouseTask" width="200"  height="200" columnNum="4">
+        <inputUIs>
+            <hidden id="wt.id" />
+            <selectText id="invId" title="inventory" required="true" displayedTableHead="ID,bin,sku.code,sku.name,containerSeq,lotInfo,usableQty" lastElement="true" colWidths="0,10%,15%,35%,10%,15%,15%" bodyWidth="700">
+                <hql><![CDATA[ SELECT  
+inv.id,
+inv.bin.binCode,
+inv.quantInv.quant.sku.code,
+inv.quantInv.quant.sku.name,
+inv.container.containerSeq,
+inv.quantInv.quant.dispLot,
+inv.baseQty - inv.queuedQty as availableQty
+from Inventory inv 
+where 1=1
+and inv.wh = #{SESSION_WAREHOUSE}
+and inv.status <> 'FREEZE'
+and inv.bin.storageType.role in ('R1000')
+and inv.queuedQty = 0
+                    ]]></hql> 
+                <eventListeners>
+                		<eventListener id="bin.code" index="2" refreshUI="true"/>
+                        <eventListener id="container" index="5" refreshUI="true"/>
+                        <eventListener id="sku.name" index="4" refreshUI="true"/>
+                        <eventListener id="lotInfo" index="6" refreshUI="true"/>
+                        <eventListener id="availableQty" index="7" refreshUI="true"/>
+                </eventListeners>
+            </selectText>
+            <text id="bin.code" title="bin.code" readOnly="true"/>
+            <text id="container" title="containerSeq" readOnly="true"/>
+            <text id="sku.name" title="sku.name" readOnly="true"/>
+            <text id="lotInfo" title="lotInfo" readOnly="true"/>
+            <numberText id="availableQty" title="moveQty" required="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="wt" className="com.core.scpwms.server.model.task.WarehouseTask" />
+                    <mapping id="invId" className="long" />
+                    <mapping id="availableQty" className="double" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskManager" methodName="newWt" parameter="wt,invId,availableQty" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

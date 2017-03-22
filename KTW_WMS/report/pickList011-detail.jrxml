@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2016-09-29T09:47:17 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_Landscape" pageWidth="720" pageHeight="230" orientation="Landscape" columnWidth="676" leftMargin="34" rightMargin="10" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty" uuid="e5db3e28-49e2-4d31-b64a-3337a2d93682">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="local "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://localhost:9091/jasperserver/"/>
+	<property name="ireport.jasperserver.user" value="jasperadmin"/>
+	<property name="ireport.jasperserver.reportUnit" value="/report/pickList011"/>
+	<property name="ireport.jasperserver.report.resource" value="/report/pickList011_files/main_jrxml"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="waveDocId" class="java.lang.Long" isForPrompting="false"/>
+	<parameter name="wodbId" class="java.lang.Long" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="extString2" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="carrierCd" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="tempDiv" class="java.lang.Long" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[--- 納品書（0:自社伝票、1:専用、2:CS統一伝票）（detail部）
+select 
+	1														as fixedClum
+	--, tempDiv																-- 項No.33(温度帯区分)
+	, extString1_83																-- 項No.83(商品コード)
+	, extString1_85_1															-- 項No.85(商品名)
+	, extString1_85_2															-- 項No.85(商品名)
+	, skuId
+	, skuCode
+	, skuName
+	, extString1_87																-- 項No.87(特別品No)
+	, baseCoefficient
+	, baseCheckqty4ns
+	
+	, extString1_93	-- 項No.93(入力単位)
+	, (sum(allocateQty) * baseCheckqty4ns)/baseCoefficient	as sumFiled_129		-- 入力数
+	, extString1_103															-- 項No.103(単価)		
+	, (sum(allocateQty) * baseCheckqty4ns)/baseCoefficient * cast(extString1_103 as double precision) as sumFiled_105 	-- 項No.105(金額)
+	
+	------------------------------2:CS統一伝票         仕入伝票
+	, trim(substring(to_char(((sum(allocateQty) * baseCheckqty4ns) / baseCoefficient ), '999999999V99'), 2, 6))  as sumFiled_129_1	-- 配送数量 項No.129(出荷数（トータル）
+	, trim(substring(to_char(((sum(allocateQty) * baseCheckqty4ns) / baseCoefficient ), '999999999V99'), 8, 3))  as sumFiled_129_2	-- 配送数量 項No.129(出荷数（トータル）
+	, trim(substring(to_char(((sum(allocateQty) * baseCheckqty4ns) / baseCoefficient ), '999999999V99'), 11, 1)) as sumFiled_129_3	-- 配送数量 項No.129(出荷数（トータル）
+	
+	, trim(substring(lpad(replace(extString1_103, '.', ''), 11, ' '), 1, 6)) 					as extString1_103_1	-- 項No.103(単価)
+	, trim(substring(lpad(replace(extString1_103, '.', ''), 11, ' '), 7, 3)) 					as extString1_103_2	-- 項No.103(単価)
+	, trim(substring(lpad(replace(extString1_103, '.', ''), 11, ' '), 10, 2))					as extString1_103_3	-- 項No.103(単価)
+
+	, trim(substring(to_char(((sum(allocateQty) * baseCheckqty4ns) / baseCoefficient ) * cast(extString1_103 as double precision), '99999999999'), 2, 5))	as sumFiled_105_1	-- 項No.105(金額)
+	, trim(substring(to_char(((sum(allocateQty) * baseCheckqty4ns) / baseCoefficient ) * cast(extString1_103 as double precision), '99999999999'), 7, 3))	as sumFiled_105_2	-- 項No.105(金額)
+	, trim(substring(to_char(((sum(allocateQty) * baseCheckqty4ns) / baseCoefficient ) * cast(extString1_103 as double precision), '99999999999'), 10, 3))	as sumFiled_105_3	-- 項No.105(金額)
+
+	------------------------------1:専用               出 荷 案 内(控)
+	, extString1_80																-- 項No.9(行No)
+	, extString1_100															-- 項No.100(ケース入数)	
+	, extString1_96																-- ケース単位
+	, extString1_94																-- 基本単位
+	, CSCoefficient																-- 商品ＣＳ
+	, CSname																-- 商品ＣＳ単位
+	, PSname																-- 商品ＰＳ単位
+	, Floor(case when coalesce(CSCoefficient, 0) = 0 then 0 else sum(allocateQty) / CSCoefficient end) as qty2000		-- ケース数
+	, (sum(allocateQty) - Floor(case when coalesce(CSCoefficient, 0) = 0 then 0
+	  else  sum(allocateQty) / CSCoefficient end) * CSCoefficient) * baseCheckqty4ns as baseQty		-- 出荷数(基本単位)の半端数
+	, sum(allocateQty) * baseCheckqty4ns								as sumFiled_134		-- 出荷数(基本単位)
+
+	------------------------------0:自社伝票
+	, sum(filed_ShouhiZei)												as sumFiled_ShouhiZei	-- 消費税
+	, sum(filed_Kingaku)												as sumFiled_Kingaku	-- 合計金額
+
+from 
+(
+	select distinct
+		  1										as fixedClum
+		, wOutboundDeliveryDetail.id			as unit -- distinct用
+		, wSku.base_checkqty_4ns as baseCheckqty4ns	-- 基本チェック数
+		, wOutboundDeliveryDetail.ext_double1   as baseCoefficient  --基本数/入力数的折算系数
+		
+		, case 
+			when wSku.temp_div = 0 then '未定'
+			when wSku.temp_div = 1 then '常温'
+			when wSku.temp_div = 2 then '冷蔵'
+			when wSku.temp_div = 3 then '冷凍'
+			when wSku.temp_div = 4 then '低温'
+			when wSku.temp_div = 5 then 'ドライ'
+			when wSku.temp_div = 7 then 'チルド'
+			else ''
+		end 										            as tempDiv		-- 項No.33(温度帯区分)			
+
+		, wOutboundDelivery.ext_string1							                        as obdType		-- 納品書タイプ 0:自社伝票/2:CS統一伝票/1:出荷案内
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 83)			            as extString1_83	-- 項No.83(商品コード)
+		, substring(split_part(wOutboundDeliveryDetail.ext_string1, ',', 85), 1, 16)	as extString1_85_1	-- 項No.85(商品名)先頭16文字まで
+		, substring(split_part(wOutboundDeliveryDetail.ext_string1, ',', 85), 17)	    as extString1_85_2	-- 項No.85(商品名)17文字以降	
+		, wSku.id                                                                       as skuId
+		, wSku.code                                                                     as skuCode
+		, wSku.name                                                                     as skuName		
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 87)   			        as extString1_87	-- 項No.87(特別品No.)
+		, wOutboundDeliveryDetail.plan_qty			   			                    as allocateQty		-- QTY
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 80)			            as extString1_80	-- 項No.80(行No)
+		
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 93)                      as extString1_93	-- 項No.93(入力単位)	
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 103)                     as extString1_103	-- 項No.103(単価)
+		
+		------------------------------1:専用               出 荷 案 内(控)
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 129)			as extString1_129	-- 配送数量 項No.129(出荷数（トータル）)
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 134)			as extString1_134	-- 配送数量 項No.134(出荷数（基本トータル）)
+		, split_part(wOutboundDeliveryDetail.ext_string1, ',', 100)         as extString1_100	-- 項No.100(ケース入数)
+		, wPackageDetail2000.name                                           as extString1_96	-- ケース単位
+		, wSku.base_unitname_4ns                                            as extString1_94	-- 基本単位	
+		, wPackageDetail2000.coefficient                                    as CSCoefficient	-- 商品ＣＳIN
+		, wPackageDetail2000.name                                           as CSname		-- 商品ＣＳ単位
+		, wPackageDetail1000.name                                           as PSname		-- 商品ＰＳ単位
+
+		------------------------------0:自社伝票	
+		, case when split_part(wOutboundDeliveryDetail.ext_string1, ',', 64) = '1'		-- 項No.64(汎用項目3)
+				and split_part(wOutboundDeliveryDetail.ext_string1, ',', 109) = '0' then --項No.109(税区分)
+				((wOutboundDeliveryDetail.allocate_qty * wSku.base_checkqty_4ns) / wOutboundDeliveryDetail.ext_double2)* cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 103) as double precision) 
+					* cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 107) as double precision) / 100 -- 項No.107(税率) 
+			else
+			0
+		end										as filed_ShouhiZei	-- 消費税
+
+		, case when split_part(wOutboundDeliveryDetail.ext_string1, ',', 64) = '1' then		-- 項No.64(汎用項目3)
+				((wOutboundDeliveryDetail.allocate_qty * wSku.base_checkqty_4ns) / wOutboundDeliveryDetail.ext_double2) * cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 103) as double precision)
+				 + ((wOutboundDeliveryDetail.allocate_qty * wSku.base_checkqty_4ns) / wOutboundDeliveryDetail.ext_double2) * cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 103) as double precision) 
+					* cast(split_part(wOutboundDeliveryDetail.ext_string1, ',', 107) as double precision) / 100 -- 項No.107(税率) 
+			else
+			0
+		end										as filed_Kingaku	-- 合計金額	
+		   			
+	from 
+		wms_wave_doc wWaveDoc	
+		inner join wms_outbound_delivery wOutboundDelivery
+			on (wWaveDoc.id = wOutboundDelivery.wave_doc_id)
+		left outer join wms_carrier wCarrier
+			on (wOutboundDelivery.carrier_id = wCarrier.id)
+		left outer join wms_biz_org wBizOrg
+			on (wOutboundDelivery.custmoer_id = wBizOrg.id)	
+					
+		inner join wms_outbound_delivery_detail wOutboundDeliveryDetail
+			on (wOutboundDelivery.id = wOutboundDeliveryDetail.obd_id)
+		left outer join wms_sku wSku
+			on (wOutboundDeliveryDetail.sku_id = wSku.id)	
+					
+		--inner join wms_warehouse_task wWarehouseTask
+			--on (wOutboundDeliveryDetail.id = wWarehouseTask.obd_detail_id)	
+		--inner join wms_warehouse_task_single wWarehouseTaskSingle		
+			--on (wWarehouseTask.id = wWarehouseTaskSingle.wt_id)	
+
+		left outer join wms_package_detail wPackageDetail1000
+			on (wOutboundDeliveryDetail.package_detail_id = wPackageDetail1000.id)
+		
+		left outer join wms_package_info wPackageInfo
+			on (wSku.pack_info_id = wPackageInfo.id)
+		left outer join wms_package_detail wPackageDetail2000
+			on (wPackageInfo.p2000 = wPackageDetail2000.id)	
+				
+	where
+		1 = 1
+		and (wOutboundDelivery.wave_doc_id in ($P!{waveDocId}) or $P{waveDocId} is null)			-- バッチId		
+		and (wOutboundDelivery.id in ($P!{wodbId}) or $P{wodbId} is null)					-- 出库单Id
+		and (wOutboundDeliveryDetail.ext_string2 in ($P!{extString2}) or $P{extString2} is null)		-- 伝票No
+		and (wCarrier.code in ($P!{carrierCd}) or $P{carrierCd} is null)  					-- 運送便ID
+		and (case when wCarrier.code = '149' then -- 関西トラの場合
+			(wSku.temp_div in ($P!{tempDiv}) or $P{tempDiv} is null) else 1 = 1 end)			-- 項No.33(温度帯区分)
+	) A
+group by 
+	1
+	--, tempDiv							    -- 項No.33(温度帯区分)
+	, skuId
+	, skuCode
+	, skuName
+	, extString1_83							-- 項No.83(商品コード)
+	, extString1_85_1						-- 項No.85(商品名)先頭16文字まで
+	, extString1_85_2						-- 項No.85(商品名)17文字以降
+	, extString1_87							-- 項No.87(特別品No.)
+	, baseCoefficient                       --基本数・入力数
+	, extString1_103						-- 項No.103(単価)
+	, baseCheckqty4ns
+	, extString1_80							-- 項No.9(行No)
+	, extString1_100						-- 項No.100(ケース入数)
+	, extString1_96							-- 項No.96(ケース単位)
+	, extString1_94							-- 項No.94(基本単位)
+	, CSCoefficient							-- 商品ＣＳ係数
+	, CSname							    -- 商品ＣＳ単位
+	, PSname							    -- 商品ＰＳ単位
+	, extString1_93							-- 項No.93(入力単位)	
+order by  
+	1	
+	--, tempDiv						-- 項No.33(温度帯区分)		
+	, to_number(extString1_80,'99999')					-- 項No.9(行No)
+	, extString1_83							-- 項No.83(商品コード)]]>
+	</queryString>
+	<field name="fixedclum" class="java.lang.Integer"/>
+	<field name="extstring1_83" class="java.lang.String"/>
+	<field name="extstring1_85_1" class="java.lang.String"/>
+	<field name="extstring1_85_2" class="java.lang.String"/>
+	<field name="extstring1_87" class="java.lang.String"/>
+	<field name="sumfiled_129" class="java.lang.Double"/>
+	<field name="extstring1_103" class="java.lang.String"/>
+	<field name="sumfiled_105" class="java.lang.Double"/>
+	<field name="sumfiled_129_1" class="java.lang.String"/>
+	<field name="sumfiled_129_2" class="java.lang.String"/>
+	<field name="sumfiled_129_3" class="java.lang.String"/>
+	<field name="extstring1_103_1" class="java.lang.String"/>
+	<field name="extstring1_103_2" class="java.lang.String"/>
+	<field name="extstring1_103_3" class="java.lang.String"/>
+	<field name="sumfiled_105_1" class="java.lang.String"/>
+	<field name="sumfiled_105_2" class="java.lang.String"/>
+	<field name="sumfiled_105_3" class="java.lang.String"/>
+	<field name="basecheckqty4ns" class="java.lang.Double"/>
+	<field name="extstring1_80" class="java.lang.String"/>
+	<field name="extstring1_100" class="java.lang.String"/>
+	<field name="extstring1_96" class="java.lang.String"/>
+	<field name="extstring1_94" class="java.lang.String"/>
+	<field name="cscoefficient" class="java.lang.Double"/>
+	<field name="csname" class="java.lang.String"/>
+	<field name="psname" class="java.lang.String"/>
+	<field name="qty2000" class="java.lang.Double"/>
+	<field name="baseqty" class="java.lang.Double"/>
+	<field name="sumfiled_134" class="java.lang.Double"/>
+	<field name="extstring1_93" class="java.lang.String"/>
+	<field name="sumfiled_shouhizei" class="java.lang.Double"/>
+	<field name="sumfiled_kingaku" class="java.lang.Double"/>
+	<variable name="GroupSumFiled_105" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumfiled_105}]]></variableExpression>
+	</variable>
+	<variable name="ReturnGroupSumFiled_105" class="java.lang.Long" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumfiled_105}]]></variableExpression>
+		<initialValueExpression><![CDATA[5555L]]></initialValueExpression>
+	</variable>
+	<variable name="GroupSumFiled_ShouhiZei" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumfiled_shouhizei}]]></variableExpression>
+	</variable>
+	<variable name="GroupSumFiled_Kingaku" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{sumfiled_kingaku}]]></variableExpression>
+	</variable>
+	<group name="Group" isStartNewPage="true" footerPosition="ForceAtBottom"/>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="18" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="9" y="0" width="57" height="24" isPrintWhenDetailOverflows="true" uuid="b4937cd0-8996-4763-9af8-2c3a6f8f0e82">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box bottomPadding="2" rightPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_83}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" positionType="Float" x="0" y="0" width="9" height="24" isPrintWhenDetailOverflows="true" uuid="2177c3d0-3154-4eb9-8444-dfa17bbf2c6f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="70" y="0" width="236" height="14" isPrintWhenDetailOverflows="true" uuid="95a8e123-266a-4bd8-9417-53e03866d3c4">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="4">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_85_1} + $F{extstring1_85_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="308" y="0" width="82" height="24" isPrintWhenDetailOverflows="true" uuid="efc1b374-54cf-4006-a1db-e5e68f115a67">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box bottomPadding="2" rightPadding="5">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sumfiled_129}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="421" y="0" width="85" height="24" isPrintWhenDetailOverflows="true" uuid="e0e76fb9-5ca1-46cd-979d-48befeb4e34b"/>
+				<box bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph leftIndent="1" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Double.valueOf($F{extstring1_103})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="511" y="0" width="80" height="24" isPrintWhenDetailOverflows="true" uuid="697f03a9-3427-45da-b889-8a994df16f2e">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph leftIndent="1" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sumfiled_105}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="390" y="0" width="31" height="24" isPrintWhenDetailOverflows="true" uuid="d5548722-8efd-43c5-a6ef-9e8696d6b750">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="2" bottomPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[TRIM($F{extstring1_93})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" x="210" y="14" width="96" height="10" isPrintWhenDetailOverflows="true" uuid="c7639ea5-338d-4a1c-9a48-53d61b553e11">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="10"/>
+					<paragraph lineSpacing="Single" leftIndent="1" rightIndent="1" spacingBefore="0" spacingAfter="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extstring1_87}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="23" width="100" height="1" uuid="0fada233-02cc-4e79-a816-0d0b96f99194">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{REPORT_COUNT} == 5]]></printWhenExpression>
+				</reportElement>
+			</break>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="95" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isStretchWithOverflow="true" evaluationTime="Page" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="511" y="24" width="80" height="24" isPrintWhenDetailOverflows="true" uuid="15dfade9-9e9e-4cdb-9ee9-e8a271be6c50">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph leftIndent="1" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF($V{GroupSumFiled_ShouhiZei} == 0, "", FLOOR($V{GroupSumFiled_ShouhiZei}))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Page" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="511" y="0" width="80" height="24" isPrintWhenDetailOverflows="true" uuid="ee34d303-4b6a-4a1b-b643-1f781ae6d8aa">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph leftIndent="1" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{GroupSumFiled_105}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Page" pattern="#,##0" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="511" y="48" width="80" height="24" isPrintWhenDetailOverflows="true" uuid="44d2b399-c4ff-4393-9dae-ca2803fc0506">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="IPAexゴシック" size="11"/>
+					<paragraph leftIndent="1" rightIndent="1"/>
+				</textElement>
+				<textFieldExpression><![CDATA[IF($V{GroupSumFiled_Kingaku} == 0, "", FLOOR($V{GroupSumFiled_Kingaku}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

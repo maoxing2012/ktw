@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="exceptionLogList" title="exceptionLogList" autoQuery="false" filterCol="true">
+		<search>
+			<inputUIs>
+				<text id="exceptionLog.operUserName" title="exceptionLog.operUserName"  trimSpace="true"/>
+				<text id="exceptionLog.operPageName" title="exceptionLog.operPageName"  trimSpace="true"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+exceptionLog.id,
+exceptionLog.operUserId,
+exceptionLog.operUserName,
+exceptionLog.operPageName,
+exceptionLog.operPageId,
+exceptionLog.operComponentName,
+exceptionLog.operComponentId,
+exceptionLog.operException,
+exceptionLog.operExceptionMess,
+exceptionLog.operDate   
+from ExceptionLog exceptionLog 
+where 1=1 
+/~exceptionLog.operUserName: 	and exceptionLog.operUserName like{exceptionLog.operUserName}~/
+/~exceptionLog.operPageName: 	and exceptionLog.operPageName like{exceptionLog.operPageName}~/
+		]]></datasource>
+		<columns>
+			<column id="exceptionLog.id" title="ID"  visible="false"/>
+			<column id="exceptionLog.operUserId" title="exceptionLog.operUserId" visible="false"/>
+			<column id="exceptionLog.operUserName" title="exceptionLog.operUserName" typeId="exceptionLog.operUserName"/>
+			<column id="exceptionLog.operPageName" title="exceptionLog.operPageName" typeId="exceptionLog.operPageName"/>
+			<column id="exceptionLog.operPageId" title="exceptionLog.operPageId"/>
+			<column id="exceptionLog.operComponentName" title="exceptionLog.operComponentName"/>
+			<column id="exceptionLog.operComponentId" title="exceptionLog.operComponentId" />
+			<column id="exceptionLog.operException" title="exceptionLog.operException"   visible="false"/>
+			<column id="exceptionLog.operExceptionMess" title="exceptionLog.operExceptionMess"/>
+			<column id="exceptionLog.operDate" title="exceptionLog.operDate"/>
+		</columns>
+		<buttons>
+			<popup id="view" title="view" enableType="single" containId="true"  pageId="exceptionLogEdit" iconUrl="view">
+			</popup>
+			
+			<!-- <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                <mappings>
+                    <mapping id="ids" className="list"><entries /></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="exceptionLogManager" methodName="delete" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit> -->
+		</buttons>
+	</maintainPage>
+</pages>

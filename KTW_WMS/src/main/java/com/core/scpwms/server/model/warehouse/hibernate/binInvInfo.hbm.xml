@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="com.core.scpwms.server.model.warehouse.BinInvInfo" table="WMS_BIN_INV_INFO">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_bin_inv_info</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	
+	 	<many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+            <column name="BIN_ID" />
+        </many-to-one>
+        
+        <component name="binInfo" class="com.core.scpwms.server.domain.BinInfo">
+            <property name="lastCountDate" column="LAST_COUNT_DATE" type="date"/>
+            <property name="lastSku" column="LAST_SKU" type="long"/>
+            <property name="lastLotInfo" column="LAST_LOT" type="long"/>
+            <property name="lastSupId" column="LAST_SUP" type="long"/>
+            <property name="lastOwnerId" column="LAST_OWNER" type="long"/>
+            <property name="lastPickSku" column="LAST_PICK_SKU" type="long"/>
+            <property name="lastPickLotInfo" column="LAST_PICK_LOT" type="long"/>
+            
+            <property name="currentQty" column ="CURRENT_QTY" type="double" />
+            <property name="currentWeight" column ="CURRENT_WEIGHT" type="double" />
+            <property name="currentVolumn" column ="CURRENT_VOLUMN" type="double" />
+            <property name="currentMetric" column ="CURRENT_METRIC" type="double" />
+           	<property name="currentPallet" column ="CURRENT_PALLET" type="double" />
+           	
+            <property name="queuedQty" column ="QUEUED_QTY" type="double" />
+            <property name="queuedWeight" column ="QUEUED_WEIGHT" type="double" />
+            <property name="queuedVolumn" column ="QUEUED_VOLUMN" type="double" />
+            <property name="queuedMetric" column ="QUEUED_METRIC" type="double" />
+            <property name="queuedPallet" column ="QUEUED_PALLET" type="double" />
+            
+            <property name="minFullRate" column ="MIN_FULL_RATE" type="double" />
+            <property name="fullRateQty" column ="FULL_RATE_QTY" type="double" />
+            <property name="fullRateWeight" column ="FULL_RATE_WEIGHT" type="double" />
+            <property name="fullRateVolumn" column ="FULL_RATE_VOLUMN" type="double" />
+            <property name="fullRateMetric" column ="FULL_RATE_METRIC" type="double" />
+            <property name="fullRatePallet" column ="FULL_RATE_PALLET" type="double" />
+            
+        </component>
+	 </class>
+</hibernate-mapping>

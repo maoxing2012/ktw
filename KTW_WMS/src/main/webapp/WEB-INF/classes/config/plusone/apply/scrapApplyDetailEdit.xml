@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="scrapApplyDetailEdit" title="scrapApplyDetailEdit" entityClass="com.core.scpwms.server.model.apply.ScrapApplyDetail" onClose="refreshParent" width="200">
+        <inputUIs>
+            <hidden id="scrapApplyDetail.id" />
+            <text id="scrapApplyDetail.invInfo.owner.name" title="owner" readOnly="true"/>
+            <text id="scrapApplyDetail.invInfo.quant.sku.code" title="sku.code" readOnly="true"/>
+            <text id="scrapApplyDetail.invInfo.quant.sku.name" title="sku.name" readOnly="true"/>
+            <text id="scrapApplyDetail.invInfo.quant.dispLot" title="lotInfo" readOnly="true"/>
+            <text id="scrapApplyDetail.invInfo.trackSeq" title="projectNo" readOnly="true"/>
+            <text id="scrapApplyDetail.invInfo.bin.binCode" title="binCode" readOnly="true"/>
+            <text id="scrapApplyDetail.invInfo.packageDetail.name" title="packDetail"  readOnly="true"/>
+            <numberText id="scrapApplyDetail.planPackQty" title="applyPackQty" required="true" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="scrapApplyDetail" className="com.core.scpwms.server.model.apply.ScrapApplyDetail"/>
+                    <mapping id="scrapApplyDetail.planPackQty" className="double"/>
+                </mappings>
+                <actions>
+                    <action managerName="scrapApplyManager"  methodName="editDetail"  parameter="scrapApplyDetail,scrapApplyDetail.planPackQty" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

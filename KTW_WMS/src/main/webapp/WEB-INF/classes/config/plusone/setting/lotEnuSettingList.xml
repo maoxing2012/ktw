@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="lotEnuSettingList" title="lotEnuSettingList" autoQuery="false" filterCol="true">
+         <search>
+             <inputUIs>
+                 <text id="enu.enuCode" title="lotEnuSetting.enuCode" trimSpace="true"/>
+                 <text id="enu.enuDisp" title="lotEnuSetting.enuDisp" trimSpace="true"/>
+                 <list id="enu.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                 	<hql><![CDATA[ SELECT 
+						e.enumValue,
+						e.enumValue 
+						From Enumerate e 
+						where e.enumType = 'BooleanTypeN' 
+					]]></hql>
+             	</list>
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[select 
+enu.id,
+enu.enuCode,
+enu.enuDisp,
+enu.disabled,
+enu.description
+from LotEnumerate enu 
+where 1=1
+/~enu.enuCode: and enu.enuCode like {enu.enuCode} ~/
+/~enu.enuDisp: and enu.enuDisp like {enu.enuDisp} ~/
+/~enu.disabled: and enu.disabled = {enu.disabled}~/ 
+         ]]></datasource>
+        <columns>
+            <column id="enu.id" title="ID"  visible="false"/>
+            <column id="enu.enuCode" title="lotEnuSetting.enuCode" typeId="enu.enuCode"/>
+            <column id="enu.enuDisp" title="lotEnuSetting.enuDisp" typeId="enu.enuDisp"/>
+            <column id="enu.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" typeId="enu.disabled"/>
+            <column id="enu.description" title="title.desc"/>
+        </columns> 
+        <buttons>   
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="lotEnuSettingEdit" iconUrl="add"/>
+            <popup id="edit" title="edit" enableType="single" containId="true"  pageId="lotEnuSettingEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${enu.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" confirmMessage="enable.confirmMessage" iconUrl="enable">
+				<enableExpression><![CDATA[(${enu.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="lotEnumerateManager" methodName="enableLotEnumerate" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+			<commit id="disable" title="disable" enableType="multi" invisible="false" confirmMessage="disable.confirmMessage" iconUrl="disable">
+				<enableExpression><![CDATA[(${enu.disabled} == @{BooleanTypeN.false})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="lotEnumerateManager" methodName="disableLLotEnumerate" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+			<commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete" >
+            	<enableExpression><![CDATA[(${enu.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="lotEnumerateManager" methodName="deleteLotEnumerate" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+        </buttons>
+     </maintainPage>
+</pages>

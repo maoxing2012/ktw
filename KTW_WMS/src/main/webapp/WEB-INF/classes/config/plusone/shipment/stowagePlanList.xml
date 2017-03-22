@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<maintainPage id="stowagePlanList" title="stowagePlanList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="stowageNumber" title="stowageNumber" trimSpace="true" charCase="up"/>
+				<list id="status" title="title.status" enumType="EnuStowagePlanStatus" returnType="long" multiple="true" defaultValue="100,200,300,400">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuStowagePlanStatus'
+					]]></hql>
+                </list>
+                <text id="driver" title="driver" charCase="up"/>
+                <text id="carNumber" title="carNumber" charCase="up"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+stowagePlan.id,
+stowagePlan.stowageNumber,
+stowagePlan.status,
+stowagePlan.mainDriver,
+stowagePlan.carNumber,
+stowagePlan.planQty,
+stowagePlan.executeQty,
+stowagePlan.orderCount,
+stowagePlan.skuCount,
+stowagePlan.sumWeight,
+stowagePlan.sumVolume
+from StowagePlan stowagePlan 
+where 1=1 
+and stowagePlan.wh = #{SESSION_WAREHOUSE} 
+/~stowageNumber: and stowagePlan.stowageNumber like {stowageNumber}  ~/
+/~status: and stowagePlan.status = {status}  ~/
+/~driver: and stowagePlan.mainDriver like {driver}  ~/
+/~carNumber: and stowagePlan.carNumber like {carNumber}  ~/
+		]]></datasource>
+		<columns>
+			<column id="stowagePlan.id" title="ID" visible="false"  />
+			<column id="stowagePlan.stowageNumber" title="stowageNumber"/>
+			<column id="stowagePlan.status" title="title.status" format="enumFormat" formatParam="EnuStowagePlanStatus"/>
+			<column id="stowagePlan.mainDriver" title="driver"/>
+			<column id="stowagePlan.carNumber" title="carNumber"/>
+            <column id="stowagePlan.planQty" title="planQty"/>
+			<column id="stowagePlan.executeQty" title="outboundQty"/>
+			<column id="stowagePlan.orderCount" title="orderCount"/>
+			<column id="stowagePlan.skuCount" title="skuCount"/>
+			<column id="stowagePlan.sumWeight" title="sumWeight"/>
+			<column id="stowagePlan.sumVolume" title="sumVolume"/>
+		</columns>
+		<buttons>
+		    <popup id="stowageLoad" title="stowageLoad" enableType="none" containId="false" pageId="stowageLoad" iconUrl="new"/>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="stowagePlanEdit" iconUrl="new"/>
+			<popup id="modify" title="modify" enableType="single" containId="true" pageId="stowagePlanEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${stowagePlan.status} == @{EnuStowagePlanStatus.100})]]></enableExpression> 
+			</popup>
+			<commit id="publish" title="publish"  enableType="multi" confirmMessage="publish.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[(${stowagePlan.status} == @{EnuStowagePlanStatus.100})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="publish" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="cancel" title="cancel"  enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${stowagePlan.status} == @{EnuStowagePlanStatus.100} || ${stowagePlan.status} == @{EnuStowagePlanStatus.200})]]></enableExpression>
+				<mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="cancel" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+			</commit>
+			<commit id="close" title="close" enableType="multi"  confirmMessage="close.confirmMessage" iconUrl="cancel">
+                <enableExpression><![CDATA[(${stowagePlan.status} == @{EnuStowagePlanStatus.400}||${stowagePlan.status} == @{EnuStowagePlanStatus.300})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="close" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <popup id="view" title="view"  enableType="single" containId="true" pageId="stowagePlanView" iconUrl="view"/>
+            <popup id="statusView" title="statusView"  enableType="single" containId="true" pageId="stowagePlanStatusView" iconUrl="view"/>
+            
+            <popup id="shipConfirm" title="shipConfirm" enableType="single" containId="true" pageId="stowagePlanShipConfirm" iconUrl="action">
+                <enableExpression><![CDATA[(${stowagePlan.status} == @{EnuStowagePlanStatus.200}||${stowagePlan.status} == @{EnuStowagePlanStatus.300})]]></enableExpression>
+            </popup>
+            <popup id="shipConfirmAll" title="shipConfirmAll" enableType="multi" containId="true" pageId="stowagePlanShipConfirmAll" iconUrl="confirm">
+                <enableExpression><![CDATA[(${stowagePlan.status} == @{EnuStowagePlanStatus.200})]]></enableExpression>
+            </popup>
+            <popup id="stowagePlanPrint" title="stowagePlanPrint"  enableType="single" containId="true" pageId="stowagePlanPrint" iconUrl="report"/>
+		</buttons>
+	</maintainPage>
+</pages>

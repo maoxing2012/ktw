@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="addLotEnumerateDetailEdit" title="addLotEnumerateDetailEdit" entityClass="com.core.scpwms.server.model.lot.LotEnumerateDetail"  width="200" height="460" onClose="refreshParent" columnNum="2" >
+        <inputUIs>
+            <hidden id="detail.id" />
+			<text id="detail.lineNo" title="detail.lineNo"  trimSpace="true" required="true"/>
+			<text id="detail.code" title="detail.code"  trimSpace="true" required="true"/>
+			<text id="detail.name" title="title.baseDesc"  trimSpace="true" required="true"/>
+		</inputUIs>
+		<buttons> 
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="detail" className="com.core.scpwms.server.model.lot.LotEnumerateDetail"/>
+					<mapping id="enu.id" className="long"/>
+				</mappings>
+				<actions>
+					<action managerName="lotEnumerateManager"  methodName="saveDetail"  parameter="enu.id,detail" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

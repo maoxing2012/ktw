@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="carrierBinGroup" title="carrierBinGroup" entityClass="com.core.scpwms.server.model.user.Carrier" width="300" height="200" >
+        <inputUIs>
+            <hidden id="carrier.id" />
+            <selectText id="jh" title="jh.code" required="false" displayedTableHead="ID,Code,Name" >
+                     <hql><![CDATA[SELECT 
+bg.id,
+bg.code,
+bg.name  
+FROM BinGroup bg 
+WHERE bg.disabled = false
+and bg.wh = #{SESSION_WAREHOUSE}
+and bg.role = 'R5000'
+and bg.id not in (select cbg.bg.id from CarrierBinGroup cbg where cbg.bg.role = 'R5000')
+                        ]]></hql>
+             </selectText>
+             <selectText id="fh" title="jh.code" required="false" displayedTableHead="ID,Code,Name" >
+                     <hql><![CDATA[SELECT 
+bg.id,
+bg.code,
+bg.name  
+FROM BinGroup bg 
+WHERE bg.disabled = false
+and bg.wh = #{SESSION_WAREHOUSE}
+and bg.role = 'R7000'
+and bg.id not in (select cbg.bg.id from CarrierBinGroup cbg where cbg.bg.role = 'R7000')
+                        ]]></hql>
+             </selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="carrier.id" className="long"/>
+                    <mapping id="jh" className="long"/>
+                    <mapping id="fh" className="long"/>
+                </mappings>
+                <actions>
+                    <action managerName="carrierManager" methodName="editCarrierBinGroup" parameter="carrier.id,jh,fh" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

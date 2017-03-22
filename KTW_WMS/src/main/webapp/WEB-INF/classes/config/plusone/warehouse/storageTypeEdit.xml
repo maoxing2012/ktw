@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="storageTypeEdit" title="storageTypeEdit" entityClass="com.core.scpwms.server.model.warehouse.StorageType"  width="300" height="500" onClose="refreshParent" columnNum="2">
+        <inputUIs>
+            <hidden id="st.id"/>
+            <list id="st.wa.id" title="wa" required="true" forceOverride="false">
+                <hql><![CDATA[ SELECT
+					wa.id,
+					wa.name
+					FROM WhArea wa
+					WHERE  disabled='0'
+					and wa.wh = #{SESSION_WAREHOUSE}   
+				]]></hql>
+            </list>
+            <text id="st.code" title="st.code"  trimSpace="true" required="true" editModel="uneditable"/>
+            <text id="st.name" title="st.name"  trimSpace="true" required="true"/>
+            <list id="st.role" title="st.role"  trimSpace="true" enumType="EnuStoreRole" required="true">
+                 <hql><![CDATA[ SELECT 
+					e.enumValue,
+					e.enumValue 
+					From Enumerate e 
+					where e.enumType = 'EnuStoreRole' 
+				 ]]></hql>
+             </list>
+             <list id="st.tempDiv" title="tempDiv"  trimSpace="true" enumType="EnuTemperatureDiv" >
+                 <hql><![CDATA[ SELECT 
+					e.enumValue,
+					e.enumValue 
+					From Enumerate e 
+					where e.enumType = 'EnuTemperatureDiv' 
+				 ]]></hql>
+             </list>
+        </inputUIs>
+        <buttons>
+            <commit id="saveST" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="storageType" className="com.core.scpwms.server.model.warehouse.StorageType">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="stManager"  methodName="saveST"  parameter="storageType" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

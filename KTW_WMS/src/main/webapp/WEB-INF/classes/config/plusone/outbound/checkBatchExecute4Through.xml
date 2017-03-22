@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="checkBatchExecute4Through" title="checkBatchExecute4Through" entityClass="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail" width="300"  height="150" columnNum="8">
+        <inputUIs>
+            <hidden id="task.id" />
+            <selectText id="labor" title="shipCheckLabor" displayedTableHead="ID,code,name" required="true">
+				<hql><![CDATA[SELECT 
+lgl.labor.id, 
+lgl.labor.code,
+lgl.labor.name
+from LaborGroupLabor lgl
+where lgl.group.role='SHIP'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+and lgl.labor.disabled = '0'
+                    ]]></hql>
+			</selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="checkBatchExecute" title="checkBatchExecute" enableType="none" confirmMessage="checkBatchExecute.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="outboundDeliveryDetailList4Through.ids" className="list" />
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskSingleManager" methodName="checkExecute" parameter="outboundDeliveryDetailList4Through.ids,labor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

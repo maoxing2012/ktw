@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.user.BizOrgProperties" table="WMS_BIZ_ORG_PROPERTIES">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_bizorg_properties</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <many-to-one name="customer" class="com.core.scpwms.server.model.user.BizOrg">
+            <column name="customer"/>
+        </many-to-one> 
+        
+        <property name="priority" column="PRIORITY" type="int"/>
+        <property name="shipQtyConf" column="SHIP_QTY_CONF" type="string" length="50" />
+        <property name="shipLotConf" column="SHIP_LOT_CONF" type="string" length="50" />
+        <property name="outboundLabel" column="OUTBOUND_LABEL" type="string" length="50"/>
+        <property name="preAllocate"  column="PREALLOCATE"  type="boolean"/>
+        <property name="orderPck"  column="ORDER_PCK"  type="boolean"/>
+        <property name="qcRate"  column="QC_RATE"  type="double"/>
+        
+        <property name="disabled" column="DISABLED" type="boolean"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+    </class>
+</hibernate-mapping>

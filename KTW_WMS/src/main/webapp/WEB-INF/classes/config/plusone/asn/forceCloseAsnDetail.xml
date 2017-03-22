@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="forceCloseAsnDetail" title="forceCloseAsnDetail" entityClass="com.core.scpwms.server.model.inbound.AsnDetail" onClose="refreshParent" width="300"  height="150" columnNum="8">
+		<inputUIs>
+		    <hidden id="asnDetail.id" />
+		    <textArea id="desc" title="title.desc" required="true" trimSpace="true" rows="50" cols="300" span="3"/>
+		</inputUIs>
+		<buttons>
+			<commit id="forceCloseAsnDetail" title="forceCloseAsnDetail" enableType="none" confirmMessage="forceCloseAsnDetail.confirmMessage" iconUrl="save">
+				<mappings>
+				    <mapping id="stockAsnDetailList.ids" className="list" />
+					<mapping id="desc" className="string" />
+				</mappings>
+				<actions>
+ 					<action managerName="asnManager" methodName="forceCloseAsnDetail" parameter="stockAsnDetailList.ids,desc"/>
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

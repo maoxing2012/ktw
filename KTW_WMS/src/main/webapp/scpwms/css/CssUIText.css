@@ -1,0 +1,147 @@
+.listBoxReadOnly,
+.listBoxReadOnlyFocused,
+.listBoxReadOnlyDisabled,
+.listBoxReadOnlyError,
+.listBoxReadOnlyHint {
+    font-family:Arial,Verdana,sans-serif; font-size:11px;
+    color:black;
+    padding:4px;
+    border:1px solid #aaacb2;
+    background:#FFFFFF;
+    color:black;
+}
+
+.listBoxReadOnly {
+	border-top:1px solid #abadb3;
+    border-left:1px solid #dbdfe5;
+    border-right:1px solid #dbdfe5;
+    border-bottom:1px solid #dbdfe5;
+    background: url("../images/default/form/text-bg-readonly.gif") repeat scroll 0 0 #FFFFFF !important;
+}
+
+.listBoxReadOnlyDisabled{
+	border-top:1px solid #abadb3;
+    border-left:1px solid #dbdfe5;
+    border-right:1px solid #dbdfe5;
+    border-bottom:1px solid #dbdfe5;
+    background: url("../images/default/form/text-bg-readonly.gif") repeat scroll 0 0 #FFFFFF !important;    
+}
+
+.listBoxReadOnlyHint{
+    color:#204268;
+}
+
+.listBoxReadOnlyFocused{
+    color:black;
+    -moz-outline-offset:-1;
+	border-top:1px solid #5678ac;    
+    border-left:1px solid #bccde6;
+	border-right:1px solid #afc6e2;
+	border-bottom:1px solid #c0d7ec;
+	background: url("../images/default/form/text-bg-readonly.gif") repeat scroll 0 0 #FFFFFF !important;
+}
+
+/*-----------------------
+-----------------------
+-----------------------
+-----------------------
+-----------------------
+-----------------------
+-----------------------
+-----------------------
+*/
+
+/* scpReadOnlyTextItem */
+
+.scpReadOnlyTextItem,
+.scpReadOnlyTextItemFocused,
+.scpReadOnlyTextItemDisabled,
+.scpReadOnlyTextItemError,
+.scpReadOnlyTextItemHint{
+    font-family:Arial,Verdana,sans-serif; font-size:11px;
+    color:black;
+}
+
+/* text-based items common props */
+.scpReadOnlyTextItem,
+.scpReadOnlyTextItemFocused,
+.scpReadOnlyTextItemDisabled,
+.scpReadOnlyTextItemError,
+.scpReadOnlyTextItemHint {
+    padding:2px;
+    border:1px solid #aaacb2;
+    background:#FFFFFF;
+    color:black;
+}
+
+.scpReadOnlyTextItem {
+	border-top:1px solid #abadb3;
+    border-left:1px solid #dbdfe5;
+    border-right:1px solid #dbdfe5;
+    border-bottom:1px solid #dbdfe5;
+    background: url("../images/default/form/text-bg-readonly.gif") repeat scroll 0 0 #FFFFFF !important;
+}
+
+.scpReadOnlyTextItemDisabled{
+	border-top:1px solid #abadb3;
+    border-left:1px solid #dbdfe5;
+    border-right:1px solid #dbdfe5;
+    border-bottom:1px solid #dbdfe5;
+    background: url("../images/default/form/text-bg-readonly.gif") repeat scroll 0 0 #FFFFFF !important;    
+}
+
+.scpReadOnlyTextItemHint{
+    color:#204268;
+}
+
+.scpReadOnlyTextItemFocused{
+    color:black;
+    -moz-outline-offset:-1;
+	border-top:1px solid #5678ac;    
+    border-left:1px solid #bccde6;
+	border-right:1px solid #afc6e2;
+	border-bottom:1px solid #c0d7ec;
+	background: url("../images/default/form/text-bg-readonly.gif") repeat scroll 0 0 #FFFFFF !important;
+}
+
+
+.scpReadOnlyTitle,
+.scpReadOnlyTitleFocused,
+.scpReadOnlyTitleDisabled{
+    font-family:Arial,Verdana,sans-serif; font-size:11px;
+    color:black;
+}
+
+.scpReadOnlyTitle,
+.scpReadOnlyTitleFocused  {
+    color:#003168;
+}
+
+.scpReadOnlyTitleDisabled {
+    color:#003168;
+}
+.scpReadOnlyTitleError { 
+    font-weight:bold; color:#204268; 
+}
+
+.scpRequireTitle,
+.scpRequireTitleFocused,
+.scpRequireTitleDisabled{
+    font-family:Arial,Verdana,sans-serif; 
+    font-size:11px;
+    font-weight:bold; 
+    color:#8A0808;
+}
+.scpRequireTitleTitle,
+.scpRequireTitleTitleFocused  {
+    font-weight:bold; 
+    color:#8A0808;
+}
+.scpRequireTitleDisabled {
+    font-weight:bold; 
+    color:#8A0808;
+}
+.scpRequireTitleError { 
+    font-weight:bold; 
+    color:#8A0808; 
+}

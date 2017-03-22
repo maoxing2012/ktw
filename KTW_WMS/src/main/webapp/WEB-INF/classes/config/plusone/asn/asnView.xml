@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="asnView" title="asnView" entityClass="com.core.scpwms.server.model.inbound.Asn" onClose="refreshParent" width="900"  height="550" columnNum="8">
+        <modify>
+            <inputUIs>
+                <hidden id="asn.id" />
+                <text id="asn.asnNumber" title="asnNumber" />
+				<text id="asn.relatedBill1" title="custBillNo" />
+                <text id="asn.owner.name" title="owner"/>
+                <text id="asn.supplier.name" title="vendor"/>
+                <text id="asn.orderType.name" title="orderType"/>
+                <text id="asn.bin.binCode" title="R1000"/>
+                <text id="asn.eta" title="eta"/>
+                <textArea id="asn.description" title="title.desc"  trimSpace="true" rows="50" cols="600" span="6"/>
+            </inputUIs>
+            <buttons>
+            </buttons>
+        </modify>
+        <detail autoQuery="false">
+            <datasource><![CDATA[select  
+asnDetail.id,
+asnDetail.status,
+asnDetail.lineNo,
+asnDetail.subLineNo,
+asnDetail.sku.code,
+asnDetail.sku.name,
+asnDetail.sku.specs,
+asnDetail.planPackage.name,
+asnDetail.planQty,
+asnDetail.executeQty,
+asnDetail.closedQty,
+asnDetail.stockDiv,
+asnDetail.sku.tempDiv,
+asnDetail.sku.fixDiv,
+asnDetail.expDate,
+asnDetail.actExpDate,
+asnDetail.invStatus,
+asnDetail.actInvStatus
+from AsnDetail asnDetail
+where 1=1  
+and asnDetail.asn.id = {asn.id}
+            ]]></datasource>
+            <columns>
+                <column id="asnDetail.id" title="ID" visible="false" />
+                <column id="asnDetail.status" title="title.status"  format="enumFormat" formatParam="EnuAsnDetailStatus"/>
+                <column id="asnDetail.lineNo" title="lineNo"/>
+                <column id="asnDetail.subLineNo" title="subLineNo"/>
+                <column id="asnDetail.sku.code" title="sku.code"/>
+                <column id="asnDetail.sku.name" title="sku.name"/>
+                <column id="asnDetail.sku.specs" title="specs"/>
+                <column id="asnDetail.planPackage.name" title="p1000.name"/>
+                <column id="asnDetail.planQty" title="planQty"/>
+                <column id="asnDetail.executeQty" title="inboundQty"/>
+                <column id="asnDetail.closedQty" title="closedQty"/>
+                <column id="asnDetail.stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv"/>
+				<column id="asnDetail.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv" />
+				<column id="asnDetail.sku.fixDiv" title="fixDiv" format="enumFormat" formatParam="EnuFixDiv"/>
+                <column id="asnDetail.expDate" title="planExpDate"/>
+	            <column id="asnDetail.actExpDate" title="expDate"/>
+	            <column id="asnDetail.invStatus" title="planInvStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+	            <column id="asnDetail.actInvStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+            </columns>
+            <buttons>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

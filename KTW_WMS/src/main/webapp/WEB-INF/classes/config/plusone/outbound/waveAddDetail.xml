@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="waveAddDetail" title="waveAddDetail" autoQuery="true" onClose="refreshParent" width="1000" height="400" columnNum="8">
+		<search>
+			<inputUIs>
+                <hidden id="wave.id" />
+                <text id="carrier.code" title="carrier.code" trimSpace="true" />
+                <text id="carrier.name" title="carrier.name" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obd.id,
+obd.status,
+obd.obdNumber,
+obd.relatedBill1,
+obd.carrier.code,
+obd.carrier.name,
+obd.orderType.name,
+obd.skuCount,
+obd.planQty,
+obd.description
+from OutboundDelivery obd 
+left join obd.carrier
+left join obd.waveDoc
+where 1=1 
+and obd.wh=#{SESSION_WAREHOUSE} 
+and obd.waveDoc.id is null
+and obd.status = 200
+and obd.owner.id = (select wv.owner.id from WaveDoc wv where wv.id = {wave.id})
+and obd.etd = (select wv.etd from WaveDoc wv where wv.id = {wave.id})
+/~carrier.code: and obd.carrier.code like {carrier.code}~/
+/~carrier.name: and obd.carrier.name like {carrier.name}~/
+		]]></datasource>
+		<columns>
+			<column id="obd.id" title="ID" visible="false"  />
+            <column id="obd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryStatus"/>
+            <column id="obd.obdNumber" title="obdNumber" />
+            <column id="obd.relatedBill1" title="custBillNo" />
+            <column id="obd.carrier.code" title="carrier.code" />
+            <column id="obd.carrier.name" title="carrier.name" />
+            <column id="obd.orderType.name" title="orderType" />
+            <column id="obd.skuCount" title="skuCount" />
+            <column id="obd.planQty" title="planQty" />
+            <column id="obd.description" title="title.desc" />
+		</columns>
+		<buttons>
+			<commit id="add" title="add"  enableType="multi" iconUrl="add">
+				<mappings>
+					<mapping id="wave.id" className="long"/>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="waveDocManager" methodName="addDetail" parameter="wave.id,ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

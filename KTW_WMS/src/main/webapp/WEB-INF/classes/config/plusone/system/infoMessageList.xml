@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="infoMessageList" title="infoMessageList" autoQuery="false" filterCol="true">
+         <search>
+             <inputUIs>
+				 <text id="title" title="title" trimSpace="true"/>
+				 <list id="infoType" title="infoType" enumType="EnuInfoType" returnType="string">
+                    <hql><![CDATA[ select  
+						e.enumValue,
+						e.enumValue
+						from Enumerate e
+						where e.enumType='EnuInfoType'
+					]]></hql>
+                </list>
+                <text id="createUser" title="title.createUser" trimSpace="true"/>
+             </inputUIs>
+         </search>
+         <dbclick button="modify"/>
+         <datasource type="hql" ><![CDATA[select 
+im.id,
+im.title,
+im.infoType,
+im.isTop,
+im.wh.code,
+im.wh.name,
+im.createInfo.operatorName,
+im.createInfo.updateTime
+from InfoMessage im 
+left join im.wh 
+where 1=1   
+/~title: and im.title like {title} ~/
+/~infoType: and im.infoType = {infoType} ~/
+/~createUser: and im.createInfo.operatorName like {createUser} ~/
+         ]]></datasource>
+        <columns>
+            <column id="im.id" title="ID" visible="false"/>
+            <column id="im.title" title="title" typeId="title"/>
+            <column id="im.infoType" title="infoType" format="enumFormat" formatParam="EnuInfoType" typeId="infoType"/>
+            <column id="im.isTop" title="isTop" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="im.wh.code" title="wh.code" />
+            <column id="im.wh.name" title="wh.name" />
+            <column id="im.createInfo.operatorName" title="title.createUser" typeId="createUser" />
+            <column id="im.createInfo.updateTime" title="title.createTime"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new" enableType="none" containId="false"  pageId="infoMessageEdit" iconUrl="new"/>
+            <popup id="edit" title="edit" enableType="single" containId="true"  pageId="infoMessageEdit" iconUrl="edit"/>
+            <commit id="delete" title="delete" enableType="multi" invisible="false" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="infoMessageManager" methodName="delete" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="top" title="top" enableType="multi" invisible="false" iconUrl="sort">
+                 <enableExpression><![CDATA[(${im.isTop}==@{BooleanTypeY.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="infoMessageManager" methodName="top" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="unTop" title="unTop" enableType="multi" invisible="false" iconUrl="reset_Disabled">
+                 <enableExpression><![CDATA[(${im.isTop}==@{BooleanTypeY.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="infoMessageManager" methodName="unTop" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <popup id="view"  title="view"  enableType="single" containId="true" pageId="infoMessageView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

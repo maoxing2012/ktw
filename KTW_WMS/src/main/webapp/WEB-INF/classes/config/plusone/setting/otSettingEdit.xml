@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="otSettingEdit" title="otSettingEdit" entityClass="com.core.scpwms.server.model.common.OrderType"  width="500" height="400" onClose="refreshParent" >
+        <inputUIs>
+            <hidden id="ot.id" />
+			<text id="ot.code" title="orderType.code"  trimSpace="true"  required="true" editModel="uneditable"/>
+			<text id="ot.name" title="orderType.name"  trimSpace="true"  required="true"/>
+			<list id="ot.processType" title="processType" required="true" enumType="EnuInvProcessType">
+				<hql><![CDATA[ select 
+					e.enumValue,
+					e.enumValue
+					from Enumerate e
+					where  e.enumType = 'EnuInvProcessType' 
+				]]></hql>
+			</list>
+			<selectText id="ot.seqProperties.id" title="seqSetting" required="true" displayedTableHead="ID,Code,Name" >
+				<hql><![CDATA[ select  
+seq.id,
+seq.code,
+seq.name 
+from SequenceProperties seq  
+where 1=1 
+				]]></hql>
+			</selectText>
+			<textArea id="ot.description" title="title.desc" trimSpace="true" rows="50" cols="380" span="2" />
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="ot" className="com.core.scpwms.server.model.common.InventoryOrderType"/>
+				</mappings>
+				<actions>
+					<action managerName="otSettingManager"  methodName="saveOt"  parameter="ot" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

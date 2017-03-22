@@ -1,0 +1,41 @@
+--清楚库容信息
+update WMS_BIN_INV_INFO set LAST_COUNT_DATE = null, LAST_SKU = null, LAST_LOT = null, LAST_SUP = null, LAST_PICK_SKU = null, LAST_PICK_LOT = null;
+update WMS_BIN_INV_INFO set CURRENT_QTY = 0, CURRENT_WEIGHT = 0, CURRENT_VOLUMN = 0, CURRENT_METRIC = 0, CURRENT_PALLET = 0;
+update WMS_BIN_INV_INFO set QUEUED_QTY =0, QUEUED_WEIGHT = 0, QUEUED_VOLUMN=0, QUEUED_METRIC =0, QUEUED_PALLET =0;
+update WMS_BIN_INV_INFO set MIN_FULL_RATE = 0, FULL_RATE_QTY =0, FULL_RATE_WEIGHT =0, FULL_RATE_VOLUMN=0,FULL_RATE_METRIC=0,FULL_RATE_PALLET=0;
+
+-- 订单状态
+delete from WMS_ORDER_STATUS;
+
+--破损
+delete from WMS_SCRAP_APPLY_DETAIL;
+delete from WMS_SCRAP_APPLY;
+
+delete from wms_inventory_history;
+delete from wms_inventory;
+
+delete from wms_count_record;
+delete from wms_count_detail;
+delete from wms_count_plan;
+
+delete from wms_outbound_history;
+delete from wms_wt_history;
+delete from wms_warehouse_task_single;
+delete from wms_warehouse_task;
+delete from wms_wave_doc_detail;
+delete from wms_outbound_delivery_detail;
+delete from wms_outbound_delivery;
+delete from wms_wave_doc;
+
+delete from wms_inbound_history;
+delete from wms_asn_detail;
+delete from wms_asn;
+
+delete from wms_quant_inventory;
+delete from wms_quant;
+
+delete from wms_sku_inter_code;
+update wms_package_info set p1000 = null, p2000 = null, p3000 = null, p2100 = null, p4000 = null;
+delete from wms_package_detail;
+delete from wms_sku;
+delete from wms_package_info;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="stowageLoad" title="stowageLoad" entityClass="com.core.scpwms.server.model.shipment.StowagePlan" columnNum="2"  width="350" height="420">
+        <inputUIs>
+            <hidden id="stowagePlan.id" />
+            <selectText id="stowageNumber" title="stowageNumber" required="true" displayedTableHead="ID,stowageNumber,driver,carNumber,custBillNo" displayColumn="2">
+                 <hql><![CDATA[ SELECT  
+tsv.id, 
+tsv.stowageNumber, 
+tsv.mainDriver,
+tsv.carNumber,
+tsv.jdeBillNo
+from TempStowageView tsv
+where 1=1
+and ( tsv.tmsPlatFormCd in ( select wp.tmsPlatFormCd from WarehouseTmsPlatForm wp where wp.wh =#{SESSION_WAREHOUSE} )  or tsv.tmsPlatFormCd is null )
+                    ]]></hql> 
+             </selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="stowageNumber" className="long" />
+                </mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="loadStowage" parameter="stowageNumber" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

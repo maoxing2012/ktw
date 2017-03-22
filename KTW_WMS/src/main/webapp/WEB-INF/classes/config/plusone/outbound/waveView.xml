@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="waveView" title="waveView" entityClass="com.core.scpwms.server.model.outbound.WaveDoc" onClose="refreshParent" width="900" height="450" columnNum="8">
+        <modify>
+            <inputUIs>
+                <hidden id="wave.id" reserve="false"/>
+                <text id="wave.waveNumber" title="waveNo"/>
+                <text id="wave.owner.name" title="owner"/>
+                <date id="wave.etd" title="etd" showDetailTime="false" defaultCurrentDate="false" required="true" trimSpace="true" />
+                <textArea id="wave.description" title="title.desc" trimSpace="true" rows="50" cols="600" span="6"/>
+            </inputUIs>
+            <buttons>
+            </buttons>
+        </modify>
+        <detail>
+            <datasource><![CDATA[ select
+detail.id,
+detail.obd.obdNumber,
+detail.obd.relatedBill1,
+detail.obd.carrier.code,
+detail.obd.carrier.name,
+detail.obd.customer.code,
+detail.obd.customer.name,
+detail.obdDetail.lineNo,
+detail.obdDetail.subLineNo,
+detail.obdDetail.status,
+detail.obdDetail.sku.code,
+detail.obdDetail.sku.name,
+detail.obdDetail.sku.specs,
+detail.obdDetail.packageDetail.name,
+detail.obdDetail.planQty,
+detail.obdDetail.allocateQty,
+detail.obdDetail.pickUpQty,
+detail.obdDetail.packedQty,
+detail.obdDetail.executeQty,
+detail.obdDetail.invStatus,
+detail.obdDetail.expDateMin,
+detail.obdDetail.expDateMax,
+detail.obdDetail.canMixExp,
+detail.obdDetail.stockDiv,
+detail.obdDetail.sku.tempDiv,
+detail.obdDetail.sku.fixDiv
+from WaveDocDetail detail 
+left join detail.obd.carrier
+where 1=1 
+and detail.doc.id = {wave.id}
+ 			]]></datasource>
+            <columns>
+                <column id="detail.id" title="ID" visible="false"  />
+	            <column id="detail.obd.obdNumber" title="obdNumber" />
+	            <column id="detail.obd.relatedBill1" title="custBillNo" />
+	            <column id="detail.obd.carrier.code" title="carrier.code" />
+	            <column id="detail.obd.carrier.name" title="carrier.name" />
+	            <column id="detail.obd.customer.code" title="bizOrg.code" />
+	            <column id="detail.obd.customer.name" title="bizOrg.name" />
+	            <column id="detail.obdDetail.lineNo" title="lineNo" />
+	            <column id="detail.obdDetail.subLineNo" title="subLineNo" />
+	            <column id="detail.obdDetail.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryDetailStatus"/>
+	            <column id="detail.obdDetail.sku.code" title="sku.code" />
+	            <column id="detail.obdDetail.sku.name" title="sku.name" />
+	            <column id="detail.obdDetail.sku.specs" title="specs" />
+	            <column id="detail.obdDetail.packageDetail.name" title="p1000.name" />
+	            <column id="detail.obdDetail.planQty" title="planQty" />
+	            <column id="detail.obdDetail.allocateQty" title="allocateQty" />
+	            <column id="detail.obdDetail.pickupQty" title="pickQty" />
+	            <column id="detail.obdDetail.packedQty" title="packedQty" />
+	            <column id="detail.obdDetail.executeQty" title="outboundQty" />
+	            <column id="detail.obdDetail.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+	            <column id="detail.obdDetail.expDateMin" title="最小賞味期限指定" />
+	            <column id="detail.obdDetail.expDateMax" title="最大賞味期限指定" />
+	            <column id="detail.obdDetail.canMixExp" title="複数ロット可" format="enumFormat" formatParam="BooleanTypeY"/>
+	            <column id="detail.obdDetail.stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv"/>
+	            <column id="detail.obdDetail.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTempDiv"/>
+	            <column id="detail.obdDetail.sku.fixDiv" title="fixDiv" format="enumFormat" formatParam="EnuFixDiv"/>
+            </columns>
+            <buttons>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

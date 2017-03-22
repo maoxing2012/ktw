@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="scrapApplyDetailAdd" title="scrapApplyDetailAdd" entityClass="com.core.scpwms.server.model.apply.ScrapApplyDetail" width="200"  height="200" columnNum="4">
+        <inputUIs>
+            <hidden id="sad.id" />
+            <selectText id="sad.inventoryId" title="inventory" required="true" displayedTableHead="ID,owner.code,bin,sku.name,specs,lotInfo,projectNo,usableQty" lastElement="true" colWidths="0,12%,8%,30%,8%,10%,15%,7%" bodyWidth="700">
+                <hql><![CDATA[ SELECT  
+inv.id,
+inv.owner.code,
+inv.bin.binCode,
+inv.quantInv.quant.sku.name,
+inv.quantInv.quant.sku.specs,
+inv.quantInv.quant.dispLot,
+inv.trackSeq,
+inv.baseQty - inv.queuedQty as usableQty
+from Inventory inv 
+where 1=1
+and inv.wh = #{SESSION_WAREHOUSE}
+and inv.status <> 'FREEZE'
+and inv.bin.storageType.role <> 'R8020'
+and inv.bin.storageType.role <> 'R5000'
+and (inv.baseQty - inv.queuedQty) > 0
+and inv.id not in ( select detail.inventoryId from ScrapApplyDetail detail where detail.scrapApply.id = {scrapApply.id} )
+                    ]]></hql> 
+                <eventListeners>
+                		<eventListener id="inv.owner.code" index="2" refreshUI="true"/>
+                		<eventListener id="inv.bin.code" index="3" refreshUI="true"/>
+                        <eventListener id="inv.quantInv.quant.sku.name" index="4" refreshUI="true"/>
+                        <eventListener id="inv.quantInv.quant.sku.specs" index="5" refreshUI="true" />
+                        <eventListener id="inv.availableQty" index="8" refreshUI="true"/>
+                        <eventListener id="inv.quantInv.quant.dispLot" index="6" refreshUI="true"/>
+                        <eventListener id="inv.trackSeq" index="7" refreshUI="true"/>
+                </eventListeners>
+            </selectText>
+            <text id="inv.bin.code" title="bin.code" readOnly="true"/>
+            <text id="inv.owner.code" title="owner.code" readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.name" title="sku.name" readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.specs" title="specs" readOnly="true"/>
+            <text id="inv.quantInv.quant.dispLot" title="lotInfo" readOnly="true"/>
+            <text id="inv.trackSeq" title="projectNo" readOnly="true"/>
+            <text id="inv.availableQty" title="usableQty" readOnly="true"/>
+            <numberText id="scrapQty" title="scrapQty" required="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" confirmMessage="addToScrapApply.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="scrapApply.id" className="long" />
+                    <mapping id="sad" className="com.core.scpwms.server.model.apply.ScrapApplyDetail" />
+                    <mapping id="scrapQty" className="double" />
+                </mappings>
+                <actions>
+                    <action managerName="scrapApplyManager" methodName="addDetail" parameter="scrapApply.id,sad,scrapQty" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

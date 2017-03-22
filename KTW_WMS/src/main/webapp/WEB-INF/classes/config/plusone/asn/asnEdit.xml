@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="asnEdit" title="asnEdit" entityClass="com.core.scpwms.server.model.inbound.Asn" onClose="refreshParent" width="950"  height="550" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="asn.id" />
+				<text id="asn.asnNumber" title="asnNumber" forceOverride="true" readOnly="true" trimSpace="true" />
+				<text id="asn.relatedBill1" title="custBillNo" forceOverride="true" trimSpace="true" />
+				<selectText id="asn.plant.id" title="plant" required="true" displayedTableHead="ID,Code,Name" editModel="uneditable">
+					<hql><![CDATA[ SELECT  
+plant.id, 
+plant.code,
+plant.name   
+FROM Plant  plant  
+WHERE plant.disabled = false 
+and plant.wh = #{SESSION_WAREHOUSE} 
+		 				]]></hql> 
+					<eventListeners>
+						<eventListener id="asn.supplier.id" index="1" refreshUI="true"/>
+						<eventListener id="asn.owner.id" index="1" refreshUI="true"/>
+					</eventListeners>
+				</selectText>
+				<selectText id="asn.owner.id" title="owner" required="true" displayedTableHead="ID,Code,Name" editModel="uneditable">
+					<hql><![CDATA[ SELECT  
+owner.id, 
+owner.code,
+owner.name   
+FROM Owner owner  
+WHERE owner.disabled = false
+and owner.plant.id = {asn.plant.id}
+		 				]]></hql> 
+				</selectText>
+				<selectText id="asn.supplier.id" title="vendor" required="true" displayedTableHead="ID,Code,Name">
+					<hql><![CDATA[ SELECT  
+vendor.id, 
+vendor.code,
+vendor.name   
+FROM BizOrg vendor  
+WHERE vendor.disabled = false
+and vendor.type = 'V'
+and vendor.plant.id = {asn.plant.id}
+		 				]]></hql> 
+				</selectText>
+				<list id="asn.orderType.id" title="orderType" required="true" returnType="long">  
+                    <hql><![CDATA[ select 
+t.id, 
+t.name
+from OrderType t   
+where 1=1 
+and t.disabled=false
+and t.processType='M2000' 
+                        ]]></hql>
+                </list>
+				<date id="asn.eta" title="eta" showTime="false" defaultCurrentDate="false" required="true" />
+				<textArea id="asn.description" title="title.desc"  trimSpace="true" rows="50" cols="600" span="6"/>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="asn" className="com.core.scpwms.server.model.inbound.Asn" />
+					</mappings>
+					<actions>
+						<action managerName="asnManager" methodName="saveAsn" parameter="asn" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+asnDetail.id,
+asnDetail.lineNo,
+asnDetail.subLineNo,
+asnDetail.sku.code,
+asnDetail.sku.name,
+asnDetail.sku.specs,
+asnDetail.planPackage.name,
+asnDetail.planQty,
+asnDetail.stockDiv,
+asnDetail.sku.tempDiv,
+asnDetail.sku.fixDiv
+from AsnDetail asnDetail
+where 1=1  
+and asnDetail.asn.id = {asn.id}
+ 			]]></datasource>
+			<columns>
+				<column id="asnDetail.id" title="ID" visible="false" />
+				<column id="asnDetail.lineNo" title="lineNo"/>
+				<column id="asnDetail.subLineNo" title="subLineNo"/>
+				<column id="asnDetail.sku.code" title="sku.code"/>
+				<column id="asnDetail.sku.name" title="sku.name"/>
+				<column id="asnDetail.sku.specs" title="specs"/>
+				<column id="asnDetail.planPackage.name" title="p1000.name"/>
+				<column id="asnDetail.planQty" title="planQty"/>
+				<column id="asnDetail.stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv"/>
+				<column id="asnDetail.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv" />
+				<column id="asnDetail.sku.fixDiv" title="fixDiv" format="enumFormat" formatParam="EnuFixDiv"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="asnDetailEdit" iconUrl="new">
+					<enableExpression><![CDATA[(${asn.id}>0)]]></enableExpression>
+				</popup>
+				<popup id="editDetail" title="editDetail" enableType="single" containId="true" pageId="asnDetailEdit" iconUrl="edit">
+                </popup>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="asnManager" methodName="deleteAsnDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

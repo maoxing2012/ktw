@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="addBinEdit" title="addBinEdit"  autoQuery="true" width="800" height="400" columnNum="8">
+        <search>
+            <inputUIs>
+             	<hidden id="bg.id" />
+             	<numberText id="aisleFrom" title="aisle.from" validator="positiveInteger" returnType="Integer"/>
+             	<numberText id="stackFrom" title="stack.from" validator="positiveInteger" returnType="Integer"/>
+             	<numberText id="depthFrom" title="depth.from" validator="positiveInteger" returnType="Integer"/>
+             	<numberText id="levelFrom" title="level.from" validator="positiveInteger" returnType="Integer"/>
+                <numberText id="aisleTo" title="aisle.to" validator="positiveInteger" returnType="Integer"/>
+                <numberText id="stackTo" title="stack.to" validator="positiveInteger" returnType="Integer"/>          
+                <numberText id="depthTo" title="depth.to" validator="positiveInteger" returnType="Integer"/>                
+                <numberText id="levelTo" title="level.to" validator="positiveInteger" returnType="Integer"/>
+                <text id="bin.code" title="bin.code"/>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[SELECT  
+bin.id,
+bin.binCode,
+bin.aisle,
+bin.stack,
+bin.level,
+bin.depth,
+bin.sortIndex,
+bin.description,
+bin.properties.name,
+bin.processProperties.skuMixed,
+bin.processProperties.lotMixed,
+bin.processProperties.supplierMixed
+FROM Bin bin,BinGroup bg 
+WHERE 1=1    
+and bg.id={bg.id}
+and  bin not in elements (bg.bins) 
+and  (bin.storageType.role = bg.role or bg.role is null)
+and  bin.disabled <> true
+and bin.wh=#{SESSION_WAREHOUSE} 
+/~bin.code: and bin.binCode like {bin.code}~/
+/~aisleFrom: and bin.aisle >= {aisleFrom}~/ 
+/~aisleTo: and bin.aisle <= {aisleTo}~/
+/~stackFrom: and bin.stack >= {stackFrom}~/ 
+/~stackTo: and bin.stack <= {stackTo}~/
+/~depthFrom: and bin.depth >= {depthFrom}~/ 
+/~depthTo: and bin.depth <= {depthTo}~/
+/~levelFrom: and bin.level >= {levelFrom}~/ 
+/~levelTo: and bin.level <= {levelTo}~/
+	]]></datasource>
+        <columns>
+            <column id="bin.id" title="ID" visible="false"/>
+            <column id="bin.binCode" title="bin.code"/>
+            <column id="bin.aisle" title="aisle"/>
+            <column id="bin.stack" title="stack"/>
+            <column id="bin.level" title="level"/>
+            <column id="bin.depth" title="depth"/>
+            <column id="bin.sortIndex" title="sortIndex"/>
+            <column id="bin.description" title="title.desc"/>
+            <column id="bin.properties.name" title="bp"/>
+            <column id="bin.processProperties.skuMixed" title="skuMix" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="bin.processProperties.lotMixed" title="lotMix" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="bin.processProperties.supplierMixed" title="supplierMix" format="enumFormat" formatParam="BooleanTypeY"/>
+        </columns>
+        <buttons>
+            <commit id="save" title="save" enableType="multi" confirmMessageIsJs="false" iconUrl="save">
+                <mappings>
+                    <mapping id="bg.id" className="long"/>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="binGroupManager" methodName="addBin" parameter="bg.id,ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </maintainPage>
+</pages>

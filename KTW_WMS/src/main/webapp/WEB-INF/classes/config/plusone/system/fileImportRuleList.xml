@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<maintainPage id="fileImportRuleList" title="fileImportRuleList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="fileImportRule.ruleCode" title="fileImportRule.ruleCode" trimSpace="true" />
+				<text id="fileImportRule.ruleName" title="fileImportRule.ruleName" trimSpace="true" />
+				<checkbox id="fileImportRule.disabled" title="title.disabled" defaultValue="false" foreOverride="true"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[
+select 
+fileImportRule.id,
+fileImportRule.ruleCode,
+fileImportRule.ruleName,
+fileImportRule.manageName,
+fileImportRule.methodName,
+fileImportRule.fileType,
+fileImportRule.memo,
+fileImportRule.disabled 
+from FileImportRule fileImportRule 
+where 1=1 
+/~fileImportRule.ruleCode: and fileImportRule.ruleCode like {fileImportRule.ruleCode}~/ 
+/~fileImportRule.ruleName: and fileImportRule.ruleName like {fileImportRule.ruleName}~/ 
+/~fileImportRule.disabled: and (fileImportRule.disabled = {fileImportRule.disabled} or {fileImportRule.disabled} = false)~/
+order by fileImportRule.id desc]]></datasource>
+		<columns>
+			<column id="fir.id" title="ID" visible="false" horizonAlign="left" />
+			<column id="fileImportRule.ruleCode" title="fileImportRule.ruleCode" horizonAlign="left" />
+			<column id="fileImportRule.ruleName" title="fileImportRule.ruleName" horizonAlign="left" />
+			<column id="fileImportRule.manageName" title="fileImportRule.manageName" horizonAlign="left" />
+			<column id="fileImportRule.methodName" title="fileImportRule.methodName" horizonAlign="left" />
+			<column id="fileImportRule.fileType" title="fileImportRule.fileType" horizonAlign="left" format="enumFormat" formatParam="EnuImportFileType"/>
+			<column id="fileImportRule.memo" title="fileImportRule.memo" horizonAlign="left" />
+			<column id="fileImportRule.disabled" title="title.disabled" horizonAlign="left" format="booleanFormat" formatParam="disabled" />
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="fileImportRuleEdit" iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true" pageId="fileImportRuleEdit" iconUrl="modify">
+            	<enableExpression><![CDATA[(${fileImportRule.disabled}==@{BooleanType.false})]]></enableExpression>
+            </popup>
+            <commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${fileImportRule.disabled} == @{BooleanType.false})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="platFormManager" methodName="deletePlatForm" parameter="ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+		</buttons>
+	</maintainPage>
+</pages>

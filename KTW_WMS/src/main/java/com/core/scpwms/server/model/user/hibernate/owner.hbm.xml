@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.user.Owner" table="WMS_OWNER">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_owner</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID"/>
+        </many-to-one>
+		
+		<property name="code" column="CODE" type="string" not-null="true" length="50"/>
+		<property name="name" column="NAME" type="string" not-null="true"/>
+		<property name="shortName" column="SHORT_NAME" type="string"/>
+		<property name="whse" column="WHSE" type="string" length="50"/>
+        <property name="co" column="CO" type="string" length="50"/>
+		<property name="div" column="DIV" type="string" length="50"/>
+		
+		<component name="contractInfo" class="com.core.business.model.domain.ContractInfo">
+            <property name="linkman" column="LINKMAN" type="string" length="150" />
+            <property name="phone" column="PHONE" type="string" length="50"/>
+            <property name="fax" column="FAX" type="string" length="50"/>
+            <property name="email" column="EMAIL" type="string" length="100"/>
+            <property name="address" column="ADDRESS" type="string" length="255"/>
+            <property name="addressExt" column="ADDRESS_EXT" type="string" length="255"/>
+            <property name="postcode" column="POSTCODE" type="string" length="50"/>
+            <property name="mobile" column="MOBILE" type="string" length="50"/>
+        </component>
+		
+		<property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+</hibernate-mapping>
+
+

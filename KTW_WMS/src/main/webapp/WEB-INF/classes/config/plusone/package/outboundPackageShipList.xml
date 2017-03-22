@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="outboundPackageShipList" title="outboundPackageShipList" autoQuery="false" useSum="true">
+        <search>
+            <inputUIs>
+                <text id="boxSequence" title="boxSequence" trimSpace="true" />
+                <list id="status" title="title.status" enumType="EnuPakcageDocStatus" returnType="long" multiple="true" defaultValue="200">
+                    <hql><![CDATA[ SELECT
+e.enumValue,
+e.enumValue
+FROM Enumerate e
+WHERE  e.enumType = 'EnuPakcageDocStatus'
+                    ]]></hql>
+                </list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+pack.id,
+pack.boxSequence,
+pack.status,
+pack.shipMethod,
+pack.logiNumber,
+pack.packQty,
+pack.baseQty,
+pack.skuCount,
+pack.orderCount,
+pack.weight,
+pack.volume
+from OutboundPackage pack 
+left join pack.stowagePlan
+where 1=1 
+and pack.wh=#{SESSION_WAREHOUSE}
+and pack.shipMethod = '40'
+/~obdNumber: and pack.boxSequence like {boxSequence}~/
+/~status: and pack.status = {status}~/
+        ]]></datasource>
+        <columns>
+            <column id="pack.id" title="ID" visible="false"  />
+            <column id="pack.boxSequence" title="boxSequence" />
+            <column id="pack.status" title="title.status" format="enumFormat" formatParam="EnuPakcageDocStatus"/>
+            <column id="pack.shipMethod" title="shipMethod" format="enumFormat" formatParam="EnuShipMethod"/>
+            <column id="pack.logiNumber" title="logiNumber" />
+            <column id="pack.packQty" title="planQty"  canSum="true"/>
+            <column id="pack.baseQty" title="baseQty"  canSum="true"/>
+            <column id="pack.skuCount" title="skuCount"  canSum="true"/>
+            <column id="pack.orderCount" title="orderCount"  canSum="true"/>
+            <column id="pack.weight" title="weight"  canSum="true"/>
+            <column id="pack.volume" title="volume"  canSum="true"/>
+        </columns>
+        <buttons>
+			<popup id="ship" title="shipConfirm" enableType="multi" containId="true" pageId="outboundPackageShipConfirm" iconUrl="confirm">
+                <enableExpression><![CDATA[(${pack.status} == @{EnuPakcageDocStatus.200})]]></enableExpression>
+            </popup>
+            <popup id="view" title="view"  enableType="single" containId="true" pageId="outboundPackageView" iconUrl="view"/>
+        </buttons>
+    </maintainPage>
+</pages>

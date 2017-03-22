@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="pickOrderList" title="pickOrderList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="tripNumber" title="tripNumber"/>
+				<text id="orderSequence" title="woSequence"/>
+	            <list id="status" title="title.status" enumType="EnuWarehouseOrderStatus" returnType="long" multiple="true" defaultValue="100,200,500,600">
+	                <hql><![CDATA[ SELECT  
+	                    e.enumValue, 
+	                    e.enumValue   
+	                    FROM Enumerate e   
+	                    WHERE  e.enumType = 'EnuWarehouseOrderStatus' 
+	                ]]></hql>
+	             </list>
+	             <list id="pickMethod" title="pickMethod" enumType="EnuPickMethod" returnType="string" >
+	                <hql><![CDATA[ SELECT  
+	                    e.enumValue, 
+	                    e.enumValue   
+	                    FROM Enumerate e   
+	                    WHERE e.enumType = 'EnuPickMethod' 
+	                ]]></hql>
+	             </list>
+	             <checkbox id="onlyUnPrinted" title="onlyUnPrinted" defaultValue="true"/>
+	             <checkbox id="onlyHalfFull" title="onlyHalfFull" defaultValue="false"/>
+	             <date id="title.createTime.from" title="title.createTime.from" showTime="true" />
+				 <date id="title.createTime.to" title="title.createTime.to" showTime="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+wo.id,
+wo.relatedBill1,
+wo.orderSequence,
+wo.pickMethod,
+wo.status,
+wo.hasHalfFullCase,
+wo.isPrinted,
+wo.skuCount,
+wo.planQty,
+wo.executeQty,
+wo.sumWeight,
+round(wo.sumVolume/1000000,4),
+wo.createInfo.updateTime
+from WarehouseOrder wo
+left join wo.st
+where 1=1 
+and wo.wh = #{SESSION_WAREHOUSE} 
+and wo.warehouseOrderType = 'PICKUP' 
+and (wo.isPrinted = 0 or {onlyUnPrinted}=false)
+and (wo.hasHalfFullCase = 1 or {onlyHalfFull}=false)
+/~orderSequence: and wo.orderSequence like {orderSequence} ~/
+/~status: and wo.status = {status}~/ 
+/~tripNumber: and wo.relatedBill1 like {tripNumber}~/
+/~pickMethod: and wo.pickMethod like {pickMethod}~/
+/~title.createTime.from: and to_char(wo.createInfo.updateTime,'yyyy-mm-dd hh24:mi') >= to_char({title.createTime.from},'yyyy-mm-dd hh24:mi')~/
+/~title.createTime.to: and to_char(wo.createInfo.updateTime,'yyyy-mm-dd hh24:mi') <= to_char({title.createTime.to},'yyyy-mm-dd hh24:mi')~/
+ 
+		]]></datasource>
+		<columns>
+			<column id="wo.id" title="ID"  visible="false"/>
+			<column id="wo.relatedBill1" title="tripNumber"/>
+            <column id="wo.orderSequence" title="woSequence"/>
+            <column id="wo.pickMethod" title="pickMethod" format="enumFormat" formatParam="EnuPickMethod"/>
+            <column id="wo.status" title="title.status" format="enumFormat" formatParam="EnuWarehouseOrderStatus"/>
+            <column id="wo.hasHalfFullCase" title="hasHalfFullCase" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="wo.isPrinted" title="isPrinted" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="wo.skuCount" title="skuCount"/>
+            <column id="wo.planQty" title="planQty"/>
+            <column id="wo.executeQty" title="pickQty"/>
+            <column id="wo.sumWeight" title="sumWeight"/>
+            <column id="wo.sumVolume" title="sumVolume"/>
+            <column id="wo.createInfo.updateTime" title="title.createTime"/>
+		</columns>
+		<buttons>
+		    <popup id="new" title="new"  enableType="none" containId="false" pageId="pickOrderModify" iconUrl="new"/>
+            <popup id="edit" title="edit"  enableType="single" containId="true" pageId="pickOrderModify" iconUrl="edit">
+                <enableExpression><![CDATA[(${wo.status} == @{EnuWarehouseOrderStatus.100})]]></enableExpression>
+            </popup> 
+            <!-- <popup id="publish" title="publish"  enableType="multi" containId="true" pageId="pickOrderPublish" iconUrl="action">
+                <enableExpression><![CDATA[(${wo.status} == @{EnuWarehouseOrderStatus.100})]]></enableExpression>
+            </popup>  -->
+            <commit id="publish" title="publish" enableType="multi" confirmMessage="publish.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[(${wo.status} == @{EnuWarehouseOrderStatus.100}&&(${wo.planQty}-0>0))]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseOrderManager" methodName="publish" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="cancel" title="cancel" enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${wo.status} == @{EnuWarehouseOrderStatus.100}||${wo.status} == @{EnuWarehouseOrderStatus.500}||${wo.status} == @{EnuWarehouseOrderStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseOrderManager" methodName="cancel" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit> 
+            <popup id="close" title="close" enableType="multi" containId="true" pageId="pickOrderClose" iconUrl="cancel">
+			    <enableExpression><![CDATA[(${wo.status} == @{EnuWarehouseOrderStatus.600})]]></enableExpression>
+			</popup>      
+            <!-- <commit id="close" title="close" enableType="single" confirmMessage="close.confirmMessage" iconUrl="cancel">
+                <enableExpression><![CDATA[(${putawayOrder.planQty} - ${putawayOrder.putawayQty} ) >= 0 && ${putawayOrder.putawayQty} > 0 ]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="asnPutawayTaskManager" methodName="close" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>             
+            </commit>  -->
+            <popup id="view" title="view"  enableType="single" containId="true" pageId="pickOrderView" iconUrl="view"/>
+            <popup id="statusView" title="statusView" enableType="single" containId="true" pageId="pickOrderStatusView" iconUrl="view"/>
+            <popup id="printReport" title="pickOrderPrint"  enableType="multi" containId="true" pageId="pickOrderPrint" iconUrl="report"/>
+            <popup id="printHalfFullReport" title="printHalfFullReport"  enableType="multi" containId="true" pageId="printHalfFullReport" iconUrl="report">
+            	<enableExpression><![CDATA[(${wo.hasHalfFullCase} == @{BooleanTypeY.1})]]></enableExpression>
+            </popup>
+            <popup id="printObdLable" title="obdLablePrint"  enableType="multi" containId="true" pageId="obdLablePrint" iconUrl="report"/>
+            <commit id="closePrint" title="closePrint" enableType="multi" confirmMessage="closePrint.confirmMessage" iconUrl="disable">
+                <enableExpression><![CDATA[(${wo.isPrinted} == @{BooleanTypeY.0})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseOrderManager" methodName="closePrint" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="openPrint" title="openPrint" enableType="multi" confirmMessage="openPrint.confirmMessage" iconUrl="enable">
+                <enableExpression><![CDATA[(${wo.isPrinted} == @{BooleanTypeY.1})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseOrderManager" methodName="openPrint" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit> 
+		</buttons>
+	</maintainPage>
+</pages>

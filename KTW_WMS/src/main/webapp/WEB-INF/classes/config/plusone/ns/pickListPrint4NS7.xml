@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="pickListPrint4NS7" title="pickListPrint4NS7" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+			    <text id="waveNo" title="waveNo" trimSpace="true" />
+				<list id="status" title="title.status" enumType="EnuWaveStatus"  returnType="long" multiple="true" defaultValue="250">
+	                <hql><![CDATA[ select 
+en.enumValue,
+en.enumValue
+from Enumerate en
+where  en.enumType='EnuWaveStatus'  
+						]]>
+	                </hql>
+            	</list>
+			</inputUIs>
+		</search>
+		<datasource type="hql">
+            <![CDATA[select 
+wave.id,
+wave.owner.name,
+wave.waveNumber,
+wave.status,
+wave.etd,
+wave.orderQty,
+wave.skuCount,
+wave.planQty,
+wave.allocatedQty,
+wave.executeQty,
+wave.description
+from WaveDoc wave 
+where 1=1 
+and wave.status >=250
+and wave.wh = #{SESSION_WAREHOUSE} 
+/~ owner: and wave.owner.id = {owner}~/ 
+/~ status: and wave.status = {status}~/
+/~ waveNo: and wave.waveNumber like {waveNo}~/
+		]]></datasource>
+		<columns>
+			<column id="wave.id" title="ID" visible="false"  />
+			<column id="wave.owner.name" title="owner" />
+			<column id="wave.waveNumber" title="waveNo" />
+			<column id="wave.status" title="title.status" format="enumFormat" formatParam="EnuWaveStatus"/>
+			<column id="wave.etd" title="etd"/>
+			<column id="wave.orderQty" title="orderCount"/>
+			<column id="wave.skuCount" title="skuCount"/>
+			<column id="wave.planQty" title="planQty" />
+			<column id="wave.allocatedQty" title="allocateQty" />
+			<column id="wave.executeQty" title="pickUpQty" />
+			<column id="wave.description" title="title.desc"/>
+		</columns>
+		<buttons>
+			<popup id="pickList071" title="pickList071"  enableType="single" containId="true" pageId="pickList071" iconUrl="report"/>
+			<popup id="pickList073" title="pickList073"  enableType="single" containId="true" pageId="pickList073" iconUrl="report"/>
+			<popup id="pickList072" title="pickList072"  enableType="single" containId="true" pageId="pickList072" iconUrl="report"/>
+			<popup id="pickList074" title="pickList074"  enableType="single" containId="true" pageId="pickList074" iconUrl="report"/>
+			<popup id="batchPickList" title="大バッチピッキングリスト(冷凍)"  enableType="single" containId="true" pageId="batchPickList4F" iconUrl="report"/>
+		</buttons>
+	</maintainPage>
+</pages>

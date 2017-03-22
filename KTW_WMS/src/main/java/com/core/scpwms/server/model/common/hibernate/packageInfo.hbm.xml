@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.common.PackageInfo" table="WMS_PACKAGE_INFO">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_pkginfo</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <property name="code" column="CODE" type="string" not-null="true" unique-key="UK_PACKAGE_INFO" length="50"/>
+        <property name="name" column="NAME" type="string" not-null="true"/>
+        
+        <many-to-one name="p1000" class="com.core.scpwms.server.model.common.PackageDetail">
+            <column name="P1000"/>
+        </many-to-one>
+        
+        <many-to-one name="p2100" class="com.core.scpwms.server.model.common.PackageDetail">
+            <column name="P2100"/>
+        </many-to-one>
+        
+        <many-to-one name="p2000" class="com.core.scpwms.server.model.common.PackageDetail">
+            <column name="P2000"/>
+        </many-to-one>
+        
+        <many-to-one name="p3000" class="com.core.scpwms.server.model.common.PackageDetail">
+            <column name="P3000"/>
+        </many-to-one>
+        
+        <many-to-one name="p4000" class="com.core.scpwms.server.model.common.PackageDetail">
+            <column name="P4000"/>
+        </many-to-one>
+        
+        <property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+     </class>
+</hibernate-mapping>

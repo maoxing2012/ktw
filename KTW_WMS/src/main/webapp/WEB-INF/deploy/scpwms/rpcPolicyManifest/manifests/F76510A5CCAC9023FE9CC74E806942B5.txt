@@ -1,0 +1,2 @@
+serviceClass: com.core.scpview.client.remote.CommitService
+path: AFBD2E61FC5B949A867461B538F3B567.gwt.rpc

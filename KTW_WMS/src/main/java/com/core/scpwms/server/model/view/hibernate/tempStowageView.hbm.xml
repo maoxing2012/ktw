@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.view.TempStowageView" table="TEMP_STOWAGE_PLAN_VIEW">
+		<id name="id" column="ID" type="long" />
+		<property name="stowageNumber" column="STOWAGE_NUMBER" type="string" />
+		<property name="mainDriver" column="MAIN_DRIVER" type="string" />
+		<property name="carNumber" column="CAR_NUMBER" type="string" />
+		<property name="jdeBillNo" column="JDE_BILL_NO" type="string" />
+		<property name="tmsPlatFormCd" column="TMS_PLATFORM_CD" type="string" length="50"/>
+	</class>
+</hibernate-mapping>
+
+

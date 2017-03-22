@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="whAreaList" title="whAreaList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="wa.code" title="wa.code" trimSpace="true" />
+				<text id="wa.name" title="wa.name" trimSpace="true" />
+				<list id="wa.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+wa.id,
+wa.wh.code,
+wa.code,
+wa.name,
+wa.disabled 
+from WhArea wa 
+where 1=1
+and wa.wh = #{SESSION_WAREHOUSE} 
+/~wa.code: and wa.code like {wa.code}~/ 
+/~wa.name: and wa.name like {wa.name}~/ 
+/~wa.disabled: and wa.disabled = {wa.disabled} ~/ 
+		]]></datasource>
+		<columns>
+			<column id="wa.id" title="ID" visible="false"/>
+			<column id="wa.wh.code" title="wh.code" visible="false"/>
+			<column id="wa.code" title="wa.code"/>
+			<column id="wa.name" title="wa.name"/>
+			<column id="wa.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="whAreaEdit"  iconUrl="new"/>
+			<popup id="edit" title="modify" enableType="single" containId="true" pageId="whAreaEdit" iconUrl="edit">
+				<enableExpression><![CDATA[(${wa.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+			</popup>
+			<commit id="enable" title="enable" pageLocale="false" enableType="multi" iconUrl="enable" >
+				<enableExpression><![CDATA[(${wa.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="whAreaManager" methodName="active" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="disable" title="disable" enableType="multi" iconUrl="disable">
+				<enableExpression><![CDATA[(${wa.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="whAreaManager" methodName="unActive" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${wa.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="whAreaManager" methodName="deleteWhArea" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="binView" title="binView" entityClass="com.core.scpwms.server.model.warehouse.Bin"  width="600" height="300" onClose="refreshParent" >
+        <inputUIs>
+             <hidden id="bin.id" title="ID" />
+             <parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="220" >
+	              <text id="bin.binCode" title="bin.code" trimSpace="true" />
+	              <text id="bin.properties.name" title="bp" trimSpace="true" />
+	              <text id="bin.storageType.name" title="st" trimSpace="true" />
+	              <checkbox id="bin.processProperties.skuMixed" title="skuMix" defaultValue="true"  foreOverride="true"/>
+	              <checkbox id="bin.processProperties.lotMixed" title="lotMix" defaultValue="false"  foreOverride="true"/>
+	              <checkbox id="bin.processProperties.ownerMixed" title="ownerMix" defaultValue="false"  foreOverride="true"/>
+	              <textArea id="bin.description" title="title.desc" trimSpace="true" rows="50" cols="355" span="2" />
+             </parttab>
+             <parttab id="tab_2" title="title.location" style="CTab" tabHeight="220" >
+                 <numberText id="bin.aisle" title="aisle"  forceOverride="true" returnType="int"/>
+                 <numberText id="bin.stack" title="stack"  forceOverride="true" returnType="int"/>
+                 <numberText id="bin.depth" title="depth"  forceOverride="true" returnType="int"/>
+                 <numberText id="bin.level" title="level"  forceOverride="true" returnType="int"/>
+             </parttab>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

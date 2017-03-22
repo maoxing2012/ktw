@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="laborSetEdit" title="laborSetEdit" entityClass="com.core.scpwms.server.model.warehouse.Labor" onClose="refreshParent" width="550" height="400">
+        <modify>
+            <inputUIs>
+                <hidden id="labor.id"/>
+            </inputUIs>
+        </modify>
+        <detail>
+            <datasource><![CDATA[SELECT   
+lgl.id,
+lgl.labor.laborName,
+lgl.group.name 
+from LaborGroupLabor lgl 
+where 1=1 
+and lgl.group.wh = #{SESSION_WAREHOUSE} 
+/~labor.id: and lgl.labor.id = {labor.id} ~/ 
+			]]></datasource>
+            <columns>
+                <column id="lgl.id" title="ID" visible="false"/>
+                <column id="lgl.labor.laborName" title="labor.laborName"/>
+                <column id="lgl.group.name" title="laborGroup.name"/>
+            </columns>
+            <buttons>
+                <popup id="add" title="add" enableType="none" containId="false" pageId="laborAddGroup"  iconUrl="new"/>
+                <commit id="delete" title="delete" enableType="multi"  containId="true" iconUrl="delete">
+                    <mappings>
+                        <mapping id="labor.id" className="long"/>
+                        <mapping id="ids" className="list"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="laborManager" methodName="deleteLaborGroup" parameter="labor.id,ids"/>
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+                        <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    </forwards>
+                </commit>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

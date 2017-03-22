@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="countConfirmEdit" title="countConfirmEdit" entityClass="com.core.scpwms.server.model.count.CountRecord" width="400" height="300">
+        <inputUIs>
+            <hidden id="countRecord.id"/>
+            <textArea id="desc" title="title.desc" required="true" rows="40" cols="200" length="100" trimSpace="true" span="3"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" confirmMessage="confirm.confirmMessage" iconUrl="save">
+					<mappings>
+						<mapping id="countConfirm.ids" className="list"/>
+						<mapping id="desc" className="string"/>
+					</mappings>
+					<actions>
+						<action managerName="countPlanManager" methodName="adjust" parameter="countConfirm.ids,desc" /> 
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+        </buttons>
+    </editPage>
+</pages>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.temp.AsnMultiProcess" table="WMS_ASN_MULTI_PROCESS">
+    	<id name="id" column="ID" type="long">
+    		<generator class="native">
+    			<param name="sequence">wseq_asn_multiprocess</param>
+    			<param name="parametes">START WITH 1000</param>
+    		</generator>
+    	</id>
+    	 	
+    	<property name="whId" type="long" column="WH_ID" />
+    	<property name="ownerId" type="long" column="OWNER_ID" />
+    	<property name="userId" type="long" column="USER_ID" />
+    	
+    	<property name="asnId0" type="long" column="ASN_ID0" />
+    	<property name="asnId1" type="long" column="ASN_ID1" />
+    	<property name="asnId2" type="long" column="ASN_ID2" />
+    	<property name="asnId3" type="long" column="ASN_ID3" />
+    	<property name="asnId4" type="long" column="ASN_ID4" />
+    	<property name="asnId5" type="long" column="ASN_ID5" />
+    	<property name="asnId6" type="long" column="ASN_ID6" />
+    	<property name="asnId7" type="long" column="ASN_ID7" />
+    	<property name="asnId8" type="long" column="ASN_ID8" />
+    	<property name="asnId9" type="long" column="ASN_ID9" />
+    </class>
+</hibernate-mapping>
+
+

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="feeTypeEdit" title="feeTypeEdit" entityClass="com.core.scpwms.server.model.fee.FeeType" width="500" height="450" columnNum="8">
+        <inputUIs>
+            <hidden id="feeType.id" />
+            <selectText id="feeType.owner.id" title="owner" displayedTableHead="ID,Code,Name" editModel="uneditable" required="true">
+				<hql><![CDATA[ SELECT  
+owner.id, 
+owner.code,
+owner.name   
+FROM Owner owner  
+WHERE owner.disabled = false
+and owner.plant.wh=#{SESSION_WAREHOUSE} 
+		 				]]></hql> 
+			</selectText>
+			<list id="feeType.processType" title="feeProcessType" enumType="EnuFeeType" returnType="string" editModel="uneditable" required="true" lastElement="true">
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuFeeType' 
+                ]]></hql>
+            </list>
+            <numberText id="feeType.priority" title="priority" required="true"/>
+            <list id="feeType.tempDiv" title="tempDiv" enumType="EnuTemperatureDiv" editModel="uneditable" returnType="long" required="true">
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuTemperatureDiv' 
+                ]]></hql>
+            </list>
+            <list id="feeType.stockDiv" title="stockDiv" enumType="EnuStockDiv" editModel="uneditable" returnType="long" required="true">
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuStockDiv' 
+                ]]></hql>
+            </list>
+            <textArea id="feeType.description" title="title.desc" rows="50" cols="355" span="3" length="80" trimSpace="true" lastElement="true"/>
+            <numberText id="feeType.fee" title="unitFee" required="true"/>
+            <list id="feeType.unit" title="unit" enumType="EnuFeeUnit" returnType="string" required="true" editModel="uneditable">
+                <hql><![CDATA[ SELECT 
+                    e.enumValue,
+                    e.enumValue 
+                    From Enumerate e 
+                    where e.enumType = 'EnuFeeUnit' 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="feeType" className="com.core.scpwms.server.model.fee.FeeType"/>
+                </mappings>
+                <actions>
+                    <action managerName="feeTypeManager" methodName="store" parameter="feeType"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

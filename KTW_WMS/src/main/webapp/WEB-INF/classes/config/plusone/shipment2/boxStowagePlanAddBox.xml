@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="boxStowagePlanAddBox" title="boxStowagePlanAddBox" autoQuery="true" width="800" height="400">
+		<search>
+			<inputUIs>
+                <text id="boxSequence" title="boxSequence" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obdPack.id,
+obdPack.boxSequence,
+obdPack.obd.relatedBill1,
+obdPack.obd.carrier.name,
+obdPack.baseQty,
+obdPack.length,
+obdPack.width,
+obdPack.height,
+obdPack.weight,
+obdPack.grossWeight,
+obdPack.caseQty
+from OutboundPackage obdPack
+left join obdPack.obd
+left join obdPack.obd.carrier
+left join obdPack.stowagePlan
+where 1=1 
+and obdPack.wh=#{SESSION_WAREHOUSE}
+and obdPack.status = 210
+and obdPack.stowagePlan.id is null
+and obdPack.obd.planCheckQty = obdPack.obd.checkQty
+and obdPack.obd.carrier.id in ( select sp.carrier.id from StowagePlan sp where sp.id = {stowagePlan.id} )
+/~boxSequence: and obdPack.boxSequence like {boxSequence}~/
+		]]></datasource>
+		<columns>
+			<column id="obdPack.id" title="ID" visible="false" />
+			<column id="obdPack.boxSequence" title="boxSequence"/>
+			<column id="obdPack.obd.relatedBill1" title="tripNumber"/>
+			<column id="obdPack.obd.carrier.name" title="carrier"/>
+			<column id="obdPack.baseQty" title="baseQty"/>
+			<column id="obdPack.length" title="length"/>
+			<column id="obdPack.width" title="width"/>
+			<column id="obdPack.height" title="height"/>
+            <column id="obdPack.weight" title="weight" />
+            <column id="obdPack.grossWeight" title="grossWeight" />
+            <column id="obdPack.caseQty" title="caseQty" />
+		</columns>
+		<buttons>
+			<commit id="add" title="add"  enableType="multi" confirmMessage="add.confirmMessage" iconUrl="new">
+				<mappings>
+					<mapping id="stowagePlan.id" className="long" /> 
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="stowagePlanManager" methodName="addDetailBox" parameter="stowagePlan.id,ids" />
+				</actions>
+				<forwards>					
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

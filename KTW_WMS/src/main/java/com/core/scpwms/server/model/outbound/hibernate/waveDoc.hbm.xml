@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.outbound.WaveDoc" table="WMS_WAVE_DOC">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_wavedoc</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	
+	 	<discriminator column="DISCRIMINATOR" type="string"/>
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+	 		<column name="WH_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID" />
+        </many-to-one>
+        <many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID" />
+        </many-to-one>
+        <many-to-one name="carrier" class="com.core.scpwms.server.model.user.Carrier">
+            <column name="CARRIER_ID" />
+        </many-to-one>
+	 	<many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType">
+	 		<column name="ORDER_TYPE_ID" />
+	 	</many-to-one>
+	 	
+	 	<property name="waveNumber" column="WAVE_NUMBER" type="string" length="50"/>
+	 	<property name="workModel"  column="WORK_MODEL" type="string"  length="50"/>
+	 	<property name="carrierCodes"  column="CARRIER_CODES" type="string"  length="255"/>
+	 	<property name="status" column="STATUS" type="long" />
+	 	
+	 	<property name="planQty"  column="PLAN_QTY" type="double"/>	 
+	    <property name="allocatedQty"  column="ALLOCATE_QTY" type="double"/>
+	    <property name="executeQty"  column="EXECUTE_QTY" type="double"/>
+	    
+	    <property name="orderQty"  column="ORDER_QTY" type="long"/>
+	    
+	    <property name="orderCount1"  column="ORDER_COUNT1" type="long"/>
+	    <property name="orderCount2"  column="ORDER_COUNT2" type="long"/>
+	    <property name="orderCount3"  column="ORDER_COUNT3" type="long"/>
+	    
+	    <property name="psCaseCount"  column="PS_CS_CNT" type="long"/>
+	    <property name="blCaseCount"  column="BL_CS_CNT" type="long"/>
+	    <property name="csCaseCount"  column="CS_CS_CNT" type="long"/>
+	    
+	    <property name="skuCount"  column="SKU_COUNT" type="long"/>
+	 	<property name="sumWeight"  column="WEIGHT" type="double"/>
+	 	<property name="sumVolumn"  column="VOLUMN" type="double"/>	
+	 	<property name="sumMetric"  column="METRIC" type="double"/> 
+	 	<property name="sumPrice"  column="PRICE" type="double"/> 
+	 	<property name="etd"  column="ETD" type="date"/> 
+	 	<property name="description" column="DESCRIPTION" type="string" /> 
+        
+	 	<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	 </class>
+</hibernate-mapping>

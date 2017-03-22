@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.count.CountPlan" table="WMS_COUNT_PLAN">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_count_plan</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <version name="version" type="long" column="VERSION"/>
+        
+        <many-to-one name="warehouse" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID"/>
+        </many-to-one>
+        <many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID"/>
+        </many-to-one>
+        <many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType">
+            <column name="ORDER_TYPE_ID"/>
+        </many-to-one>
+        <many-to-one name="parrentPlan" class="com.core.scpwms.server.model.count.CountPlan">
+            <column name="PARRENT_PLAN_ID" />
+        </many-to-one>
+        <many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+            <column name="BIN_ID" />
+        </many-to-one>
+        <many-to-one name="st" class="com.core.scpwms.server.model.warehouse.StorageType">
+            <column name="ST_ID" />
+        </many-to-one>
+        
+        <property name="dynamicCountFrom" column="DYNAMIC_COUNT_FROM" type="date"/>
+        <property name="dynamicCountTo" column="DYNAMIC_COUNT_TO" type="date"/>
+        <property name="planDate" column="PLAN_DATE" type="date"/>
+        <property name="code" column="CODE" type="string" length="50"/>
+        <property name="countMethod" column="COUNT_METHOD" type="string" length="50"/>
+        <property name="status" column="STATUS" type="long"/>
+        <property name="binLock" column="BIN_LOCK" type="boolean"/>
+        <property name="blindCount" column="BLIND_COUNT" type="boolean"/>
+        <property name="autoCreate" column="AUTO_CREATE" type="boolean"/>
+        <property name="sampleRatio" column="SAMPLE_RATIO" type="double"/>
+        
+        <property name="planQty" column="PLAN_QTY" type="double"/>
+        <property name="countQty" column="COUNT_QTY" type="double"/>
+        <property name="plusDeltaQty" column="PLUS_DELTA_QTY" type="double"/>
+        <property name="minusDeltaQty" column="MINUS_DELTA_QTY" type="double"/>
+        <property name="sumWeight" column="SUM_WEIGHT" type="double"/>
+        <property name="sumVolume" column="SUM_VOLUME" type="double"/>
+        <property name="sumPrice" column="SUM_PRICE" type="double"/>
+        <property name="sumMetric" column="SUM_METRIC" type="double"/>
+        <property name="skuCount" column="SKU_COUNT" type="long"/>
+        <property name="quantCount" column="QUANT_COUNT" type="long"/>
+        
+		<property name="description" column="DESCRIPTION" type="string"/>
+		
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+        
+        <set name="details" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="COUNT_PLAN_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.count.CountDetail"/>
+        </set>
+        <set name="records" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="COUNT_PLAN_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.count.CountRecord"/>
+        </set>
+     </class>
+     <query name="updateCountQty">
+        <![CDATA[
+        UPDATE CountPlan cp set cp.countQty = (select sum( coalesce(cr.countQuantity) ) from CountRecord cr where cr.countPlan.id=:cpId) 
+        where cp.id = :cpId
+        ]]>
+     </query>
+     <query name="updatePlusDeltaQty">
+        <![CDATA[
+        UPDATE CountPlan cp set cp.plusDeltaQty = (select sum( case when cr.deltaQuantity > 0 then cr.deltaQuantity else 0 end ) from CountRecord cr where cr.countPlan.id=:cpId) 
+        where cp.id = :cpId
+        ]]>
+     </query>
+     <query name="updateMinusDeltaQty">
+        <![CDATA[
+        UPDATE CountPlan cp set cp.minusDeltaQty = (select sum( case when cr.deltaQuantity < 0 then cr.deltaQuantity else 0 end ) from CountRecord cr where cr.countPlan.id=:cpId) 
+        where cp.id = :cpId
+        ]]>
+     </query>
+</hibernate-mapping>

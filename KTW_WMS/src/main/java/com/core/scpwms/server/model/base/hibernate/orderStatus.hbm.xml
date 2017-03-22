@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.base.OrderStatus" table="WMS_ORDER_STATUS">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_labor_kpi</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        
+        <property name="statusEnum" column="STATUS_ENUM" type="string"/>
+        <property name="statusFrom" column="STATUS_FROM" type="string" length="50"/>
+        <property name="statusTo" column="STATUS_TO" type="string" length="50"/>
+        <property name="orderId" column="ORDER_ID" type="long"/>
+        <property name="orderType" column="ORDER_TYPE" type="string"/>
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+     </class>
+</hibernate-mapping>

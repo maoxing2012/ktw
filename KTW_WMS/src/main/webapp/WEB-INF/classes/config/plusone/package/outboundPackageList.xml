@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="outboundPackageList" title="outboundPackageList" autoQuery="false" useSum="true">
+        <search>
+            <inputUIs>
+            	<text id="tripNumber" title="tripNumber" trimSpace="true" />
+                <text id="boxSequence" title="boxSequence" trimSpace="true" />
+                <list id="status" title="title.status" enumType="EnuPakcageDocStatus" returnType="long" multiple="true" defaultValue="100,200">
+                    <hql><![CDATA[ SELECT
+e.enumValue,
+e.enumValue
+FROM Enumerate e
+WHERE  e.enumType = 'EnuPakcageDocStatus'
+                    ]]></hql>
+                </list>
+                <text id="labor" title="labor" trimSpace="true" />
+                <date id="publishDateFrom" title="publishDateFrom" showTime="true" />
+				<date id="publishDateTo" title="publishDateTo" showTime="true" />
+				<date id="createBoxTimeFrom" title="createBoxTimeFrom" showTime="true" />
+				<date id="createBoxTimeTo" title="createBoxTimeTo" showTime="true" />
+				<date id="closeBoxTimeFrom" title="closeBoxTimeFrom" showTime="true" />
+				<date id="closeBoxTimeTo" title="closeBoxTimeTo" showTime="true" />
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+pack.id,
+pack.obd.relatedBill1,
+pack.obd.waveDoc.waveNumber,
+pack.boxSequence,
+pack.status,
+pack.baseQty,
+pack.skuCount,
+pack.length,
+pack.width,
+pack.height,
+pack.weight,
+pack.grossWeight,
+pack.caseQty,
+pack.planCheckQty,
+pack.checkQty,
+pack.updateInfo.operatorName,
+pack.obd.publishDate,
+pack.createInfo.updateTime,
+pack.updateInfo.updateTime
+from OutboundPackage pack 
+left join pack.stowagePlan
+where 1=1 
+and pack.wh=#{SESSION_WAREHOUSE} 
+/~tripNumber: and pack.obd.relatedBill1 like {tripNumber}~/
+/~boxSequence: and pack.boxSequence like {boxSequence}~/
+/~status: and pack.status = {status}~/
+/~labor: and pack.updateInfo.operatorName like {labor}~/
+
+/~publishDateFrom: and to_char(pack.obd.publishDate,'yyyy-mm-dd hh24:mi') >= to_char({publishDateFrom},'yyyy-mm-dd hh24:mi')~/
+/~publishDateTo: and to_char(pack.obd.publishDate,'yyyy-mm-dd hh24:mi') <= to_char({publishDateTo},'yyyy-mm-dd hh24:mi')~/
+
+/~createBoxTimeFrom: and to_char(pack.createInfo.updateTime,'yyyy-mm-dd hh24:mi') >= to_char({createBoxTimeFrom},'yyyy-mm-dd hh24:mi')~/
+/~createBoxTimeTo: and to_char(pack.createInfo.updateTime,'yyyy-mm-dd hh24:mi') <= to_char({createBoxTimeTo},'yyyy-mm-dd hh24:mi')~/
+
+/~closeBoxTimeFrom: and to_char(pack.updateInfo.updateTime,'yyyy-mm-dd hh24:mi') >= to_char({closeBoxTimeFrom},'yyyy-mm-dd hh24:mi')~/
+/~closeBoxTimeTo: and to_char(pack.updateInfo.updateTime,'yyyy-mm-dd hh24:mi') <= to_char({closeBoxTimeTo},'yyyy-mm-dd hh24:mi')~/
+        ]]></datasource>
+        <columns>
+            <column id="pack.id" title="ID" visible="false"  />
+            <column id="pack.obd.relatedBill1" title="tripNumber" />
+            <column id="pack.obd.waveDoc.waveNumber" title="waveNo" />
+            <column id="pack.boxSequence" title="boxSequence" />
+            <column id="pack.status" title="title.status" format="enumFormat" formatParam="EnuPakcageDocStatus"/>
+            <column id="pack.baseQty" title="baseQty"  canSum="true"/>
+            <column id="pack.skuCount" title="skuCount"  canSum="true"/>
+            <column id="pack.length" title="length"  canSum="true"/>
+            <column id="pack.width" title="width" canSum="true"/>
+            <column id="pack.height" title="height" canSum="true"/>
+            <column id="pack.weight" title="weight"  canSum="true"/>
+            <column id="pack.grossWeight" title="grossWeight"  canSum="true"/>
+            <column id="pack.caseQty" title="caseQty"  canSum="true"/>
+            <column id="pack.planCheckQty" title="planCheckQty"/>
+            <column id="pack.checkQty" title="checkQty"/>
+            <column id="pack.updateInfo.operatorName" title="labor"/>
+            <column id="pack.obd.publishDate" title="publishDate"/>
+            <column id="pack.createInfo.updateTime" title="createBoxTime"/>
+            <column id="pack.updateInfo.updateTime" title="closeBoxTime"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new" enableType="none" containId="false" pageId="outboundPackageEdit" iconUrl="new"/>
+			<popup id="modify" title="modify" enableType="single" containId="true" pageId="outboundPackageEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${pack.status} == @{EnuPakcageDocStatus.100})]]></enableExpression> 
+			</popup>
+			<popup id="publish" title="closeBox" enableType="multi" containId="true" pageId="closeBoxConfirm" iconUrl="confirm">
+                <enableExpression><![CDATA[(${pack.status} == @{EnuPakcageDocStatus.100})]]></enableExpression>
+            </popup>
+            <commit id="cancel" title="cancel"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="packingManager" methodName="cancel" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+			</commit>
+			<popup id="view" title="view"  enableType="single" containId="true" pageId="outboundPackageView" iconUrl="view"/>
+            <popup id="statusView" title="statusView"  enableType="single" containId="true" pageId="outboundPackageStatusView" iconUrl="view"/>
+        	<popup id="packingListPrint" title="packingListPrint"  enableType="multi" containId="true" pageId="packingListPrint" iconUrl="report">
+        		<enableExpression><![CDATA[(${pack.status} != @{EnuPakcageDocStatus.100})]]></enableExpression>
+        	</popup>
+        	
+        	<commit id="platformShip" title="platformShip"  enableType="multi" confirmMessage="platformShip.confirmMessage" iconUrl="confirm">
+				<enableExpression><![CDATA[(${pack.status} == @{EnuPakcageDocStatus.200})]]></enableExpression>
+				<mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="packingManager" methodName="platformShip" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+			</commit>
+			<commit id="cancelPlatformShip" title="cancelPlatformShip"  enableType="multi" confirmMessage="cancelPlatformShip.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${pack.status} == @{EnuPakcageDocStatus.210})]]></enableExpression>
+				<mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="packingManager" methodName="cancelPlatformShip" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+			</commit>
+        </buttons>
+    </maintainPage>
+</pages>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.rules.SupplierRule" table="WMS_SUPPLIER_RULE">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_supplier_rule</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<version name="version" type="long" column="VERSION"/>
+		
+		<many-to-one name="whApplyRule" class="com.core.scpwms.server.model.rules.WarehouseApplyRule">
+			<column name="WH_APPLAY_RULE_ID" not-null="true" unique-key="UK_SR_RULE"/>
+		</many-to-one>
+		
+		<many-to-one name="supplier" class="com.core.scpwms.server.model.user.BizOrg" unique-key="UK_SR_RULE">
+			<column name="SUPPLIER_ID" not-null="true" />
+		</many-to-one>
+		
+		<property name="rate" column="RATE" type="double" />
+		
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+	
+</hibernate-mapping>
+
+

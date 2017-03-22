@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="scrapApplyStatusView" title="scrapApplyStatusView" autoQuery="true" width="650" height="400">
+        <search>
+            <inputUIs>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+os.id,
+os.createInfo.updateTime,
+os.createInfo.operatorName,
+os.statusFrom,
+os.statusTo
+from OrderStatus os 
+where 1=1
+and os.orderType = 'ScrapApply'
+and os.orderId = {scrapApplyList.ids}
+        ]]></datasource>
+        <columns>
+            <column id="os.id" title="ID" visible="false"  />
+            <column id="os.createInfo.updateTime" title="operateTime"/> 
+            <column id="os.createInfo.operatorName" title="operatorName"/>
+            <column id="os.statusFrom" title="statusFrom" format="enumFormat" formatParam="EnuApplyStatus"/>
+            <column id="os.statusTo" title="statusTo" format="enumFormat" formatParam="EnuApplyStatus"/>
+        </columns>
+        <buttons>
+        </buttons>
+    </maintainPage>
+</pages>

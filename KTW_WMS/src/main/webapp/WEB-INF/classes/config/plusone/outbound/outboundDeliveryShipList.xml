@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="outboundDeliveryShipList" title="outboundDeliveryShipList" autoQuery="false">
+		<search>
+			<inputUIs>
+			    <text id="tripNumber" title="tripNumber" trimSpace="true" />
+			    <text id="waveNo" title="waveNo" trimSpace="true" />
+			    <text id="ownerCode" title="owner.code" trimSpace="true" />
+			    <text id="carrier" title="carrier" trimSpace="true" />
+			    <text id="ToCityProvince" title="ToCityProvince" trimSpace="true" />
+			    <text id="ToCityName" title="ToCityName" trimSpace="true" />
+				<list id="status" title="title.status" enumType="EnuOutboundDeliveryStatus" returnType="long" multiple="true"  defaultValue="710,800,850,860">
+                    <hql><![CDATA[ SELECT
+e.enumValue,
+e.enumValue
+FROM Enumerate e
+WHERE  e.enumType = 'EnuOutboundDeliveryStatus'
+and e.enumValue in (710, 800, 850, 860, 900, 910)
+                    ]]></hql>
+                </list>
+                <list id="orderType" title="orderType" returnType="long">
+					<hql><![CDATA[ SELECT
+ot.id,
+ot.name
+FROM OrderType ot
+WHERE 
+ot.disabled = '0' 
+and ot.processType='M3000'
+						]]></hql>
+				</list>
+				<date id="etdFrom" title="etdFrom" showTime="false" />
+				<date id="etdTo" title="etdTo" showTime="false" />
+				<date id="transactionDateFrom" title="transactionDateFrom" showTime="true" />
+				<date id="transactionDateTo" title="transactionDateTo" showTime="true" />
+				<date id="publishDateFrom" title="publishDateFrom" showTime="true" />
+				<date id="publishDateTo" title="publishDateTo" showTime="true" />
+				<date id="ata.from" title="ata.from" showTime="true" />
+				<date id="ata.to" title="ata.to" showTime="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obd.id,
+obd.obdNumber,
+obd.status,
+obd.relatedBill1,
+obd.customer.name,
+obd.endCustomer.linkman,
+obd.orderType.name,
+obd.shipMethod,
+obd.descBin.binCode,
+obd.waveDoc.waveNumber,
+obd.skuCount,
+obd.planQty,
+obd.allocateQty,
+obd.pickUpQty,
+obd.checkQty,
+obd.executeQty,
+obd.transactionDate,
+obd.stockDate,
+obd.eta,
+obd.description
+from OutboundDelivery obd 
+left join obd.descBin
+left join obd.customer
+left join obd.waveDoc
+where 1=1 
+and obd.wh=#{SESSION_WAREHOUSE} 
+and obd.status in (710, 800, 850, 860, 900, 910)
+/~ownerCode: and obd.owner.code like {ownerCode}~/
+/~carrier: and obd.carrier.name like {carrier}~/
+/~orderType: and obd.orderType.id = {orderType}~/
+/~status: and obd.status = {status}~/
+
+/~tripNumber: and obd.relatedBill1 like {tripNumber}~/
+/~waveNo: and obd.waveDoc.waveNumber like {waveNo}~/
+/~ToCityProvince: and obd.extString11 like {ToCityProvince}~/
+/~ToCityName: and obd.extString9 like {ToCityName}~/
+
+/~etdFrom: and to_char(obd.etd,'YYYY-MM-DD') >= to_char({etdFrom},'YYYY-MM-DD')~/
+/~etdTo: and to_char(obd.etd,'YYYY-MM-DD') <= to_char({etdTo},'YYYY-MM-DD')~/
+/~transactionDateFrom: and to_char(obd.transactionDate,'YYYY-MM-DD') >= to_char({transactionDateFrom},'YYYY-MM-DD')~/
+/~transactionDateTo: and to_char(obd.transactionDate,'YYYY-MM-DD') >= to_char({transactionDateTo},'YYYY-MM-DD')~/
+
+/~ata.from: and to_char(obd.atd,'yyyy-mm-dd hh24:mi') >= to_char({ata.from},'yyyy-mm-dd hh24:mi')~/
+/~ata.to: and to_char(obd.atd,'yyyy-mm-dd hh24:mi') <= to_char({ata.to},'yyyy-mm-dd hh24:mi')~/
+/~publishDateFrom: and to_char(obd.publishDate,'yyyy-mm-dd hh24:mi') >= to_char({publishDateFrom},'yyyy-mm-dd hh24:mi')~/
+/~publishDateTo: and to_char(obd.publishDate,'yyyy-mm-dd hh24:mi') <= to_char({publishDateTo},'yyyy-mm-dd hh24:mi')~/
+		]]></datasource>
+		<columns>
+			<column id="obd.id" title="ID" visible="false"  />
+			<column id="obd.obdNumber" title="obdNumber" />
+			<column id="obd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryStatus"/>
+            <column id="obd.relatedBill1" title="custBillNo" />
+            <column id="obd.customer.name" title="customer" />
+            <column id="obd.endCustomer" title="endCustomer" />
+            <column id="obd.orderType.name" title="orderType" />
+            <column id="obd.shipMethod" title="shipMethod" format="enumFormat" formatParam="EnuShipMethod"/>
+            <column id="obd.descBin.binCode" title="checkBin" />
+            <column id="obd.waveDoc.waveNumber" title="waveNo" />
+            <column id="obd.skuCount" title="skuCount" />
+            <column id="obd.planQty" title="planQty" />
+            <column id="obd.allocateQty" title="allocateQty" />
+            <column id="obd.pickUpQty" title="pickUpQty" />
+            <column id="obd.checkQty" title="checkQty" />
+            <column id="obd.executeQty" title="outboundQty" />
+            <column id="obd.transactionDate" title="transactionDate" />
+            <column id="obd.stockDate" title="stockDate" />
+            <column id="obd.eta" title="obd.eta" />
+            <column id="obd.description" title="title.desc" />
+		</columns>
+		<buttons>
+			<popup id="checkConfirm" title="checkConfirm" enableType="multi" containId="true" pageId="checkConfirmSelfService" iconUrl="confirm">
+                <enableExpression><![CDATA[(${obd.status} == @{EnuOutboundDeliveryStatus.800}|| ${obd.status} == @{EnuOutboundDeliveryStatus.710})]]></enableExpression>
+            </popup>
+            <popup id="shipConfirm" title="shipConfirm" enableType="single" containId="true" pageId="shipConfirm" iconUrl="action">
+                <enableExpression><![CDATA[(${obd.status} == @{EnuOutboundDeliveryStatus.850}||${obd.status} == @{EnuOutboundDeliveryStatus.860})]]></enableExpression>
+            </popup>
+            <popup id="shipConfirmAll" title="shipConfirmAll" enableType="multi" containId="true" pageId="shipConfirmAll" iconUrl="confirm">
+                <enableExpression><![CDATA[(${obd.status} == @{EnuOutboundDeliveryStatus.850})]]></enableExpression>
+            </popup>
+            <popup id="view" title="view" enableType="single" containId="true" pageId="outboundDeliveryView" iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages>

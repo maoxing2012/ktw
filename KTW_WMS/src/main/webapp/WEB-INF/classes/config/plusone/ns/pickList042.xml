@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ヤマト　出荷案内 -->
+<pages>
+	 <reportPopupPage id="pickList042" title="pickList042" reportFile="/report/pickList021" parameter="ids,carrierCd=%278%27"  width="900" height="600" mode=""/>
+</pages>

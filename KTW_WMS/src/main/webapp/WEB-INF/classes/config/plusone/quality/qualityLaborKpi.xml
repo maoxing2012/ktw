@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="qualityLaborKpi" title="qualityLaborKpi" entityClass="com.core.scpwms.server.model.quality.QualityHistory" onClose="refreshParent" width="900"  height="550" columnNum="8">
+        <modify>
+            <inputUIs>
+                <hidden id="qualityHistory.id" />
+                <text id="qualityHistory.invInfo.quant.sku.code" title="sku.code" />
+                <text id="qualityHistory.invInfo.quant.sku.name" title="sku.name" />
+                <text id="qualityHistory.invInfo.quant.sku.specs" title="specs" />
+                <text id="qualityHistory.executeQty" title="inboundQty" />
+            </inputUIs>
+            <buttons>
+            </buttons>
+        </modify>
+        <detail autoQuery="false">
+            <datasource><![CDATA[select  
+lk.id,
+lk.labor.code,
+lk.labor.name,
+lk.processType,
+lk.accountStatus,
+lk.baseQty,
+lk.proportion as proportion,
+lk.freeStatus,
+lk.laborFee.unitFee,
+lk.laborFee.unit,
+lk.laborFee.fee,
+lk.laborFee.feeTypeName,
+lk.laborFee.weight,
+lk.laborFee.volume
+from LaborKpi lk 
+where 1=1
+and lk.relatedClass='QualityHistory'
+and lk.relatedId = {qualityHistory.id}
+            ]]></datasource>
+            <columns>
+                <column id="lk.id" title="ID" visible="false"/>
+                <column id="lk.labor.code" title="labor.code"/>
+                <column id="lk.labor.name" title="labor.name"/>
+                <column id="lk.processType" title="processType" format="enumFormat" formatParam="EnuInvProcessType"/>
+                <column id="lk.accountStatus" title="accountStatus" format="enumFormat" formatParam="EnuAccountStatus"/>
+                <column id="lk.baseQty" title="workQty"/>
+                <column id="proportion" title="proportion" inputUI="number"/>
+                <column id="lk.freeStatus" title="freeStatus" format="enumFormat" formatParam="EnuKpiFreeStatus"/>
+                <column id="lk.laborFee.unitFee" title="unitFee"/>
+                <column id="lk.laborFee.unit" title="unit"  format="enumFormat" formatParam="EnuFeeUnit"/>
+                <column id="lk.laborFee.fee" title="fee"/>
+                <column id="lk.laborFee.feeTypeName" title="feeType"/>
+                <column id="lk.laborFee.weight" title="weight" />
+                <column id="lk.laborFee.volume" title="volume" />
+            </columns>
+            <buttons>
+                <popup id="addCheckLabor" title="addCheckLabor" enableType="none" containId="false" pageId="qualityCheckLaborKpiEdit" iconUrl="new"/>
+                <commit id="editLaborKpi" title="editLaborKpi"  enableType="multi" iconUrl="edit">
+	                <enableExpression><![CDATA[(${lk.accountStatus}!=@{EnuAccountStatus.CLOSED})]]></enableExpression>
+	                <mappings>
+	                    <mapping id="ids" className="list"/>
+	                    <mapping id="details" className="map"/>
+	                </mappings>
+	                <actions>
+	                    <action managerName="laborKpiHelper" methodName="editLaborKpi" parameter="ids,details" />
+	                </actions>
+	                <forwards>
+	                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+	                </forwards>
+	            </commit>
+	            <commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+                    <mappings>
+                        <mapping id="ids" className="list" />
+                    </mappings>
+                    <actions>
+                        <action managerName="laborKpiHelper" methodName="deleteLaborKpi" parameter="ids" />
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                    </forwards>
+                </commit>
+                <commit id="free" title="kpiFree" enableType="multi" confirmMessage="free.confirmMessage" iconUrl="disable">
+	                <enableExpression><![CDATA[((${lk.accountStatus}!=@{EnuAccountStatus.CLOSED})&&${lk.freeStatus}!=@{EnuKpiFreeStatus.FREE})]]></enableExpression>
+	                <mappings>
+	                    <mapping id="ids" className="list" />
+	                </mappings>
+	                <actions>
+	                    <action managerName="laborKpiHelper" methodName="free" parameter="ids" />
+	                </actions>
+	                <forwards>
+	                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+	                </forwards>
+	            </commit>
+	            <commit id="unFree" title="kpiUnFree" enableType="multi" confirmMessage="unFree.confirmMessage" iconUrl="enable">
+	                <enableExpression><![CDATA[((${lk.accountStatus}!=@{EnuAccountStatus.CLOSED})&&${lk.freeStatus}==@{EnuKpiFreeStatus.FREE})]]></enableExpression>
+	                <mappings>
+	                    <mapping id="ids" className="list" />
+	                </mappings>
+	                <actions>
+	                    <action managerName="laborKpiHelper" methodName="unFree" parameter="ids" />
+	                </actions>
+	                <forwards>
+	                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+	                </forwards>
+	            </commit>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

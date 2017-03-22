@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="newReplenishWt" title="newReplenishWt" entityClass="com.core.scpwms.server.model.task.WarehouseTask" width="200"  height="200" columnNum="4">
+        <inputUIs>
+            <hidden id="wt.id" />
+            <selectText id="bin" title="bin" required="true" displayedTableHead="ID,binCode,currentQty,queuedQty" bodyWidth="500" displayColumn="2">
+                <hql><![CDATA[ SELECT  
+bin.id,
+bin.binCode,
+bin.binInvInfo.binInfo.currentQty,
+bin.binInvInfo.binInfo.queuedQty,
+bin.binInvInfo.binInfo.lastSku
+from Bin bin 
+where 1=1
+and bin.wh = #{SESSION_WAREHOUSE}
+and (bin.lockStatus is null or bin.lockStatus = 'LOCK_T2' )
+and bin.storageType.role in ('R2000')
+                    ]]></hql> 
+                <eventListeners>
+                	<eventListener id="currentQty" index="3" refreshUI="true"/>
+                	<eventListener id="queuedQty" index="4" refreshUI="true"/>
+                </eventListeners>
+            </selectText>
+            <text id="currentQty" title="currentQty" readOnly="true"/>
+            <text id="queuedQty" title="binQueuedQty" readOnly="true"/>
+            <selectText id="sku" title="sku.code" required="true" displayedTableHead="ID,Code,Name" displayColumn="2">
+                <hql><![CDATA[ SELECT 
+sku.id,
+sku.code,
+sku.name
+FROM Sku sku 
+WHERE sku.disabled = false 
+                ]]></hql>
+            </selectText>
+            <selectText id="owner" title="owner" required="true" displayedTableHead="ID,Code,Name" editModel="uneditable">
+				<hql><![CDATA[ SELECT  
+owner.id, 
+owner.code,
+owner.name   
+FROM Owner owner  
+WHERE owner.disabled = false 
+				]]></hql> 
+			</selectText>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="wt" className="com.core.scpwms.server.model.task.WarehouseTask" />
+                    <mapping id="bin" className="long" />
+                    <mapping id="sku" className="long" />
+                    <mapping id="owner" className="long" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskManager" methodName="newRpWt" parameter="wt,bin,sku,owner" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

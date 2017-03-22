@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="plantEdit" title="plantEdit"  entityClass="com.core.scpwms.server.model.user.Plant"  width="520" height="250" >
+		<inputUIs>
+			<hidden id="plant.id"/>
+			<parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="200" >
+				<text id="plant.code" title="plant.code" editModel="uneditable" required="true" length="20" trimSpace="true" />
+				<text id="plant.shortName" title="title.shortName"  required="true"  length="50" trimSpace="true" />
+				<text id="plant.name" title="plant.name" width="335" span="3" length="50" required="true" trimSpace="true"/>
+				<textArea id="plant.description" title="title.desc" rows="50" cols="380"  span="3"  trimSpace="true" />
+			</parttab>
+			<parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="200" >
+				<text id="plant.contractInfo.linkman" title="contractInfo.linkman" length="30" trimSpace="true" />
+				<text id="plant.contractInfo.mobile" title="contractInfo.mobile" length="20" trimSpace="true"/>
+				<text id="plant.contractInfo.postcode" title="contractInfo.postcode" length="30" trimSpace="true" />
+				<text id="plant.contractInfo.address" title="contractInfo.address1" width="358" span="3" trimSpace="true" />	
+				<text id="plant.contractInfo.addressExt" title="contractInfo.address2" width="358" span="3" trimSpace="true" />	
+				<text id="plant.contractInfo.email" title="contractInfo.email" length="50" width="358" span="3" trimSpace="true" />
+				<text id="plant.contractInfo.phone" title="contractInfo.phone" length="30" trimSpace="true" />
+				<text id="plant.contractInfo.fax" title="contractInfo.fax" length="20" trimSpace="true" />
+			</parttab>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save" enableType="none" iconUrl="save">
+				<mappings>
+					<mapping id="plant" className="com.core.scpwms.server.model.user.Plant">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="plantManager" methodName="savePlant" parameter="plant" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

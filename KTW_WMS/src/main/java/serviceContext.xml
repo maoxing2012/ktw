@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC
+        "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- common -->
+    <bean id="springUtil" class="com.core.scpwms.server.util.SpringUtils"/>
+	<bean id="sequenceDao" parent="baseHibernateDao" class="com.core.scpwms.server.service.common.impl.SequenceDaoImpl"/>
+    <bean id="wmsUserManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.security.impl.WmsUserManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+	<bean id="oracleLobHandler" class ="org.springframework.jdbc.support.lob.OracleLobHandler" lazy-init ="true" >   
+     	<property name ="nativeJdbcExtractor" ref ="nativeJdbcExtractor"/>
+	</bean>     
+	<bean id="nativeJdbcExtractor"  class ="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor" lazy-init ="true"/> 
+    
+    <!-- info -->
+    <bean id="infoMessageManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.InfoMessageManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- quartz -->
+    <bean id="baseDataScheduleManager" class="com.core.scpwms.server.service.quartz.impl.BaseDataScheduleManagerImpl" parent="baseManager"/>
+    <bean id="baseQuartzManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.quartz.impl.BaseQuartzManagerImpl" parent="baseManager"/>
+        </property>
+    </bean>
+    
+    <!-- security -->
+    <bean id="securityManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.security.impl.SecurityManagerImpl" parent="baseManager">
+                <property name="warehouseManager" ref="warehouseManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- helper -->
+    <bean id="bcManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.BCManagerImpl" parent="baseManager">
+                <constructor-arg index="0">
+                    <ref bean="sequenceDao"></ref>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+    <bean id="inventoryHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.InventoryHelperImpl" parent="baseManager">
+                <property name="binHelper" ref="binHelper"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="historyHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.InventoryHistoryHelperImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="orderStatusHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.OrderStatusHelperImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="commonHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.CommonHelperImpl" parent="baseManager">
+                <property name="orderStatusHelper" ref="orderStatusHelper"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="allocateHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.AllocateHelperImpl" parent="baseManager">
+                <property name="bcManager" ref="bcManager"/>
+                <property name="invHelper" ref="inventoryHelper"/>
+                <property name="orderStatusHelper" ref="orderStatusHelper"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="allocatePickingHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.AllocatePickingHelperImpl" parent="baseManager">
+                <property name="binHelper" ref="binHelper"/>
+                <property name="bcManager" ref="bcManager"/>
+                <property name="invHelper" ref="inventoryHelper"/>
+                <property name="orderStatusHelper" ref="orderStatusHelper"/>
+                <property name="allocateHelper" ref="allocateHelper"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="binHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.common.impl.BinHelperImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+	<!-- warehouse -->
+    <bean id="warehouseManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.WarehouseManagerImpl" parent="baseManager">
+            	<property name="whAreaManager" ref="whAreaManager"/>
+            	<property name="laborManager" ref="laborManager"/>
+            	<property name="laborGroupManager" ref="laborGroupManager"/>
+            	<property name="binPropertiesManager" ref="binPropertiesManager"/>
+            </bean>
+        </property>
+	</bean>	
+	<bean id="whAreaManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.WhAreaManagerImpl" parent="baseManager">
+            	<property name="stManager" ref="stManager"/>
+            </bean>
+        </property>
+    </bean>
+	<bean id="binGroupManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.BinGroupManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean> 
+    <bean id="binPropertiesManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.BinPropertiesManagerImpl" parent="baseManager">
+            	<property name="binHelper" ref="binHelper"/>
+            </bean>
+        </property>
+    </bean>
+	<bean id="binSettingManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.BinSettingManagerImpl" parent="baseManager">
+            	<property name="binHelper" ref="binHelper"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="stManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.StSettingManagerImpl" parent="baseManager">
+            	<property name="binSettingManager" ref="binSettingManager"/>
+            	<property name="binGroupManager" ref="binGroupManager"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="laborManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.LaborManagerImpl" parent="baseManager"/>
+        </property>
+    </bean>
+    <bean id="laborGroupManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.warehouse.impl.LaborGroupManagerImpl" parent="baseManager"/>
+        </property>
+    </bean>
+    
+    <!-- user -->
+    <bean id="carrierManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.user.impl.CarrierManagerImpl" parent="baseManager"/>
+        </property>
+    </bean>
+    <bean id="bizOrgManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.user.impl.BizOrgManagerImpl" parent="baseManager"/>
+        </property>
+    </bean>
+    <bean id="plantManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.user.impl.PlantManagerImpl" parent="baseManager">
+            	<property name="skuManager" ref="skuManager"/>
+            	<property name="ownerManager" ref="ownerManager"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="ownerManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.user.impl.OwnerManagerImpl" parent="baseManager"/>
+        </property>
+    </bean>
+    <bean id="inboundAreaManager" parent="abstractTransactionProxy">
+    	<property name="target">
+            <bean class="com.core.scpwms.server.service.user.impl.InboundAreaManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="addresseeManager" parent="abstractTransactionProxy">
+    	<property name="target">
+            <bean class="com.core.scpwms.server.service.user.impl.AddresseeManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- setting -->
+    <bean id="abcTypeManager" parent="abstractTransactionProxy">
+    	<property name="target">
+            <bean class="com.core.scpwms.server.service.setting.impl.AbcTypeManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="lotEnumerateManager" parent="abstractTransactionProxy">
+    	<property name="target">
+            <bean class="com.core.scpwms.server.service.setting.impl.LotEnumerateManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="lotInfoManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.setting.impl.LotInfoManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean> 
+    <bean id="otSettingManager" parent="abstractTransactionProxy">
+    	<property name="target">
+            <bean class="com.core.scpwms.server.service.setting.impl.OtSettingManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="seqManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.setting.impl.SeqSettingManagerImpl" parent="baseManager"/>
+        </property>
+    </bean>
+    <bean id="reasonCodeManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.setting.impl.ReasonCodeManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean> 
+    
+    <!-- sku -->
+    <bean id="skuManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.sku.impl.SkuManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="skuSupplierManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.sku.impl.SkuSupplierManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="skuTypeManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.sku.impl.SkuTypeManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    <bean id="packageManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.sku.impl.PackageManagerImpl" parent="baseManager">
+            	<property name="binHelper" ref="binHelper"/>
+            </bean>
+        </property>
+    </bean> 
+    <bean id="containerManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.sku.impl.ContainerManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- inventory -->
+    <bean id="quantManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.inventory.impl.QuantManagerImpl" parent="baseManager">
+                <property name="bcManager" ref="bcManager"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="invManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.inventory.impl.InvManagerImpl" parent="baseManager">
+                <property name="bcManager" ref="bcManager"/>
+                <property name="invHelper" ref="inventoryHelper"/>
+                <property name="historyHelper" ref="historyHelper"/>
+                <property name="quantManager" ref="quantManager"/>
+                <property name="orderStatusHelper" ref="orderStatusHelper"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- asn -->
+    <bean id="asnManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.inbound.impl.AsnManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager"/>
+            	<property name="orderStatusHelper" ref="orderStatusHelper"/>
+            	<property name="quantManager" ref="quantManager"/>
+            	<property name="historyHelper" ref="historyHelper"/>
+            	<property name="invHelper" ref="inventoryHelper"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- scrap -->
+    <bean id="scrapApplyManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.apply.impl.ScrapApplyManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager"/>
+            	<property name="orderStatusHelper" ref="orderStatusHelper"/>
+            	<property name="invHelper" ref="inventoryHelper"/>
+            	<property name="historyHelper" ref="historyHelper"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- count -->
+    <bean id="countPlanManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.count.impl.CountPlanManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager"/>
+            	<property name="inventoryHelper" ref="inventoryHelper"/>
+            	<property name="historyHelper" ref="historyHelper"/>
+            	<property name="quantManager" ref="quantManager"/>
+            	<property name="orderStatusHelper" ref="orderStatusHelper"/>
+            	<property name="binHelper" ref="binHelper"/>
+            	<property name="commonHelper" ref="commonHelper"/>
+            	<property name="invManager" ref="invManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- outbound -->
+    <bean id="outboundDeliveryManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.outbound.impl.OutboundDeliveryManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager"/>
+            	<property name="orderStatusHelper" ref="orderStatusHelper"/>
+            	<property name="historyHelper" ref="historyHelper"/>
+            	<property name="inventoryHelper" ref="inventoryHelper"/>
+            	<property name="quantManager" ref="quantManager"/>
+            	<property name="allocatePickingHelper" ref="allocatePickingHelper"/>
+            	<property name="infoMessageManager" ref="infoMessageManager"/>
+            	<property name="binHelper" ref="binHelper"/>
+            	<property name="invManager" ref="invManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="waveDocManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.outbound.impl.WaveDocManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager"/>
+            	<property name="orderStatusHelper" ref="orderStatusHelper"/>
+            	<property name="binHelper" ref="binHelper"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="warehouseTaskSingleManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.task.impl.WarehouseTaskSingleManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager"/>
+            	<property name="orderStatusHelper" ref="orderStatusHelper"/>
+            	<property name="warehouseTaskManager" ref="warehouseTaskManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="warehouseTaskManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.task.impl.WarehouseTaskManagerImpl" parent="baseManager">
+            	<property name="invHelper" ref="inventoryHelper"/>
+            	<property name="historyHelper" ref="historyHelper"/>
+            	<property name="orderStatusHelper" ref="orderStatusHelper"/>
+            	<property name="commonHelper" ref="commonHelper"/>
+            	<property name="allocateHelper" ref="allocateHelper"/>
+            	<property name="allocatePickingHelper" ref="allocatePickingHelper"/>
+            	<property name="binHelper" ref="binHelper"/>
+            	<property name="bcManager" ref="bcManager"/>
+            	<property name="invManager" ref="invManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- accessory -->
+    <bean id="accessorySkuManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.accessory.impl.AccessorySkuManagerImpl" parent="baseManager">
+                <property name="bcManager" ref="bcManager" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="accessoryInventoryManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.accessory.impl.AccessoryInventoryManagerImpl" parent="baseManager">
+                <property name="aInvHelper" ref="accessoryInventoryHelper" />
+            </bean>
+        </property>
+    </bean>
+    <bean id="accessoryInventoryHelper" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.accessory.impl.AccessoryInventoryHelperImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- file import -->
+    <!-- import -->
+    <bean id="importFileManager4Wms" class="com.core.scpwms.server.service.imports.impl.ImportFileManager4WmsImpl" parent="baseManager">
+        <property name="importFileRuleManager4Wms">
+            <ref bean="importFileRuleManager4Wms" />
+        </property>
+    </bean> 
+    
+    <bean id="importFileRuleManager4Wms" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.ImportFileRuleManager4WmsImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- master data file import -->
+    <bean id="fileImportManager" class="com.core.scpwms.server.service.imports.impl.FileImportManagerImpl" parent="baseManager">
+        <property name="binFileImportWithTransManager" ref="binFileImportWithTransManager"/>
+        <property name="skuFileImportWithTransManager" ref="skuFileImportWithTransManager"/>
+        <property name="nsInventoryFileImportWithTransManager" ref="nsInventoryFileImportWithTransManager"/>
+        <property name="bizOrgFileImportWithTransManager" ref="bizOrgFileImportWithTransManager" />
+        <property name="transportFileImportWithTransManager" ref="transportFileImportWithTransManager" />
+    </bean>
+    
+    <!-- asn data file import -->
+    <bean id="asnFileImportManager" class="com.core.scpwms.server.service.imports.impl.AsnFileImportManagerImpl" parent="baseManager">
+        <property name="nsAsnFileImportWithTransManager" ref="nsAsnFileImportWithTransManager"/>
+    </bean>
+    
+    <!-- obd data file import -->
+    <bean id="obdFileImportManager" class="com.core.scpwms.server.service.imports.impl.ObdFileImportManagerImpl" parent="baseManager">
+        <property name="nsObdFileImportWithTransManager" ref="nsObdFileImportWithTransManager"/>
+    </bean>
+	
+	<!-- bin data file -->    
+    <bean id="binFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.BinFileImportWithTransManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- sku data file -->
+    <bean id="skuFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.SkuFileImportWithTransManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- bizorg data file -->
+    <bean id="bizOrgFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.BizOrgFileImportWithTransManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- transport data file -->
+    <bean id="transportFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.TransportFileImportWithTransManagerImpl" parent="baseManager">
+            	<property name="transportManager" ref="transportManager" />
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- ASN import 
+    <bean id="asnFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.AsnFileImportManagerImpl" parent="baseManager">
+            	<property name="nsAsnFileImportWithTransManager" ref="nsAsnFileImportWithTransManager" />
+            </bean>
+        </property>
+    </bean>-->
+    
+    <!-- ASN outport -->
+    <bean id="asnFileOutportManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.AsnFileOutportManagerImpl" parent="baseManager">
+            	<property name="nsDataFileOutportWithTransManager" ref="nsDataFileOutportWithTransManager" />
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- INV outport -->
+    <bean id="invFileOutportManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.InvFileOutportManagerImpl" parent="baseManager">
+            	<property name="nsDataFileOutportWithTransManager" ref="nsDataFileOutportWithTransManager" />
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- OBD outport -->
+    <bean id="obdFileOutportManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.ObdFileOutportManagerImpl" parent="baseManager">
+            	<property name="nsDataFileOutportWithTransManager" ref="nsDataFileOutportWithTransManager" />
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- ns data file -->
+    <bean id="nsAsnFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.ns.NsAsnFileImportWithTransManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager" />
+            	<property name="orderStatusHelper" ref="orderStatusHelper" />
+            	<property name="skuFileImportWithTransManager" ref="skuFileImportWithTransManager" />
+            	<property name="asnManager" ref="asnManager" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="nsObdFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.ns.NsObdFileImportWithTransManagerImpl" parent="baseManager">
+            	<property name="bcManager" ref="bcManager" />
+            	<property name="orderStatusHelper" ref="orderStatusHelper" />
+            	<property name="obdManager" ref="outboundDeliveryManager" />
+            	<property name="transportManager" ref="transportManager" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="nsDataFileOutportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.ns.NsDataFileOutportWithTransManagerImpl" parent="baseManager">
+            	<property name="orderStatusHelper" ref="orderStatusHelper" />
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="nsInventoryFileImportWithTransManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.imports.impl.ns.NsInventoryFileImportWithTransManager" parent="baseManager">
+            	<property name="invManager" ref="invManager" />
+            </bean>
+        </property>
+    </bean>
+        
+    <!-- mobile1-->
+    <bean id="mobileServiceBean" class="com.core.scpwms.server.mobile.impl.MobileServiceManagerImpl" >
+    	<property name="commonManager" ref="mobileCommonManager"/>
+    	<property name="securityManager" ref="securityManager"/>
+    	<property name="invManager" ref="mobileInventoryManager"/>
+    	<property name="asnManager" ref="mobileAsnManager"/>
+    	<property name="countManager" ref="mobileCountManager"/>
+    	<property name="wtManager" ref="mobileWarhouseTaskManager"/>
+    </bean> 
+    
+    <bean id="mobileCommonManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.mobile.impl.MobileCommonManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="mobileInventoryManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.mobile.impl.MobileInventoryManagerImpl" parent="baseManager">
+            	<property name="invManager" ref="invManager"/>
+            	<property name="commonManager" ref="mobileCommonManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="mobileAsnManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.mobile.impl.MobileAsnManagerImpl" parent="baseManager">
+            	<property name="asnManager" ref="asnManager"/>
+            	<property name="commonManager" ref="mobileCommonManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="mobileCountManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.mobile.impl.MobileCountManagerImpl" parent="baseManager">
+            	<property name="countPlanManager" ref="countPlanManager"/>
+            	<property name="commonManager" ref="mobileCommonManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="mobileWarhouseTaskManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.mobile.impl.MobileWarehouseTaskManagerImpl" parent="baseManager">
+            	<property name="warehouseTaskSingleManager" ref="warehouseTaskSingleManager"/>
+            	<property name="commonManager" ref="mobileCommonManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="allocatePickingManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.outbound.impl.AllocatePickingManagerImpl" parent="baseManager">
+                <property name="bcManager" ref="bcManager"/>
+                <property name="quantManager" ref="quantManager"/>
+                <property name="inventoryHelper" ref="inventoryHelper"/>
+                <property name="binHelper" ref="binHelper"/>
+                <property name="orderStatusHelper" ref="orderStatusHelper"/>
+                <property name="allocatePickingHelper" ref="allocatePickingHelper"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="companyManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.fee.impl.CompanyManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="feeTypeManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.fee.impl.FeeTypeManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="requestReportManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.fee.impl.RequestReportManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- batch -->
+    <bean id="autoBatchManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.batch.impl.AutoBatchManagerImpl" parent="baseManager">
+            	<property name="outboundDeliveryManager" ref="outboundDeliveryManager"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- transport -->
+    <bean id="transportManager" parent="abstractTransactionProxy">
+        <property name="target">
+            <bean class="com.core.scpwms.server.service.transport.impl.TransportManagerImpl" parent="baseManager">
+            </bean>
+        </property>
+    </bean>
+</beans>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="outboundDeliveryDetailList4Through" title="outboundDeliveryDetailList4Through" autoQuery="false" useSum="true">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+			    <text id="obdNumber" title="obdNumber" trimSpace="true" />
+			    <text id="custBillNo" title="custBillNo" trimSpace="true" />
+			    <text id="waveNo" title="waveNo" trimSpace="true" />
+			    <list id="orderType" title="orderType" returnType="long">
+					<hql><![CDATA[ SELECT
+ot.id,
+ot.name
+FROM OrderType ot
+WHERE ot.disabled = false 
+and ot.processType='M3000'
+						]]></hql>
+				</list>
+			    <text id="sku" title="sku.code" trimSpace="true" isPrecision="true"/>
+			    <list id="status" title="title.status" enumType="EnuOutboundDeliveryDetailStatus" returnType="long" multiple="true" defaultValue="400">
+                    <hql><![CDATA[ SELECT
+e.enumValue,
+e.enumValue
+FROM Enumerate e
+WHERE  e.enumType = 'EnuOutboundDeliveryDetailStatus'
+                    ]]></hql>
+                </list>
+                <list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+                <date id="etdFrom" title="etdFrom" showTime="false" />
+				<date id="etdTo" title="etdTo" showTime="false" />
+				<date id="ataFrom" title="ataFrom" showTime="true" />
+				<date id="ataTo" title="ataTo" showTime="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+odd.id,
+odd.obd.owner.name,
+odd.obd.obdNumber,
+odd.obd.relatedBill1,
+odd.obd.waveDoc.waveNumber,
+odd.obd.orderType.name,
+odd.obd.etd,
+odd.lineNo,
+odd.subLineNo,
+odd.status,
+odd.sku.code,
+odd.sku.name,
+odd.sku.specs,
+odd.packageDetail.name,
+odd.planQty,
+odd.allocateQty,
+odd.pickUpQty,
+odd.packedQty,
+odd.executeQty,
+odd.invStatus,
+odd.expDate,
+odd.stockDiv,
+odd.sku.tempDiv,
+odd.sku.fixDiv
+from OutboundDeliveryDetail odd
+left join odd.obd.waveDoc
+left join odd.obd.carrier
+left join odd.obd.customer
+where 1=1
+and odd.obd.wh=#{SESSION_WAREHOUSE} 
+and odd.sku.stockDiv = 2
+/~owner: and odd.obd.owner.id = {owner}~/
+/~obdNumber: and odd.obd.obdNumber like {obdNumber}~/
+/~custBillNo: and odd.obd.relatedBill1 like {custBillNo}~/
+/~waveNo: and odd.obd.waveDoc.waveNumber like {waveNo}~/
+/~orderType: and odd.obd.orderType.id = {orderType}~/
+/~sku: and odd.sku.code = {sku}~/
+/~status: and odd.status = {status}~/
+/~tempDiv: and odd.sku.tempDiv = {tempDiv}~/
+
+/~etdFrom: and to_char(odd.obd.etd,'YYYY-MM-DD') >= to_char(cast({etdFrom} as timestamp),'YYYY-MM-DD')~/
+/~etdTo: and to_char(odd.obd.etd,'YYYY-MM-DD') <= to_char(cast({etdTo} as timestamp),'YYYY-MM-DD')~/
+/~ataFrom: and to_char(odd.obd.atd,'yyyy-mm-dd hh24:mi') >= to_char(cast({ataFrom} as timestamp),'yyyy-mm-dd hh24:mi')~/
+/~ataTo: and to_char(odd.obd.atd,'yyyy-mm-dd hh24:mi') <= to_char(cast({ataTo} as timestamp),'yyyy-mm-dd hh24:mi')~/
+		]]></datasource>
+		<columns>
+			<column id="odd.id" title="ID" visible="false" />
+			<column id="odd.obd.owner.name" title="owner" />
+			<column id="odd.obd.obdNumber" title="obdNumber" />
+			<column id="odd.obd.relatedBill1" title="custBillNo"/>
+			<column id="odd.obd.waveDoc.waveNumber" title="waveNumber" />
+			<column id="odd.obd.orderType.name" title="orderType" />
+            <column id="odd.obd.etd" title="etd"/>
+            <column id="odd.lineNo" title="lineNo"/>
+            <column id="odd.subLineNo" title="subLineNo"/>
+            <column id="odd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryDetailStatus"/>
+            <column id="odd.sku.code" title="sku.code"/>
+            <column id="odd.sku.name" title="sku.name"/>
+            <column id="odd.sku.specs" title="specs"/>
+            <column id="odd.packageDetail.name" title="p1000.name"/>
+            <column id="odd.planQty" title="planQty"/>
+            <column id="odd.allocateQty" title="allocateQty"/>
+            <column id="odd.pickUpQty" title="pickUpQty"/>
+            <column id="odd.packedQty" title="packedQty"/>
+            <column id="odd.executeQty" title="outboundQty" />
+            <column id="odd.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+            <column id="odd.expDate" title="expDate" />
+            <column id="odd.stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv"/>
+            <column id="odd.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTempDiv"/>
+            <column id="odd.sku.fixDiv" title="fixDiv" format="enumFormat" formatParam="EnuFixDiv"/>
+		</columns>
+		<buttons>
+            <commit id="checkPick" title="checkBatchExecute" enableType="multi" confirmMessage="shipConfirm.confirmMessage" iconUrl="confirm">
+                <enableExpression><![CDATA[(${odd.status} == @{EnuOutboundDeliveryDetailStatus.400})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="outboundDeliveryManager" methodName="checkConfirm4Through" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+		</buttons>
+	</maintainPage>
+</pages>

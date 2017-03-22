@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="qualityHistoryList" title="qualityHistoryList"  autoQuery="false">
+		<search>
+            <inputUIs>
+            	<text id="qcNumber" title="qcNumber" trimSpace="true"/>
+            	<text id="skuCode" title="sku.code" trimSpace="true" />
+                <text id="skuName" title="sku.name" trimSpace="true" />
+                <date id="operateTimeFrom" title="operateTimeFrom" showTime="false" defaultCurrentDate="false" />
+                <date id="operateTimeTo" title="operateTimeFrom" showTime="false" defaultCurrentDate="false" />
+            </inputUIs>
+        </search>	
+		<datasource type="hql"><![CDATA[select  
+history.id, 
+history.detail.doc.docSequence,
+history.srcInvStatus,
+history.descInvStatus,
+history.invInfo.quant.sku.code,
+history.invInfo.quant.sku.name,
+history.invInfo.quant.sku.specs,
+history.invInfo.quant.lotSequence,
+history.invInfo.quant.dispLot,
+history.invInfo.trackSeq,
+history.invInfo.bin.binCode,
+history.invInfo.packageDetail.name,
+history.executePackQty,
+history.executeQty,
+history.planPutawayQty,
+history.putawayQty,
+history.operateTime,
+history.keepers,
+history.workers,
+history.putawayDocSequence
+from QualityHistory history   
+where 1=1
+and history.detail.doc.wh = #{SESSION_WAREHOUSE} 
+/~qcNumber: and history.detail.doc.docSequence like {qcNumber}~/
+/~skuCode: and history.invInfo.quant.sku.code = {skuCode}~/
+/~skuName: and history.invInfo.quant.sku.name = {skuName}~/
+/~operateTimeFrom: and to_char(history.operateTime,'YYYY-MM-DD') >= to_char({operateTimeFrom},'YYYY-MM-DD')~/
+/~operateTimeTo: and to_char(history.operateTime,'YYYY-MM-DD') <= to_char({operateTimeTo},'YYYY-MM-DD')~/
+		]]></datasource>
+	    <columns>
+			<column id="history.id" title="ID" visible="false" />
+			<column id="history.detail.doc.docSequence" title="qcNumber"/>
+			<column id="history.srcInvStatus" title="src.invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="history.descInvStatus" title="desc.invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="history.invInfo.quant.sku.code" title="sku.code"/>
+			<column id="history.invInfo.quant.sku.name" title="sku.name"/>
+			<column id="history.invInfo.quant.sku.specs" title="specs"/>
+			<column id="history.invInfo.quant.lotSequence" title="lotSequence"/>
+			<column id="history.invInfo.quant.dispLot" title="lotInfo"/>
+			<column id="history.invInfo.trackSeq" title="projectNo"/>
+			<column id="history.invInfo.bin.binCode" title="bin.code"/>
+			<column id="history.invInfo.packageDetail.name" title="packDetail"/>
+			<column id="history.executePackQty" title="packQty"/>
+			<column id="history.executeQty" title="baseQty"/>
+			<column id="history.planPutawayQty" title="planPutawayQty"/>
+			<column id="history.putawayQty" title="putawayQty"/>
+			<column id="history.operateTime" title="operateTime"/>
+			<column id="history.keepers" title="keeper"/>
+			<column id="history.workers" title="worker"/>
+			<column id="history.putawayDocSequence" title="putawayNumber"/>
+	    </columns>
+	    <buttons>
+	        <popup id="laborKpi" title="laborKpi" enableType="single" containId="true" pageId="qualityLaborKpi" iconUrl="person"/>
+		</buttons>
+	</maintainPage>
+</pages> 

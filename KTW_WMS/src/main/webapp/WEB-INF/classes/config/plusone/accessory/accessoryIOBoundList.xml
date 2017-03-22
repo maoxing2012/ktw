@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="accessoryIOBoundList" title="accessoryIOBoundList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="aih.accessory.code" title="accessory.code" />
+				<text id="aih.accessory.name" title="accessory.name" />
+				<selectText id="aih.bin.id" title="bin" displayedTableHead="ID,Code,Name" displayColumn="2">
+					<hql><![CDATA[ SELECT 
+bin.id,
+bin.binCode,
+bin.description 
+FROM Bin bin  
+WHERE bin.disabled = false
+and bin.storageType.role='R8040' 
+and bin.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+				</selectText>
+				<list id="aih.hisType" title="hisType" trimSpace="true" enumType="EnuInvenHisType" returnType="string" multiple="true">
+					<hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuInvenHisType' 
+AND e.enumValue in ('100','200','900','1100') 
+					]]></hql>
+				</list>
+				<date id="operateTimeFrom" title="operateTimeFrom"/>
+				<date id="operateTimeTo" title="operateTimeTo"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[SELECT 
+aih.id,
+aih.accessory.code,
+aih.accessory.name,
+aih.bin.binCode,
+aih.hisType,
+aih.status,
+aih.qty,
+aih.description,
+aih.laborNames,
+aih.operateTime,
+aih.createInfo.operatorName
+FROM AccessoryInventoryHistory aih 
+left join aih.wh 
+left join aih.accessory 
+left join aih.bin 
+WHERE 1=1 
+and aih.hisType in ('100','200','900','1100') 
+/~aih.accessory.code: and aih.accessory.code like {aih.accessory.code}~/
+/~aih.accessory.name: and aih.accessory.name like {aih.accessory.name}~/
+/~aih.bin.id: and aih.bin.id like {aih.bin.id}~/
+/~aih.hisType: and aih.hisType = {aih.hisType}~/
+/~aih.department: and aih.department like {aih.department}~/
+/~operateTimeFrom: and to_char(aih.operateTime,'YYYY-MM-DD') >= to_char(cast({operateTimeFrom} as timestamp),'YYYY-MM-DD')~/
+/~operateTimeTo: and to_char(aih.operateTime,'YYYY-MM-DD') <= to_char(cast({operateTimeTo} as timestamp),'YYYY-MM-DD')~/ 
+		]]></datasource>
+		<columns>
+			<column id="aih.id" title="ID" visible="false" />
+			<column id="aih.accessory.code" title="accessory.code" />
+			<column id="aih.accessory.name" title="accessory.name" />
+			<column id="aih.bin.binCode" title="bin" />
+			<column id="aih.hisType" title="hisType" format="enumFormat" formatParam="EnuInvenHisType" />
+			<column id="aih.status" title="title.status" format="enumFormat" formatParam="EnuInvStatus" />
+			<column id="aih.qty" title="baseQty" />
+			<column id="aih.description" title="title.desc" />
+			<column id="aih.laborNames" title="labor" />
+			<column id="aih.operateTime" title="operateTime" />
+			<column id="aih.createInfo.operatorName" title="operatorName" />
+		</columns>
+		<buttons>
+		</buttons>
+	</maintainPage>
+</pages>

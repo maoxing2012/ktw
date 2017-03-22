@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="plantView" title="plantView"  entityClass="com.core.scpwms.server.model.user.Plant"  width="550" height="400" >
+		<inputUIs>
+			<hidden id="plant.id"/>
+			<parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="300" >
+				<text id="plant.code" title="plant.code" />
+				<text id="plant.shortName" title="title.shortName"  />
+				<text id="plant.name" title="plant.name" width="335" span="3"/>
+				<textArea id="plant.description" title="title.desc" rows="50" cols="380"  span="3"/>
+			</parttab>
+			<parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="300" >
+				<text id="plant.contractInfo.linkman" title="contractInfo.linkman" length="30" trimSpace="true" />
+				<text id="plant.contractInfo.mobile" title="contractInfo.mobile" length="20" trimSpace="true"/>
+				<text id="plant.contractInfo.postcode" title="contractInfo.postcode" length="30" trimSpace="true" />
+				<text id="plant.contractInfo.address" title="contractInfo.address1" width="358" span="3" trimSpace="true" />	
+				<text id="plant.contractInfo.addressExt" title="contractInfo.address2" width="358" span="3" trimSpace="true" />	
+				<text id="plant.contractInfo.email" title="contractInfo.email" length="50" width="358" span="3" trimSpace="true" />
+				<text id="plant.contractInfo.phone" title="contractInfo.phone" length="30" trimSpace="true" />
+				<text id="plant.contractInfo.fax" title="contractInfo.fax" length="20" trimSpace="true" />
+			</parttab>
+		</inputUIs>
+		<buttons>
+		</buttons>
+	</editPage>
+</pages>

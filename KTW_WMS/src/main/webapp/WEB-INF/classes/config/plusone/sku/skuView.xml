@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="skuView" title="skuView" entityClass="com.core.scpwms.server.model.common.Sku"  width="550" height="680" onClose="refreshParent">
+        <inputUIs>
+            <hidden id="sku.id" title="ID" />
+            <parttab id="tab_0" title="title.baseInfo" style="CTab" tabHeight="300">
+                <text id="sku.code" title="sku.code" />
+                <text id="sku.name" title="sku.name" span="3" width="358" />
+                <text id="sku.plant.name" title="plant" />
+                <text id="sku.owner.name" title="owner" />
+                <text id="sku.code1" title="JAN"/>
+                <text id="sku.brandName" title="brandName"/>
+                <list id="sku.tempDiv" title="tempDiv" enumType="EnuTemperatureDiv" returnType="long">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+                <list id="sku.stockDiv" title="stockDiv" enumType="EnuStockDiv" returnType="long">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuStockDiv' 
+                    ]]></hql>
+                </list>
+                <list id="sku.fixDiv" title="fixDiv" enumType="EnuFixDiv" returnType="long">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuFixDiv' 
+                    ]]></hql>
+                </list>
+                <text id="sku.defSupplier.name" title="vendor" />
+            </parttab>
+            <parttab id="tab_1" title="title.specs" style="CTab" tabHeight="300">
+                <text id="sku.specs" title="specs"/>
+                <numberText id="sku.grossWeight" title="grossWeight" />
+                <numberText id="sku.volume" title="volume" lastElement="true" />
+                
+                <text id="sku.properties.packageInfo.p1000.code" title="p1000.code" />
+                <text id="sku.properties.packageInfo.p1000.name" title="p1000.name" lastElement="true"/>
+                
+                <numberText id="sku.properties.packageInfo.p2100.coefficient" title="p2100.coefficient" />
+                <text id="sku.properties.packageInfo.p2100.code" title="p2100.code"/>
+                <text id="sku.properties.packageInfo.p2100.name" title="p2100.name" lastElement="true"/>
+                
+                <numberText id="sku.properties.packageInfo.p2000.coefficient" title="p2000.coefficient" />
+                <text id="sku.properties.packageInfo.p2000.code" title="p2000.code"/>
+                <text id="sku.properties.packageInfo.p2000.name" title="p2000.name" lastElement="true"/>
+                
+                <numberText id="sku.properties.packageInfo.p3000.coefficient" title="p3000.coefficient" />
+                <text id="sku.properties.packageInfo.p3000.code" title="p3000.code"/>
+                <text id="sku.properties.packageInfo.p3000.name" title="p3000.name" lastElement="true"/>
+                
+            </parttab>
+            <parttab id="tab_2" title="title.other" style="CTab" tabHeight="300">
+            	<checkbox id="sku.properties.useExpire" title="useExpire" defaultValue="true" />
+	            <numberText id="sku.properties.purchaseLeadTime" title="purchaseLeadTime" />
+	            <numberText id="sku.properties.alertLeadingDays" title="alertLeadingDays" />
+	            <numberText id="sku.properties.dayOfExpiry" title="dayOfExpiry" lastElement="true"/>
+	
+	            <numberText id="sku.properties.safetyStockLower" title="safetyStockLower" />
+	            <numberText id="sku.properties.safetyStockUpper" title="safetyStockUpper" lastElement="true"/>
+	             
+	            <text id="sku.properties.baseCheckQty4NS" title="baseCheckQty4NS" />
+	            <text id="sku.properties.baseUnitCode4NS" title="baseUnitCode4NS" />
+	            <text id="sku.properties.baseUnitName4NS" title="baseUnitName4NS" />
+	            <list id="sku.properties.packFlg4NS" title="packFlg4NS" enumType="EnuPackFlg" returnType="long">
+	            	<hql><![CDATA[ SELECT 
+	                       e.enumValue,
+	                       e.enumValue 
+	                       From Enumerate e 
+	                       where e.enumType = 'EnuPackFlg' 
+	                   ]]></hql>
+	            </list>
+            </parttab>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

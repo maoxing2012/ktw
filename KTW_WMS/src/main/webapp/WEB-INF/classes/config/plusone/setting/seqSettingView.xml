@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="seqSettingView" title="seqSettingView" entityClass="com.core.scpwms.server.model.common.SequenceProperties"  width="500" height="300" onClose="refreshParent" >
+        <inputUIs>
+            <hidden id="seq.id" title="seq.id"/>
+            <text id="seq.code" title="seqSetting.code"/>
+            <text id="seq.name" title="seqSetting.name"/>
+            <numberText id="seq.seqLength" title="code.length"/>
+            <text id="seq.prefix" title="prefix"/>
+            <text id="seq.separator1" title="separator1"/>
+            <list id="seq.seqDateFormat" title="dateFormat" enumType="SEQDATE_TYPE">
+                <hql><![CDATA[select 
+					e.enumValue,
+					e.enumValue
+					from Enumerate e
+					where  e.enumType = 'SEQDATE_TYPE'  
+				]]></hql>
+            </list>
+            <text id="seq.separator2" title="separator2"/>
+        	<list id="seq.seqGenerateBy" title="seqGenerateBy" enumType="SEQGENERATE_TYPE">
+                <hql><![CDATA[select 
+					e.enumValue,
+					e.enumValue
+					from Enumerate e
+					where  e.enumType = 'SEQGENERATE_TYPE'  
+				]]></hql>
+            </list>
+        	<textArea id="seq.description" title="title.desc" rows="50" cols="365" span="2"/>
+        </inputUIs>
+        
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

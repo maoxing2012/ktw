@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="lotList" title="lotList" autoQuery="false">
+         <search>
+             <inputUIs>
+                 <text id="lotSequence" title="lotSequence" trimSpace="true" />
+                 <text id="lotInfo" title="lotInfo" trimSpace="true" />
+				 <text id="skuCode" title="sku.code" trimSpace="true" />
+				 <text id="skuName" title="sku.name" trimSpace="true" />
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[select 
+lot.id,
+lot.quant.id,
+lot.quant.lotSequence,
+lot.quant.inboundDate,
+lot.quant.trackSeq,
+lot.quant.dispLot,
+lot.quant.sku.code,
+lot.quant.sku.name,
+lot.quant.sku.specs,
+(select sum(inv.baseQty) from lot.invs as inv ) as lotqty
+from QuantInventory lot 
+where 1=1
+and lot.wh = #{SESSION_WAREHOUSE}
+and (select sum(inv.baseQty) from lot.invs as inv ) is not null
+/~lotSequence: and lot.quant.lotSequence like {lotSequence} ~/
+/~lotInfo: and lot.quant.dispLot like {lotInfo} ~/
+/~skuCode: and lot.quant.sku.code like {skuCode} ~/
+/~skuName: and lot.quant.sku.name like {skuName} ~/
+         ]]></datasource>
+        <columns>
+            <column id="lot.id" title="ID"  visible="false"/>
+            <column id="lot.quant.id" title="quantId"  visible="false"/>
+            <column id="lot.quant.lotSequence" title="lotSequence"/>
+            <column id="lot.quant.inboundDate" title="inboundDate"/>
+            <column id="lot.quant.trackSeq" title="poNumber"/>
+            <column id="lot.quant.dispLot" title="lotInfo"/>
+            <column id="lot.quant.sku.code" title="sku.code"/>
+            <column id="lot.quant.sku.name" title="sku.name"/>
+            <column id="lot.quant.sku.specs" title="specs"/>
+            <column id="lotqty" title="baseQty"/>
+        </columns>
+        <buttons>
+            <popup id="lotInventoryView" title="lotInventoryView" enableType="single" containId="true" pageId="lotInventoryView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

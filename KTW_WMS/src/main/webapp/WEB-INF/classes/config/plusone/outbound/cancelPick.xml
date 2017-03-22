@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="cancelPick" title="cancelPick" entityClass="com.core.scpwms.server.model.task.WtHistory" width="300"  height="150" columnNum="4">
+        <inputUIs>
+            <hidden id="wh.id" />
+            <text id="wh.wt.obdDetail.obd.relatedBill1" title="tripNumber" readOnly="true"  />
+            <text id="wh.wt.obdDetail.relatedBill1" title="soNumber" readOnly="true"  />
+            <text id="wh.invInfo.quant.sku.code" title="sku.code" readOnly="true"  />
+            <text id="wh.invInfo.quant.sku.name" title="sku.name" readOnly="true"  />
+            <text id="wh.executeQty" title="pickQty" readOnly="true"  />
+            <text id="wh.invInfo.packageDetail.name" title="packDetail" readOnly="true"  />
+            <numberText id="cancelPickQty" title="cancelPickQty" required="true"/>
+            <selectText id="cancelPickBin" title="cancelPickBin" required="true" displayedTableHead="ID,Name,Code" >
+				<hql><![CDATA[ SELECT 
+bin.id,
+bin.storageType.name,
+bin.binCode
+FROM Bin bin 
+WHERE bin.disabled = false 
+AND bin.wh = #{SESSION_WAREHOUSE} 
+AND bin.storageType.role = 'R8000'
+				]]></hql>
+			</selectText>
+			<textArea id="desc" title="title.desc" required="true" trimSpace="true" rows="50" cols="400" span="3"/>
+        </inputUIs>
+        <buttons>
+        	<commit id="cancelPick" title="cancelPick" enableType="none" confirmMessage="cancelPick.confirmMessage" iconUrl="delete">
+                <mappings>
+                    <mapping id="wh.id" className="long" />
+                    <mapping id="cancelPickQty" className="double" />
+                    <mapping id="cancelPickBin" className="long" />
+                    <mapping id="desc" className="string" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskManager" methodName="cancelPick" parameter="wh.id,cancelPickQty,cancelPickBin,desc" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

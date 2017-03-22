@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <maintainPage id="addUserGroup" title="addUserGroup" autoQuery="true" width="600" height="300" filterCol="true">
+		 <search>
+			 <inputUIs>
+				 <text id="group.code" title="group.code" forceOverride="true"  trimSpace="true"/>
+				 <text id="group.name" title="group.name" forceOverride="true"  trimSpace="true"/>
+			 </inputUIs>
+		 </search>
+	 <datasource type="hql"><![CDATA[select  
+g.id, 
+g.code, 
+g.name
+from Group g, User user 
+where 1=1
+/~user.id: and user.id = {user.id}~/
+and g not in elements (user.groups) 
+/~group.code: and g.code like {group.code}~/ 
+/~group.name: and g.name like {group.name}~/
+		]]></datasource>
+		<columns>
+			 <column id="g.id" title="group.id" visible="false"/>
+			 <column id="g.code" title="group.code" typeId="group.code"/>
+			 <column id="g.name" title="group.name" typeId="group.name"/>
+		</columns>
+	 	<buttons>
+				<commit id="addGroups" title="add" enableType="multi" iconUrl="save">
+					<mappings>
+						<mapping id="user.id" className="long"/>
+	 					<mapping id="ids" className="list"/>
+					</mappings>
+					<actions>
+						<action managerName="wmsUserManager" methodName="addUserGroups" parameter="user.id,ids"/>
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+	 					<forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+					</forwards>
+				</commit>
+			</buttons>
+	 </maintainPage>
+</pages>

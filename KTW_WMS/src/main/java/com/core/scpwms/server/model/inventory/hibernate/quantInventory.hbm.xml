@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.inventory.QuantInventory" table="WMS_QUANT_INVENTORY">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_quant_inventory</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<version name="version" type="long" column="VERSION"/>
+	 	
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+	 		<column name="WH_ID" />
+	 	</many-to-one>
+	 	
+	 	<many-to-one name="quant" class="com.core.scpwms.server.model.inventory.Quant">
+	 		<column name="QUANT_ID" />
+	 	</many-to-one>
+	 	
+	 	<set name="invs" lazy="true" inverse="true" cascade="all-delete-orphan" >
+        	<key column="QUANT_INV_ID"/>
+        	<one-to-many class="com.core.scpwms.server.model.inventory.Inventory"/>
+        </set> 
+	 	
+	 </class>
+
+</hibernate-mapping>

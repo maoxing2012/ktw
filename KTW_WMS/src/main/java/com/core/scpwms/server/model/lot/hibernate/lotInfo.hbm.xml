@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.lot.LotInfo" table="WMS_LOT_INFO">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_lotinfo</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+
+		<property name="code" column="CODE" type="string" not-null="true" length="50"/>
+		<property name="name" column="NAME" type="string" not-null="true"/>
+		
+		<property name="inboundDateLot"  column="INBOUND_DATE_LOT"  type="boolean"/>
+		<property name="inboundOrderLot"  column="INBOUND_ORDER_LOT"  type="boolean"/>
+	    <property name="inboundDateInv"  column="INBOUND_DATE_INV"  type="boolean"/>
+        <property name="inboundOrderInv"  column="INBOUND_ORDER_INV"  type="boolean"/>
+        
+	    <component name="ldi1"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI1_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI1_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI1_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI1_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI1_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi2"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI2_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI2_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI2_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI2_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI2_LENGTH" type="int"/>
+	    </component>
+
+	    <component name="ldi3"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI3_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI3_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI3_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI3_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI3_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi4"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI4_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI4_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI4_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI4_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI4_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi5"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI5_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI5_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI5_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI5_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI5_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi6"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI6_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI6_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI6_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI6_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI6_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi7"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI7_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI7_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI7_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI7_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI7_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi8"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI8_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI8_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI8_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI8_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI8_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi9"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI9_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI9_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI9_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI9_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI9_LENGTH" type="int"/>
+	    </component>
+	    
+	    <component name="ldi10"  class="com.core.scpwms.server.model.lot.LotDetailInfo">
+	    	<property name="title" column="IDI10_TITLE" type="string" length="100"/>
+			<property name="lotType" column="IDI10_LOT_TYPE" type="string" length="20"/>
+			<property name="inputType" column="IDI10_INPUT_TYPE" type="string" length="20"/>
+			<property name="enuCode" column="IDI10_ENU_CODE" type="string" length="20"/>
+			<property name="length" column="IDI10_LENGTH" type="int"/>
+	    </component>
+	    
+		<property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+</hibernate-mapping>
+
+

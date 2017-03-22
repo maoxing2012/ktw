@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.outbound.WaveDocDetail" table="WMS_WAVE_DOC_DETAIL">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_wavedoc_detail</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<discriminator column="DISCRIMINATOR" type="string"/>
+	 	
+	 	<many-to-one name="doc" class="com.core.scpwms.server.model.outbound.WaveDoc">
+	 		<column name="WAVE_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="obd" class="com.core.scpwms.server.model.outbound.OutboundDelivery">
+            <column name="OBD_ID" />
+        </many-to-one>
+        <many-to-one name="obdDetail" class="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail">
+            <column name="OBD_DETAIL_ID" />
+        </many-to-one>
+	 </class>
+</hibernate-mapping>

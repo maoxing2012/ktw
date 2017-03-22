@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+ 	<maintainPage id="maintainUserPage" title="maintainUserPage" autoQuery="false" filterCol="true">
+	 	<search>
+	 		<inputUIs>
+	 			<text id="user.loginName" title="user.loginName" trimSpace="true"/>
+	 			<text id="user.name" title="user.name" trimSpace="true"/>
+	 		</inputUIs>
+	 	</search>
+	 	<datasource type="hql">
+		 	<![CDATA[select 
+user.id, 
+user.loginName, 
+user.name,
+user.email,
+user.locked,
+user.locale,
+to_char(user.expiryDate,'yyyy-mm-dd') as expiryDate ,
+to_char(user.passwordExpiryDate,'yyyy-mm-dd') as passwordExpiryDate 
+from User user  
+where 1=1
+/~user.loginName: AND user.loginName like {user.loginName} ~/
+/~user.name: AND user.name like {user.name} ~/
+			 ]]></datasource>
+		 <columns>
+			 <column id="user.id" title="ID" visible="false"/>
+			 <column id="user.loginName" title="user.loginName" typeId="user.loginName"/>
+			 <column id="user.name" title="user.name" typeId="user.name"/>
+			 <column id="user.email" title="user.email"/>
+			 <column id="user.locked" title="user.locked" format="enumFormat" formatParam="BooleanTypeY" />
+			 <column id="user.locale" title="user.locale" format="enumFormat" formatParam="LocalType"/>
+			 <column id="expiryDate" title="user.expiryDate"/>
+			 <column id="passwordExpiryDate" title="user.passwordExpiryDate"/>
+		 </columns>
+		 <buttons>
+			 <popup id="new" title="new" enableType="none" containId="false" pageId="editUsersPage" iconUrl="add"/>
+			 <popup id="modify" title="modify" enableType="single" containId="true" pageId="editUsersPage" iconUrl="edit"/>
+			 <commit id="lock" title="lock" enableType="multi" confirmMessage="maintainUserPage.confirm.lock" iconUrl="lock">
+				 <enableExpression><![CDATA[(${user.locked} == @{BooleanTypeY.false})]]></enableExpression>
+				 <mappings>
+				 	<mapping id="ids" className="list"/>
+				 </mappings>
+				 <actions>
+				 	<action managerName="userManager" methodName="lockUsers" parameter="ids"/>
+				 </actions>
+				 <forwards>
+				 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				 </forwards>
+			 </commit>
+			 <commit id="unlock" title="unlock" enableType="multi" confirmMessage="maintainUserPage.confirm.unlock" iconUrl="unlock">
+				 <enableExpression><![CDATA[(${user.locked} == @{BooleanTypeY.true})]]></enableExpression>
+					 <mappings>
+					 	<mapping id="ids" className="list"/>
+					 </mappings>
+				 <actions>
+				 	<action managerName="userManager" methodName="unlockUsers" parameter="ids"/>
+				 </actions>
+				 <forwards>
+				 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				 </forwards>
+			 </commit>
+			 <!-- <commit id="disable" title="disable" enableType="multi" invisible="true" confirmMessage="maintainUserPage.confirm.disable" iconUrl="disabled">
+				 <mappings>
+				 	<mapping id="ids" className="list"/>
+				 </mappings>
+				 <actions>
+					 <action managerName="userManager" methodName="disableUsers" parameter="ids"/>
+				 </actions>
+				 <forwards>
+				 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				 </forwards>
+			 </commit>
+			 <popup id="similarcreate " title="maintainUserPage.similarcreate" enableType="single" invisible="true" containId="true" pageId="editSimilarCreateUserPage"/> -->
+		 </buttons>
+	 </maintainPage>
+</pages>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.task.WarehouseTask" table="WMS_WAREHOUSE_TASK">
+    	<id name="id" column="ID" type="long">
+    		<generator class="native">
+    			<param name="sequence">wseq_warehouse_task</param>
+    			<param name="parametes">START WITH 1000</param>
+    		</generator>
+    	</id>
+    	<discriminator column="DISCRIMINATOR" type="string"/>
+    	<version name="version" type="long" column="VERSION"/>
+    	
+    	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID"/>
+        </many-to-one>    	
+    	<many-to-one name="wo" class="com.core.scpwms.server.model.task.WarehouseOrder">
+    		<column name="WO_ID"/>
+    	</many-to-one>
+    	
+    	<!-- <many-to-one name="requireDoc" class="com.core.scpwms.server.model.quality.InventoryRequireDocDetail">
+    		<column name="IRD_DETAIL_ID"/>
+    	</many-to-one>
+        <many-to-one name="invApplyDocDetail" class="com.core.scpwms.server.model.move.InvApplyDocDetail">
+            <column name="INV_APPLY_DETAIL_ID"/>
+        </many-to-one>
+        <many-to-one name="waveDetail" class="com.core.scpwms.server.model.outbound.WaveDocDetail">
+            <column name="WAVE_DETAIL_ID"/>
+        </many-to-one>
+           
+        <many-to-one name="scrapApplyDetail" class="com.core.scpwms.server.model.apply.ScrapApplyDetail">
+            <column name="SAD_DETAIL_ID"/>
+        </many-to-one> 
+        
+        <many-to-one name="putawayDocDetail" class="com.core.scpwms.server.model.putaway.PutawayDocDetail">
+            <column name="PUTAWAY_DOC_DETAIL_ID"/>
+        </many-to-one>
+        
+        <many-to-one name="ownerChangeDocDetail" class="com.core.scpwms.server.model.change.OwnerChangeDocDetail">
+            <column name="OWNER_CHANGE_DETAIL_ID"/>
+        </many-to-one>  -->
+        
+        <many-to-one name="obdDetail" class="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail">
+            <column name="OBD_DETAIL_ID"/>
+        </many-to-one>
+        
+    	<many-to-one name="labor" class="com.core.scpwms.server.model.warehouse.Labor">
+    		<column name="LABOR_ID"/>
+    	</many-to-one>
+    	
+    	<many-to-one name="descBin" class="com.core.scpwms.server.model.warehouse.Bin">
+    		<column name="TO_BIN_ID"/>
+    	</many-to-one>
+        <property name="descContainerSeq" type="string" column="DESC_CONTAINER_SEQ" length="50"/>
+        <property name="descPalletSeq" type="string" column="DESC_PALLET_SEQ" length="50"/>
+    	
+    	<property name="planQty" type="double" column="PLAN_QTY"/>
+        <property name="planPackQty" type="double" column="PLAN_PACK_QTY"/>
+        <property name="executeQty" type="double" column="EXECUTE_QTY"/>
+        <property name="executePackQty" type="double" column="EXECUTE_PACK_QTY"/>
+        <property name="singledQty" type="double" column="SINGLED_QTY"/>
+    	
+    	<property name="taskSequence" type="string" column="TASK_SEQUENCE" length="50"/>
+    	<property name="processType" type="string" column="PROCESS_TYPE" length="50"/>
+    	<property name="status" type="long" column="STATUS" />
+    	<property name="operateStartTime" type="timestamp" column="OPERATE_START_TIME"/>
+    	<property name="operateTime" type="timestamp" column="OPERATE_TIME"/>
+    	<property name="relatedBill1" type="string" column="RELATED_BILL1" length="50"/>
+    	<property name="relatedBill2" type="string" column="RELATED_BILL2" length="50"/>
+    	<property name="relatedBill3" type="string" column="RELATED_BILL3" length="50"/>
+    	<property name="invId" type="long" column="INV_ID" />
+    	<property name="isFullPallet" type="int" column="IS_FULL_PALLET" />
+    	
+    	<component name="invInfo" class="com.core.scpwms.server.domain.InventoryInfo">
+            <many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+                <column name="OWNER_ID"/>
+            </many-to-one>
+            <many-to-one name="packageDetail" class="com.core.scpwms.server.model.common.PackageDetail">
+                <column name="PACKAGE_DETAIL_ID"/>
+            </many-to-one>
+            <many-to-one name="quant" class="com.core.scpwms.server.model.inventory.Quant">
+                <column name="QUANT_ID"/>
+            </many-to-one>
+            <many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+                <column name="BIN_ID"/>
+            </many-to-one>
+            <many-to-one name="reasonCode" class="com.core.scpwms.server.model.common.ReasonCode">
+	            <column name="REASON_CODE_ID" />
+	        </many-to-one>
+            <property name="containerSeq" column="CONTAINER_SEQ" type="string"/>
+            <property name="inboundDate" column="INBOUND_DATE" type="date"/>
+            <property name="palletSeq" column="PALLET_SEQ" type="string"/>
+            <property name="trackSeq" column="TRACK_SEQ" type="string" length="255"/>
+            <property name="invStatus" type="string" column="INV_STATUS" length="50"/>
+        </component>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        
+    	<set name="histories" lazy="true" inverse="true" cascade="all-delete-orphan">
+    		<key column="WAREHOUSE_TASK_ID"/>
+    		<one-to-many class="com.core.scpwms.server.model.task.WtHistory"/>
+    	</set>
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+	    </component>    
+	    <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+	     </component>
+    </class>
+</hibernate-mapping>
+
+

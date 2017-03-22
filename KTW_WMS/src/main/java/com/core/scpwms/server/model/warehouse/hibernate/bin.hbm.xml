@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.warehouse.Bin" table="WMS_BIN">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_bin</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<discriminator column="DISCRIMINATOR" type="string"/>
+	 	<version name="version" type="long" column="VERSION"/>
+	 	
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID"/>
+        </many-to-one>
+	 	<many-to-one name="storageType" class="com.core.scpwms.server.model.warehouse.StorageType">
+	 		<column name="STORAGE_TYPE_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="properties" class="com.core.scpwms.server.model.warehouse.BinProperties">
+	 		<column name="PROPERTIES" />
+	 	</many-to-one>
+	 	
+	 	<property name="binCode" column="CODE" type="string" not-null="true" length="50"/>
+	 	<property name="barCode" column="BAR_CODE" type="string" length="50"/>
+	 	<property name="lockReason" column="LOCK_REASON" type="string"/>
+	 	<property name="aisle" column="AISLE" type="int"/>
+	 	<property name="stack" column="STACK" type="int"/>
+	 	<property name="level" column="LEV" type="int"/>
+	 	<property name="depth" column="DEPTH" type="int"/>
+	 	<property name="sortIndex" column="SORT_INDEX" type="long"/>
+	 	<property name="putawayIndex" column="PUTAWAY_INDEX" type="long"/>
+	 	<property name="lockStatus" column="LOCK_STATUS" type="string" length="50"/>
+	 	<property name="temperatureDiv" column="TEMP_DIV" type="string" length="50"/>
+	 	
+	 	<set name="bins" table="WMS_BIN_BINGROUP" lazy="true" >
+        	<key column="BIN_ID"/>
+        	<many-to-many class="com.core.scpwms.server.model.warehouse.BinGroup" column="BIN_GROUP_ID"/>
+        </set>
+        
+		<component name="processProperties" class="com.core.scpwms.server.model.warehouse.BinProcessProperties">
+	       	<property name="isDps" column="IS_DPS" type="boolean" />
+	       	<property name="skuMixed" column="SKU_MIXED" type="boolean" />
+	        <property name="lotMixed" column="LOT_MIXED" type="boolean" />
+	        <property name="supplierMixed" column="SUPPLIER_MIXED" type="boolean" />
+	        <property name="ownerMixed" column="OWNER_MIXED" type="boolean" />
+	        <property name="processType" column="PROCESS_TYPE" type="string" length="50"/>
+        </component>
+        
+        <many-to-one name="binInvInfo" class="com.core.scpwms.server.model.warehouse.BinInvInfo" lazy="false">
+            <column name="BIN_INV_INFO_ID" />
+        </many-to-one>
+        
+        <property name="disabled" column="DISABLED" type="boolean"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	 </class>
+</hibernate-mapping>

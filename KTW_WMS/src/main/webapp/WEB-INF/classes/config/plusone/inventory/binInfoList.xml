@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="binInfoList" title="binInfoList" pageLocale="false" autoQuery="false" useSum="true">
+        <search>
+            <inputUIs>
+                <list id="wa.id" title="wa" returnType="long">
+                    <hql><![CDATA[ SELECT
+wa.id,
+wa.name
+FROM WhArea wa
+WHERE wa.disabled = false
+and wa.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </list>
+                <selectText id="st.id" title="st" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[ SELECT 
+st.id,
+st.code,
+st.name  
+FROM StorageType st
+WHERE st.disabled = false
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+                <selectText id="binGroup.id" title="bin.group" displayColumn="3" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+binGroup.id,
+binGroup.code,
+binGroup.name 
+FROM BinGroup binGroup  
+WHERE 1=1 
+and binGroup.wh = #{SESSION_WAREHOUSE} 
+and binGroup.disabled = false
+                    ]]></hql>
+                </selectText>
+                <text id="binCode" title="bin.code" trimSpace="true" />
+                <checkbox id="notShowEmptyBin" title="not.show.empty.bin" defaultValue="true"/>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+bin.id,
+bin.binCode,
+bin.binInvInfo.binInfo.lastCountDate,
+bin.processProperties.skuMixed,
+bin.processProperties.lotMixed,
+bin.properties.fullScale,
+bin.properties.palletCount,
+bin.binInvInfo.binInfo.currentPallet,
+bin.binInvInfo.binInfo.queuedPallet,
+bin.binInvInfo.binInfo.fullRatePallet,
+bin.binInvInfo.binInfo.currentQty,
+bin.binInvInfo.binInfo.queuedQty,
+bin.binInvInfo.binInfo.currentVolumn/1000000 as currentVolume,
+bin.binInvInfo.binInfo.queuedVolumn/1000000 as queuedVolume,
+bin.properties.volume/1000000 as binVolume,
+bin.binInvInfo.binInfo.fullRateVolumn,
+bin.binInvInfo.binInfo.lastSku,
+bin.binInvInfo.binInfo.lastLotInfo,
+bin.binInvInfo.binInfo.lastOwnerId
+from Bin bin
+where 1=1
+and bin.wh=#{SESSION_WAREHOUSE} 
+and bin.disabled <> true
+and bin.properties.isLogicBin <> true
+and ((coalesce(bin.binInvInfo.binInfo.currentQty,0) + coalesce(bin.binInvInfo.binInfo.queuedQty,0)) > 0 or {notShowEmptyBin}=false)
+/~wa.id : and bin.storageType.wa.id = {wa.id}~/
+/~st.id : and bin.storageType.id = {st.id}~/
+/~binGroup.id : and bin.id in ( select bg.bins.id from BinGroup bg where bg.id = {binGroup.id}) ~/
+/~binCode : and bin.binCode like {binCode}~/
+        ]]></datasource>
+        <columns>
+            <column id="bin.id" title="ID" visible="false"/>
+            <column id="bin.binCode" title="bin.code" />
+            <column id="bin.binInvInfo.binInfo.lastCountDate" title="lastCountDate" />
+            <column id="bin.processProperties.skuMixed" title="skuMix" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="bin.processProperties.lotMixed" title="lotMix" format="enumFormat" formatParam="BooleanTypeY"/>
+            <column id="bin.properties.fullScale" title="fullScale" />
+            <column id="bin.properties.palletCount" title="palletCount" />
+            <column id="bin.binInvInfo.binInfo.currentPallet" title="currentPallet" />
+            <column id="bin.binInvInfo.binInfo.queuedPallet" title="queuedPallet" />
+            <column id="bin.binInvInfo.binInfo.fullRatePallet" title="fullRatePallet" />
+            <column id="bin.binInvInfo.binInfo.currentQty" title="currentQty" />
+            <column id="bin.binInvInfo.binInfo.queuedQty" title="binQueuedQty" />
+            <column id="currentVolume" title="currentVolumn" />
+            <column id="queuedVolume" title="queuedVolumn" />
+            <column id="binVolume" title="maxBinVolumn" />
+            <column id="bin.binInvInfo.binInfo.fullRateVolumn" title="fullRateVolumn" />
+            <column id="bin.binInvInfo.binInfo.lastSku" title="lastSku" />
+            <column id="bin.binInvInfo.binInfo.lastLotInfo" title="lastLot" />
+            <column id="bin.binInvInfo.binInfo.lastOwnerId" title="lastOwner" />
+        </columns>
+        <buttons>
+        	<popup id="binInfoInventoryView" title="binInfoInventoryView" enableType="single" containId="true" pageId="binInfoInventoryView" iconUrl="view"/>
+        	<popup id="binInfoPutawayTaskView" title="binInfoPutawayTaskView" enableType="single" containId="true" pageId="binInfoPutawayTaskView" iconUrl="view"/>
+        	<commit id="resetBinInfo" title="resetBinInfo" enableType="multi" confirmMessage="resetBinInfo.confirmMessage" iconUrl="action">
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="binHelper" methodName="refreshBinInvInfo" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+        </buttons>
+    </maintainPage>
+</pages>

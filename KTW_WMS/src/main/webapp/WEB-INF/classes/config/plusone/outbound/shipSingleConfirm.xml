@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="shipSingleConfirm" title="shipSingleConfirm" entityClass="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail" width="400"  height="150" columnNum="6">
+        <inputUIs>
+            <hidden id="obdDetail.id" />
+            <text id="obdDetail.sku.code" title="sku.code" readOnly="true"/>
+            <text id="obdDetail.sku.name" title="sku.name" readOnly="true"/>
+            <text id="obdDetail.lotData" title="lotInfo" readOnly="true"/>
+            <text id="obdDetail.packageDetail.name" title="packDetail" readOnly="true"/>
+            <text id="obdDetail.planPackQty" title="planPackQty" readOnly="true"/>
+            <text id="obdDetail.planQty" title="planQty" readOnly="true"/>
+            <text id="obdDetail.pickUpQty" title="pickUpQty" readOnly="true"/>
+            <numberText id="obdDetail.toShipQty" title="toShipQty" required="true"/>
+            <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role='SHIP'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" confirmMessage="shipConfirm.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="obdDetail" className="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail" />
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+                    <!-- <action managerName="outboundManager" methodName="shipSingleConfirm" parameter="obdDetail,checkLabor,labor,freeStatus" /> -->
+					<action managerName="outboundDeliveryManager" methodName="shipConfirm" parameter="obdDetail,labor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

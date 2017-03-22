@@ -1,0 +1,344 @@
+﻿<html>
+<head>
+<title>WMS</title>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+body {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:12px;
+	background-image: url(./images/logon/background_.png);		  			            
+	background-repeat:repeat-x;
+	position:absolute;
+	text-align:center;
+}
+
+.tdContext{
+	background-image: url(./images/logon/banner.png);
+	background-repeat: no-repeat;
+	height:410px;
+}
+
+.tablelogin{
+	background-image: url(./images/logon/framework.png);
+	background-repeat: no-repeat;
+	position:relative;
+	height:100%;
+	margin-top:1%;
+	margin-left:63%;
+	padding:10px;
+}
+.tableContext{
+	padding-left:10%;
+	padding-right:10%;
+}
+
+.end{
+	padding:5px 10px 5px 0px;
+	font-family:微软雅黑;
+	font-size:11px;
+	color:gray;
+	text-align:left;
+}
+
+.copyright{
+	background-image:url(./images/logon/copyright.png);
+	background-repeat: no-repeat;
+	position:relative;	
+	padding-top:1%;
+}
+
+p  {
+	font-family:微软雅黑;
+	font-size:12px;
+	color:gray;
+}
+
+.commonTd{
+	font-family:微软雅黑;
+	font-size:12px;
+	text-align:right;
+}
+-->
+</style>
+<script type="text/JavaScript">
+// ActiveT 1304901 4/18 start ?gwttest.html?gwt.codesvr=127.0.0.1:9997
+var pageInit = false;
+var zhUrl = "scpwms.html";
+var enUrl = "scpwms_en.html";
+var jpUrl = "scpwms_jp.html";
+
+function showLang(type) {
+	var curLang = document.getElementById("locale").value;
+	if (curLang == "zh") {
+		if (type == "name") {
+			return '请输入用户名';
+		} else if (type == "pwd") {
+			return '请输入密码';
+		} else {
+			return "您的密码还有"+type+"天就到期了，请及时修改密码";
+		}
+	} else if (curLang == "en") {
+		if (type == "name") {
+			return 'Please enter your ID';
+		} else if (type == "pwd") {
+			return 'Please enter your password';
+		} else {
+			return "Your password will expire in " + type +" days. Please change your password.";
+		}
+	} else if (curLang == "jp") {
+		if (type == "name") {
+			return 'ユーザー名を入力してください';
+		} else if (type == "pwd") {
+			return 'パスワードを入力してください';
+		} else {
+			return "ユーザーのパスワードは、あと"+type+"日で有効期限が切れます。パスワードを変更してください。";
+		}
+	}
+}
+
+function load_login() {
+	tblogin.style.display='none';
+	mload.style.display='';
+}
+
+function callGwt() {
+	if (pageInit == false) {
+		initPage();
+		load_login();
+	}
+	if (parent.gwtState==false) {
+		setTimeout("callGwt()", 500);
+	} else {
+		parent.conn.initConfig();
+	}
+}
+
+// ActiveT 1304901 4/16
+function initPage() {
+	if (pageInit == false) {
+		var curLang = document.getElementById("locale").value;
+		if (curLang == "zh") {
+			parent.document.getElementById("conn").src =zhUrl;
+		} else if (curLang == "en") {
+			parent.document.getElementById("conn").src =enUrl;
+		} else if (curLang == "jp") {
+			parent.document.getElementById("conn").src =jpUrl;
+		}
+		pageInit = true;
+	}
+} 
+// ActiveT 1304901 4/18 end
+function waitLoginFinish() {
+	if (waitLogin == "true") {
+		return;
+	}
+	else {
+		waitLogin = "true";
+		doLogin();
+	}
+}
+
+function doLogin() {
+	var login_name = document.getElementById("login_name");
+	var password = document.getElementById("password");
+	var locale = document.getElementById("locale");
+	var localeValue = locale.value;
+	var warehouse = document.getElementById("warehouse");
+	var url = "*.login?login_name=" + login_name.value + "&password=" + password.value + "&locale=" + localeValue;
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open("POST",url,true);
+	xmlHttp.onreadystatechange=function() {
+		if (xmlHttp.readyState==4 && xmlHttp.status==200) {
+			if (xmlHttp.responseText=="success") {
+			    parent.gwtState=false;
+				callGwt();
+			}else if(xmlHttp.responseText.substring(0,15)=="successAndError"){
+				alert(showLang(xmlHttp.responseText.substring(15)));
+				parent.gwtState=false;
+				callGwt();
+			}
+			else {
+				finishLogin(xmlHttp.responseText);
+			}
+		}
+	}
+	xmlHttp.send(null);
+}
+function finishLogin(errorMsg) {
+	//waitLogin = "false";
+	//document.getElementById("slider").style.display = "none";
+	alert(errorMsg);
+}
+
+function init() {
+	waitLogin = "false";
+    document.getElementById("login_name").focus();
+	if (window.ActiveXObject && !window.XMLHttpRequest) {
+		window.XMLHttpRequest = function() {
+			var msxmls = ['Msxml2.XMLHTTP.5.0','Msxml2.XMLHTTP.4.0','Msxml2.XMLHTTP.3.0','Msxml2.XMLHTTP','Microsoft.XMLHTTP'];
+			for (var i = 0 ; i < msxmls.length ; i ++) {
+				try {
+					return new ActiveXObject(msxmls[i]);
+				}
+				catch(e) {}
+			}
+			return null;
+		};
+	}
+}
+	
+function checkEnterKey(evt) {
+	evt = evt ? evt : (window.event ? window.event : null);
+	if(evt.keyCode==13) {
+		checkLoginInput();
+	}
+}
+function checkLoginInput() {	
+	var login_name = document.getElementById('login_name');
+	if(login_name.value == '') {
+		alert(showLang("name"));
+		login_name.focus();
+		return;
+	}
+	var password = document.getElementById('password');
+	// ActiveT 1304901 5/3
+	if(password.value == '') {
+		alert(showLang("pwd"));
+		password.focus();
+		return;
+	}
+	doLogin();
+	//waitLoginFinish();	  
+	//document.getElementById("slider").style.display = "block";
+}
+
+function changeLan() {
+	var curLang = document.getElementById("locale").value;
+	if (curLang == "zh") {
+		uId = "用户名";
+		uPwd = "登录密码";
+		uLan = "语言选择";
+		uLogin = "登录";
+		uBtn = "<img src='./images/logon/button.png'/>";
+		uInfo = "";
+	} else if (curLang == "en") {
+		uId = "User ID";
+		uPwd = "Password";
+		uLan = "Language";
+		uLogin = "Login";
+		uBtn = "<img src='./images/logon/button_en.png'/>";
+		uInfo = "";
+	} else if (curLang == "jp") {
+		uId = "ユーザー名";
+		uPwd = "パスワード";
+		uLan = "言語";
+		uLogin = "ログイン";
+		uBtn = "<img src='./images/logon/button_jp.png'/>"; 
+		uInfo = "";
+	}
+        document.getElementById("userName").innerHTML = uId;
+        document.getElementById("userPwd").innerHTML = uPwd;
+        document.getElementById("userLang").innerHTML = uLan;
+        document.getElementById("userBtn").innerHTML = uBtn;
+        document.getElementById("userLogin").innerHTML = uLogin;
+        document.getElementById("userInfo").innerHTML = uInfo;
+}
+</script>
+</head>
+
+<body onLoad="init()" onkeyup="checkEnterKey(event)">
+	<div><img src="./images/logon/background.png" width="100%"/></div>
+	
+	
+	<div style="width:100%">
+		<table align="center">
+			<tr>
+				<td style="padding-left:45px;padding-bottom:20px;">
+					<img src="./images/logon/logo.png">				
+				</td>
+			</tr>
+			<!--登录窗口-->
+			<tr>
+				<td class="tdContext" style="width:900px;">
+					<!--table_login-->
+					<div class="tablelogin" id="tblogin">
+						<table class="tableContext">
+							<tr>
+								<td style="padding-top:5%;padding-bottom:1%;font-family:微软雅黑;font-size:14px;font-weight:bold;" noWrap>
+									&nbsp;&nbsp;<img src="./images/logon/arrow.png"/>&nbsp;&nbsp;<label id="userLogin" >登录</label>
+								</td>
+								<td>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									&nbsp;&nbsp;<hr align="left" color="gray" size="1" width="95%"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="commonTd" noWrap>
+									<label id="userName">ユーザー名</label>：
+								</td>
+								<td>
+									<input type="text" name="login_name" id="login_name" style="width:170px;" />
+								</td>
+							</tr>
+							<tr>
+								<td class="commonTd" noWrap>
+									<label id="userPwd">パスワード</label>：
+								</td>
+								<td>
+									<input type="password" name="password" id="password" style="width:170px;"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="commonTd" noWrap>
+									<label id="userLang">言語</label>：
+								</td>
+								<td>
+									<select name="locale" id="locale" onChange="changeLan()" style="width:170px;">
+									   <option value="jp" selected>日本語</option>
+									   <option value ="zh">中文</option>
+									   <option value ="en">English</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" align="center" style="padding-top:10px;">
+									<a name="loginButton" id="loginButton" onClick="checkLoginInput()" >
+										<label id="userBtn" style="cursor:pointer;"><img src="./images/logon/button_jp.png"/></label>
+								</td>
+							</tr>
+							
+							<tr>
+								<td colspan="2">
+									<hr style="border:1px dashed gray;" align="left" width="95%">
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" class="end">
+									<label id="userInfo"></label>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="mload" style="display:none" class="tablelogin">
+					  <table align="center" style="padding-top:100px">
+					     <tr><td><img src="./images/grid/loading.gif"/></td>
+					     </tr>
+					  </table>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="copyright">	
+					<p align="center">
+						Copyright © 2010-2016,MBP,All Rights Reserved
+					</p>	
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

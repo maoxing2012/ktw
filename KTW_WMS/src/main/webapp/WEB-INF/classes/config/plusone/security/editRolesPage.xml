@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <modifyDetailPage id="editRolesPage" title="editRolesPage" entityClass="com.core.business.model.security.Role" onClose="refreshParent" width="500" height="450">
+		 <modify>
+			 <inputUIs>
+				 <hidden id="role.id" />
+				 <text id="role.code" title="role.code" length="16" required="true" trimSpace="true" editModel="uneditable"/>
+				 <text id="role.name" title="role.name" length="33" required="true" trimSpace="true"/>
+			 </inputUIs> 
+			 <buttons>
+				 <commit id="save" title="save" enableType="none" iconUrl="save">
+					 <forwards>
+					 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					 </forwards>
+				 </commit>
+			 </buttons>
+		 </modify>
+		 <detail autoQuery="false">
+			 <datasource><![CDATA[select 
+g.id, 
+g.code,
+g.name 
+from Group g, Role role 
+where 1=1
+and g in elements(role.groups) 
+/~role.id:and role.id = {role.id} ~/
+			]]></datasource>
+			 <columns>
+				 <column id="g.id" title="ID" visible="false"/>
+				 <column id="g.code" title="group.code"/>
+				 <column id="g.name" title="group.name"/>
+			 </columns>
+			 <buttons>
+				 <popup id="addGroup" title="addGroup" enableType="none" containId="false" pageId="addRoleGroup" iconUrl="add">
+				 	<enableExpression><![CDATA[(${role.id} > 0)]]></enableExpression>
+				 </popup>
+				 <commit id="removeGroup" title="removeGroup" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+					 <mappings>
+						 <mapping id="role.id" className="long"/>
+						 <mapping id="ids" className="list"/>
+					 </mappings>
+					 <actions>
+					 	<action managerName="roleManager" methodName="removeRoleGroups" parameter="role.id,ids"/>
+					 </actions>
+					 <forwards>
+						 <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+						 <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+					 </forwards>
+				 </commit>
+			 </buttons>
+		 </detail>
+	 </modifyDetailPage>
+</pages>

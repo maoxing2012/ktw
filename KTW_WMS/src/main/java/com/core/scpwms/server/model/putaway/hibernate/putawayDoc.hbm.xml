@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.putaway.PutawayDoc" table="WMS_PUTAWAY_DOC">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_putaway_doc</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <version name="version" type="long" column="VERSION"/>
+        
+        <many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID"/>
+        </many-to-one>
+        <many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID"/>
+        </many-to-one>
+        <many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType">
+            <column name="ORDER_TYPE_ID"/>
+        </many-to-one>
+        
+        <property name="status" column="STATUS" type="long"/>
+        <property name="docSequence" column="DOC_SEQUENCE" type="string" length="50"/>
+        
+        <property name="planQty" column="PLAN_QTY" type="double"/>
+        <property name="allocateQty" column="ALLOCATE_QTY" type="double"/>
+        <property name="executeQty" column="EXECUTE_QTY" type="double"/>
+        
+        <property name="relatedBill1" column="RELATED_BILL1" type="string" length="50"/>
+        <property name="relatedBill2" column="RELATED_BILL2" type="string" length="50"/>
+        <property name="relatedBill3" column="RELATED_BILL3" type="string" length="50"/>
+        <property name="description" column="DESCRIPTION" type="string"/>
+        
+        <set name="details" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="PUTAWAY_DOC_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.putaway.PutawayDocDetail"/>
+        </set>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+    </class> 
+</hibernate-mapping>
+
+

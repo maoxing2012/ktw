@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.count.CountDetail" table="WMS_COUNT_DETAIL">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_count_detail</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <many-to-one name="countPlan" class="com.core.scpwms.server.model.count.CountPlan">
+            <column name="COUNT_PLAN_ID"/>
+        </many-to-one>
+        <many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku">
+            <column name="SKU_ID"/>
+        </many-to-one>
+        <many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+            <column name="BIN_ID"/>
+        </many-to-one>
+        
+        <property name="lineNumber" column="LINE_NO" type="int"/>
+        <property name="toCount" column="TO_COUNT" type="boolean"/>
+     </class>
+</hibernate-mapping>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="asnBatchReceive" title="asnBatchReceive" entityClass="com.core.scpwms.server.model.inbound.Asn" onClose="refreshParent" width="300"  height="150" columnNum="8">
+		<inputUIs>
+		    <hidden id="asnDetail.id" />
+		    <selectText id="labor" title="receiveCheckLabor" displayedTableHead="ID,code,name" required="true">
+				<hql><![CDATA[SELECT 
+lgl.labor.id, 
+lgl.labor.code,
+lgl.labor.name
+from LaborGroupLabor lgl
+where lgl.group.role='RECEIVE'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+and lgl.labor.disabled = '0'
+                    ]]></hql>
+			</selectText>
+		</inputUIs>
+		<buttons>
+			<commit id="batchRecive" title="batchRecive" enableType="none" confirmMessage="batchReceive.confirmMessage" iconUrl="save">
+				<mappings>
+				    <mapping id="stockAsnDetailList.ids" className="list" />
+					<mapping id="labor" className="long" />
+				</mappings>
+				<actions>
+ 					<action managerName="asnManager" methodName="batchReceive" parameter="stockAsnDetailList.ids,labor" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

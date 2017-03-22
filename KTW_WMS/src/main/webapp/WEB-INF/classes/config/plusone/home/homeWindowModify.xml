@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="homeWindowModify" title="homeWindowModify" entityClass="com.core.business.model.home.HomeWindow" onClose="refreshParent" width="800"  height="550">
+		<modify>
+			<inputUIs>
+				<hidden id="homeWindow.id" />
+				
+				<text id="homeWindow.title" title="homeWindow.title" forceOverride="true" trimSpace="true" />
+				<numberText id="homeWindow.sortIdx" title="homeWindow.sortIdx" trimSpace="true" returnType="Integer" length="4" width="50" required="true"/>
+				<numberText id="homeWindow.width" title="homeWindow.width" trimSpace="true" returnType="Integer" length="4" width="50"  required="true"/>
+				<numberText id="homeWindow.height" title="homeWindow.height" trimSpace="true" returnType="Integer" length="4" width="50" required="true"/>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="hw" className="com.core.business.model.home.HomeWindow" />
+					</mappings>
+					<actions>
+						<action managerName="homeManager" methodName="saveHome" parameter="hw" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+homeWindowDetail.id,
+homeWindowDetail.sortIdx,
+homeWindowDetail.msgInfo,
+homeWindowDetail.viewChar,
+homeWindowDetail.proView,
+homeWindowDetail.viewKind,
+homeWindowDetail.linkInfo
+from HomeWindowDetail homeWindowDetail
+where 1=1  
+and homeWindowDetail.home.id={homeWindow.id}
+ ]]></datasource>
+			<columns>
+				<column id="homeWindowDetail.id" title="ID" visible="false" />
+				<column id="homeWindowDetail.sortIdx" title="homeWindowDetail.sortIdx"/>
+				<column id="homeWindowDetail.msgInfo" title="homeWindowDetail.msgInfo"/>
+				<column id="homeWindowDetail.viewChar" title="homeWindowDetail.viewChar"/>
+				<column id="homeWindowDetail.proView" title="homeWindowDetail.proView" format="enumFormat" formatParam="ViewStatus"/>
+				<column id="homeWindowDetail.viewKind" title="homeWindowDetail.viewKind" format="enumFormat" formatParam="KindType"/>
+				<column id="homeWindowDetail.linkInfo" title="homeWindowDetail.linkInfo"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="homeDetailEdit" iconUrl="new">
+					<enableExpression><![CDATA[(${homeWindow.id}>0)]]></enableExpression>
+				</popup>
+				<popup id="modifyDetail" title="modifyDetail" enableType="single" containId="true" pageId="homeDetailEdit" iconUrl="edit"/>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="homeManager" methodName="delHomeDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

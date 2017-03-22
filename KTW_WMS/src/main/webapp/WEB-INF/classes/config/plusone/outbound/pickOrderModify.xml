@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="pickOrderModify" title="pickOrderModify" entityClass="com.core.scpwms.server.model.task.WarehouseOrder" onClose="refreshParent" width="900"  height="550" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="wo.id" />
+				<text id="wo.orderSequence" title="woSequence" readOnly="true"/>
+                <selectText id="wo.st.id" title="st" required="true" displayedTableHead="ID,Code,Name">
+            		<hql><![CDATA[ select 
+st.id,
+st.code,  
+st.name
+from StorageType st 
+where st.disabled = '0' 
+and st.role in ('R2000','R3000','R4040')
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+						]]> </hql>
+            	</selectText> 
+            	<list id="wo.pickMethod" title="pickMethod" enumType="EnuPickMethod" required="true" returnType="string">
+	                <hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuPickMethod' 
+	                ]]></hql>
+	             </list>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="wo" className="com.core.scpwms.server.model.task.WarehouseOrder" />
+					</mappings>
+					<actions>
+						<action managerName="warehouseOrderManager" methodName="savePickWo" parameter="wo" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+task.id,
+task.taskSequence,
+task.obdDetail.obd.obdNumber,
+task.processType,
+task.invInfo.packageDetail.name,
+task.planPackQty,
+task.planQty,
+task.executePackQty,
+task.executeQty,
+task.invInfo.containerSeq,
+task.invInfo.bin.binCode,
+task.descBin.binCode,
+task.invInfo.quant.sku.code,
+task.invInfo.quant.sku.name,
+task.invInfo.quant.sku.specs,
+task.invInfo.quant.lotSequence,
+task.invInfo.quant.dispLot,
+task.invInfo.invStatus
+FROM WarehouseTask task
+left join task.labor
+left join task.descBin
+left join task.wo
+where 1=1 
+and task.wo.id = {wo.id}
+            ]]></datasource>
+            <columns>
+                <column id="task.id" title="ID" visible="false"/>
+                <column id="task.taskSequence" title="taskSequence"  />
+                <column id="task.obdDetail.obd.obdNumber" title="obdNumber"/>
+                <column id="task.processType" title="processType" format="enumFormat" formatParam="EnuWtProcessType"/>
+                <column id="task.invInfo.packageDetail.name" title="packDetail"/>
+                <column id="task.planPackQty" title="planPackQty"/>
+                <column id="task.planQty" title="planQty"/>
+                <column id="task.executePackQty" title="pickPackQty"/>
+                <column id="task.executeQty" title="pickQty"/>
+                <column id="task.invInfo.containerSeq" title="containerSeq"/>
+                <column id="task.invInfo.bin.binCode" title="src.bin"/>
+                <column id="task.descBin.binCode" title="desc.bin"/>
+                <column id="task.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="task.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="task.invInfo.quant.sku.specs" title="specs"/>
+                <column id="task.invInfo.quant.lotSequence" title="lotSequence"/>
+                <column id="task.invInfo.quant.dispLot" title="lotInfo"/>
+                <column id="task.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="addPickTaskToWo" iconUrl="new">
+					<enableExpression><![CDATA[(${wo.id}>0)]]></enableExpression>
+				</popup>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="warehouseOrderManager" methodName="deleteWt" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

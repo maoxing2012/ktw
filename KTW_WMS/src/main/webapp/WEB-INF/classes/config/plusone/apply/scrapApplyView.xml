@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="scrapApplyView" title="scrapApplyView" entityClass="com.core.scpwms.server.model.apply.ScrapApply" onClose="refreshParent" width="900" height="500" columnNum="6">
+		<modify>
+			<inputUIs>
+				<hidden id="scrapApply.id" />
+				<text id="scrapApply.applyNumber" title="scrapApplyNumber" />
+				<text id="scrapApply.owner.name" title="owner" />
+				<text id="scrapApply.orderType.name" title="orderType" />
+				<textArea id="scrapApply.description" title="title.desc" rows="50" cols="400" span="6" length="255" trimSpace="true" />
+			</inputUIs>
+			<buttons> 
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+detail.id,
+detail.invInfo.invStatus,
+detail.invInfo.quant.sku.code,
+detail.invInfo.quant.sku.name,
+detail.invInfo.quant.sku.specs,
+detail.invInfo.bin.binCode,
+detail.invInfo.packageDetail.name,
+detail.qty
+from ScrapApplyDetail detail 
+where 1=1   
+and detail.scrapApply.id = {scrapApply.id}
+ 			]]></datasource>
+			<columns>
+				<column id="detail.id" title="ID" visible="false" />
+                <column id="detail.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="detail.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="detail.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="detail.invInfo.quant.sku.specs" title="specs"/> 
+                <column id="detail.invInfo.bin.binCode" title="binCode"/> 
+                <column id="detail.invInfo.packageDetail.name" title="p1000.name"/> 
+                <column id="detail.qty" title="qty"/>
+			</columns>
+			<buttons> 
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

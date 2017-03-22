@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="countPlanDetailView" title="countPlanDetailView" entityClass="com.core.scpwms.server.model.count.CountPlan" onClose="refreshParent" width="950" height="550" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="countPlan.id" />
+			</inputUIs>
+			<buttons>
+			</buttons>
+		</modify>
+		<detail autoQuery="true">
+			<datasource><![CDATA[select  
+countRecord.id,
+countRecord.countPlan.code,
+countRecord.quant.lotSequence,
+countRecord.quant.dispLot,
+countRecord.quant.sku.plant.name,
+countRecord.quant.sku.sku_code,
+countRecord.quant.sku.sku_name,
+countRecord.bin.binCode,
+countRecord.palletSeq,
+countRecord.currentPack.name,
+countRecord.quantity,
+countRecord.baseQty,
+countRecord.countQuantity,
+countRecord.deltaQuantity,
+countRecord.inboundDate,
+countRecord.operator,
+countRecord.occurTime,
+countRecord.labor.laborName,
+countRecord.counting 
+from CountRecord countRecord 
+left join countRecord.countPlan 
+left join countRecord.quant 
+left join countRecord.bin 
+left join countRecord.currentPack 
+left join countRecord.labor 
+where 1=1 and countRecord.countPlan.id = {countPlan.id} 
+ 			]]></datasource>
+			<columns>
+				<column id="countRecord.id" title="ID" visible="false"  />
+				<column id="countRecord.countPlan.code" title="countPlan.code"  />
+				<column id="countRecord.quant.lotSequence" title="countRecord.quant.lotSequence"/>
+				<column id="countRecord.quant.dispLot" title="countRecord.quant.dispLot"/>
+				<column id="countRecord.quant.sku.plant.name" title="title.plant"/>
+				<column id="countRecord.quant.sku.sku_code" title="sku.sku_code"/>
+				<column id="countRecord.quant.sku.sku_name" title="sku.sku_name"/>
+				<column id="countRecord.bin.binCode" title="countRecord.bin.binCode"/>
+				<column id="countRecord.palletSeq" title="countRecord.palletSeq" />
+				<column id="countRecord.currentPack.name" title="countRecord.currentPack.name" />
+				<column id="countRecord.quantity" title="countRecord.quantity"/>
+				<column id="countRecord.baseQty" title="countRecord.baseQty"/>
+				<column id="countQuantity" title="countRecord.countQuantity"/>
+				<column id="countRecord.deltaQuantity" title="countRecord.deltaQuantity"/>
+				<column id="countRecord.inboundDate" title="countRecord.inboundDate"/>
+				<column id="countRecord.operator" title="countRecord.operator"/>
+				<column id="countRecord.occurTime" title="countRecord.occurTime"/>
+				<column id="countRecord.labor.laborName" title="title.labor"/>
+			</columns>
+			<buttons>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.apply.ScrapApply" table="WMS_SCRAP_APPLY">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_scrapapply</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <version name="version" type="long" column="VERSION"/>
+        
+        <many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WH_ID"/>
+		</many-to-one>
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+			<column name="PLANT_ID"/>
+		</many-to-one>
+		<many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+			<column name="OWNER_ID"/>
+		</many-to-one>
+		<many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType">
+			<column name="ORDER_TYPE_ID"/>
+		</many-to-one>
+		
+        <property name="applyDate" column="APPLY_DATE" type="timestamp" />
+		<property name="applyNumber" column="APPLY_NUMBER" type="string" length="50"/>
+		<property name="status" column="STATUS" type="long"/>
+		<property name="qty" column="QTY" type="double"/>
+		<property name="skuCount" column="SKU_COUNT" type="double"/>
+		<property name="description" column="DESCRIPTION" type="string"/>
+		
+		<set name="details" table="WMS_SCRAP_APPLY_DETAIL" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="SCRAP_APPLY_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.apply.ScrapApplyDetail"/>
+        </set>
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+     </class>
+</hibernate-mapping>

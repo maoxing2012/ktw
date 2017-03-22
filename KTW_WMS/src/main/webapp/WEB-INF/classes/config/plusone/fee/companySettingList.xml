@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="companySettingList" title="companySettingList" autoQuery="false">
+         <search>
+             <inputUIs>
+                 <text id="company.code" title="company.code"   forceOverride="false"  trimSpace="false"/>
+                 <text id="company.name" title="company.name"  forceOverride="false"  trimSpace="false"/>
+             </inputUIs>
+         </search>
+         <dbclick button="modify"/>
+         <datasource type="hql" ><![CDATA[
+select 
+company.id,
+company.code,
+company.name,
+company.contractInfo.linkman,
+company.contractInfo.phone,
+company.contractInfo.fax,
+company.contractInfo.email,
+company.contractInfo.postcode,
+company.contractInfo.address,
+company.description,
+company.disabled 
+from Company company  
+where 1=1   
+/~company.code: and company.code like {company.code} ~/
+/~company.name: and company.name like {company.name} ~/ 
+         ]]></datasource>
+        <columns>
+            <column id="company.id" title="ID" visible="false"/>
+            <column id="company.code" title="company.code"/>
+            <column id="company.name" title="company.name"/>
+            <column id="company.contractInfo.linkman" title="contractInfo.linkman"/>
+            <column id="company.contractInfo.phone" title="contractInfo.phone"/>
+            <column id="company.contractInfo.fax" title="contractInfo.fax"/>
+            <column id="company.contractInfo.email" title="contractInfo.email"/>
+            <column id="company.contractInfo.postcode" title="contractInfo.postcode"/>
+            <column id="company.contractInfo.address" title="contractInfo.address"/>         
+            <column id="company.description" title="title.desc"/>
+            <column id="company.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+        </columns>
+        <buttons>
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="companySettingEdit" iconUrl="new"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="companySettingEdit" iconUrl="edit">
+            	 <enableExpression><![CDATA[(${company.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="cancel">
+                 <enableExpression><![CDATA[(${company.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="companyManager" methodName="delete" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" iconUrl="enable">
+                 <enableExpression><![CDATA[(${company.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="companyManager" methodName="enable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" iconUrl="disable">
+                 <enableExpression><![CDATA[(${company.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="companyManager" methodName="disable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <popup id="view" title="view" enableType="single" containId="true"  pageId="companyView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

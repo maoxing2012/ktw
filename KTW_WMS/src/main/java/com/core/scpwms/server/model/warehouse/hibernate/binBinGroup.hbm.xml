@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>	 
+	 <class name="com.core.scpwms.server.model.warehouse.BinBinGroup" table="WMS_BIN_BINGROUP">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_bin_bingroup</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<discriminator column="DISCRIMINATOR" type="string"/>
+	 	<many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+			<column name="BIN_ID" not-null="true" unique-key="UK_BIN_BIN_GROUP"/>
+		</many-to-one>
+		
+		<many-to-one name="binGroup" class="com.core.scpwms.server.model.warehouse.BinGroup">
+	 		<column name="BIN_GROUP_ID" not-null="true" unique-key="UK_BIN_BIN_GROUP"/>
+	 	</many-to-one>
+	 </class>
+</hibernate-mapping>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="outboundPackageEdit" title="outboundPackageEdit" entityClass="com.core.scpwms.server.model.pack.OutboundPackage" onClose="refreshParent" width="1000" height="600" columnNum="8">
+		 <modify>
+		 <inputUIs>
+				<hidden id="outboundPackage.id" />
+				<text id="outboundPackage.boxSequence" title="boxSequence" trimSpace="true" editModel="uneditable" required="true"/>
+				<selectText id="outboundPackage.obd.id" title="outboundDelivery" displayedTableHead="ID,tripNumber,obdNumber" required="true" displayColumn="2">
+                    <hql><![CDATA[ SELECT 
+obd.id,
+obd.relatedBill1,
+obd.obdNumber
+FROM OutboundDelivery obd 
+WHERE obd.wh =#{SESSION_WAREHOUSE}
+and obd.status in (710,800,840)
+and (obd.pickUpQty > obd.packedQty or obd.packedQty > obd.closedPackQty)
+                    ]]></hql>
+                </selectText>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="outboundPackage" className="com.core.scpwms.server.model.pack.OutboundPackage" />
+					</mappings>
+					<actions>
+						<action managerName="packingManager" methodName="save" parameter="outboundPackage" />
+					</actions>
+					<forwards>
+	                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons> 
+			</modify>			
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+opd.id,
+opd.obdDetail.relatedBill1, 
+opd.obdDetail.sku.code,
+opd.obdDetail.sku.name,
+opd.packQty,
+opd.baseQty,
+opd.planCheckQty,
+opd.checkQty,
+opd.invInfo.quant.dispLot
+from OutboundPackageDetail opd
+where 1=1 
+and opd.obdPackage.id = {outboundPackage.id}
+ 			]]></datasource>
+			<columns>
+				<column id="opd.id" title="ID" visible="false" />
+				<column id="opd.obdDetail.relatedBill1" title="soNumber"/>
+				<column id="opd.obdDetail.sku.code" title="sku.code"/>
+				<column id="opd.obdDetail.sku.name" title="sku.name"/>
+				<column id="opd.packQty" title="planPackQty"/>
+				<column id="opd.baseQty" title="planQty"/>
+				<column id="opd.planCheckQty" title="planCheckQty"/>
+            	<column id="opd.checkQty" title="checkQty"/>
+            	<column id="opd.invInfo.quant.dispLot" title="lotInfo"/>
+			</columns>
+			<buttons>
+				<!-- <popup id="addObd" title="addObd" enableType="none" invisible="false" containId="false" pageId="outboundPackageAddObd" iconUrl="add">
+                    <enableExpression><![CDATA[${outboundPackage.id} >0]]></enableExpression>
+                </popup> -->
+				<popup id="addObdDetail" title="addDetail" enableType="none" invisible="false" containId="false" pageId="outboundPackageAddObdDetail" iconUrl="add">
+                    <enableExpression><![CDATA[${outboundPackage.id} >0]]></enableExpression>
+                </popup>
+                <popup id="modifyDetail" title="modifyDetail" enableType="single" containId="true" pageId="outboundPackageDetailEdit" iconUrl="edit">
+                </popup>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="packingManager" methodName="deleteDetails" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit> 
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

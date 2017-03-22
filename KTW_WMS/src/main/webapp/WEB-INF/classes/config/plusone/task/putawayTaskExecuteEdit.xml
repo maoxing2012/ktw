@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="putawayTaskExecuteEdit" title="putawayTaskExecuteEdit" entityClass="com.core.scpwms.server.model.task.WarehouseTask" width="520" height="420" >
+        <inputUIs>			
+				<hidden id="task.id" />
+	            <text id="task.invInfo.quant.sku.code" title="sku.code" readOnly="true"/>
+	            <text id="task.invInfo.quant.sku.name" title="sku.name" span="3" readOnly="true" width="350"/>
+	            <text id="task.invInfo.quant.dispLot" title="lotInfo" readOnly="true"/>
+	            <text id="task.invInfo.packageDetail.name" title="packDetail" readOnly="true"/>
+	            <text id="task.unExecutePackQty" title="movePackQty" readOnly="true"/>
+	            <text id="task.invInfo.containerSeq" title="containerSeq" readOnly="true"/>
+	            <text id="task.invInfo.bin.binCode" title="srcBin" readOnly="true"/>
+	            <text id="task.descBin.binCode" title="descBin" readOnly="true" />
+	            <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+	                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role in ('STOCK','FORK_D')
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+and lgl.labor.disabled = '0'
+	                ]]></hql>
+	            </list>
+		</inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" confirmMessage="putaway.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="task" className="com.core.scpwms.server.model.task.WarehouseTask"/>
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="warehouseTaskManager" methodName="putawayTaskExecute" parameter="task,labor"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

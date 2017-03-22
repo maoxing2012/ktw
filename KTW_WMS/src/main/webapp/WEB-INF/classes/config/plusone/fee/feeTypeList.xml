@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="feeTypeList" title="feeTypeList" autoQuery="false">
+         <search>
+             <inputUIs>
+             	 <selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = false
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                 </selectText>
+             </inputUIs>
+         </search>
+         <dbclick button="modify"/>
+         <datasource type="hql" ><![CDATA[select 
+feeType.id,
+feeType.owner.name,
+feeType.priority,
+feeType.processType,
+feeType.unit,
+feeType.fee,
+feeType.tempDiv,
+feeType.stockDiv,
+feeType.description,
+feeType.disabled
+from FeeType feeType  
+where 1=1   
+and feeType.wh=#{SESSION_WAREHOUSE} 
+/~owner: and feeType.owner.id = {owner} ~/
+         ]]></datasource>
+        <columns>
+            <column id="feeType.id" title="ID" visible="false"/>
+            <column id="feeType.owner.name" title="owner"/>
+            <column id="feeType.priority" title="priority"/>
+            <column id="feeType.processType" title="feeProcessType" format="enumFormat" formatParam="EnuFeeType"/>
+            <column id="feeType.unit" title="unit" format="enumFormat" formatParam="EnuFeeUnit"/>
+            <column id="feeType.fee" title="unitFee"/>
+            <column id="feeType.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv" />
+            <column id="feeType.stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv" />      
+            <column id="feeType.description" title="title.desc"/>
+            <column id="feeType.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />         
+        </columns>
+        <buttons>
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="feeTypeEdit" iconUrl="new"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="feeTypeEdit" iconUrl="edit">
+            	 <enableExpression><![CDATA[(${feeType.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="cancel">
+                 <enableExpression><![CDATA[(${feeType.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="feeTypeManager" methodName="delete" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" iconUrl="enable">
+                 <enableExpression><![CDATA[(${feeType.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="feeTypeManager" methodName="enable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" iconUrl="disable">
+                 <enableExpression><![CDATA[(${feeType.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="feeTypeManager" methodName="disable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <popup id="view" title="view" enableType="single" containId="true"  pageId="feeTypeView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

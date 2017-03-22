@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="accessorySkuView" title="accessorySkuView" entityClass="com.core.scpwms.server.model.accessory.Accessory" width="500" height="300" onClose="refreshParent">
+		<inputUIs>
+			<hidden id="accessory.id" title="ID" />
+			<text id="accessory.code" title="accessory.code" />
+			<text id="accessory.name" title="accessory.name" />
+            <text id="accessory.brandName" title="brandName" />
+            <text id="accessory.unit" title="accessory.unit" />
+            <text id="accessory.specs" title="specs" />
+            <textArea id="accessory.description" title="title.desc" rows="50" cols="371" span="3"/>
+		</inputUIs>
+	</editPage>
+</pages>

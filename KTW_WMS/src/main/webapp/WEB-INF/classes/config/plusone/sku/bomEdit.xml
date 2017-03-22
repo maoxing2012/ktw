@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="bomEdit" title="bomEdit" entityClass="com.core.scpwms.server.model.common.Sku" onClose="refreshParent" width="700" height="520" columnNum="6"> 
+		<modify>
+			<inputUIs>
+			<hidden id="parentSku.id" title="ID" />
+			<parttab id="tab_0" title="parentSku.tab0" style="CTab" tabHeight="200">
+				<text id="parentSku.sku_code" title="sku.sku_code"  editModel="uneditable"  required="true" />
+	            <text id="parentSku.sku_name" title="sku.sku_name" required="true"/>
+	            <selectText id="parentSku.plant.id" title="title.plant" editModel="uneditable" required="true" displayedTableHead="ID,plant.code,plant.name" >
+                    <hql><![CDATA[SELECT 
+plant.id,
+plant.code,
+plant.name
+FROM Plant plant 
+WHERE plant.disabled = '0'
+order by plant.code
+					]]></hql>
+                    <inputUIs>
+                        <text id="rmcode" title="plant.code"/>
+                        <text id="rmname" title="plant.name"/>
+                    </inputUIs>
+            	</selectText>
+            	<list id="sku.properties.lotInfo.id" title="sku.properties.lotInfo" required="true" forceOverride="true">
+                    <hql><![CDATA[ 
+                        SELECT  e.id,
+                         e.description   
+                         FROM LotInfo e where e.disabled=false]]></hql>
+                    <eventListeners>
+                    </eventListeners>
+                </list>
+                <list id="sku.properties.packageInfo.id" title="pkg.name" required="true" forceOverride="true" >
+                    <hql><![CDATA[ 
+                        SELECT  e.id,
+                         e.name   
+                         FROM PackageInfo e where e.disabled=false]]></hql>
+                    <eventListeners>
+                    </eventListeners>
+                </list>
+                <checkbox id="sku.properties.useExpire" title="sku.properties.useExpire" defaultValue="false" />
+            	<selectText id="parentSku.it1000.id" title="parentSku.it1000.name" displayedTableHead="ID,Code,Name" >
+                    <hql><![CDATA[SELECT 
+st.id,
+st.code,
+st.name
+FROM SkuType st 
+WHERE st.disabled = '0'
+and st.typeKind = 'IT1000' 
+order by st.code
+					]]></hql>
+                    <inputUIs>
+                        <text id="rmcode" title="skuType.code"/>
+                        <text id="rmname" title="skuType.name"/>
+                    </inputUIs>
+            	</selectText>
+            	<selectText id="parentSku.it2000.id" title="parentSku.it2000.name" displayedTableHead="ID,Code,Name" >
+                    <hql><![CDATA[SELECT 
+st.id,
+st.code,
+st.name
+FROM SkuType st 
+WHERE st.disabled = '0' 
+and st.typeKind = 'IT2000' 
+order by st.code
+					]]></hql>
+                    <inputUIs>
+                        <text id="rmcode" title="skuType.code"/>
+                        <text id="rmname" title="skuType.name"/>
+                    </inputUIs>
+            	</selectText>
+            	<selectText id="parentSku.it3000.id" title="parentSku.it3000.name" displayedTableHead="ID,Code,Name" >
+                    <hql><![CDATA[SELECT 
+st.id,
+st.code,
+st.name
+FROM SkuType st 
+WHERE st.disabled = '0' 
+and st.typeKind = 'IT3000' 
+order by st.code
+					]]></hql>
+                    <inputUIs>
+                        <text id="rmcode" title="skuType.code"/>
+                        <text id="rmname" title="skuType.name"/>
+                    </inputUIs>
+            	</selectText>
+            	<selectText id="parentSku.it4000.id" title="parentSku.it4000.name" displayedTableHead="ID,Code,Name" lastElement="true">
+                    <hql><![CDATA[SELECT 
+st.id,
+st.code,
+st.name
+FROM SkuType st 
+WHERE st.disabled = '0' 
+and st.typeKind = 'IT4000' 
+order by st.code
+					]]></hql>
+                    <inputUIs>
+                        <text id="rmcode" title="skuType.code"/>
+                        <text id="rmname" title="skuType.name"/>
+                    </inputUIs>
+                </selectText>
+                
+                <numberText id="sku.properties.dayOfExpiry" title="sku.properties.dayOfExpiry" />
+                <numberText id="sku.properties.alertLeadingDays" title="sku.properties.alertLeadingDays"/>
+                <text id="sku.properties.lotExpireKey" title="sku.properties.lotExpireKey" />
+                <text id="sku.properties.lotDeadLineKey" title="sku.properties.lotDeadLineKey" />                
+                
+            </parttab>
+            <parttab id="tab_1" title="parentSku.tab1" style="CTab" tabHeight="200">
+				<text id="parentSku.specs" title="parentSku.specs"/>
+				<numberText id="parentSku.volume" title="parentSku.volume" />
+				<numberText id="parentSku.price" title="parentSku.price" />
+				<numberText id="parentSku.grossWeight" title="parentSku.grossWeight" />
+				<numberText id="parentSku.netWeight" title="parentSku.netWeight"  />
+				<numberText id="parentSku.tareWeight" title="parentSku.tareWeight"  />
+				<numberText id="parentSku.length" title="parentSku.length"  />
+				<numberText id="parentSku.width" title="parentSku.width" />
+				<numberText id="parentSku.height" title="parentSku.height"  />
+			</parttab>
+			<parttab id="tab_2" title="title.description" style="CTab" tabHeight="200">
+                <textArea id="sku.description" title="sku.description" trimSpace="true" rows="80" cols="570" span="3" lastElement="true"/>
+            </parttab>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="parentSku" className="com.core.scpwms.server.model.common.Sku"/>
+						<mapping id="sku.properties.lotInfo.id" className="long" />
+                        <mapping id="sku.properties.packageInfo.id" className="long" />
+					</mappings>
+					<actions>
+						<action managerName="bomManager" methodName="saveParentSku" parameter="parentSku,sku.properties.lotInfo.id,sku.properties.packageInfo.id"/>
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[
+select 
+bomElement.id,
+bomElement.element.sku_code,
+bomElement.element.sku_name,
+bomElement.qty 
+from BomElement bomElement 
+where bomElement.parentSku.id = {parentSku.id} 
+			]]></datasource>
+			<columns>
+				<column id="bomElement.id" title="ID" visible="false"/>
+				<column id="bomElement.element.sku_code" title="bomElement.element.sku_code"/>
+				<column id="bomElement.element.sku_name" title="bomElement.element.sku_name"/>
+				<column id="bomElement.qty" title="bomElement.qty"/>
+			</columns>
+			<buttons>
+				<popup id="add" title="add" enableType="none" containId="false" pageId="addBom" iconUrl="add">
+					<enableExpression><![CDATA[(${parentSku.id} > 0)]]></enableExpression>
+				</popup>
+				<popup id="modify" title="modify" enableType="single" containId="true" pageId="addBom" iconUrl="modify">
+					<enableExpression><![CDATA[(${parentSku.id} > 0)]]></enableExpression>
+				</popup>
+				<commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list"/>
+					</mappings>
+					<actions>
+						<action managerName="bomManager" methodName="removeElement" parameter="ids"/>
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

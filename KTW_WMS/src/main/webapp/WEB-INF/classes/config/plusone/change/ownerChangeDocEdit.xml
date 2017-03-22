@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="ownerChangeDocEdit" title="ownerChangeDocEdit" entityClass="com.core.scpwms.server.model.change.OwnerChangeDoc" columnNum="8" onClose="refreshParent" width="900" height="500">
+        <modify>
+            <inputUIs>
+                <hidden id="ownerChangeDoc.id" title="ID"/>
+                <text id="ownerChangeDoc.docSequence" title="ownerChangeNumber" readOnly="true"/>
+                <selectText id="ownerChangeDoc.plant.id" title="plant" required="true" displayedTableHead="ID,Code,Name">
+					<hql><![CDATA[ SELECT  
+plant.id, 
+plant.code,
+plant.name   
+FROM Plant plant 
+WHERE plant.disabled = false
+				 	]]></hql> 
+					<eventListeners>
+							<eventListener id="ownerChangeDoc.srcOwner.id" index="1" refreshUI="true"/>
+							<eventListener id="ownerChangeDoc.descOwner.id" index="1" refreshUI="true"/>
+					</eventListeners>
+				</selectText>
+				<selectText id="ownerChangeDoc.srcOwner.id" title="srcOwner" required="true" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[ SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = false 
+AND owner.wh = #{SESSION_WAREHOUSE} 
+AND owner.plant.id = {ownerChangeDoc.plant.id}
+                        ]]></hql>
+                </selectText>
+                <selectText id="ownerChangeDoc.descOwner.id" title="descOwner" required="true" displayedTableHead="ID,Code,Name" >
+                        <hql><![CDATA[ SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = false 
+AND owner.wh = #{SESSION_WAREHOUSE} 
+AND owner.plant.id = {ownerChangeDoc.plant.id}
+                        ]]></hql>
+                </selectText>
+                <textArea id="ownerChangeDoc.description" title="title.desc" rows="50" cols="500" span="7" length="255" trimSpace="true" />
+            </inputUIs>
+            <buttons>
+                <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                    <enableExpression><![CDATA[${ownerChangeDoc.status} == 100]]></enableExpression>
+                    <mappings>
+                        <mapping id="ownerChangeDoc" className="com.core.scpwms.server.model.change.ownerChangeDoc"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="ownerChangeDocManager" methodName="save" parameter="ownerChangeDoc"/>
+                    </actions>
+                    <forwards>
+                        <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                    </forwards>
+                </commit>
+            </buttons>
+        </modify>
+        <detail autoQuery="true">
+            <datasource><![CDATA[SELECT 
+detail.id,
+detail.sku.code,
+detail.sku.name,
+detail.sku.specs,
+detail.packageDetail.name,
+detail.planPackQty,
+detail.planQty,
+detail.lotData,
+detail.extString1,
+detail.jdeInvStatus
+FROM OwnerChangeDocDetail detail 
+WHERE 1=1
+and detail.ownerChangeDoc.id = {ownerChangeDoc.id}
+                ]]></datasource>
+            <columns>
+                <column id="detail.id" title="ID" visible="false" />
+                <column id="detail.sku.code" title="sku.code"/>
+                <column id="detail.sku.name" title="sku.name"/>
+                <column id="detail.sku.specs" title="specs"/>
+                <column id="detail.packageDetail.name" title="packDetail"/>
+                <column id="detail.planPackQty" title="planPackQty"/>
+                <column id="detail.planQty" title="planQty"/>
+                <column id="detail.lotData" title="lotInfo"/>
+                <column id="detail.extString1" title="projectNo"/>
+                <column id="detail.jdeInvStatus" title="jdeInvStatus"/>
+            </columns>
+            <buttons>
+                <popup id="addDetail" title="addDetail" enableType="none" invisible="false" containId="false" pageId="ownerChangeDocDetailEdit" iconUrl="add">
+                    <enableExpression><![CDATA[${ownerChangeDoc.id} >0]]></enableExpression>
+                </popup>
+                <popup id="modifyDetail" title="modifyDetail" enableType="single" containId="true" pageId="ownerChangeDocDetailEdit" iconUrl="edit">
+                </popup>
+                <commit id="deleteDetail" title="deleteDetail" confirmMessage="delete.confirmMessage" enableType="multi" iconUrl="delete" >
+                    <mappings>
+                        <mapping id="ids" className="list"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="ownerChangeDocManager" methodName="deleteDetail" parameter="ids"/>
+                    </actions>
+                    <forwards>
+                        <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                    </forwards>
+                </commit>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

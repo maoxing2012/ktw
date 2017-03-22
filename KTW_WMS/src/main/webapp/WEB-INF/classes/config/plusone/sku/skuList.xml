@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="skuList" title="skuList" autoQuery="false">
+        <search>
+             <inputUIs>
+             	<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+                <text id="sku.code" title="sku.code" trimSpace="true"/>
+                <text id="sku.name" title="sku.name" trimSpace="true"/>
+                <list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+                <list id="stockDiv" title="stockDiv" forceOverride="true" enumType="EnuStockDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuStockDiv' 
+                    ]]></hql>
+                </list>
+                <list id="sku.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+sku.id,
+sku.owner.code,
+sku.owner.name,
+sku.code,
+sku.name,
+sku.disabled,
+sku.specs,
+sku.tempDiv as tempDivCd,
+sku.tempDiv as tempDiv,
+sku.stockDiv as stockDivCd,
+sku.stockDiv as stockDiv,
+sku.fixDiv as fixDivCd,
+sku.fixDiv as fixDiv,
+sku.defSupplier.code,
+sku.defSupplier.name,
+sku.brandName,
+sku.grossWeight,
+sku.volume,
+sku.code1,
+sku.properties.packageInfo.p1000.code,
+sku.properties.packageInfo.p1000.name,
+sku.properties.packageInfo.p2100.coefficient,
+sku.properties.packageInfo.p2100.code,
+sku.properties.packageInfo.p2100.name,
+sku.properties.packageInfo.p2000.coefficient,
+sku.properties.packageInfo.p2000.code,
+sku.properties.packageInfo.p2000.name,
+sku.properties.packageInfo.p3000.coefficient,
+sku.properties.packageInfo.p3000.code,
+sku.properties.packageInfo.p3000.name,
+sku.properties.purchaseLeadTime,
+sku.properties.alertLeadingDays,
+sku.properties.dayOfExpiry,
+sku.properties.baseCheckQty4NS,
+sku.properties.baseUnitCode4NS,
+sku.properties.baseUnitName4NS,
+sku.properties.packFlg4NS as packFlg4NSCd,
+sku.properties.packFlg4NS as packFlg4NS,
+sku.properties.useExpire
+from Sku sku 
+left join sku.defSupplier
+left join sku.properties.packageInfo 
+left join sku.properties.packageInfo.p1000
+left join sku.properties.packageInfo.p2100
+left join sku.properties.packageInfo.p2000
+left join sku.properties.packageInfo.p3000
+where 1=1 
+and sku.owner.plant.wh = #{SESSION_WAREHOUSE} 
+/~owner: and sku.owner.id = {owner}~/
+/~sku.code: and sku.code like {sku.code}~/ 
+/~sku.name: and sku.name like {sku.name}~/
+/~tempDiv: and sku.tempDiv = {tempDiv}~/
+/~stockDiv: and sku.stockDiv = {stockDiv}~/
+/~sku.disabled: and sku.disabled = {sku.disabled}~/
+		]]></datasource>
+		<columns>
+            <column id="sku.id" title="ID" visible="false"/>
+            <column id="sku.owner.code" title="owner.code" visible="false"/>
+            <column id="sku.owner.name" title="owner.name"/>
+            <column id="sku.code" title="sku.code"/>
+            <column id="sku.name" title="sku.name"/>
+            <column id="sku.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+            <column id="sku.specs" title="specs"/>
+            <column id="tempDivCd" title="tempDivCd" visible="false"/>
+            <column id="tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv" />
+            <column id="stockDivCd" title="stockDivCd" visible="false"/>
+            <column id="stockDiv" title="stockDiv" format="enumFormat" formatParam="EnuStockDiv" />
+            <column id="fixDivCd" title="fixDivCd" visible="false"/>
+            <column id="fixDiv" title="fixDiv" format="enumFormat" formatParam="EnuFixDiv" />
+            <column id="sku.defSupplier.code" title="vendor.code" visible="false"/>
+            <column id="sku.defSupplier.name" title="vendor.name"/>
+            <column id="sku.brandName" title="brandName"/>
+            <column id="sku.grossWeight" title="grossWeight"/>
+            <column id="sku.volume" title="volume"/>
+            <column id="sku.code1" title="janCode"/>
+            <column id="sku.properties.packageInfo.p1000.code" title="p1000.code" visible="false"/>
+            <column id="sku.properties.packageInfo.p1000.name" title="p1000.name"/>
+            <column id="sku.properties.packageInfo.p2100.coefficient" title="p2100.coefficient"/>
+            <column id="sku.properties.packageInfo.p2100.code" title="p2100.code" visible="false"/>
+            <column id="sku.properties.packageInfo.p2100.name" title="p2100.name"/>
+            <column id="sku.properties.packageInfo.p2000.coefficient" title="p2000.coefficient"/>
+            <column id="sku.properties.packageInfo.p2000.code" title="p2000.code" visible="false"/>
+            <column id="sku.properties.packageInfo.p2000.name" title="p2000.name"/>
+            <column id="sku.properties.packageInfo.p3000.coefficient" title="p3000.coefficient"/>
+            <column id="sku.properties.packageInfo.p3000.code" title="p3000.code" visible="false"/>
+            <column id="sku.properties.packageInfo.p3000.name" title="p3000.name"/>
+            <column id="sku.properties.purchaseLeadTime" title="purchaseLeadTime"/>
+            <column id="sku.properties.alertLeadingDays" title="alertLeadingDays"/>
+            <column id="sku.properties.dayOfExpiry" title="dayOfExpiry"/>
+            <column id="sku.properties.baseCheckQty4NS" title="baseCheckQty4NS" visible="false"/>
+            <column id="sku.properties.baseUnitCode4NS" title="baseUnitCode4NS" visible="false"/>
+            <column id="sku.properties.baseUnitName4NS" title="baseUnitName4NS" visible="false"/>
+            <column id="packFlg4NSCd" title="packFlg4NSCd" visible="false" />
+            <column id="packFlg4NS" title="packFlg4NS" format="enumFormat" formatParam="EnuPackFlg" visible="false"/>
+            <column id="sku.properties.useExpire" title="useExpire" format="enumFormat" formatParam="BooleanTypeY"/>
+        </columns>
+        <buttons>
+            <popup id="new"  title="new" enableType="none" containId="false"  pageId="skuEdit" iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true"  pageId="skuEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[${sku.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable"  enableType="multi" iconUrl="enable">
+                <enableExpression><![CDATA[${sku.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="skuManager" methodName="enableSku" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="disable" title="disable"  enableType="multi" iconUrl="disable">
+                <enableExpression><![CDATA[${sku.disabled}==@{BooleanTypeN.false}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="skuManager" methodName="disableSku" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[${sku.disabled}==@{BooleanTypeN.true}]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="skuManager" methodName="deleteSku" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <popup id="view"  title="view" enableType="single" containId="true"  pageId="skuView" iconUrl="view"/>
+        </buttons>
+    </maintainPage>
+</pages>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="ownerList" title="ownerList" >
+		<search>
+			<inputUIs>
+				<text id="owner.code" title="owner.code" trimSpace="true" />
+				<text id="owner.name" title="owner.name" trimSpace="true" />
+				<list id="disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN'  
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+owner.id,
+owner.plant.code,
+owner.plant.name,
+owner.code,
+owner.name,
+owner.shortName,
+owner.disabled,
+owner.description,
+owner.contractInfo.linkman,
+owner.contractInfo.mobile,
+owner.contractInfo.phone,
+owner.contractInfo.fax,
+owner.contractInfo.email,
+owner.contractInfo.postcode,
+owner.contractInfo.address,
+owner.contractInfo.addressExt
+from Owner owner 
+where 1=1 
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+/~owner.code: and owner.code like {owner.code}~/ 
+/~owner.name: and owner.name like {owner.name}~/ 
+/~disabled: and owner.disabled = {disabled}~/ 
+ 		]]></datasource>
+		<columns>
+			<column id="owner.id" title="ID" visible="false"/>
+			<column id="owner.plant.code" title="plant.code" visible="false"/>
+			<column id="owner.plant.name" title="plant.name"/>
+			<column id="owner.code" title="owner.code"/>
+			<column id="owner.name" title="owner.name"/>
+			<column id="owner.shortName" title="title.shortName"/>
+			<column id="owner.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+			<column id="owner.description" title="title.desc"/>
+			<column id="owner.contractInfo.linkman" title="contractInfo.linkman"/>
+			<column id="owner.contractInfo.mobile" title="contractInfo.mobile"/>
+			<column id="owner.contractInfo.phone" title="contractInfo.phone"/>
+			<column id="owner.contractInfo.fax" title="contractInfo.fax"/>
+			<column id="owner.contractInfo.email" title="contractInfo.email"/>
+			<column id="owner.contractInfo.postcode" title="contractInfo.postcode"/>	
+			<column id="owner.contractInfo.address" title="contractInfo.address1"/>	
+			<column id="owner.contractInfo.addressExt" title="contractInfo.address2"/>	
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="ownerEdit"  iconUrl="new"/>
+			<popup id="edit" title="modify" enableType="single" containId="true" pageId="ownerEdit" iconUrl="edit">
+				<enableExpression><![CDATA[(${owner.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+			</popup>
+			<commit id="enable" title="enable" pageLocale="false" enableType="multi" iconUrl="enable" >
+				<enableExpression><![CDATA[(${owner.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="ownerManager" methodName="active" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="disable" title="disable" enableType="multi" iconUrl="disable">
+				<enableExpression><![CDATA[(${owner.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="ownerManager" methodName="unActive" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${owner.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="ownerManager" methodName="deleteOwner" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<popup id="view" title="view" enableType="single" containId="true" pageId="ownerView"  iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages>

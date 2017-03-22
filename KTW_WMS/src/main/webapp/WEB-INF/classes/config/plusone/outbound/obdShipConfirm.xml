@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="obdShipConfirm" title="obdShipConfirm" entityClass="com.core.scpwms.server.model.outbound.OutboundDelivery" onClose="refreshParent" width="300"  height="250" columnNum="8">
+		<inputUIs>
+		    <hidden id="outboundDelivery.id" />
+		    <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role='SHIP'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </list>
+			<textArea id="desc" title="title.desc" trimSpace="true" rows="100" cols="600" span="6" required="true"/>
+		</inputUIs>
+		<buttons>
+			<commit id="close" title="closeObd" enableType="none" confirmMessage="obdShipConfirm.confirmMessage" iconUrl="save">
+				<mappings>
+				    <mapping id="outboundDelivery.id" className="long" />
+					<mapping id="desc" className="string" />
+					<mapping id="labor" className="list" />
+				</mappings>
+				<actions>
+					<action managerName="stowagePlanManager" methodName="obdShipConfirm" parameter="outboundDelivery.id, desc, labor" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="laborAddGroup" title="laborAddGroup" filterCol="true" autoQuery="true" width="600" height="400">
+        <search>
+            <inputUIs>
+             	<hidden id="labor.id" />
+                <text id="lg.code" title="lg.code" trimSpace="true" />
+                <text id="lg.name" title="lg.name" trimSpace="true" />
+                <list id="lg.role" title="lg.role" enumType="EnuLaborGroupType" returnType="string">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuLaborGroupType' 
+                    ]]></hql>
+                </list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+lg.id,
+lg.code,
+lg.name,
+lg.role
+from LaborGroup lg  
+where 1=1 
+and lg.wh.id = #{SESSION_WAREHOUSE_ID}
+and lg.disabled = false 
+and lg.id not in (
+     select lgl.group.id 
+     from LaborGroupLabor lgl 
+     where 1=1  
+     and lgl.labor.id = {labor.id}
+     ) 
+/~lg.code: and lg.code like {lg.code}~/  
+/~lg.name: and lg.name like {lg.name}~/    
+/~lg.role: and lg.role = {lg.role}~/   
+		]]></datasource>
+        <columns>
+            <column id="lg.id" title="ID" visible="false"/>
+            <column id="lg.code" title="lg.code" typeId="lg.code"/>
+            <column id="lg.name" title="lg.name" typeId="lg.name"/>
+            <column id="lg.role" title="lg.role" typeId="lg.role" format="enumFormat" formatParam="EnuLaborGroupType"/>
+        </columns>
+        <buttons> 
+            <commit id="save" title="save" enableType="multi" iconUrl="save">
+                <mappings>
+                    <mapping id="labor.id" className="long"/>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="laborManager" methodName="addLaborGroup2Labor" parameter="labor.id,ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </maintainPage>
+</pages>

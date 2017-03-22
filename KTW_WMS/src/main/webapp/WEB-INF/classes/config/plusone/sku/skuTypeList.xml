@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="skuTypeList" title="skuTypeList" autoQuery="false">
+         <search>
+             <inputUIs>
+                 <text id="skuType.code" title="type.code" trimSpace="true"/>
+                 <text id="skuType.name" title="type.name" trimSpace="true"/>
+                 <list id="type.kind" title="type.kind" enumType="SkuType">
+                    <hql><![CDATA[ select 
+                        e.enumValue,
+                        e.enumValue
+                        from Enumerate e
+                        where  e.enumType = 'SkuType' 
+                    ]]></hql>
+                </list>
+                 <list id="skuType.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+             </inputUIs>
+         </search>
+         <dbclick button="modify"/>
+         <datasource type="hql" ><![CDATA[select 
+skuType.id,
+skuType.code,
+skuType.name,
+skuType.typeKind as skuTypeKind,
+skuType.typeKind,
+skuType.description,
+skuType.extDouble1,
+skuType.disabled
+from SkuType skuType  
+where 1=1   
+/~skuType.code: and skuType.code like {skuType.code} ~/
+/~skuType.name: and skuType.name like {skuType.name} ~/ 
+/~type.kind: and skuType.typeKind like {type.kind} ~/ 
+/~skuType.disabled: and skuType.disabled = {skuType.disabled}~/  
+         ]]></datasource>
+        <columns>
+            <column id="skuType.id" title="ID"  visible="false"/>
+            <column id="skuType.code" title="type.code" />
+            <column id="skuType.name" title="type.name" />
+            <column id="skuTypeKind" title="type.kind.code" visible="false"/>
+            <column id="skuType.typeKind" title="type.kind" format="enumFormat" formatParam="SkuType"/>
+            <column id="skuType.description" title="title.desc"/>
+            <column id="skuType.extDouble1" title="qcRate"/>
+            <column id="skuType.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+        </columns>
+        <buttons> 
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="skuTypeEdit" iconUrl="add"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="skuTypeEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${skuType.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                 <enableExpression><![CDATA[(${skuType.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="skuTypeManager" methodName="enableSkuType" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                 <enableExpression><![CDATA[(${skuType.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="skuTypeManager" methodName="disableSkuType" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete" enableType="multi" invisible="false" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+                 <enableExpression><![CDATA[(${skuType.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="skuTypeManager" methodName="deleteSkuType" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+            </commit>
+        </buttons>
+     </maintainPage>
+</pages>

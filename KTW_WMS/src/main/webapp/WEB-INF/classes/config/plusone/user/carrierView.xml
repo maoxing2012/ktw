@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="carrierView" title="carrierView" entityClass="com.core.scpwms.server.model.user.Carrier" width="550" height="400">
+        <inputUIs>
+            <hidden id="carrier.id" />
+            <parttab id="tab_1" title="title.baseInfo" style="CTab" tabHeight="200">
+            	<text id="carrier.plant.name" title="plant" />
+                <text id="carrier.code" title="carrier.code" />
+                <text id="carrier.shortName" title="title.shortName" />
+                <text id="carrier.name" title="carrier.name" />
+                <textArea id="carrier.description" title="title.desc" rows="50" cols="380"  span="3"/>
+            </parttab>
+            <parttab id="tab_2" title="title.contractInfo" style="CTab" tabHeight="200" readOnly="true" >
+                <text id="carrier.contractInfo.linkman" title="contractInfo.linkman"  length="30" trimSpace="true"/>
+                <text id="carrier.contractInfo.mobile" title="contractInfo.mobile" length="30"  trimSpace="true"/>
+                <text id="carrier.contractInfo.postcode" title="contractInfo.postcode" length="30"  trimSpace="true"/>
+                <text id="carrier.contractInfo.address" title="contractInfo.address1" width="358" span="3"  trimSpace="true"/>  
+                <text id="carrier.contractInfo.addressExt" title="contractInfo.address2" width="358" span="3"  trimSpace="true"/>  
+                <text id="carrier.contractInfo.email" title="contractInfo.email" width="358" span="3" length="50"  trimSpace="true"/>
+                <text id="carrier.contractInfo.phone" title="contractInfo.phone" length="20"  trimSpace="true"/>
+                <text id="carrier.contractInfo.fax" title="contractInfo.fax" length="20"  trimSpace="true"/>
+            </parttab>
+            <parttab id="tab_3" title="title.otherInfo" style="CTab" tabHeight="200" readOnly="true" >
+                <text id="carrier.extString1" title="extString1" />  
+                <text id="carrier.extString2" title="extString2"/>
+                <text id="carrier.extString3" title="extString3" />
+                <text id="carrier.extString4" title="extString4" />
+            </parttab>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

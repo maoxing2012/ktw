@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="stowagePlanAddObd" title="stowagePlanAddObd" autoQuery="true" width="1000" height="550">
+		<search>
+			<inputUIs>
+                <text id="obdNumber" title="obdNumber" trimSpace="true" />
+                <list id="status" title="title.status" enumType="EnuOutboundDeliveryStatus" returnType="long" multiple="true" defaultValue="850">
+                    <hql><![CDATA[ SELECT
+e.enumValue,
+e.enumValue
+FROM Enumerate e
+WHERE  e.enumType = 'EnuOutboundDeliveryStatus'
+and e.enumValue in (200,210,310,400,710,800,840,850,860)
+                    ]]></hql>
+                </list>
+                <text id="custBillNo" title="custBillNo" trimSpace="true" />
+                <selectText id="customer.id" title="customer" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[ SELECT 
+customer.id,
+customer.code,
+customer.name
+FROM BizOrg customer 
+WHERE customer.disabled = '0'
+                    ]]></hql>
+                </selectText>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obd.id,
+obd.obdNumber,
+obd.status,
+obd.relatedBill1,
+obd.customer.name,
+obd.endCustomer,
+obd.orderType.name,
+obd.planQty - obd.stowageQty as toStowageQty,
+obd.planQty,
+obd.allocateQty,
+obd.pickUpQty,
+obd.checkQty,
+obd.executeQty,
+obd.skuCount,
+obd.descBin.binCode,
+obd.transactionDate,
+obd.stockDate,
+obd.eta,
+obd.etaEditCount,
+obd.description
+from OutboundDelivery obd 
+left join obd.descBin
+left join obd.customer
+left join obd.waveDoc
+where 1=1 
+and obd.wh=#{SESSION_WAREHOUSE} 
+and (coalesce(obd.planQty,0) - coalesce(obd.stowageQty,0)) > 0
+and obd.status in (200,210,310,400,710,800,840,850,860)
+and obd.shipMethod = '11'
+/~obdNumber: and obd.obdNumber like {obdNumber}~/
+/~custBillNo: and obd.relatedBill1 like {custBillNo}~/
+/~status: and obd.status = {status}~/
+/~customer.id: and obd.customer.id = {customer.id}~/
+		]]></datasource>
+		<columns>
+			<column id="obd.id" title="ID" visible="false"  />
+            <column id="obd.obdNumber" title="obdNumber" />
+            <column id="obd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryStatus"/>
+            <column id="obd.relatedBill1" title="custBillNo" />
+            <column id="obd.customer.name" title="customer" />
+            <column id="obd.endCustomer" title="endCustomer" />
+            <column id="obd.orderType.name" title="orderType" />
+            <column id="toStowageQty" title="toStowageQty" />
+            <column id="obd.planQty" title="planQty" />
+            <column id="obd.allocateQty" title="allocateQty" />
+            <column id="obd.pickUpQty" title="pickUpQty" />
+            <column id="obd.checkQty" title="checkQty" />
+            <column id="obd.executeQty" title="outboundQty" />
+            <column id="obd.skuCount" title="skuCount" />
+            <column id="obd.descBin.binCode" title="checkBin" />
+            <column id="obd.transactionDate" title="transactionDate" />
+            <column id="obd.stockDate" title="stockDate" />
+            <column id="obd.eta" title="obd.eta" />
+            <column id="obd.etaEditCount" title="etaEditCount" />
+            <column id="obd.description" title="title.desc" />
+		</columns>
+		<buttons>
+			<commit id="add" title="add"  enableType="multi" confirmMessage="add.confirmMessage" iconUrl="new">
+				<mappings>
+					<mapping id="stowagePlan.id" className="long" /> 
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="stowagePlanManager" methodName="addDetail" parameter="stowagePlan.id,ids" />
+				</actions>
+				<forwards>					
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

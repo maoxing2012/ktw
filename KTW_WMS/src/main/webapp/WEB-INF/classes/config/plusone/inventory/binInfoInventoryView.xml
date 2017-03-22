@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="binInfoInventoryView" title="binInfoInventoryView" entityClass="com.core.scpwms.server.model.warehouse.Bin" onClose="refreshParent" width="780" height="400">
+		<modify>
+			<inputUIs>
+				<hidden id="bin.id" />
+			</inputUIs>
+		</modify>
+		<detail autoQuery="false">
+			<datasource>
+				<![CDATA[select 
+inv.id,
+inv.bin.storageType.wa.name,
+inv.bin.storageType.name,
+inv.bin.binCode,
+inv.status,
+inv.bin.lockStatus,
+inv.owner.name,
+inv.quantInv.quant.sku.code,
+inv.quantInv.quant.sku.name,
+inv.quantInv.quant.sku.specs,
+inv.quantInv.quant.sku.brandName,
+inv.currentPack.name,
+inv.packQty,
+inv.baseQty,
+inv.queuedQty,
+inv.quantInv.quant.lotSequence,
+inv.quantInv.quant.dispLot,
+trunc(sysdate - inv.inboundDate) as warehouseAge,
+inv.inboundDate
+from Inventory inv 
+where 1=1
+and inv.wh=#{SESSION_WAREHOUSE} 
+and inv.bin.id = {bin.id}
+			]]></datasource>
+			<columns>
+				<column id="inv.id" title="ID" visible="false"/>
+				<column id="inv.bin.storageType.wa.name" title="wa"/>
+				<column id="inv.bin.storageType.name" title="st"/>
+				<column id="inv.bin.binCode" title="bin.code" />
+				<column id="inv.status" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>			
+				<column id="inv.bin.lockStatus" title="lockStatus" format="enumFormat" formatParam="EnuBinLockType"/>
+				<column id="inv.owner.name" title="owner"/>
+				<column id="inv.quantInv.quant.sku.code" title="sku.code"/>
+				<column id="inv.quantInv.quant.sku.name" title="sku.name"/>
+				<column id="inv.quantInv.quant.sku.specs" title="specs"/>
+				<column id="inv.quantInv.quant.sku.brandName" title="brandName"/>
+				<column id="inv.currentPack.name" title="packDetail"/>
+				<column id="inv.packQty" title="packQty" canSum="true"/>
+				<column id="inv.baseQty" title="baseQty" canSum="true"/>
+				<column id="inv.queuedQty" title="queuedQty" canSum="true"/>
+				<column id="inv.quantInv.quant.lotSequence" title="lotSequence"/>
+				<column id="inv.quantInv.quant.dispLot" title="lotInfo"/>
+				<column id="warehouseAge" title="warehouseAge" canSum="true"/>
+				<column id="inv.inboundDate" title="inboundDate"/>
+			</columns>
+		</detail>
+	</modifyDetailPage>
+</pages>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+ 	<reportPopupPage id="countRecordReport" title="countRecordReport" reportFile="countReport.raq" parameter="ids,whId=#{SESSION_WAREHOUSE}" width="1000" height="500"/>
+</pages>

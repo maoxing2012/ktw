@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="quartzEdit" title="quartzEdit" entityClass="com.core.scpwms.server.model.quartz.BaseQuartzSetting" width="520" height="420" >
+        <inputUIs>
+            <hidden id="qz.id" />
+                <text id="qz.quartzId" title="quartzId" required="true" length="100" width="300" trimSpace="true"  span="2" editModel="uneditable"/>
+                <text id="qz.managerId" title="managerId"  required="true" length="100" width="300" trimSpace="true" span="2" editModel="uneditable" charCase=""/>
+                <text id="qz.methodId" title="methodId"  required="true" length="100" width="300" trimSpace="true" span="2" editModel="uneditable" charCase=""/>
+                <text id="qz.params" title="params"  length="100" width="300" trimSpace="true" span="2" />
+                <text id="qz.cronExpression" title="cronExpression"  required="true" length="100" width="300" trimSpace="true" span="2"/>
+                <textArea id="qz.quartzDesc" title="title.desc" rows="50" cols="355" span="3" length="80" trimSpace="true" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="qz" className="com.core.scpwms.server.model.quartz.BaseQuartzSetting"/>
+                </mappings>
+                <actions>
+                    <action managerName="baseQuartzManager" methodName="resetBaseDataJob" parameter="qz"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

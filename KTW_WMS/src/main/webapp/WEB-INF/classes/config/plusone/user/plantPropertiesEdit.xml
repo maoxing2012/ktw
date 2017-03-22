@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+ <editPage id="plantPropertiesEdit" title="plantPropertiesEdit" entityClass="com.core.scpwms.server.model.user.Plant" onClose="refreshParent" width="350" height="400" columnNum="2">
+	 <inputUIs>
+		 <hidden id="plant.id" />
+		 <list id="plant.inBountProperties.packageInfo.id" title="inBountProperties.packageInfo" forceOverride="true" required="true">
+                <hql><![CDATA[ SELECT 
+                    e.id,
+                    e.name   
+                    FROM PackageInfo e 
+                    where e.disabled = false
+                ]]></hql>
+         </list>
+		 <list id="plant.whingProperties.lotInfo.id" title="whingProperties.lotInfo"  forceOverride="true" required="true">
+                <hql><![CDATA[ 
+                    SELECT  e.id,
+                     e.description   
+                     FROM LotInfo e where e.disabled=false
+                ]]></hql>
+         </list>o
+		 <list id="plant.outBountProperties.batchPick" title="outBountProperties.batchPick" enumType="EnuBatchPickConf">
+                <hql><![CDATA[SELECT 
+                 enumerate.enumValue,
+                 enumerate.enumValue 
+                 From Enumerate enumerate 
+                 where enumerate.enumType = 'EnuBatchPickConf' 
+                 and enumerate.enumValue in ('PPALLET','PPACKAGE') 
+                ]]></hql>
+         </list>
+         <list id="plant.whingProperties.toc" title="whingProperties.toc" enumType="EnuTurnOverConf">
+                <hql><![CDATA[SELECT 
+                 enumerate.enumValue,
+                 enumerate.enumValue 
+                 From Enumerate enumerate 
+                 where enumerate.enumType = 'EnuTurnOverConf' 
+                ]]></hql>
+         </list>
+		 <list id="plant.whingProperties.invAllocate" title="whingProperties.invAllocate" enumType="InvAllocate">
+                <hql><![CDATA[SELECT 
+                 enumerate.enumValue,
+                 enumerate.enumValue 
+                 From Enumerate enumerate 
+                 where enumerate.enumType = 'InvAllocate' 
+                ]]></hql>
+         </list>
+		 <numberText id="plant.inBountProperties.ibLimit" title="plant.inBountProperties.ibLimit" returnType="double"/>
+		 <checkbox id="plant.inBountProperties.ibQtyLimit" title="plant.inBountProperties.ibQtyLimit" defaultValue="false"/>
+		 <checkbox id="plant.whingProperties.lotSeqConf" title="whingProperties.lotSeqConf" defaultValue="false"/>
+		 <checkbox id="plant.whingProperties.putawayBinFix" title="whingProperties.putawayBinFix" defaultValue="false"/>
+		 <checkbox id="plant.whingProperties.pickBinFix" title="whingProperties.pickBinFix" defaultValue="false"/>
+		 <checkbox id="plant.whingProperties.supplyAfterPicking" title="whingProperties.supplyAfterPicking" defaultValue="false"/>
+	 </inputUIs>
+	 <buttons>
+		 <commit id="save" title="save" enableType="none" iconUrl="save">
+			 <mappings>
+			 	<mapping id="plant" className="com.core.scpwms.server.model.user.Plant"/>
+			 </mappings>
+			 <actions>
+			 	<action managerName="plantManager" methodName="savePlantProperties" parameter="plant"/>
+			 </actions>
+			 <forwards>
+				 <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+				 <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+			 </forwards>
+		 </commit>
+	 </buttons>
+ </editPage>
+</pages>

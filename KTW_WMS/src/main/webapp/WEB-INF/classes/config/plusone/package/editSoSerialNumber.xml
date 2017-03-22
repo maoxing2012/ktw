@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="editSoSerialNumber" title="editSoSerialNumber" entityClass="com.core.scpwms.server.model.pack.OutboundPackageDetail" onClose="refreshParent" width="1000" height="600" columnNum="8">
+		<modify>
+		 	<inputUIs>
+				<hidden id="outboundPackageDetail.id" />
+			</inputUIs>
+			<buttons>
+			</buttons> 
+		</modify>			
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+ssn.id,
+ssn.soNumber, 
+ssn.boxSequence,
+ssn.skuCode,
+ssn.serialNumber
+from SoSerialNumber ssn
+where 1=1 
+and ssn.packDetail.id = {outboundPackageDetail.id}
+ 			]]></datasource>
+			<columns>
+				<column id="ssn.id" title="ID" visible="false" />
+				<column id="ssn.soNumber" title="soNumber"/>
+				<column id="ssn.boxSequence" title="boxSequence"/>
+				<column id="ssn.skuCode" title="sku.code"/>
+				<column id="ssn.serialNumber" title="serialNumber"/>
+			</columns>
+			<buttons>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="serialNumberManager" methodName="deleteSerilaNumber" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit> 
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="courseList" title="courseList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="course.code" title="course.code" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+course.id,
+course.owner.name,
+course.code,
+course.name
+from Course course 
+where 1=1
+and course.wh=#{SESSION_WAREHOUSE} 
+/~owner: and postcode.owner.id = {owner}~/ 
+/~course.code: and course.code like {course.code}~/ 
+		]]></datasource>
+		<columns>
+			<column id="course.id" title="ID" visible="false"/>
+			<column id="course.owner.name" title="owner"/>
+			<column id="course.code" title="course.code"/>
+			<column id="course.name" title="title.desc"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="courseEdit"  iconUrl="new"/>
+			<popup id="edit" title="modify" enableType="single" containId="true" pageId="courseEdit" iconUrl="edit"/>
+			<popup id="coursePostEdit" title="coursePostEdit" enableType="single" containId="true" pageId="coursePostEdit" iconUrl="edit"/>
+			<popup id="courseBizOrgEdit" title="courseBizOrgEdit" enableType="single" containId="true" pageId="courseBizOrgEdit" iconUrl="edit"/>
+		</buttons>
+	</maintainPage>
+</pages>

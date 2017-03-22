@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="asnDetailEdit" title="asnDetailEdit" entityClass="com.core.scpwms.server.model.inbound.AsnDetail" width="350" height="300">
+    	<inputUIs>			
+			<hidden id="asnDetail.id" />
+			<selectText id="asnDetail.sku.id" title="sku.code" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name" displayColumn="2">
+				<hql><![CDATA[ SELECT 
+sku.id,
+sku.code,
+sku.name
+FROM Sku sku 
+WHERE sku.disabled = false
+AND sku.owner.id = {asn.owner.id} 
+				]]></hql>
+				<eventListeners>
+					<eventListener id="asnDetail.sku.name" index="3" refreshUI="true"/>
+					<eventListener id="asnDetail.planPackage.id" index="1" refreshUI="true"/>
+				</eventListeners>
+			</selectText>
+			<text id="asnDetail.sku.name" title="sku.name" readOnly="true" span="4" width="358"/>
+			<selectText id="asnDetail.planPackage.id" title="p1000.name" required="true" displayedTableHead="ID,Code,Name" >
+	            <hql><![CDATA[ SELECT 
+pd.id,
+pd.code,
+pd.name 
+FROM 
+PackageDetail pd 
+WHERE
+pd.packageLevel= 'PK1000'
+AND pd.packageInfo.id= (select sku.properties.packageInfo.id from Sku sku where sku.id = {asnDetail.sku.id}) 
+				]]></hql>
+            </selectText> 
+            <numberText id="asnDetail.planQty" title="planPackQty" required="true"/>
+		</inputUIs>
+		<buttons>
+		<commit id="save" title="save" enableType="none" iconUrl="save" >
+				<mappings>
+					<mapping id="asn.id" className="long" />
+					<mapping id="asnDetail" className="com.core.scpwms.server.model.inbound.AsnDetail" />
+				</mappings>
+				<actions>
+					<action managerName="asnManager" methodName="saveAsnDetail" parameter="asn.id,asnDetail" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+		</commit>
+		</buttons>
+    </editPage>
+</pages>

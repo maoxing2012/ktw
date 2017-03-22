@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="pickOrderClose" title="pickOrderClose" entityClass="com.core.scpwms.server.model.task.WarehouseOrder" columnNum="2"  width="250" height="420" >
+        <inputUIs>
+            <hidden id="wo.id" />
+            <textArea id="description" title="title.desc"  trimSpace="true" rows="50" cols="400" span="2" required="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="close" title="close" enableType="none" confirmMessage="close.confirmMessage" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="pickOrderList.ids" className="list"/>
+                    <mapping id="description" className="string"/>
+                </mappings>
+                <actions>
+                    <action managerName="warehouseOrderManager" methodName="close" parameter="pickOrderList.ids,description"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

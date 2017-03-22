@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 福山　出荷案内 -->
+<pages>
+	 <reportPopupPage id="pickList062" title="pickList062" reportFile="/report/pickList021" parameter="ids,carrierCd=%273%27"  width="900" height="600" mode=""/>
+</pages>

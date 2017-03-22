@@ -1,0 +1,4 @@
+<pages>
+    <customPage id="importObdFile" title="importObdFile" className="com.core.scpwms.client.custom.page.SimpleUploadFilePage3" popup="true" width="400" height="200" onClose="refreshParent">
+    </customPage>
+</pages>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.accessory.AccessoryInventoryHistory" table="WMS_ACC_INVENTORY_HISTORY">
+    	<id name="id" column="ID" type="long">
+    		<generator class="native">
+    			<param name="sequence">wseq_acc_inventory_history</param>
+    			<param name="parameters">START WITH 1000</param>
+    		</generator>
+    	</id>
+    	<discriminator column="DISCRIMINATOR" type="string"/>
+    	
+    	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+    		<column name="WH_ID"/>
+    	</many-to-one>
+    	<many-to-one name="accessory" class="com.core.scpwms.server.model.accessory.Accessory">
+            <column name="ACCESSORY_ID"/>
+        </many-to-one>
+        <many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+            <column name="BIN_ID"/>
+        </many-to-one>
+        
+    	<property name="qty" column="QTY" type="double"/>
+    	<property name="status" column="STATUS" type="string" length="50"/>
+    	<property name="hisType" column="HIS_TYPE" type="string" length="50"/>
+    	<property name="orderSeq" column="ORDER_SEQ" type="string"  length="50"/>
+    	<property name="department" column="DEPARTMENT" type="string" />
+    	
+    	<property name="operateTime"  type="timestamp" column="OPERATE_TIME"/>
+    	<property name="laborNames"  type="string" column="LABOR_NAMES"/>
+    	
+        <property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+    </class>
+</hibernate-mapping>
+
+

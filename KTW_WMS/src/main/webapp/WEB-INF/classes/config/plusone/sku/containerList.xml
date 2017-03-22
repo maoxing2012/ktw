@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<maintainPage id="containerList" title="containerList"  autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="container.code" title="container.code" trimSpace="true" />
+				<text id="container.name" title="container.name" trimSpace="true" />
+				<list id="container.containerType" title="container.type" enumType="EnuContainerType">
+                        <hql><![CDATA[ SELECT  
+                            e.enumValue, 
+                            e.enumValue   
+                            FROM Enumerate e   
+                            WHERE  e.enumType = 'EnuContainerType'
+                        ]]></hql>
+                </list>
+				<list id="container.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select  
+container.id,
+container.warehouse.code,
+container.code,
+container.name,
+container.disabled,
+container.description,
+container.weight,
+container.length,
+container.width,
+container.height,
+container.containerType   
+from Container container 
+where 1=1 
+and container.warehouse = #{SESSION_WAREHOUSE} 
+/~container.code: and container.code like {container.code}~/ 
+/~container.name: and container.name like {container.name}~/ 
+/~container.containerType: and container.containerType = {container.containerType}~/ 
+/~container.disabled: and container.disabled = {container.disabled} ~/]]>
+		</datasource>
+		<columns>
+			<column id="container.id" title="ID" visible="false"/>
+			<column id="container.warehouse.code" title="wh.code" visible="false"/>
+			<column id="container.code" title="container.code"/>
+			<column id="container.name" title="container.name"/>
+			<column id="container.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+			<column id="container.description" title="title.desc"/>
+			<column id="container.weight" title="container.weight"/>
+			<column id="container.length" title="length"/>
+			<column id="container.width" title="width"/>
+			<column id="container.height" title="height"/>
+			<column id="container.containerType" title="container.type" format="enumFormat" formatParam="EnuContainerType"/>
+		</columns>
+		<buttons>
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="containerEdit" iconUrl="add"/>
+            <popup id="modify" title="modify" enableType="single" containId="true"  pageId="containerEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${container.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false"  confirmMessage="enable.confirmMessage" iconUrl="enable">
+                 <enableExpression><![CDATA[(${container.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="containerManager" methodName="enableContainer" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                 <enableExpression><![CDATA[(${container.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="containerManager" methodName="disableContainer" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${container.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="containerManager" methodName="deleteContainer" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

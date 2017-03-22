@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.rules.WaveRule" table="WMS_RULE_WAVE">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_wave_rule</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WH_ID"/>
+		</many-to-one>
+		<many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType" >
+            <column name="ORDER_TYPE_ID" />
+        </many-to-one>  
+		
+		<property name="waveCode" column="CODE" type="string" length="50"/>
+		<property name="coincidenceDegree" column="COINCIDENCE_DEGREE" type="string" length="50"/>
+		
+		<property name="maxOrderQty" column="MAX_ORDER_QTY" type="double"/>
+		<property name="minOrderItems" column="MIN_ORDER_ITEMS" type="double"/>
+		<property name="maxOrderItems" column="MAX_ORDER_ITEMS" type="double"/>
+		<property name="minQty" column="MIN_QTY" type="double"/>
+		<property name="maxQty" column="MAX_QTY" type="double"/>
+		<property name="minWeight" column="MIN_WEIGHT" type="double"/>
+		<property name="maxWeight" column="MAX_WEIGHT" type="double"/>
+		<property name="minVolume" column="MIN_VOLUME" type="double"/>
+		<property name="maxVolume" column="MAX_VOLUME" type="double"/>
+		
+		<property name="workModel" column="WORK_MODEL" type="string" length="50"/>
+		<property name="shipMethod" column="SHIP_METHOD" type="string" length="50"/>
+		<property name="route" column="ROUTE" type="string" length="50"/>
+		<property name="cronExpression" column="CRON_EXPRESSION" type="string" length="50"/>
+		<property name="disabled" column="DISABLED" type="boolean"/>	
+			
+		<property name="weight" column="WEIGHT" type="double"/>
+		<property name="volumn" column="VOLUMN" type="double"/>
+		<property name="allocatedQuantity" column="ALLOCATED_QUANTITY" type="double"/>
+		
+		<property name="orderStartTime" column="ORDER_START_TIME" type="timestamp"/>
+		<property name="orderEndTime" column="ORDER_END_TIME" type="timestamp"/>
+		
+		<property name="description" column="DESCRIPTION" type="string"/>
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>	
+</hibernate-mapping>
+
+

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="binList" title="binList" autoQuery="false">
+        <search>
+             <inputUIs>
+                <list id="bin.storageType.wa.id" title="wa" returnType="long">
+                    <hql><![CDATA[ select 
+						wa.id,
+						wa.name
+						from WhArea wa
+						where wa.disabled = '0'
+						and wa.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+                </list>
+                <selectText id="bin.storageType.id" title="st" displayedTableHead="ID,Code,Name">
+                	<hql><![CDATA[ select
+st.id,
+st.code, 
+st.name
+from StorageType st
+where st.disabled = '0' 
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+					]]> </hql>
+                </selectText>              
+              	<text id="bin.binCode" title="bin.code"  trimSpace="true"/>
+                <selectText id="bin.properties.id" title="bp" displayedTableHead="ID,Code,Name" >
+                    <hql><![CDATA[ select 
+bp.id,
+bp.code,
+bp.name
+from BinProperties bp
+where 1=1 
+and bp.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+                </selectText>
+                <list id="bin.lockStatus" title="lockStatus" forceOverride="false" enumType="EnuBinLockType">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuBinLockType'
+					]]></hql>
+                </list>
+                <list id="tempDiv" title="tempDiv" returnType="long" multiple="true" enumType="EnuTemperatureDiv">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuTemperatureDiv'
+					]]></hql>
+                </list>
+                <list id="bin.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+	                <hql><![CDATA[ SELECT 
+e.enumValue,
+e.enumValue 
+From Enumerate e 
+where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+            	</list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+bin.id,
+bin.wh.code,
+bin.storageType.wa.code,
+bin.storageType.code,
+bin.properties.code,
+bin.storageType.wa.name,
+bin.storageType.name,
+bin.properties.name,
+bin.binCode,
+bin.disabled,
+bin.aisle,
+bin.stack,
+bin.depth,
+bin.level,
+bin.lockStatus,
+bin.lockReason,
+bin.processProperties.skuMixed,
+bin.processProperties.lotMixed,
+bin.processProperties.ownerMixed,
+bin.description,
+bin.storageType.tempDiv
+from Bin bin 
+where 1=1 
+and bin.wh = #{SESSION_WAREHOUSE} 
+/~bin.storageType.wa.id: and bin.storageType.wa.id = {bin.storageType.wa.id}~/
+/~bin.storageType.id: and bin.storageType.id = {bin.storageType.id}~/ 
+/~bin.binCode: and bin.binCode like {bin.binCode}~/
+/~bin.properties.id: and bin.properties.id = {bin.properties.id}~/
+/~bin.lockStatus: and bin.lockStatus = {bin.lockStatus}~/
+/~tempDiv: and bin.storageType.tempDiv = {tempDiv}~/
+/~bin.disabled: and bin.disabled = {bin.disabled}~/ 
+			]]></datasource>
+		<columns>
+            <column id="bin.id" title="ID" visible="false"  />
+            <column id="bin.wh.code" title="wh.code" visible="false"/>
+            <column id="bin.storageType.wa.code" title="wa.code" visible="false"/>
+            <column id="bin.storageType.code" title="st.code" visible="false"/>
+            <column id="bin.properties.code" title="bp.code" visible="false"/>
+            <column id="bin.storageType.wa.name" title="wa"/>
+            <column id="bin.storageType.name" title="st"/>
+            <column id="bin.properties.name" title="bp"/>
+            <column id="bin.binCode" title="bin.code"/>
+            <column id="bin.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+            <column id="bin.aisle" title="aisle" />
+            <column id="bin.stack" title="stack" />
+            <column id="bin.depth" title="depth" />
+            <column id="bin.level" title="level" />
+            <column id="bin.lockStatus" title="lockStatus"  format="enumFormat" formatParam="EnuBinLockType"/>
+            <column id="bin.lockReason" title="lockReason"/>
+            <column id="bin.processProperties.skuMixed" title="skuMix" format="enumFormat" formatParam="BooleanTypeZ"/>
+            <column id="bin.processProperties.lotMixed" title="lotMix" format="enumFormat" formatParam="BooleanTypeZ"/>
+            <column id="bin.processProperties.ownerMixed" title="ownerMix" format="enumFormat" formatParam="BooleanTypeZ"/>
+            <column id="bin.description" title="title.desc"/>
+            <column id="bin.storageType.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv"/>
+        </columns>
+        <buttons>
+            <popup id="new"  title="new" enableType="none" containId="false"  pageId="binEdit" iconUrl="new"/>
+            <popup id="createBins"  title="batchCreate" enableType="none" containId="false"  pageId="binsCreate" iconUrl="pageIcon">
+                <enableExpression></enableExpression>
+            </popup>
+            <popup id="editBin" title="modify" enableType="single" containId="true" pageId="binEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${bin.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enableBin" title="enable" enableType="multi" iconUrl="enable">
+                <enableExpression><![CDATA[(${bin.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="binSettingManager" methodName="enableBin" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="disableBin" title="disable"  enableType="multi" iconUrl="disable">
+                <enableExpression><![CDATA[(${bin.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="binSettingManager" methodName="disableBin" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${bin.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="binSettingManager" methodName="deleteBin" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <popup id="view"  title="view" enableType="single" containId="true"  pageId="binView" iconUrl="view"/>
+            <popup id="lock" title="lock" enableType="multi" containId="true" pageId="binLock" iconUrl="lock"> 
+             	 <enableExpression><![CDATA[(${bin.lockStatus} == '' || ${bin.lockStatus} == '-'|| ${bin.lockStatus} == 'null')]]></enableExpression>
+             </popup>
+             <commit id="unlock" title="unlock" enableType="multi" invisible="false" confirmMessage="binUnLock.confirmMessage" iconUrl="unlock">
+                 <enableExpression><![CDATA[(${bin.lockStatus} == @{EnuBinLockType.LOCK_T1} || ${bin.lockStatus} == @{EnuBinLockType.LOCK_T2} || ${bin.lockStatus} == @{EnuBinLockType.LOCK_T3} || ${bin.lockStatus} == @{EnuBinLockType.LOCK_T4} )]]></enableExpression>
+                     <mappings>
+                        <mapping id="ids" className="list"/>
+                     </mappings>
+                 <actions>
+                    <action managerName="binSettingManager" methodName="unlockBin" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <popup id="binLabelPrint" title="binLabelPrint"  enableType="multi" containId="true" pageId="binLabelPrint" iconUrl="report"/>
+        </buttons>
+    </maintainPage>
+</pages>

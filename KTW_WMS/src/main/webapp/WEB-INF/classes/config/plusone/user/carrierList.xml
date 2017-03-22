@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="carrierList" title="carrierList" autoQuery="false">
+         <search>
+             <inputUIs>
+             	<selectText id="plant" title="plant" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+plant.id,
+plant.code,
+plant.name
+FROM Plant plant 
+WHERE plant.disabled = '0'
+                    ]]></hql>
+                 </selectText>
+                 <text id="carrier.code" title="carrier.code" trimSpace="true"/>
+                 <text id="carrier.name" title="carrier.name" trimSpace="true"/>
+                 <list id="carrier.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[
+select 
+carrier.id,
+carrier.plant.name,
+carrier.code,
+carrier.name,
+carrier.shortName,
+carrier.disabled,
+carrier.description,
+carrier.contractInfo.linkman,
+carrier.contractInfo.phone,
+carrier.contractInfo.mobile,
+carrier.contractInfo.email,
+carrier.contractInfo.postcode,
+carrier.contractInfo.address,
+carrier.contractInfo.addressExt
+from Carrier carrier
+where 1=1 
+and carrier.wh = #{SESSION_WAREHOUSE} 
+/~plant: and carrier.plant.id = {plant} ~/
+/~carrier.code: and carrier.code like {carrier.code} ~/
+/~carrier.name: and carrier.name like {carrier.name} ~/ 
+/~carrier.disabled: and carrier.disabled = {carrier.disabled}~/    
+         ]]></datasource>
+        <columns>
+            <column id="carrier.id" title="ID"  visible="false"/>
+            <column id="carrier.plant.name" title="plant" />
+            <column id="carrier.code" title="carrier.code" />
+            <column id="carrier.name" title="carrier.name" />
+            <column id="carrier.shortName" title="title.shortName" />
+            <column id="carrier.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />
+            <column id="carrier.description" title="title.desc" />
+            <column id="carrier.contractInfo.linkman" title="contractInfo.linkman" />
+            <column id="carrier.contractInfo.phone" title="contractInfo.phone" />
+            <column id="carrier.contractInfo.mobile" title="contractInfo.mobile" />
+            <column id="carrier.contractInfo.email" title="contractInfo.email" />
+            <column id="carrier.contractInfo.postcode" title="contractInfo.postcode" /> 
+            <column id="carrier.contractInfo.address" title="contractInfo.address1" /> 
+            <column id="carrier.contractInfo.addressExt" title="contractInfo.address2" /> 
+        </columns>
+        <buttons>   
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="carrierEdit" iconUrl="add"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="carrierEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${carrier.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                 <enableExpression><![CDATA[(${carrier.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="carrierManager" methodName="enable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                 <enableExpression><![CDATA[(${carrier.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="carrierManager" methodName="disable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${carrier.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="carrierManager" methodName="delete" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			 </commit>
+             <popup id="view" title="view"  enableType="single" containId="true" pageId="carrierView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

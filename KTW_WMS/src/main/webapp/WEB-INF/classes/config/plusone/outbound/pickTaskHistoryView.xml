@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="pickTaskHistoryView" title="pickTaskHistoryView" onClose="refreshParent" entityClass="com.core.scpwms.server.model.task.WarehouseTask" width="1000" height="400">
+        <modify>
+            <inputUIs>
+                <hidden id="warehouseTask.id" />
+            </inputUIs>
+            <buttons>
+            </buttons>
+        </modify>
+        <detail autoQuery="true">
+            <datasource><![CDATA[select 
+wh.id,
+wh.wt.taskSequence,
+wh.wt.wo.orderSequence,
+wh.wt.obdDetail.obd.obdNumber,
+wh.wt.processType,
+wh.invInfo.quant.sku.code,
+wh.invInfo.quant.sku.name,
+wh.invInfo.quant.sku.specs,
+wh.invInfo.quant.dispLot,
+wh.invInfo.packageDetail.name,
+wh.executePackQty,
+wh.executeQty,
+wh.invInfo.invStatus,
+wh.invInfo.bin.binCode,
+wh.descBin.binCode,
+wh.operateTime,
+wh.workers
+from WtHistory wh
+where 1=1
+and wh.wt.id = {warehouseTask.id}
+            ]]></datasource>
+            <columns>
+                <column id="wh.id" title="ID" visible="false" />
+                <column id="wh.wt.taskSequence" title="taskSequence"/>
+                <column id="wh.wt.wo.orderSequence" title="woSequence"/>
+                <column id="wh.wt.obdDetail.obd.obdNumber" title="obdNumber"/>
+                <column id="wh.wt.processType" title="processType" format="enumFormat" formatParam="EnuWtProcessType"/>
+                <column id="wh.invInfo.quant.sku.code" title="sku.code"/>
+                <column id="wh.invInfo.quant.sku.name" title="sku.name"/>
+                <column id="wh.invInfo.quant.sku.specs" title="specs"/>
+                <column id="wh.invInfo.quant.dispLot" title="lotInfo"/>
+                <column id="wh.invInfo.packageDetail.name" title="packDetail"/>
+                <column id="wh.executePackQty" title="pickPackQty"/>
+                <column id="wh.executeQty" title="pickQty"/>
+                <column id="wh.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+                <column id="wh.invInfo.bin.binCode" title="src.bin"/>
+                <column id="wh.descBin.binCode" title="desc.bin"/>
+                <column id="wh.operateTime" title="operateTime"/>
+                <column id="wh.workers" title="worker"/>
+            </columns>
+            <buttons>
+            	<popup id="cancelPick" title="cancelPick"  enableType="single" containId="true" pageId="cancelPick" iconUrl="delete">
+	            </popup> 
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

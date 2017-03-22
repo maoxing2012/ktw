@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="putawayTaskView" title="putawayTaskView" entityClass="com.core.scpwms.server.model.task.WarehouseTask" width="900"  height="400" columnNum="8">
+        <modify>
+            <inputUIs>
+                <hidden id="task.id"/>
+                <text id="task.taskSequence" title="taskSequence"/>
+                <text id="task.wo.orderSequence" title="woSequence"/>
+                <list id="task.processType" title="processType" enumType="EnuWtProcessType">
+                         <hql><![CDATA[ select 
+e.enumValue,
+e.enumValue 
+from Enumerate e 
+where e.enumType = 'EnuWtProcessType' 
+and e.enumValue like '%PUTAWAY'
+                     ]]></hql>
+                </list>
+                <text id="task.invInfo.packageDetail.name" title="packDetail"/>
+                <text id="task.planPackQty" title="planPackQty"/>
+                <text id="task.planQty" title="planQty"/>
+                <text id="task.executePackQty" title="putawayPackQty"/>
+                <text id="task.executeQty" title="putawayQty"/>
+                <text id="task.invInfo.bin.binCode" title="src.bin"/>
+                <text id="task.descBin.binCode" title="desc.bin"/>
+                <text id="task.invInfo.containerSeq" title="containerSeq"/>
+                <text id="task.invInfo.quant.sku.code" title="sku.code"/>
+                <text id="task.invInfo.quant.sku.name" title="sku.name"/>
+                <text id="task.operateTime" title="operateTime"/>
+            </inputUIs>
+            <buttons>
+            </buttons>
+        </modify>
+        <detail autoQuery="false">
+	        <datasource type="hql"><![CDATA[select 
+os.id,
+os.createInfo.updateTime,
+os.createInfo.operatorName,
+os.statusFrom,
+os.statusTo
+from OrderStatus os 
+where 1=1
+and os.orderType = 'WarehouseTask'
+and os.orderId = {task.id}
+	        ]]></datasource>
+	        <columns>
+	            <column id="os.id" title="ID" visible="false"  />
+	            <column id="os.createInfo.updateTime" title="operateTime"/> 
+	            <column id="os.createInfo.operatorName" title="operatorName"/>
+	            <column id="os.statusFrom" title="statusFrom" format="enumFormat" formatParam="EnuWarehouseOrderStatus"/>
+	            <column id="os.statusTo" title="statusTo" format="enumFormat" formatParam="EnuWarehouseOrderStatus"/>
+	        </columns>
+	        <buttons>
+	        </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

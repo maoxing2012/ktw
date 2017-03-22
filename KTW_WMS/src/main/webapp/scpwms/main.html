@@ -1,0 +1,43 @@
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<link rel="Shortcut Icon" href="favicon.ico">
+<link rel="Bookmark" href="favicon.ico">
+<style>
+body {
+  background-color: white;
+  color: black;
+  margin: 0px 0px 0px 0px;
+  overflow-x:hidden;
+  overflow-y:hidden
+}
+</style>
+<script>
+var gwtState = false;
+function gwtInitOk() {
+	gwtState = true;
+}
+
+function showMainPage(){
+   myfr.document.body.scroll='no';
+   myd.style.display='none';
+   myc.style.display='';	
+}
+
+function showloginframe() {
+	window.location.reload(true);
+	//http://127.0.0.1:8888/gwttest.html?gwt.codesvr=127.0.0.1:9997
+}
+
+</script>
+</head>
+<body>
+<div id="myd" style="left:0;top:0;width:100%;height:100%">
+<iframe id="myfr" name="myfr" src="login.html" width=100% height=100% frameborder=0 scrolling=no></iframe>
+</div>
+<div id="myc" style="display:'none';left:0;top:0;width:100%;height:100%">
+<iframe id="conn" name="conn" src="" width=100% height=100% frameborder=0 scrolling=no tabIndex='-1'></iframe>
+</div>
+</body>
+</html>

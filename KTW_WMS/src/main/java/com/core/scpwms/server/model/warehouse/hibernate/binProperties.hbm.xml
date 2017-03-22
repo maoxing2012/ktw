@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="com.core.scpwms.server.model.warehouse.BinProperties" table="WMS_BIN_PROPERTIES">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_binproperties</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+	 		<column name="WH_ID"/>
+	 	</many-to-one>
+	 	
+	 	<property name="code" column="CODE" type="string" not-null="true" length="50"/>
+	 	<property name="name" column ="NAME" type="string" not-null="true"/>
+	 	<property name="length" column ="LENGTH" type="double" />
+	 	<property name="width" column ="WIDTH" type="double" />
+	 	<property name="height" column ="HEIGHT" type="double" />
+	 	<property name="volume" column ="VOLUME" type="double" />
+	 	<property name="weight" column ="WEIGHT" type="double" />
+	 	<property name="quantity" column ="QUANTITY" type="double" />
+	 	<property name="fullScale" column ="FULL_SCALE" type="double" />
+	 	<property name="palletCount" column ="PALLET_COUNT" type="double" />
+	 	<property name="measure" column="MEASURE" type="double"/>
+	 	<property name="isPalletBin" column="IS_PALLET_BIN" type="boolean"/>
+	 	<property name="isLogicBin" column="IS_LOGIC_BIN" type="boolean"/>
+	 	
+	 	<property name="disabled" column="DISABLED" type="boolean"/>
+	 	<property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	 </class>
+</hibernate-mapping>

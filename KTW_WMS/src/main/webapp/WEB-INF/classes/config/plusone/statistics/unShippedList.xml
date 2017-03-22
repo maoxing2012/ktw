@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+ <report  id="unShippedList" title="unShippedList" reportFile="/report/unShippedList" columnNum="8" parameter="ownerId,etd" >
+	<inputUIs>
+		<selectText id="ownerId" title="owner" displayedTableHead="ID,code,name" required="true">
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+        </selectText>
+        <date id="etd" title="etd" showTime="false" defaultCurrentDate="true" required="true"/>
+	</inputUIs>
+ </report>
+</pages>

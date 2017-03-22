@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="allocateView" title="allocateView" autoQuery="true" width="1000" height="550">
+		<search>
+			<inputUIs>
+				<text id="obdNumber" title="obdNumber" trimSpace="true" />
+			    <text id="custBillNo" title="custBillNo" trimSpace="true" />
+			    <text id="carrier.code" title="carrier.code" trimSpace="true" isPrecision="true"/>
+			    <text id="bizOrg.code" title="bizOrg.code" trimSpace="true" isPrecision="true"/>
+			    <text id="sku" title="sku.code" trimSpace="true" isPrecision="true"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql">
+            <![CDATA[select 
+task.id,
+task.obdDetail.obd.obdNumber,
+task.obdDetail.obd.relatedBill1,
+task.obdDetail.obd.carrier.code,
+task.obdDetail.lineNo,
+task.obdDetail.subLineNo,
+task.invInfo.quant.sku.code,
+task.invInfo.quant.sku.name,
+task.invInfo.quant.sku.specs,
+task.invInfo.bin.binCode,
+task.obdDetail.expDateMin,
+task.obdDetail.expDateMax,
+task.obdDetail.expDate,
+task.obdDetail.canMixExp,
+task.invInfo.quant.dispLot,
+task.obdDetail.invStatus,
+task.invInfo.invStatus,
+task.planQty,
+task.invInfo.packageDetail.name,
+task.obdDetail.obd.customer.code
+from WarehouseTask task
+left join task.obdDetail.obd.carrier
+left join task.obdDetail.obd.customer
+where 1=1 
+and task.obdDetail.obd.waveDoc.id = {waveList.ids} 
+/~obdNumber: and task.obdDetail.obd.obdNumber like {obdNumber}~/ 
+/~custBillNo: and task.obdDetail.obd.relatedBill1 like {custBillNo}~/ 
+/~carrier.code: and task.obdDetail.obd.carrier.code = {carrier.code}~/ 
+/~sku: and task.invInfo.quant.sku.code like {sku}~/ 
+/~bizOrg.code: and task.obdDetail.obd.customer.code = {bizOrg.code}~/
+		]]></datasource>
+		<columns>
+			<column id="task.id" title="ID" visible="false"  />
+			<column id="task.obdDetail.obd.obdNumber" title="obdNumber" />
+			<column id="task.obdDetail.obd.relatedBill1" title="custBillNo" />
+			<column id="task.obdDetail.obd.carrier.code" title="carrier.code" />
+			<column id="task.obdDetail.lineNo" title="lineNo" />
+			<column id="task.obdDetail.subLineNo" title="subLineNo" />
+			
+			<column id="task.invInfo.quant.sku.code" title="sku.code" />
+			<column id="task.invInfo.quant.sku.name" title="sku.name"/>
+			<column id="task.invInfo.quant.sku.specs" title="specs"/>
+			<column id="task.invInfo.bin.binCode" title="pickBin"/>
+			<column id="task.obdDetail.expDateMin" title="最小賞味期限指定" />
+            <column id="task.obdDetail.expDateMax" title="最大賞味期限指定" />
+            <column id="task.obdDetail.expDate" title="NS引当賞味期限" />
+            <column id="task.obdDetail.canMixExp" title="複数ロット可" format="enumFormat" formatParam="BooleanTypeY"/>
+			<column id="task.invInfo.quant.dispLot" title="WMS引当賞味期限" />
+			<column id="task.obdDetail.invStatus" title="planInvStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="task.invInfo.invStatus" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="task.planQty" title="allocateQty"/>
+			<column id="task.invInfo.packageDetail.name" title="p1000.name"/>
+			
+			<column id="task.obdDetail.obd.customer.code" title="bizOrg.code" />
+		</columns>
+		<buttons>
+		</buttons>
+	</maintainPage>
+</pages>

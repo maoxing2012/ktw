@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="outportInvFile"  title="outportInvFile"   entityClass="com.core.scpwms.server.model.file.FileImportRule4Wms"  width="500" height="100" onClose="refreshParent" >
+		<inputUIs>
+			<hidden id="rule.id" reserve="false"/>
+			<list id="rule" title="rule.ruleName" required="true">
+				<hql><![CDATA[ select  
+rule.id,
+rule.fileImportRule.ruleName 
+FROM FileImportRule4Wms rule
+left join rule.fileImportRule
+WHERE rule.fileImportRule.ruleType = 'INV_OUT'
+  					]]></hql>
+			</list>
+		</inputUIs>
+		<buttons>
+			<commit id="save" title="save"   enableType="none" invisible="false"  iconUrl="save">
+				<mappings>
+					<mapping id="rule" className="long"/>
+				</mappings>
+				<actions>
+					<action managerName="importFileRuleManager4Wms"  methodName="saveOutputFile"  parameter="rule" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>
+
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="laborGroupList" title="laborGroupList">
+        <search>
+             <inputUIs>
+                <text id="laborGroup.code" title="lg.code" trimSpace="true"/>
+                <text id="laborGroup.name" title="lg.name" trimSpace="true"/>
+                <list id="laborGroup.role" title="lg.role" enumType="EnuLaborGroupType" returnType="string">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuLaborGroupType' 
+                    ]]></hql>
+                </list>
+                <list id="laborGroup.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select  
+laborGroup.id,
+laborGroup.wh.code,
+laborGroup.code,
+laborGroup.name,
+laborGroup.role as laborGroupRoleCode,
+laborGroup.role,
+laborGroup.disabled 
+from LaborGroup laborGroup  
+where 1=1 
+and laborGroup.wh = #{SESSION_WAREHOUSE} 
+/~laborGroup.code: and laborGroup.code like {laborGroup.code}~/  
+/~laborGroup.name: and laborGroup.name like {laborGroup.name}~/ 
+/~laborGroup.role: and laborGroup.role = {laborGroup.role}~/ 
+/~laborGroup.disabled: and laborGroup.disabled = {laborGroup.disabled}~/  
+		]]></datasource>
+		<columns>
+            <column id="laborGroup.id" title="ID" visible="false"/>
+            <column id="laborGroup.wh.code" title="wh.code" visible="false"/>
+            <column id="laborGroup.code" title="lg.code"/>
+            <column id="laborGroup.name" title="lg.name"/>
+            <column id="laborGroupRoleCode" title="lg.role.code" visible="false"/>
+            <column id="laborGroup.role" title="lg.role" format="enumFormat" formatParam="EnuLaborGroupType"/>
+            <column id="laborGroup.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+        </columns>
+        <buttons>
+            <popup id="new"  title="new" enableType="none" containId="false"  pageId="laborGroupEdit" iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true"  pageId="laborGroupEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${laborGroup.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" enableType="multi" invisible="false" iconUrl="enable">
+                 <enableExpression><![CDATA[(${laborGroup.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="laborGroupManager" methodName="enable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="disable" title="disable" enableType="multi" invisible="false" iconUrl="disable">
+                 <enableExpression><![CDATA[(${laborGroup.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                 <mappings>
+                    <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                    <action managerName="laborGroupManager" methodName="disable" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+             <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${laborGroup.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"><entries /></mapping>
+				</mappings>
+				<actions>
+					<action managerName="laborGroupManager" methodName="delete" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			 </commit>
+             <popup id="view"  title="view" enableType="single" containId="true"  pageId="laborGroupView" iconUrl="view"/>
+        </buttons>
+    </maintainPage>
+</pages>

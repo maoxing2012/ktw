@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="binPropertiesView" title="binPropertiesView" entityClass="com.core.scpwms.server.model.warehouse.BinProperties" width="440" height="320" >
+        <inputUIs>
+            <hidden id="binProperties.id" /> 
+            <text id="binProperties.code" title="bp.code" />
+            <text id="binProperties.name" title="bp.name" />
+            <numberText id="binProperties.length" title="bin.length" />
+            <numberText id="binProperties.width" title="bin.width" />
+            <numberText id="binProperties.height" title="bin.height" />
+            <numberText id="binProperties.palletCount" title="palletCount" />
+            <checkbox id="binProperties.isLogicBin" title="isLogicBin"/>
+        	<textArea id="binProperties.description" title="title.desc" rows="50" cols="355" span="2"/>
+        </inputUIs>
+        <buttons>
+        </buttons>
+    </editPage>
+</pages>

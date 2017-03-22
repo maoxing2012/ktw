@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="groupAddLabor" title="groupAddLabor" autoQuery="true" width="550" height="400">
+        <search>
+            <inputUIs>
+             	<hidden id="laborGroup.id" />
+                <text id="labor.code" title="labor.code" trimSpace="true" />
+                <text id="labor.name" title="labor.name" trimSpace="true" />
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+labor.id,
+labor.code,
+labor.name
+from Labor labor  
+where 1=1 
+and labor.wh.id = #{SESSION_WAREHOUSE_ID}
+and labor.disabled = false
+and labor.id not in (
+     select lgl.labor.id 
+     from LaborGroupLabor lgl 
+     where 1=1  
+     and lgl.group.id = {laborGroup.id}
+     ) 
+/~labor.code: and labor.code like {labor.code}~/  
+/~labor.name: and labor.name like {labor.name}~/    
+		]]></datasource>
+        <columns>
+            <column id="labor.id" title="ID" visible="false"/>
+            <column id="labor.code" title="labor.code" />
+            <column id="labor.name" title="labor.name" />
+        </columns>
+        <buttons> 
+            <commit id="save" title="save" enableType="multi" iconUrl="save">
+                <mappings>
+                    <mapping id="laborGroup.id" className="long"/>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="laborManager" methodName="addLabor2LaborGroup" parameter="laborGroup.id,ids"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </maintainPage>
+</pages>

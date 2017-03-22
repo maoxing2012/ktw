@@ -1,0 +1,70 @@
+/* StretchImgButton */
+.hnImgButton,
+.hnImgButtonSelected,
+.hnImgButtonSelectedOver,
+.hnImgButtonOver,
+.hnImgButtonDown,
+.hnImgButtonSelectedDown,
+.hnImgButtonSelectedDisabled,
+.hnImgButtonDisabled {
+    font-family: ËÎÌו;
+    font-size:11px;
+    color: black;
+ 	font-weight: bold;
+}
+/*============================================================
+	12) ToolStrip
+============================================================*/
+.hnToolStrip {
+    border: 1px solid #A7ABB4;
+	background-color:#DDAAFF;
+}
+
+/*============================================================
+   12a) ToolStripGroup and IconButton
+==============================================================*/
+.hnToolStripGroup,
+.hnToolStripGroupOver,
+.hnToolStripGroupSelected,
+.hnToolStripGroupSelectedDisabled,
+.hnToolStripGroupSelectedOver,
+.hnToolStripGroupDown,
+.hnToolStripGroupSelectedDown,
+.hnToolStripGroupDisabled {
+    background: #f9f9f9;
+    background: -moz-linear-gradient(top, #f9f9f9 0%, #f9f9f9 1%, #f4f4f4 1%, #e9e9e9 31%, #e1e1e1 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f9f9f9), color-stop(1%,#f9f9f9), color-stop(1%,#f4f4f4), color-stop(31%,#e9e9e9), color-stop(100%,#e1e1e1));
+    background: -webkit-linear-gradient(top, #f9f9f9 0%,#f9f9f9 1%,#f4f4f4 1%,#e9e9e9 31%,#e1e1e1 100%);
+    background: -o-linear-gradient(top, #f9f9f9 0%,#f9f9f9 1%,#f4f4f4 1%,#e9e9e9 31%,#e1e1e1 100%);
+    background: -ms-linear-gradient(top, #f9f9f9 0%,#f9f9f9 1%,#f4f4f4 1%,#e9e9e9 31%,#e1e1e1 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9f9', endColorstr='#e1e1e1',GradientType=0 );
+    background: linear-gradient(top, #f9f9f9 0%,#f9f9f9 1%,#f4f4f4 1%,#e9e9e9 31%,#e1e1e1 100%);
+    border: 1px solid #C2C2C2;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.hnToolStripGroupTitle,
+.hnToolStripGroupTitleOver,
+.hnToolStripGroupTitleSelected,
+.hnToolStripGroupTitleSelectedDisabled,
+.hnToolStripGroupTitleSelectedOver,
+.hnToolStripGroupTitleDown,
+.hnToolStripGroupTitleSelectedDown,
+.hnToolStripGroupTitleDisabled {
+    background: #D6D6D6;
+    border: 0px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    color: #4D4D4D;
+    font-family: Helvetica, Arial, Verdana, "Bitstream Vera Sans", sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px;
+}

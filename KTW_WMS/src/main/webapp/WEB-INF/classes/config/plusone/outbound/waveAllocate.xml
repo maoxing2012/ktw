@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <customPage id="obdAllocate" title="obdAllocate" className="com.core.scpwms.client.custom.page.picking.AllocateForPicking" popup="false"/>
+</pages>

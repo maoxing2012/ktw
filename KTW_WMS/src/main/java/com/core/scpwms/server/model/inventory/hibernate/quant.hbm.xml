@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="com.core.scpwms.server.model.inventory.Quant" table="WMS_QUANT">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_quant</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<property name="lotSequence" column="lotSequence" type="string"/>
+		<component name="lotData" class="com.core.scpwms.server.model.lot.LotInputData">
+			<property name="property1"  column="property1" type="string"/>
+		 	<property name="property2"  column="property2" type="string"/>
+		 	<property name="property3"  column="property3" type="string"/>
+		 	<property name="property4"  column="property4" type="string"/>
+		 	<property name="property5"  column="property5" type="string"/>
+		 	<property name="property6"  column="property6" type="string"/>
+		 	<property name="property7"  column="property7" type="string"/>
+		 	<property name="property8"  column="property8" type="string"/>
+	        <property name="property9"  column="property9" type="string"/>
+	        <property name="property10"  column="property10" type="string"/>
+		</component>
+	 	<many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku">
+	 		<column name="SKU" />
+	 	</many-to-one>
+	 	<property name="inboundDate" column="inboundDate" type="date"/>
+	 	<property name="trackSeq" column="trackSeq" type="string"/>
+	 	<property name="dispLot" column="dispLot" type="string"/>
+	 </class>
+</hibernate-mapping>

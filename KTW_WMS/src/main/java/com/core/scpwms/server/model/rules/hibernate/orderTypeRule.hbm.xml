@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="com.core.scpwms.server.model.rules.OrderTypeRule" table="WMS_ORDER_TYPE_RULE">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_order_type_rule</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		
+		<many-to-one name="putAwayRule" class="com.core.scpwms.server.model.rules.PutAwayRule">
+			<column name="PUTAWAY_RULE_ID"/>
+		</many-to-one>
+		
+		<many-to-one name="pickUpRule" class="com.core.scpwms.server.model.rules.PickUpRule" >
+			<column name="PICKUP_RULE_ID"/>
+		</many-to-one>
+		
+		<many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType" >
+            <column name="ORDER_TYPE_ID" not-null="false"/>
+        </many-to-one>
+	</class>
+	
+</hibernate-mapping>
+
+

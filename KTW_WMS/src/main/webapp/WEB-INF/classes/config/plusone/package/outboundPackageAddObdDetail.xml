@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="outboundPackageAddObdDetail" title="outboundPackageAddObdDetail" autoQuery="true" width="800" height="400">
+		<search>
+			<inputUIs>
+                <text id="soNumber" title="soNumber" trimSpace="true" />
+                <text id="skuCode" title="sku.code" trimSpace="true" />
+                <text id="skuName" title="sku.name" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obdd.id,
+obdd.obd.relatedBill1,
+obdd.relatedBill1,
+obdd.sku.code,
+obdd.sku.name,
+obdd.pickUpQty - obdd.packedQty as toPackQty,
+obdd.planQty,
+obdd.pickUpQty
+from OutboundDeliveryDetail obdd
+where 1=1 
+and obdd.obd.id in ( select obdPack.obd.id from OutboundPackage obdPack where obdPack.id = {outboundPackage.id} )
+and (coalesce(obdd.pickUpQty,0) - coalesce(obdd.packedQty,0)) > 0
+and obdd.obd.status in (710,800,840)
+/~soNumber: and obdd.relatedBill1 like {soNumber}~/
+/~skuCode: and obdd.sku.code like {skuCode}~/
+/~skuName: and obdd.sku.name like {skuName}~/
+		]]></datasource>
+		<columns>
+			<column id="obdd.id" title="ID" visible="false"  />
+			<column id="obdd.obd.relatedBill1" title="tripNumber" />
+            <column id="obdd.relatedBill1" title="soNumber" />
+            <column id="obdd.sku.code" title="sku.code" />
+            <column id="obdd.sku.name" title="sku.name" />
+            <column id="toPackQty" title="toPackQty" />
+            <column id="obdd.planQty" title="planQty" />
+            <column id="obdd.pickUpQty" title="pickUpQty" />
+		</columns>
+		<buttons>
+			<commit id="add" title="add"  enableType="multi" confirmMessage="add.confirmMessage" iconUrl="new">
+				<mappings>
+					<mapping id="outboundPackage.id" className="long" /> 
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="packingManager" methodName="addObdDetails" parameter="outboundPackage.id,ids" />
+				</actions>
+				<forwards>					
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="true" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

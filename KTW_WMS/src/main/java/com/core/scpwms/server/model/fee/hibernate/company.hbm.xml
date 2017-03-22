@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.fee.Company" table="WMS_COMPANY">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_company</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <property name="code" type="string">
+            <column name="CODE" not-null="true" length="20" unique-key="UK_WH"/>
+        </property>
+        <property name="name" type="string">
+            <column name="NAME" length="100"/>
+        </property>
+        
+		<component name="contractInfo" class="com.core.business.model.domain.ContractInfo">
+			<property name="linkman" column="LINKMAN" type="string" length="50" />
+			<property name="phone" column="PHONE" type="string" length="50"/>
+			<property name="fax" column="FAX" type="string" length="50"/>
+			<property name="email" column="EMAIL" type="string" length="100"/>
+			<property name="address" column="ADDRESS" type="string" length="255"/>
+			<property name="postcode" column="POSTCODE" type="string" length="50"/>
+			<property name="telephone" column="TELEPHONE" type="string" length="50"/>
+		</component>
+		
+		<component name="bank1" class="com.core.scpwms.server.domain.BankInfo">
+			<property name="bankName" column="BANK_NM" type="string" length="50"/>
+			<property name="brachName" column="BRACH_NM" type="string" length="50"/>
+			<property name="account" column="BANK_ACOUNT" type="string" length="50"/>
+		</component>
+		
+		<component name="bank2" class="com.core.scpwms.server.domain.BankInfo">
+			<property name="bankName" column="BANK_NM2" type="string" length="50"/>
+			<property name="brachName" column="BRACH_NM2" type="string" length="50"/>
+			<property name="account" column="BANK_ACOUNT2" type="string" length="50"/>
+		</component>
+		
+		<property name="description" type="string">
+			<column name="DESCRIPTION" length="255"/>
+		</property>
+
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+		<property name="disabled" column="DISABLED" type="boolean"/>
+	 </class>
+</hibernate-mapping>

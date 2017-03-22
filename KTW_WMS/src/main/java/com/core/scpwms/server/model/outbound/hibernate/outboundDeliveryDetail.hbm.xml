@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 <class name="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail" table="WMS_OUTBOUND_DELIVERY_DETAIL">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_outbounddeliverydetail</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<discriminator column="DISCRIMINATOR" type="string"/>
+	 	<version name="version" type="long" column="VERSION"/>
+	 	
+	 	<many-to-one name="obd" class="com.core.scpwms.server.model.outbound.OutboundDelivery">
+	 		<column name="OBD_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="owner" class="com.core.scpwms.server.model.user.Owner">
+            <column name="OWNER_ID" />
+        </many-to-one>
+	 	<many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku">
+	 		<column name="SKU_ID" />
+	 	</many-to-one>	 		 		 	
+	 	<many-to-one name="packageDetail" class="com.core.scpwms.server.model.common.PackageDetail">
+	 		<column name="PACKAGE_DETAIL_ID" />
+	 	</many-to-one>
+	 	
+	 	<property name="lineNo" column="LINE_NO" type="double"/>
+	 	<property name="subLineNo" column="SUB_LINE_NO" type="int"/>
+	 	<property name="status"  column="STATUS" type="long"/>
+	 	
+	 	<property name="caseQty"  column="CASE_QTY" type="double"/>
+	 	<property name="planQty"  column="PLAN_QTY" type="double"/>
+	 	<property name="allocateQty"  column="ALLOCATE_QTY" type="double"/>
+	 	<property name="pickUpQty"  column="PICKUP_QTY" type="double"/>
+	 	<property name="packedQty"  column="PACKED_QTY" type="double"/>
+	 	<property name="executeQty"  column="EXECUTE_QTY" type="double"/>
+	 	
+	 	<property name="extString1"  column="EXT_STRING1" type="string" length="1020"/>
+	 	<property name="extString2"  column="EXT_STRING2" type="string" length="50"/>
+	 	<property name="extString3"  column="EXT_STRING3" type="string" length="50"/>
+	 	<property name="extString4"  column="EXT_STRING4" type="string" length="50"/>
+	 	<property name="extString5"  column="EXT_STRING5" type="string" length="50"/>
+	 	<property name="extString6"  column="EXT_STRING6" type="string" length="50"/>
+	 	<property name="extString7"  column="EXT_STRING7" type="string" length="50"/>
+	 	<property name="extString8"  column="EXT_STRING8" type="string" length="50"/>
+	 	<property name="extString9"  column="EXT_STRING9" type="string" length="50"/>
+	 	<property name="extString10"  column="EXT_STRING10" type="string" length="50"/>
+	 	
+	 	<property name="extDouble1"  column="EXT_DOUBLE1" type="double"/>
+	 	<property name="extDouble2"  column="EXT_DOUBLE2" type="double"/>
+	 	<property name="extDouble3"  column="EXT_DOUBLE3" type="double"/>
+	 	<property name="extDouble4"  column="EXT_DOUBLE4" type="double"/>
+	 	<property name="extDouble5"  column="EXT_DOUBLE5" type="double"/>
+	 	<property name="extDouble6"  column="EXT_DOUBLE6" type="double"/>
+	 	
+	 	<property name="extPrice1"  column="EXT_PRICE1" type="double"/>
+	 	<property name="extPrice2"  column="EXT_PRICE2" type="double"/>
+	 	<property name="extPrice3"  column="EXT_PRICE3" type="double"/>
+	 	
+	 	<property name="stockDiv" column="STOCK_DIV" type="long" />
+	 	<property name="invStatus"  column="INV_STATUS" type="string" length="50"/>
+	 	<property name="expDate"  column="EXP_DATE" type="date" />
+	 	<property name="expDateMin"  column="EXP_DATE2" type="date" />
+	 	<property name="expDateMax"  column="EXP_DATE3" type="date" />
+	 	<property name="expDateUni"  column="EXP_DATE_UNI" type="date" />
+	 	<property name="canMixExp"  column="CAN_MIX_EXP" type="boolean"/>
+	 	<property name="description"  column="DESCRIPTION" type="string"/>
+	 	<property name="isReported" column="IS_REPORTED" type="boolean"/>
+	 	
+	 	<set name="tasks" table="WMS_WAREHOUSE_TASK" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="OBD_DETAIL_ID"/>
+            <one-to-many class="com.core.scpwms.server.model.task.WarehouseTask" />
+        </set>
+	 </class>
+</hibernate-mapping>

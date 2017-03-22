@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC
+        "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="userNameSession" class="com.core.scpwms.server.session.UserNameSession" parent="baseParamBean"/>
+	<bean id="userCodeSession" class="com.core.scpwms.server.session.UserCodeSession" parent="baseParamBean"/>
+	<bean id="warehouseSession" class="com.core.scpwms.server.session.WarehouseSession" parent="baseParamBean"/>
+	<bean id="warehouseInfoInClient" class="com.core.scpwms.server.session.WarehouseInfoInClient"/>
+	<bean id="userInfoInClient" class="com.core.scpwms.server.session.UserInfoInClient"/>
+</beans>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+ <report  id="inboundReport1" title="inboundReport1" reportFile="/report/inboundReport1" columnNum="8" parameter="ownerId,dateFrom,dateTo,userName=#{SESSION_USER_NAME}" >
+	<inputUIs>
+		<selectText id="ownerId" title="owner" displayedTableHead="ID,code,name" required="true">
+			<hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+			]]></hql>
+        </selectText>
+        <date id="dateFrom" title="etaFrom" showTime="false" defaultCurrentDate="true" required="true"/>
+        <date id="dateTo" title="etaTo" showTime="false" defaultCurrentDate="true" required="true"/>
+	</inputUIs>
+ </report>
+</pages>

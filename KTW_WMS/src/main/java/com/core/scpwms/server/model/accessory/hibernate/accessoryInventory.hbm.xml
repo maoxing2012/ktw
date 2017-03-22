@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	 
+	 <class name="com.core.scpwms.server.model.accessory.AccessoryInventory" table="WMS_ACCESSORY_INVENTORY">
+	 	<id name="id" column="ID" type="long">
+	 		<generator class="native">
+	 			<param name="sequence">wseq_accessory_inventory</param>
+	 			<param name="parameters">START WITH 1000</param>
+	 		</generator>
+	 	</id>
+	 	<version name="version" type="long" column="VERSION"/>
+	 	<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WH_ID"/>
+		</many-to-one>
+	 	<many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+	 		<column name="BIN_ID" />
+	 	</many-to-one>
+	 	<many-to-one name="accessory" class="com.core.scpwms.server.model.accessory.Accessory">
+            <column name="ACCESSORY_ID" />
+        </many-to-one>
+        
+	 	<property name="baseQty" column="BASE_QTY" type="double"/>
+	 	<property name="status" column="STATUS" type="string" length="50"/>
+	 </class>
+
+</hibernate-mapping>

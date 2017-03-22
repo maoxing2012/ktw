@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.quartz.QuartzExecuteLog" table="WMS_QUARTZ_EXECUTE_LOG">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_quartz_execute_log</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string" />
+        <many-to-one name="baseQuartzSetting" class="com.core.scpwms.server.model.quartz.BaseQuartzSetting">
+            <column name="BASE_QUARTZ_ID"/>
+        </many-to-one>
+        
+        <property name="insertDate" column="INSERT_DATE" type="timestamp" />
+        <property name="info1" column="INFO1" type="string" />
+        <property name="info2" column="INFO2" type="string" />
+        <property name="info3" column="INFO3" type="string" />
+        <property name="info4" column="INFO4" type="string" />
+        <property name="info5" column="INFO5" type="string" />
+        <property name="info6" column="INFO6" type="string" />
+        <property name="info7" column="INFO7" type="string" />
+        <property name="info8" column="INFO8" type="string" />
+        <property name="info9" column="INFO9" type="string" />
+        <property name="info10" column="INFO10" type="string" />
+    </class>
+</hibernate-mapping>

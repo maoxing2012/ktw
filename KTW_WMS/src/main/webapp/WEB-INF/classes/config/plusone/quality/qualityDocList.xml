@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="qualityDocList" title="qualityDocList"  autoQuery="false">
+		<search>
+            <inputUIs>
+            	<text id="qcNumber" title="qcNumber" trimSpace="true"/>
+            	<list id="status" title="title.status" enumType="EnuQualityDocStatus" returnType="long" multiple="true" defaultValue="100,200,210,300">
+					<hql><![CDATA[ SELECT  
+						e.enumValue,
+                        e.enumValue
+                        from Enumerate e
+                        where e.enumType='EnuQualityDocStatus'
+					]]></hql>
+			    </list>
+            </inputUIs>
+        </search>	
+		<datasource type="hql"><![CDATA[select  
+doc.id, 
+doc.docSequence,
+doc.status,
+doc.orderType.name,
+doc.autoDiv,
+doc.planQty,
+doc.availableQty,
+doc.unAvailableQty,
+doc.returnFactoryQty,
+doc.repairQty,
+doc.sampleQty,
+doc.discardQty,
+doc.planPutawayQty,
+doc.putawayQty,
+doc.description 
+from QualityDoc doc   
+where 1=1
+and doc.wh = #{SESSION_WAREHOUSE} 
+/~qcNumber: and doc.docSequence like {qcNumber}~/
+/~status: and doc.status = {status}~/
+		]]></datasource>
+	    <columns>
+			<column id="doc.id" title="ID" visible="false" />
+			<column id="doc.docSequence" title="qcNumber"/>
+			<column id="doc.status" title="title.status" format="enumFormat" formatParam="EnuQualityDocStatus"/>
+			<column id="doc.orderType.name" title="orderType"/>
+			<column id="doc.autoDiv" title="createAuto" format="enumFormat" formatParam="BooleanTypeY"/>
+			<column id="doc.planQty" title="qcPlanQty"/>
+			<column id="doc.availableQty" title="availableQty"/>
+			<column id="doc.unAvailableQty" title="unAvailableQty"/>
+			<column id="doc.returnFactoryQty" title="returnFactoryQty"/>
+			<column id="doc.repairQty" title="repairQty"/>
+			<column id="doc.sampleQty" title="sampleQty"/>
+			<column id="doc.discardQty" title="discardQty"/>
+			<column id="doc.planPutawayQty" title="planPutawayQty"/>
+			<column id="doc.putawayQty" title="putawayQty"/>
+			<column id="doc.description" title="title.desc"/>
+	    </columns>
+	    <buttons>
+	        <popup id="new" title="new"  enableType="none" containId="false" pageId="qualityDocEdit" iconUrl="new"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="qualityDocEdit" iconUrl="edit">
+                <enableExpression><![CDATA[(${doc.status}==@{EnuQualityDocStatus.100})]]></enableExpression>
+            </popup> 
+			<commit id="publish" title="publish" enableType="multi" confirmMessage="publish.confirmMessage" iconUrl="action">
+				<enableExpression><![CDATA[(${doc.status}==@{EnuQualityDocStatus.100} && ${doc.planQty}-0> 0)]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="qualityDocManager" methodName="publish" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="cancel" title="cancel" enableType="multi"  confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${doc.status} == @{EnuQualityDocStatus.100} || ${doc.status} == @{EnuQualityDocStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"/>
+                </mappings>
+                <actions>
+                    <action managerName="qualityDocManager" methodName="cancel" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+			<commit id="close" title="close" enableType="multi"  confirmMessage="close.confirmMessage" iconUrl="cancel">
+				<enableExpression><![CDATA[${doc.status} == @{EnuQualityDocStatus.300}]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="qualityDocManager" methodName="close" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<popup id="creatPutPlan" title="creatPutPlan"  enableType="single" containId="true" pageId="qualityCreatePutawayDoc" iconUrl="action">
+                 <enableExpression><![CDATA[(${doc.status} == @{EnuQualityDocStatus.999}||${doc.status} == @{EnuQualityDocStatus.300})]]></enableExpression>
+            </popup>
+			<popup id="view" title="view"  enableType="single" containId="true" pageId="qualityDocView" iconUrl="view"/>
+			<popup id="statusView" title="statusView"  enableType="single" containId="true" pageId="qualityDocStatusView" iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages> 

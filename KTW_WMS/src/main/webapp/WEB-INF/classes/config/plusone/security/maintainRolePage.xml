@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <maintainPage id="maintainRolePage" title="maintainRolePage" filterCol="true">
+		 <search>
+			 <inputUIs>
+				 <text id="role.code" title="role.code" trimSpace="true"/>
+				 <text id="role.name" title="role.name" trimSpace="true"/>
+			 </inputUIs>
+		 </search>
+	 <datasource type="hql"><![CDATA[select 
+role.id, 
+role.code, 
+role.name 
+from Role role 
+where 1=1
+/~role.code:and role.code like {role.code} ~/
+/~role.name:and role.name like {role.name} ~/]]></datasource>
+		 <columns>
+			 <column id="role.id" title="ID" visible="false"/>
+			 <column id="role.code" title="role.code" typeId="role.code"/>
+			 <column id="role.name" title="role.name" typeId="role.name"/>
+		 </columns>
+		 <buttons>
+			 <popup id="new" title="new" enableType="none" containId="false" pageId="editRolesPage" iconUrl="add"/>
+			 <popup id="modify" title="modify" enableType="single" containId="true" pageId="editRolesPage" iconUrl="edit"/>
+			 <commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				 <mappings>
+				 	<mapping id="ids" className="list"/>
+				 </mappings>
+				 <actions>
+				 	<action managerName="roleManager" methodName="deleteRoles" parameter="ids"/>
+				 </actions>
+				 <forwards>
+				 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				 </forwards>
+			 </commit>
+		 </buttons>
+	 </maintainPage>
+</pages>

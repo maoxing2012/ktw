@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 大バッチピッキングリスト(冷蔵) -->
+<pages>
+	 <reportPopupPage id="batchPickList4C" title="大バッチピッキングリスト(冷蔵)" reportFile="/report/batchPickList" parameter="ids,tempDiv=2" width="900" height="600" mode=""/>
+</pages>

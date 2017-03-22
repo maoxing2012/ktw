@@ -1,0 +1,236 @@
+.interactImageHover {
+    font-family:宋体;
+    font-size:12px;
+    border:1px solid #808080;
+    padding:5px;
+    background-color:#b8d0ff;
+    color:black;
+    font-weight: bold;
+}
+.sgwtTitle {
+    font-family:宋体;
+    color:#454545;
+    font-size:16px;
+    font-weight: bold;
+    color:black;
+}
+.common_readonly_textFocused{
+	background: url("./images/default/form/text-bg-readonly.gif") repeat scroll 0 0 #FFFFFF !important;
+}
+body { 
+	overflow:hidden 
+}
+#loading {
+    border: 1px solid #ccc;
+    position: absolute;
+    left: 45%;
+    top: 40%;
+    padding: 2px;
+    z-index: 20001;
+    height: auto;
+}
+
+#loading a {
+    color: #225588;
+}
+
+#loading .loadingIndicator {
+    background: white;
+    font: bold 13px tahoma, arial, helvetica;
+    padding: 10px;
+    margin: 0;
+    height: auto;
+    color: #444;
+}
+
+#loadingMsg {
+    font: normal 8px arial, tahoma, sans-serif;
+}
+
+
+
+/*------------------------------------------------------------
+		listGrid.scpcell
+------------------------------------------------------------*/
+.scpcell,
+.scpcellDark,
+.scpcellOver,
+.scpcellOverDark,
+.scpcellSelected,
+.scpcellSelectedDark,
+.scpcellSelectedOver,
+.scpcellSelectedOverDark,
+.scpcellDisabled,
+.scpcellDisabledDark,
+.tallCell,
+.tallCellDark,
+.tallCellOver,
+.tallCellOverDark,
+.tallCellSelected,
+.tallCellSelectedDark,
+.tallCellSelectedOver,
+.tallCellSelectedOverDark,
+.tallCellDisabled,
+.tallCellDisabledDark,
+.gridSummaryCell,
+.gridSummaryCellDisabled,
+.groupSummaryCell,
+.groupSummaryCellDisabled,
+.recordSummaryCell,
+.recordSummaryCellDark,
+.recordSummaryCellOver,
+.recordSummaryCellOverDark,
+.recordSummaryCellSelected,
+.recordSummaryCellSelectedDark,
+.recordSummaryCellSelectedOver,
+.recordSummaryCellSelectedOverDark,
+.recordSummaryCellDisabled,
+.recordSummaryCellDisabledDark,
+.expansionCellCell,
+.expansionCellCellDark,
+.expansionCellCellOver,
+.expansionCellCellOverDark,
+.expansionCellCellSelected,
+.expansionCellCellSelectedDark,
+.expansionCellCellSelectedOver,
+.expansionCellCellSelectedOverDark,
+.expansionCellCellDisabled,
+.expansionCellCellDisabledDark,
+.specialCol,
+.specialColOver,
+.specialColSelected,
+.specialColSelectedOver,
+.specialColDisabled,
+.groupNode {
+	font-family:Arial,Verdana,sans-serif; font-size:11px; text-overflow:ellipsis;
+	color:black;
+    border-top: 1px solid #FAFAFA;
+    border-bottom:1px solid #EDEDED;
+}
+
+.specialCol {
+	font-family:Arial,Verdana,sans-serif; font-size:11px; text-overflow:ellipsis;
+	color:black;
+    background-color:#fafafa;
+}
+
+.tallCell,
+.tallCellDark,
+.tallCellOver,
+.tallCellOverDark,
+.tallCellSelected,
+.tallCellSelectedDark,
+.tallCellSelectedOver,
+.tallCellSelectedOverDark,
+.tallCellDisabled,
+.tallCellDisabledDark {
+
+ }
+.scpcellDark,
+.recordSummaryCell,
+.recordSummaryCellDark {
+    background-color:#fafafa;
+}
+.groupSummaryCell,
+.groupSummaryCellDisabled {
+    border-top:1px solid gray;
+    border-bottom:1px solid gray;
+    background-color:#ececec;
+}
+
+.gridSummaryCell,
+.gridSummaryCellDisabled {
+    border-top-width:0px;
+    border-bottom-width:0px;
+    background-color:#ececec;
+}
+.summaryRowBody {
+    background-color:#ececec;
+}
+
+.tallCellDark {
+    border-top: 1px solid #FAFAFA;
+	background-color:#fafafa;
+}
+.scpcellOver,
+.scpcellOverDark,
+.specialColOver,
+.recordSummaryCellOver,
+.recordSummaryCellOverDark {
+    background:#FFFFFF url(./images/ListGrid/row_Over.png) repeat-x bottom left scroll;
+}
+.tallCellOver,
+.tallCellOverDark {
+    background-color:#daecff;
+    border-top: 1px dotted #c5e0ff;
+    border-bottom: 1px dotted #c5e0ff;  
+}
+
+.scpcellSelected,
+.scpcellSelectedDark,
+.specialColSelected,
+.recordSummaryCellSelected,
+.recordSummaryCellSelectedDark {
+    background:#c0ffc0;
+    border-top: 1px dotted #9fb7e9;
+    border-bottom: 1px dotted #9fb7e9;
+}
+
+.tallCellSelected,
+.tallCellSelectedDark {
+    background:#c0ffc0;
+    border-top: 1px dotted #9fb7e9;
+    border-bottom: 1px dotted #9fb7e9;    
+}
+.scpcellSelectedOver,
+.scpcellSelectedOverDark,
+.specialColSelectedOver,
+.recordSummaryCellSelectedOver,
+.recordSummaryCellSelectedOverDark {
+    background:#d0dff6 url(images/ListGrid/row_Over_Selected.png) repeat-x bottom left scroll;
+    border-top: 1px dotted #9fb7e9;
+    border-bottom: 1px dotted #9fb7e9;     
+}
+
+.tallCellSelectedOver,
+.tallCellSelectedOverDark {
+	background-color:#bfdcf9;
+    border-top: 1px dotted #c5e0ff;
+    border-bottom: 1px dotted #c5e0ff;    
+}
+.groupSummaryCell,
+.groupSummaryCellDisabled,
+.gridSummaryCell,
+.gridSummaryCellDisabled {
+    font-weight:bold;
+}
+
+.scpcellDisabled,
+.scpcellDisabledDark,
+.specialColDisabled,
+.tallCellDisabled,
+.tallCellDisabledDark,
+.groupSummaryCellDisabled,
+.gridSummaryCellDisabled,
+.specialColDisabled,
+.recordSummaryCellDisabled,
+.recordSummaryCellDisabledDark {
+	color:#AAAAAA;
+	background-color:#FFFFFF;
+}
+
+/* for grouping */
+.groupNode {
+    font-weight:bold;
+    font-family:Tahoma,Verdana,sans-serif;
+	color:#3764a3;
+    border-bottom: 1px solid #8299b8;
+}
+
+
+
+
+
+
+
+

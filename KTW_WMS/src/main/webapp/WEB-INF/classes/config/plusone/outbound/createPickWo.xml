@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="createPickWo" title="createPickWo" entityClass="com.core.scpwms.server.model.outbound.OutboundDelivery" onClose="refreshParent" width="300"  height="250" columnNum="8">
+		<inputUIs>
+		    <hidden id="outboundDelivery.id" />
+		    <checkbox id="createIfAllAllocate" title="createIfAllAllocate" defaultValue="false" foreOverride="true"/>
+		</inputUIs>
+		<buttons>
+			<commit id="createPickWo" title="createPickWo" enableType="none" confirmMessage="createPickWo.confirmMessage" iconUrl="action">
+				<mappings>
+				    <mapping id="outboundDeliveryList.ids" className="list" />
+				    <mapping id="createIfAllAllocate" className="boolean" />
+				</mappings>
+				<actions>
+					<action managerName="warehouseOrderManager" methodName="createPickWoFromObd" parameter="outboundDeliveryList.ids, createIfAllAllocate" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+		</buttons>
+	</editPage>
+</pages>

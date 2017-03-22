@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="plantList" title="plantList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="plant.code" title="plant.code" trimSpace="true" />
+				<text id="plant.name" title="plant.name" trimSpace="true" />
+				<list id="plant.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN'  
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+plant.id,
+plant.code,
+plant.name,
+plant.shortName,
+plant.disabled,
+plant.description,
+plant.contractInfo.linkman,
+plant.contractInfo.mobile,
+plant.contractInfo.phone,
+plant.contractInfo.fax,
+plant.contractInfo.email,
+plant.contractInfo.postcode,
+plant.contractInfo.address,
+plant.contractInfo.addressExt
+from Plant plant 
+where 1=1 
+and plant.wh = #{SESSION_WAREHOUSE} 
+/~plant.code: and plant.code like {plant.code}~/ 
+/~plant.name: and plant.name like {plant.name}~/ 
+/~plant.disabled: and plant.disabled = {plant.disabled}~/ 
+ 		]]></datasource>
+		<columns>
+			<column id="plant.id" title="ID" visible="false"/>
+			<column id="plant.code" title="plant.code" />
+			<column id="plant.name" title="plant.name" />
+			<column id="plant.shortName" title="title.shortName" />
+			<column id="plant.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />
+			<column id="plant.description" title="title.desc" />
+			<column id="plant.contractInfo.linkman" title="contractInfo.linkman" />
+			<column id="plant.contractInfo.mobile" title="contractInfo.mobile" />
+			<column id="plant.contractInfo.phone" title="contractInfo.phone" />
+			<column id="plant.contractInfo.fax" title="contractInfo.fax" />
+			<column id="plant.contractInfo.email" title="contractInfo.email" />
+			<column id="plant.contractInfo.postcode" title="contractInfo.postcode" />	
+			<column id="plant.contractInfo.address" title="contractInfo.address1" />
+			<column id="plant.contractInfo.addressExt" title="contractInfo.address2" />
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="plantEdit"  iconUrl="new"/>
+			<popup id="edit" title="modify" enableType="single" containId="true" pageId="plantEdit" iconUrl="edit">
+				<enableExpression><![CDATA[(${plant.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+			</popup>
+			<commit id="enable" title="enable" pageLocale="false" enableType="multi" iconUrl="enable" >
+				<enableExpression><![CDATA[(${plant.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="plantManager" methodName="active" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="disable" title="disable" enableType="multi" iconUrl="disable">
+				<enableExpression><![CDATA[(${plant.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list">
+						<entries />
+					</mapping>
+				</mappings>
+				<actions>
+					<action managerName="plantManager" methodName="unActive" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${plant.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="plantManager" methodName="deletePlant" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<popup id="view" title="view" enableType="single" containId="true" pageId="plantView"  iconUrl="view"/>
+		</buttons>
+	</maintainPage>
+</pages>

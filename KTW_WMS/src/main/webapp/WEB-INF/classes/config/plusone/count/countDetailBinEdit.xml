@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<maintainPage id="countDetailBinEdit" title="countDetailBinEdit" width="550" height="400" columnNum="6" autoQuery="true">
+		<search>
+			<inputUIs>
+				<hidden id="countPlan.id"/>
+                <text id="bin.binCode" title="bin.code"  trimSpace="true" lastElement="true"/>
+                <numberText id="aisle" title="aisle"  validator="positiveInteger" returnType="Integer"/>
+                <numberText id="stack" title="stack"  validator="positiveInteger" returnType="Integer" lastElement="true"/>
+                <numberText id="level" title="level"  validator="positiveInteger" returnType="Integer"/>
+                <numberText id="depth" title="depth"  validator="positiveInteger" returnType="Integer"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select  
+bin.id,
+bin.binCode,
+bin.aisle,
+bin.stack,
+bin.level,
+bin.depth
+from Bin bin 
+where 1=1 
+and bin.wh = #{SESSION_WAREHOUSE} 
+and bin.disabled = false
+and bin.lockStatus is null
+and bin.storageType.role in ('R1000','R3000','R4040') 
+and bin.id not in(select countDetail.bin.id 
+ 	from CountDetail countDetail 
+ 	left join countDetail.countPlan 
+ 	left join countDetail.bin 
+ 	where 1=1 
+ 	and countDetail.countPlan.id={countPlan.id})
+/~bin.binCode: and bin.binCode like {bin.binCode}~/
+/~aisle: and bin.aisle = {aisle}~/ 
+/~stack: and bin.stack = {stack}~/ 
+/~level: and bin.level = {level}~/ 
+/~depth: and bin.depth = {depth}~/ 
+ 		]]></datasource>
+		<columns>
+			<column id="bin.id" title="ID" visible="false"  />
+			<column id="bin.binCode" title="bin"/>
+			<column id="bin.aisle" title="aisle"/>
+			<column id="bin.stack" title="stack"/>
+			<column id="bin.level" title="level"/>
+			<column id="bin.depth" title="depth"/>
+		</columns>
+		<buttons>
+			<commit id="save" title="save" enableType="multi" iconUrl="save">
+					<mappings>
+                    	<mapping id="ids" className="list"/>
+                    	<mapping id="countPlan.id" className="long" />
+					</mappings>
+					<actions>
+						<action managerName="countPlanManager" methodName="saveBinDetail" parameter="ids,countPlan.id" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+		</buttons>
+	</maintainPage>
+</pages>

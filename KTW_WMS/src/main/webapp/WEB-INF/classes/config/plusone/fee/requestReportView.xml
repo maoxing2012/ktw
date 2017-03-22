@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="requestReportView" title="requestReportView" autoQuery="true" width="1000" height="550">
+		<search>
+			<inputUIs>
+			    <text id="sku" title="sku.code" trimSpace="true" isPrecision="true"/>
+			    <list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql">
+            <![CDATA[select 
+detail.id,
+detail.sku.code,
+detail.sku.name,
+detail.sku.tempDiv,
+detail.termNum,
+
+detail.prevQty1,
+detail.inboundQty1,
+detail.outboundQty1,
+detail.adjustInQty1,
+detail.adjustOutQty1,
+detail.prevQty2,
+detail.inboundQty2,
+detail.outboundQty2,
+detail.adjustInQty2,
+detail.adjustOutQty2,
+detail.prevQty3,
+detail.inboundQty3,
+detail.outboundQty3,
+detail.adjustInQty3,
+detail.adjustOutQty3,
+
+detail.unitWeight,
+detail.unitVolume,
+
+detail.feeType4Stock.unit,
+detail.feeType4Stock.fee,
+detail.storagePrice,
+
+detail.feeType4In.unit,
+detail.feeType4In.fee,
+detail.inboundPrice,
+
+detail.feeType4Out.unit,
+detail.feeType4Out.fee,
+detail.outboundPrice,
+
+detail.prevQty1+detail.inboundQty1+detail.adjustInQty1-detail.adjustOutQty1
++detail.prevQty2+detail.inboundQty2+detail.adjustInQty2-detail.adjustOutQty2
++detail.prevQty3+detail.inboundQty3+detail.adjustInQty3-detail.adjustOutQty3 as stockQty,
+detail.inboundQty1+detail.inboundQty2+detail.inboundQty3 as inboundQty,
+detail.outboundQty1+detail.outboundQty2+detail.outboundQty3 as outboundQty,
+
+detail.storagePrice * (detail.prevQty1+detail.inboundQty1+detail.adjustInQty1-detail.adjustOutQty1
++detail.prevQty2+detail.inboundQty2+detail.adjustInQty2-detail.adjustOutQty2
++detail.prevQty3+detail.inboundQty3+detail.adjustInQty3-detail.adjustOutQty3
+) as stockAmount,
+detail.inboundPrice * (detail.inboundQty1+detail.inboundQty2+detail.inboundQty3) as inboundAmount,
+detail.outboundPrice * (detail.outboundQty1+detail.outboundQty2+detail.outboundQty3) as outboundAmount
+
+from RequestReportDetail detail
+left join detail.feeType4Stock
+left join detail.feeType4In
+left join detail.feeType4Out
+where 1=1 
+and detail.head.id={requestReport.ids} 
+/~sku: and detail.sku.code like {sku}~/ 
+/~tempDiv: and detail.sku.tempDiv = {tempDiv}~/
+		]]></datasource>
+		<columns>
+			<column id="detail.id" title="ID" visible="false"  />
+			<column id="detail.sku.code" title="obdNumber" />
+			<column id="detail.sku.name" title="custBillNo" />
+			<column id="detail.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv"/>
+			<column id="detail.termNum" title="期"/>
+			<column id="detail.prevQty1" title="1期前残"/>
+			<column id="detail.inboundQty1" title="1期入庫数"/>
+			<column id="detail.outboundQty1" title="1期出庫数"/>
+			<column id="detail.adjustInQty1" title="1期調整入庫数"/>
+			<column id="detail.adjustOutQty1" title="1期調整出数"/>
+			
+			<column id="detail.prevQty2" title="2期前残"/>
+			<column id="detail.inboundQty2" title="2期入庫数"/>
+			<column id="detail.outboundQty2" title="2期出庫数"/>
+			<column id="detail.adjustInQty2" title="2期調整入庫数"/>
+			<column id="detail.adjustOutQty2" title="2期調整出数"/>
+			
+			<column id="detail.prevQty3" title="3期前残"/>
+			<column id="detail.inboundQty3" title="3期入庫数"/>
+			<column id="detail.outboundQty3" title="3期出庫数"/>
+			<column id="detail.adjustInQty3" title="3期調整入庫数"/>
+			<column id="detail.adjustOutQty3" title="3期調整出数"/>
+			
+			<column id="detail.unitWeight" title="商品重量"/>
+			<column id="detail.unitVolume" title="商品容積"/>
+			
+			<column id="detail.feeType4Stock.unit" title="保管料単価単位" format="enumFormat" formatParam="EnuFeeUnit"/>
+			<column id="detail.feeType4Stock.fee" title="保管料単価"/>
+			<column id="detail.storagePrice" title="保管料単価(PS)"/>
+			
+			<column id="detail.feeType4In.unit" title="入荷荷役料単価単位" format="enumFormat" formatParam="EnuFeeUnit"/>
+			<column id="detail.feeType4In.fee" title="入荷荷役料単価"/>
+			<column id="detail.inboundPrice" title="入荷荷役料単価(PS)"/>
+			
+			<column id="detail.feeType4Out.unit" title="出荷荷役料単価単位" format="enumFormat" formatParam="EnuFeeUnit"/>
+			<column id="detail.feeType4Out.fee" title="出荷荷役料単価"/>
+			<column id="detail.outboundPrice" title="出荷荷役料単価(PS)"/>
+			
+			<column id="stockQty" title="保管数"/>
+			<column id="inboundQty" title="入庫数"/>
+			<column id="outboundQty" title="出庫数"/>
+			
+			<column id="stockAmount" title="保管料"/>
+			<column id="inboundAmount" title="入庫料"/>
+			<column id="outboundAmount" title="出庫料"/>
+
+		</columns>
+		<buttons>
+		</buttons>
+	</maintainPage>
+</pages>

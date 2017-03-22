@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="invNew" title="invNew" entityClass="com.core.scpwms.server.model.inventory.Inventory"  columnNum="4" onClose="refreshParent" width="200">
+        <inputUIs>
+            <hidden id="inv.id" />
+            <selectText id="ownerId" title="owner" required="true" displayedTableHead="ID,Code,Name">
+				<hql><![CDATA[ SELECT  
+owner.id, 
+owner.code,
+owner.name   
+FROM Owner owner  
+WHERE owner.disabled = false 
+and owner.plant.wh =#{SESSION_WAREHOUSE} 
+		 				]]></hql> 
+		 		<eventListeners>
+                    <eventListener id="skuId" index="1" refreshUI="true"/>
+                </eventListeners>
+			</selectText>
+			<selectText id="skuId" title="sku.code" required="true" displayedTableHead="ID,Code,Name" displayColumn="2">
+                <hql><![CDATA[ SELECT 
+sku.id,
+sku.code,
+sku.name,
+sku.specs,
+sku.properties.packageInfo.p1000.name
+FROM Sku sku 
+WHERE sku.disabled = false 
+and sku.stockDiv = 1
+AND sku.owner.id = {ownerId} 
+                ]]></hql>
+                <eventListeners>
+                    <eventListener id="sku.name" index="3" refreshUI="true"/>
+                    <eventListener id="specs" index="4" refreshUI="true"/>
+                    <eventListener id="packageName" index="5" refreshUI="true"/>
+                </eventListeners>
+            </selectText>
+            <text id="sku.name" title="sku.name" readOnly="true" span="3" width="358" />
+            <text id="specs" title="specs" readOnly="true"/>
+            <text id="packageName" title="p1000.name" readOnly="true"/>
+            <numberText id="qty" title="qty" required="true" returnType="double"/>
+            <date id="expDate" title="expDate" required="true" showTime="false"/>
+            <list id="invStatus" title="invStatus" enumType="EnuInvStatus" required="true">
+                <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where e.enumType = 'EnuInvStatus'
+                ]]></hql>
+            </list>
+            <selectText id="binId" title="bin" required="true" displayedTableHead="ID,Code,title.desc" displayColumn="2">
+                <hql><![CDATA[ SELECT
+bin.id,
+bin.binCode,
+bin.description 
+FROM Bin bin
+WHERE bin.disabled = '0'
+and (bin.lockStatus is null or bin.lockStatus = 'LOCK_T2' )
+and bin.storageType.role <> 'R8020'
+and bin.wh =#{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </selectText>
+            <textArea id="desc" title="title.desc" required="true" trimSpace="true" rows="30" cols="350" span="3"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" confirmMessage="newInv.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="ownerId" className="long"/>
+                    <mapping id="skuId" className="long"/>
+                    <mapping id="binId" className="long"/>
+                    <mapping id="invStatus" className="string"/>
+                    <mapping id="expDate" className="date"/>
+                    <mapping id="qty" className="double"/>
+                    <mapping id="desc" className="string"/>
+                </mappings>
+                <actions>
+                    <action managerName="invManager"  methodName="newInv"  parameter="ownerId,skuId,binId,invStatus,expDate,qty,desc" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

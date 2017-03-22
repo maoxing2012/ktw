@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.user.InboundArea" table="WMS_INBOUND_AREA">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_inbound_area</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		
+		<property name="code" column="CODE" type="string" not-null="true" length="50"/>
+		<property name="country" column="COUNTRY" type="string" length="50" />
+		<property name="province" column="PROVINCE" type="string" length="50" />
+		<property name="city" column="CITY" type="string" length="50" />
+		<property name="zipCodeStart" column="ZIP_CODE_START" type="long"/>
+		<property name="zipCodeEnd" column="ZIP_CODE_END" type="long" />
+	 	
+	 	<many-to-one name="shipBin" class="com.core.scpwms.server.model.warehouse.Bin">
+	 		<column name="SHIP_BIN_ID" />
+	 	</many-to-one>	 
+	 	
+	 	<property name="disabled" column="DISABLED" type="boolean"/>
+	 	<property name="description" column="DESCRIPTION" type="string"/>
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>    
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>		
+	</class>
+</hibernate-mapping>
+
+

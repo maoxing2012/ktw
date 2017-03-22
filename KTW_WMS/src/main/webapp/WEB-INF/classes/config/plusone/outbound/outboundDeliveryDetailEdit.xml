@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="outboundDeliveryDetailEdit" title="outboundDeliveryDetailEdit" entityClass="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail" width="400" height="300" >
+    	<inputUIs>			
+			<hidden id="outboundDetail.id" />
+			<selectText id="outboundDetail.sku.id" title="sku.code" editModel="uneditable" required="true" displayedTableHead="ID,Code,Name,specs" displayColumn="2" >
+				<hql><![CDATA[ SELECT 
+sku.id,
+sku.code,
+sku.name,
+sku.specs 
+FROM Sku sku 
+WHERE sku.disabled = false 
+AND sku.owner.id = {outboundDelivery.owner.id} 
+				]]></hql>
+				<eventListeners>
+					<eventListener id="outboundDetail.sku.name" index="3" refreshUI="true"/>
+					<eventListener id="outboundDetail.packageDetail.id" index="1" refreshUI="true"/>
+				</eventListeners>
+			</selectText>
+			<text id="outboundDetail.sku.name" title="sku.name" readOnly="true"/>
+			<list id="outboundDetail.packageDetail.id" title="p1000.name" required="true">
+	            <hql><![CDATA[ SELECT 
+pd.id,
+pd.name 
+FROM 
+PackageDetail pd 
+WHERE pd.packageLevel= 'PK1000'
+AND pd.packageInfo.id= (select sku.properties.packageInfo.id from Sku sku where sku.id = {outboundDetail.sku.id}) 
+				]]></hql>
+            </list> 
+            <numberText id="outboundDetail.planQty" title="planQty" required="true"/>
+            <list id="outboundDetail.invStatus" title="invStatus" required="true" enumType="EnuInvStatus">
+				<hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvStatus'
+				]]></hql>
+			</list>
+			<date id="outboundDetail.expDateUni" title="expDate" showTime="false"/>
+		</inputUIs>
+		<buttons>
+		<commit id="save" title="save" enableType="none" iconUrl="save" >
+				<mappings>
+					<mapping id="outboundDelivery.id" className="long" />
+					<mapping id="outboundDetail" className="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail" />
+				</mappings>
+				<actions>
+					<action managerName="outboundDeliveryManager" methodName="saveDetail" parameter="outboundDelivery.id,outboundDetail" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+		</commit>
+		</buttons>
+    </editPage>
+</pages>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="laborGroupEdit" title="laborGroupEdit" entityClass="com.core.scpwms.server.model.warehouse.LaborGroup" width="600" height="500" onClose="refreshParent">
+	   <modify>
+	        <inputUIs>
+	            <hidden id="laborGroup.id" />
+	            <text id="laborGroup.code" title="lg.code" required="true" trimSpace="true" editModel="uneditable"/>
+	            <text id="laborGroup.name" title="lg.name" required="true" trimSpace="true"/>
+	            <list id="laborGroup.role" title="process.type" required="true" enumType="EnuLaborGroupType" returnType="string">
+	              <hql><![CDATA[ SELECT 
+	                  e.enumValue,
+	                  e.enumValue 
+	                  From Enumerate e 
+	                  where e.enumType = 'EnuLaborGroupType' 
+	                  order by e.enumValue
+	              ]]></hql>
+	            </list>
+	        </inputUIs>
+	        <buttons>
+	            <commit id="save" title="save" enableType="none" iconUrl="save">
+	                <mappings>
+	                    <mapping id="lg" className="com.core.scpwms.server.model.warehouse.LaborGroup"/>
+	                </mappings>
+	                <actions>
+	                    <action managerName="laborGroupManager" methodName="store" parameter="lg"/>
+	                </actions>
+	                <forwards>
+	                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+                        <forward name="closeWindow" newEnabled="false" editEnabled="false"/>
+	                </forwards>
+	            </commit>
+	        </buttons>
+        </modify>
+	        
+        <detail>
+            <datasource><![CDATA[SELECT   
+lgl.labor.id,
+lgl.labor.code,
+lgl.labor.name 
+from LaborGroupLabor lgl 
+where 1=1 
+and lgl.group.id = {laborGroup.id}
+            ]]></datasource>
+            <columns>
+                <column id="lgl.labor.id" title="ID" visible="false"/>
+                <column id="lgl.labor.code" title="labor.code"/>
+                <column id="lgl.labor.name" title="labor.name"/>
+            </columns>
+            <buttons>
+                <popup id="add" title="add" enableType="none" containId="false" pageId="groupAddLabor"  iconUrl="new">
+                    <enableExpression><![CDATA[(${laborGroup.id}>0)]]></enableExpression>
+                </popup>
+                <commit id="delete" title="delete" enableType="multi"  containId="true" iconUrl="delete">
+                    <mappings>
+                        <mapping id="laborGroup.id" className="long"/>
+                        <mapping id="ids" className="list"/>
+                    </mappings>
+                    <actions>
+                        <action managerName="laborManager" methodName="deleteLaborFromLaborGroup" parameter="laborGroup.id,ids"/>
+                    </actions>
+                    <forwards>
+                        <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+                        <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    </forwards>
+                </commit>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

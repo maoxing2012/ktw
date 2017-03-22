@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="shipBatchConfirm" title="shipBatchConfirm" entityClass="com.core.scpwms.server.model.outbound.OutboundDeliveryDetail" width="300"  height="150" columnNum="8">
+        <inputUIs>
+            <hidden id="obdDetail.id" />
+            <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role='SHIP'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" confirmMessage="shipConfirm.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="shipConfirm.ids" className="list" />
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+					<action managerName="outboundDeliveryManager" methodName="shipBatchConfirm" parameter="shipConfirm.ids,labor" />
+                    <!-- <action managerName="outboundManager" methodName="shipFromObd" parameter="shipConfirm.ids,checkLabor,labor,freeStatus" /> -->
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

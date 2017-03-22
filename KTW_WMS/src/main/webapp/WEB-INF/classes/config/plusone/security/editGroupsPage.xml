@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <modifyDetailPage id="editGroupsPage" title="editGroupsPage" entityClass="com.core.business.model.security.Group" onClose="refreshParent" width="550" height="450">
+		 <modify>
+			 <inputUIs>
+				 <hidden id="group.id" />
+				 <text id="group.code" title="group.code" length="16" required="true" trimSpace="true" editModel="uneditable"/>
+				 <text id="group.name" title="group.name" length="33" required="true" trimSpace="true"/>
+			 </inputUIs>
+			 <buttons>
+				 <commit id="save" title="save" enableType="none" iconUrl="save">
+					 <forwards>
+						 <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+						 <forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					 </forwards>
+				 </commit>
+			 </buttons>
+		 </modify>
+		 <detail autoQuery="false">
+			 <datasource><![CDATA[select 
+role.id, 
+role.code, 
+role.name 
+from Role role , Group g
+where 1=1 
+and role in elements(g.roles)
+/~group.id:AND g.id = {group.id} ~/
+			 ]]></datasource>
+			 <columns>
+				 <column id="role.id" title="ID" visible="false"/>
+				 <column id="role.code" title="role.code"/>
+				 <column id="role.name" title="role.name"/>
+			 </columns>
+			 <buttons>
+				 <popup id="add" title="add" enableType="none" containId="false" pageId="addGroupRole" iconUrl="add">
+				 	<enableExpression><![CDATA[(${group.id} > 0)]]></enableExpression>
+				 </popup>
+				 <commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+					 <mappings>
+						 <mapping id="group.id" className="long"/>
+						 <mapping id="ids" className="list"/>
+					 </mappings>
+					 <actions>
+					 	<action managerName="roleManager" methodName="removeGroupRoles" parameter="group.id,ids"/>
+					 </actions>
+					 <forwards>
+					 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					 </forwards>
+				 </commit>
+			 </buttons>
+		 </detail>
+	 </modifyDetailPage>
+</pages>

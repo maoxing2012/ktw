@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="outboundDeliveryList" title="outboundDeliveryList" autoQuery="false" useSum="true">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+			    <text id="obdNumber" title="obdNumber" trimSpace="true" />
+			    <text id="custBillNo" title="custBillNo" trimSpace="true" />
+				<list id="status" title="title.status" enumType="EnuOutboundDeliveryStatus" returnType="long" multiple="true"  defaultValue="100,200,210,310,400,710,800,840,850,860">
+                    <hql><![CDATA[ SELECT
+e.enumValue,
+e.enumValue
+FROM Enumerate e
+WHERE  e.enumType = 'EnuOutboundDeliveryStatus'
+                    ]]></hql>
+                </list>
+                <list id="reportStatus" title="reportStatus" enumType="EnuAsnReportStatus" returnType="long" multiple="true" >
+                    <hql><![CDATA[ select 
+                        en.enumValue,
+                        en.enumValue
+                        from Enumerate en
+                        where  en.enumType='EnuAsnReportStatus' ]]>
+                    </hql>
+                </list>
+				<list id="orderType" title="orderType" returnType="long">
+					<hql><![CDATA[ SELECT
+ot.id,
+ot.name
+FROM OrderType ot
+WHERE ot.disabled = false 
+and ot.processType='M3000'
+						]]></hql>
+				</list>
+				<date id="etdFrom" title="etdFrom" showTime="false" />
+				<date id="etdTo" title="etdTo" showTime="false" />
+				<text id="carrier.code" title="carrier.code" trimSpace="true" isPrecision="true"/>
+				<text id="bizOrg.code" title="bizOrg.code" trimSpace="true" isPrecision="true"/>
+				<text id="waveNumber" title="waveNumber" trimSpace="true" />
+				<text id="orderSeq" title="custBillNo2"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+obd.id,
+obd.owner.name,
+obd.obdNumber,
+obd.relatedBill1,
+obd.relatedBill3,
+obd.status,
+coalesce(obd.reportStatus,800),
+obd.orderType.name,
+obd.ediData,
+obd.etd,
+obd.carrier.code,
+obd.carrier.name,
+obd.waveDoc.waveNumber,
+obd.descBin.binCode,
+obd.skuCount,
+obd.planQty,
+obd.allocateQty,
+obd.pickUpQty,
+obd.packedQty,
+obd.executeQty,
+obd.customer.code,
+obd.customer.name,
+obd.description
+from OutboundDelivery obd 
+left join obd.waveDoc
+left join obd.carrier
+left join obd.customer
+left join obd.descBin
+where 1=1 
+and obd.wh=#{SESSION_WAREHOUSE} 
+/~owner: and obd.owner.id = {owner}~/
+/~carrier.code: and obd.carrier.code = {carrier.code}~/
+/~bizOrg.code: and obd.customer.code = {bizOrg.code}~/
+/~orderType: and obd.orderType.id = {orderType}~/
+/~status: and obd.status = {status}~/
+/~custBillNo: and obd.relatedBill1 like {custBillNo}~/
+/~orderSeq: and obd.relatedBill3 like {orderSeq}~/
+/~obdNumber: and obd.obdNumber like {obdNumber}~/
+/~waveNumber: and obd.waveDoc.waveNumber like {waveNumber}~/
+/~etdFrom: and to_char(obd.etd,'YYYY-MM-DD') >= to_char(cast({etdFrom} as timestamp),'YYYY-MM-DD')~/
+/~etdTo: and to_char(obd.etd,'YYYY-MM-DD') <= to_char(cast({etdTo} as timestamp),'YYYY-MM-DD')~/
+/~reportStatus: and coalesce(obd.reportStatus,800) = {reportStatus}~/ 
+		]]></datasource>
+		<columns>
+			<column id="obd.id" title="ID" visible="false"  />
+			<column id="obd.owner.name" title="owner" />
+			<column id="obd.obdNumber" title="obdNumber" />
+			<column id="obd.relatedBill1" title="custBillNo" />
+			<column id="obd.relatedBill3" title="custBillNo2" />
+			<column id="obd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryStatus"/>
+			<column id="obd.reportStatus" title="reportStatus"  format="enumFormat" formatParam="EnuAsnReportStatus"/>
+            <column id="obd.orderType.name" title="orderType" />
+            <column id="obd.ediData" title="ediData" format="enumFormat" formatParam="EnuEdiData"/>
+            <column id="obd.etd" title="etd" />
+            <column id="obd.carrier.code" title="carrier.code" />
+            <column id="obd.carrier.name" title="carrier.name" />
+            <column id="obd.waveDoc.waveNumber" title="waveNumber" />
+            <column id="obd.descBin.binCode" title="R5000" />
+            <column id="obd.skuCount" title="skuCount" />
+            <column id="obd.planQty" title="planQty" canSum="true"/>
+            <column id="obd.allocateQty" title="allocateQty" />
+            <column id="obd.pickUpQty" title="pickUpQty" />
+            <column id="obd.packedQty" title="packedQty" />
+            <column id="obd.executeQty" title="outboundQty" />
+            <column id="obd.customer.code" title="bizOrg.code" />
+            <column id="obd.customer.name" title="bizOrg.name" />
+            <column id="obd.description" title="title.desc" />
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="outboundDeliveryModify" iconUrl="new"/>
+            <popup id="modify" title="modify" enableType="single" containId="true" pageId="outboundDeliveryModify" iconUrl="edit">
+                <enableExpression><![CDATA[(${obd.status}==@{EnuOutboundDeliveryStatus.100})]]></enableExpression>
+            </popup>
+            <commit id="publish" title="publish" enableType="multi" confirmMessage="publish.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[(${obd.status}==@{EnuOutboundDeliveryStatus.100})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="outboundDeliveryManager" methodName="publish" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="cancel" title="cancel" enableType="multi" confirmMessage="cancel.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${obd.status}==@{EnuOutboundDeliveryStatus.200} || ${obd.status}==@{EnuOutboundDeliveryStatus.100})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                     <action managerName="outboundDeliveryManager" methodName="cancel" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${obd.status}==@{EnuOutboundDeliveryStatus.0})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                     <action managerName="outboundDeliveryManager" methodName="delete" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <popup id="view" title="view" enableType="single" containId="true" pageId="outboundDeliveryView" iconUrl="view"/>
+            <popup id="statusView" title="statusView" enableType="single" containId="true" pageId="outboundDeliveryStatusView" iconUrl="view"/>
+            <!-- <popup id="createPickWo" title="createPickWo" enableType="multi" containId="true" pageId="createPickWo" iconUrl="action">
+            	<enableExpression><![CDATA[(${obd.status}==@{EnuOutboundDeliveryStatus.200})]]></enableExpression>
+            </popup> -->
+			<commit id="shipConfirm" title="shipConfirm" enableType="multi" confirmMessage="shipConfirm.confirmMessage" iconUrl="action">
+                <enableExpression><![CDATA[(${obd.status}==@{EnuOutboundDeliveryStatus.850})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="outboundDeliveryManager" methodName="shipConfirmObd" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+		</buttons>
+	</maintainPage>
+</pages>

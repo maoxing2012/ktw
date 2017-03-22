@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="inventoryHistoryList" title="inventoryHistoryList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+				<text id="skuCode" title="sku.code" trimSpace="true" />
+                <text id="skuName" title="sku.name" trimSpace="true" />
+                <text id="lotSequence" title="lotSequence" trimSpace="true" />
+                <text id="dispLot" title="expDate" trimSpace="true" />
+                <text id="binCode" title="bin.code" trimSpace="true" />
+                <list id="hisType" title="hisType" enumType="EnuInvenHisType" returnType="string" multiple="true" >
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvenHisType'
+                    ]]></hql>
+                </list>
+                <text id="orderSeq" title="orderSeq" trimSpace="true" />
+                <date id="operateTimeFrom" title="operateTimeFrom" showTime="true"/>
+			    <date id="operateTimeTo" title="operateTimeTo" showTime="true" />
+			    <text id="operatorName" title="operatorName" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+invHistory.id,
+invHistory.invInfo.owner.name,
+invHistory.invInfo.quant.sku.code,
+invHistory.invInfo.quant.sku.name,
+invHistory.invInfo.quant.sku.specs,
+invHistory.invInfo.quant.lotSequence,
+invHistory.invInfo.quant.dispLot,
+invHistory.invInfo.packageDetail.name,
+invHistory.qtyEach,
+invHistory.invInfo.bin.binCode,
+invHistory.hisType,
+invHistory.invInfo.containerSeq,
+invHistory.invInfo.invStatus,
+invHistory.orderSeq,
+invHistory.relatedBill1,
+invHistory.operateMemo,
+invHistory.operateTime,
+invHistory.createInfo.operatorName
+from InventoryHistory invHistory 
+left join invHistory.labor
+where 1=1
+and invHistory.wh = #{SESSION_WAREHOUSE} 
+/~owner: and invHistory.invInfo.owner.id = {owner}~/ 
+/~skuCode: and invHistory.invInfo.quant.sku.code like {skuCode} ~/
+/~skuName: and invHistory.invInfo.quant.sku.name like {skuName} ~/
+/~lotSequence: and invHistory.invInfo.quant.lotSequence like {lotSequence} ~/
+/~dispLot: and invHistory.invInfo.quant.dispLot like {dispLot} ~/
+/~binCode: and invHistory.invInfo.bin.binCode like {binCode} ~/
+/~hisType: and invHistory.hisType = {hisType}~/ 
+/~orderSeq: and invHistory.orderSeq like {orderSeq}~/
+/~operateTimeFrom: and to_char(invHistory.operateTime,'YYYY-MM-DD HH24:MI') >= to_char(cast({operateTimeFrom} as timestamp),'YYYY-MM-DD HH24:MI')~/
+/~operateTimeTo: and to_char(invHistory.operateTime,'YYYY-MM-DD HH24:MI') <= to_char(cast({operateTimeTo} as timestamp),'YYYY-MM-DD HH24:MI')~/
+/~operatorName: and invHistory.createInfo.operatorName like {operatorName} ~/
+		]]></datasource>
+		<columns>
+			<column id="invHistory.id" title="ID" visible="false"/>
+			<column id="invHistory.invInfo.owner.name" title="owner"/>
+			<column id="invHistory.invInfo.quant.sku.code" title="sku.code"/>
+			<column id="invHistory.invInfo.quant.sku.name" title="sku.name"/>
+			<column id="invHistory.invInfo.quant.sku.specs" title="specs"/>
+			<column id="invHistory.invInfo.quant.lotSequence" title="lotSequence"/>
+			<column id="invHistory.invInfo.quant.dispLot" title="expDate" />
+			<column id="invHistory.invInfo.packageDetail.name" title="p1000.name"/>
+			<column id="invHistory.qtyEach" title="baseQty"/>
+			<column id="invHistory.invInfo.bin.binCode" title="bin.code"/>
+			<column id="invHistory.hisType" title="hisType" format="enumFormat" formatParam="EnuInvenHisType"/>
+			<column id="invHistory.invInfo.containerSeq" title="containerSeq"/>
+			<column id="invHistory.invInfo.invStatus" title="invStatus"  format="enumFormat" formatParam="EnuInvStatus"/>
+			<column id="invHistory.orderSeq" title="orderSeq"/>
+			<column id="invHistory.relatedBill1" title="relatedBill1"/>
+			<column id="invHistory.operateMemo" title="title.desc"/>
+			<column id="invHistory.operateTime" title="operateTime" />
+			<column id="invHistory.createInfo.operatorName" title="operatorName"/>
+		</columns>
+		<buttons>
+		</buttons>
+	</maintainPage>
+</pages>

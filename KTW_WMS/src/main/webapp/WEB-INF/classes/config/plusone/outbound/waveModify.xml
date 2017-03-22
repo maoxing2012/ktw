@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <modifyDetailPage id="waveModify" title="waveModify" entityClass="com.core.scpwms.server.model.outbound.WaveDoc" onClose="refreshParent" width="900" height="450" columnNum="8">
+        <modify>
+            <inputUIs>
+                <hidden id="wave.id" reserve="false"/>
+                <text id="wave.waveNumber" title="waveNo" readOnly="true" required="false" />
+                <selectText id="wave.owner.id" title="owner" required="true" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+                <date id="wave.etd" title="etd" showDetailTime="false" defaultCurrentDate="false" required="true" trimSpace="true" />
+                <textArea id="wave.description" title="title.desc" trimSpace="true" rows="50" cols="600" span="6"/>
+            </inputUIs>
+            <buttons>
+                <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save"> 
+					<mappings>
+						<mapping id="wave" className="com.core.scpwms.server.model.outbound.WaveDoc" />
+					</mappings>
+					<actions>
+						<action managerName="waveDocManager" methodName="save" parameter="wave" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="false" editEnabled="false" />
+					</forwards>					
+				</commit>
+            </buttons>
+        </modify>
+        <detail>
+            <datasource><![CDATA[ select
+obd.id,
+obd.obdNumber,
+obd.relatedBill1,
+obd.etd,
+obd.carrier.name,
+obd.orderType.name,
+obd.skuCount,
+obd.planQty,
+obd.description
+from OutboundDelivery obd 
+left join obd.carrier
+where 1=1 
+and obd.waveDoc.id = {wave.id}
+ 			]]></datasource>
+            <columns>
+                <column id="obd.id" title="ID" visible="false"  />
+	            <column id="obd.obdNumber" title="obdNumber" />
+	            <column id="obd.relatedBill1" title="custBillNo" />
+	            <column id="obd.etd" title="etd" />
+	            <column id="obd.carrier.name" title="carrier" />
+	            <column id="obd.orderType.name" title="orderType" />
+	            <column id="obd.skuCount" title="skuCount" />
+	            <column id="obd.planQty" title="planQty" />
+	            <column id="obd.description" title="title.desc" />
+            </columns>
+            <buttons>
+                <popup id="addDetail" title="addDetail" enableType="none" pageId="waveAddDetail" iconUrl="new">
+                    <enableExpression><![CDATA[(${wave.id}>0)]]></enableExpression>
+                </popup>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="waveDocManager" methodName="deleteDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

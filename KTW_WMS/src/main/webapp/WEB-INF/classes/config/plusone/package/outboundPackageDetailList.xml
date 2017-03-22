@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="outboundPackageDetailList" title="outboundPackageDetailList" autoQuery="false">
+		<search>
+			<inputUIs>
+			    <text id="tripNumber" title="tripNumber" trimSpace="true" />
+			    <text id="soNumber" title="soNumber" trimSpace="true" />
+				<text id="boxSequence" title="boxSequence" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+pdd.id,
+pdd.obdDetail.obd.relatedBill1,
+pdd.obdDetail.relatedBill1,
+pdd.obdPackage.boxSequence,
+pdd.obdDetail.lineNo,
+pdd.obdDetail.sku.code,
+pdd.obdDetail.sku.name,
+pdd.planCheckQty,
+pdd.checkQty
+from OutboundPackageDetail pdd
+where 1=1
+and pdd.obdPackage.wh=#{SESSION_WAREHOUSE} 
+and pdd.obdPackage.status in (100)
+and pdd.needSn = true
+/~soNumber: and pdd.obdDetail.relatedBill1 like {soNumber}~/
+/~tripNumber: and pdd.obdDetail.obd.relatedBill1 like {tripNumber}~/
+/~boxSequence: and pdd.obdPackage.boxSequence like {boxSequence}~/
+		]]></datasource>
+		<columns>
+			<column id="pdd.id" title="ID" visible="false" />
+			<column id="pdd.obdDetail.obd.relatedBill1" title="tripNumber"/>
+			<column id="pdd.obdDetail.relatedBill1" title="soNumber"/>
+			<column id="pdd.obdPackage.boxSequence" title="boxSequence"/>
+			<column id="pdd.obdDetail.lineNo" title="lineNo"/>
+            <column id="pdd.obdDetail.sku.code" title="sku.code"/>
+            <column id="pdd.obdDetail.sku.name" title="sku.name"/>
+            <column id="pdd.planCheckQty" title="planCheckQty"/>
+            <column id="pdd.checkQty" title="checkQty"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="single" containId="true" pageId="addSoSerialNumber" iconUrl="new">
+				<enableExpression><![CDATA[(${pdd.planCheckQty}-${pdd.checkQty}>0)]]></enableExpression>
+			</popup>
+            <popup id="modify" title="modify" enableType="single" containId="true" pageId="editSoSerialNumber" iconUrl="edit">
+                <enableExpression><![CDATA[(${pdd.checkQty}-0> 0)]]></enableExpression>
+            </popup>
+            <popup id="view" title="view" enableType="single" containId="true" pageId="viewSoSerialNumber" iconUrl="view">
+            </popup>
+		</buttons>
+	</maintainPage>
+</pages>

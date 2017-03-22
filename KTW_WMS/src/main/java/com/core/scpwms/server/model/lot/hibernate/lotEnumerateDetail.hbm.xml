@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.core.scpwms.server.model.lot.LotEnumerateDetail" table="WMS_LOT_ENUMERATE_DETAIL">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_lot_enumerate_detail</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        
+        <many-to-one name="lotEnumerate" class="com.core.scpwms.server.model.lot.LotEnumerate">
+            <column name="LOT_ENUMERATE_ID" unique-key="UK_LOT_ENUMERATE_DETAIL"/>
+        </many-to-one>
+        
+        <property name="code" column="CODE" type="string" not-null="true" unique-key="UK_LOT_ENUMERATE_DETAIL" length="50"/>
+        <property name="name" column="NAME" type="string" not-null="true"/>
+        <property name="lineNo" column="LINE_NO" type="integer"/>
+    </class>
+</hibernate-mapping>

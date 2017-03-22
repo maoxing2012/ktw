@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="lotEdit" title="lotEdit" entityClass="com.core.scpwms.server.model.inventory.Inventory" onClose="refreshParent" width="200" useLot="true">
+        <inputUIs>
+            <hidden id="inv.id" />
+            <text id="inv.quantInv.quant.sku.plant.name" title="plant" readOnly="true"/>
+            <selectText id="inv.bin.id" title="bin" required="true" displayedTableHead="ID,Code,title.desc" displayColumn="2">
+                <hql><![CDATA[ SELECT
+bin.id,
+bin.binCode,
+bin.description 
+FROM Bin bin
+WHERE bin.disabled = '0'
+and (bin.lockStatus is null or bin.lockStatus = 'LOCK_T2' )
+and bin.storageType.role <> 'R8020'
+and bin.wh =#{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </selectText>
+            <selectText id="inv.quantInv.quant.sku.id" title="sku.code" readOnly="true" displayedTableHead="ID,Code,Name" displayColumn="2" lotEvent="true">
+                <hql><![CDATA[ SELECT 
+sku.id,
+sku.code,
+sku.name
+FROM Sku sku 
+WHERE sku.disabled = false 
+AND sku.plant.id = {inv.owner.plant.id} 
+                ]]></hql>
+            </selectText>
+            <text id="inv.quantInv.quant.sku.name" title="sku.name" readOnly="true"/>
+            <text id="inv.quantInv.quant.sku.specs" title="specs" readOnly="true"/>
+            <text id="inv.currentPack.name" title="packDetail" readOnly="true"/>
+            <text id="inv.quantInv.quant.lotSequence" title="lotSequence"  readOnly="true"/>
+            <text id="inv.quantInv.quant.dispLot" title="srcLotInfo"  readOnly="true"/>
+            <numberText id="inv.packQty" title="packQty" required="true" />
+            <textArea id="desc" title="title.desc" required="true" trimSpace="true" rows="30" cols="350" span="3"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" confirmMessage="modify.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="inv" className="com.core.scpwms.server.model.inventory.Inventory"/>
+                    <mapping id="inv.packQty" className="double"/>
+                    <mapping id="desc" className="string"/>
+                    <mapping id="lotData" />
+                </mappings>
+                <actions>
+					<!-- <action managerName="invManager"  methodName="editLot"  parameter="inv,inv.packQty,desc,lotData" /> -->
+                    <action managerName="lotAdjustManager"  methodName="lotAdjust"  parameter="inv,inv.packQty,desc,lotData" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

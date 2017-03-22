@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="asnThroughReceive" title="asnThroughReceive" entityClass="com.core.scpwms.server.model.inbound.AsnDetail" width="400" height="400">
+    	<inputUIs>			
+			<hidden id="asnDetail.id" />
+			<text id="asnDetail.sku.code" title="sku.code" readOnly="true" />
+			<text id="asnDetail.sku.name" title="sku.name" span="3" readOnly="true" width="360"/>
+			<text id="asnDetail.sku.specs" title="specs" span="3" readOnly="true" width="360"/>
+			<text id="asnDetail.planPackage.name" title="p1000.name" readOnly="true"/>
+			<text id="asnDetail.planQty" title="planQty" readOnly="true"/>
+			<text id="asnDetail.executeQty" title="checkedQty" readOnly="true"/>
+            <numberText id="asnDetail.unexecuteQty" title="checkQty" required="true"/>
+            <selectText id="labor" title="receiveCheckLabor" displayedTableHead="ID,code,name" required="true">
+				<hql><![CDATA[SELECT 
+lgl.labor.id, 
+lgl.labor.code,
+lgl.labor.name
+from LaborGroupLabor lgl
+where lgl.group.role='RECEIVE'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+and lgl.labor.disabled = '0'
+                    ]]></hql>
+			</selectText>
+		</inputUIs>
+		<buttons>
+		<commit id="save" title="save" enableType="none" iconUrl="save" >
+				<mappings>
+					<mapping id="asnDetail.id" className="long" />
+					<mapping id="asnDetail.unexecuteQty" className="double"/>
+					<mapping id="labor" className="long"/>
+				</mappings>
+				<actions>
+ 					<action managerName="asnManager" methodName="receive4Through" parameter="asnDetail.id,asnDetail.unexecuteQty,labor" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+		</commit>
+		</buttons>
+    </editPage>
+</pages>

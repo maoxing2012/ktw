@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="reasonCodeList" title="reasonCodeList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="reasonCode.code" title="reasonCode.code" trimSpace="true" />
+				<text id="reasonCode.name" title="reasonCode.name" trimSpace="true" />
+				<list id="reasonCode.type" title="reasonCode.type" enumType="EnuReasonCodeType" returnType="string" forceOverride="true" multiple="true">
+					<hql><![CDATA[SELECT 
+e.enumValue,
+e.enumValue 
+FROM Enumerate e 
+WHERE e.enumType = 'EnuInvStatus' 
+                    ]]></hql>
+				</list>
+				<list id="reasonCode.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[SELECT 
+e.enumValue,
+e.enumValue 
+FROM Enumerate e 
+WHERE e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[SELECT 
+reasonCode.id,
+reasonCode.code,
+reasonCode.name,
+reasonCode.type,
+reasonCode.disabled,
+reasonCode.description 
+FROM ReasonCode reasonCode 
+WHERE 1=1 
+/~reasonCode.code: AND reasonCode.code LIKE {reasonCode.code}~/
+/~reasonCode.name: AND reasonCode.name LIKE {reasonCode.name}~/
+/~reasonCode.type: AND reasonCode.type = {reasonCode.type}~/
+/~reasonCode.disabled: AND reasonCode.disabled = {reasonCode.disabled}~/
+		]]></datasource>
+		<columns>
+			<column id="reasonCode.id" title="ID" visible="false" />
+			<column id="reasonCode.code" title="reasonCode.code" />
+			<column id="reasonCode.name" title="reasonCode.name" />
+			<column id="reasonCode.type" title="reasonCode.type" format="enumFormat" formatParam="EnuInvStatus" />
+			<column id="reasonCode.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN" />
+			<column id="reasonCode.description" title="title.desc" />
+		</columns>
+		<buttons>
+			<popup id="new" title="new"  enableType="none" containId="false" pageId="reasonCodeEdit" iconUrl="add"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="reasonCodeEdit" iconUrl="edit">
+            	<enableExpression><![CDATA[(${reasonCode.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <!-- <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${reasonCode.disabled}==@{BooleanType.true})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="reasonCodeManager" methodName="deleteReasonCode" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit> -->
+            <commit id="enable" title="enable" pageLocale="false"  enableType="multi" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                <enableExpression><![CDATA[(${reasonCode.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /> </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="reasonCodeManager" methodName="enableReasonCode" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="disable" title="disable"  enableType="multi" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                <enableExpression><![CDATA[(${reasonCode.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="reasonCodeManager" methodName="disableReasonCode" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+		</buttons>
+	</maintainPage>
+</pages>

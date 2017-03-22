@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="scrapApplyDetailList" title="scrapApplyDetailList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="applyNumber" title="scrapApplyNumber"/> 
+				<text id="skuName" title="sku.name"/>
+				<text id="dispLot" title="lotInfo" trimSpace="true" />
+                <text id="projectNo" title="projectNo" trimSpace="true" length="30"/>
+			    <list id="status" title="title.status" enumType="EnuApplyDetailStatus" returnType="long" multiple="true" defaultValue="200,210,300">
+                    <hql><![CDATA[ select  
+						e.enumValue,
+						e.enumValue
+						from Enumerate e
+						 where  e.enumType='EnuApplyDetailStatus'
+					]]></hql>
+                </list>
+                <date id="operateTimeFrom" title="operateTimeFrom" showTime="false"/>
+                <date id="operateTimeTo" title="operateTimeTo" showTime="false" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+detail.id, 
+detail.scrapApply.applyNumber,
+detail.status,
+scrapApply.type,
+case when (nvl(ibd.executeQty,0) + nvl(obd.executeQty,0)) > 0 then (100*(scrapApply.planQty/(nvl(ibd.executeQty,0) + nvl(obd.executeQty,0)))) else null end as scrapRate,
+detail.scrapApply.reasonCode.name,
+detail.scrapApply.applier.name,
+custAddressCode.code,
+detail.invInfo.owner.code,
+detail.invInfo.quant.sku.code,
+detail.invInfo.quant.sku.name,
+detail.invInfo.quant.sku.specs,
+detail.invInfo.quant.lotSequence,
+detail.invInfo.quant.dispLot,
+detail.invInfo.trackSeq,
+detail.extString2,
+detail.invInfo.bin.binCode,
+detail.invInfo.packageDetail.name,
+detail.planPackQty,
+detail.planQty,
+detail.passQty,
+detail.unPassQty,
+detail.applyDate,
+detail.executeDate,
+f0901.GMDL01
+from ScrapApplyDetail detail
+left join detail.scrapApply scrapApply
+left join detail.scrapApply.ibd ibd
+left join detail.scrapApply.obd obd
+left join detail.f0901 f0901
+left join detail.scrapApply.custAddressCode custAddressCode
+where 1=1 
+and detail.scrapApply.wh = #{SESSION_WAREHOUSE} 
+/~applyNumber: and detail.scrapApply.applyNumber like {applyNumber}~/
+/~skuName: and detail.invInfo.quant.sku.name like {skuName}~/
+/~status: and detail.status = {status}~/
+/~operateTimeFrom: and to_char(detail.executeDate,'YYYY-MM-DD') >= to_char({operateTimeFrom},'YYYY-MM-DD')~/
+/~operateTimeTo: and to_char(detail.executeDate,'YYYY-MM-DD') <= to_char({operateTimeTo},'YYYY-MM-DD')~/
+/~dispLot : and detail.invInfo.quant.dispLot like {dispLot}~/
+/~projectNo : and detail.invInfo.trackSeq like {projectNo}~/
+		]]></datasource>
+		<columns>
+			<column id="detail.id" title="ID" visible="false"/>
+			<column id="detail.scrapApply.applyNumber" title="applyNumber"/>
+			<column id="detail.status" title="title.status" format="enumFormat" formatParam="EnuApplyDetailStatus"/> 
+			<column id="scrapApply.type" title="scrapType" format="enumFormat" formatParam="EnuScrapType"/> 
+			<column id="scrapRate" title="scrapRate" /> 
+			<column id="detail.scrapApply.reasonCode.name" title="reasonCode.name"/>
+			<column id="detail.scrapApply.applier.name" title="applier"/>
+			<column id="custAddressCode.code" title="custAddressCode"/> 
+			<column id="detail.invInfo.owner.code" title="owner.code"/>
+			<column id="detail.invInfo.quant.sku.code" title="sku.code"/>
+			<column id="detail.invInfo.quant.sku.name" title="sku.name"/>
+			<column id="detail.invInfo.quant.sku.specs" title="specs"/>
+			<column id="detail.invInfo.quant.lotSequence" title="lotSequence" />
+			<column id="detail.invInfo.quant.dispLot" title="lotInfo"/>
+			<column id="detail.invInfo.trackSeq" title="projectNo"/>
+            <column id="detail.extString2" title="containerNo"/>
+			<column id="detail.invInfo.bin.binCode" title="bin.code"/> 
+			<column id="detail.invInfo.packageDetail.name" title="packDetail"/> 
+			<column id="detail.planPackQty" title="applyPackQty"/> 
+			<column id="detail.planQty" title="applyQty"/> 
+			<column id="detail.passQty" title="passQty"/> 
+			<column id="detail.unPassQty" title="unPassQty"/> 
+			<column id="detail.applyDate" title="applyDate"/> 
+			<column id="detail.executeDate" title="operateTime"/> 
+			<column id="f0901.GMDL01" title="f0901"/> 
+		</columns>
+		<buttons>
+            <!-- <commit id="pass" title="pass"  enableType="multi" confirmMessage="pass.confirmMessage" iconUrl="confirm">
+                <enableExpression><![CDATA[(${detail.status}==@{EnuApplyDetailStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="scrapExeApplyImpl" methodName="scrapExec" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit> -->
+            <popup id="pass" title="pass" enableType="single" containId="true"  pageId="scrapApplyPass" iconUrl="confirm">
+                <enableExpression><![CDATA[(${detail.status}==@{EnuApplyDetailStatus.200})]]></enableExpression>
+            </popup> 
+            <commit id="unPass" title="unPass"  enableType="multi" confirmMessage="unPass.confirmMessage" iconUrl="delete">
+                <enableExpression><![CDATA[(${detail.status}==@{EnuApplyDetailStatus.200})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="scrapApplyManager" methodName="unPass" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+        </buttons>
+	</maintainPage>
+</pages>

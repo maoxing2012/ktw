@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="homeDetailHqlEdit" title="homeDetailHqlEdit" entityClass="com.core.business.model.home.HomeWindowDetailHql"  width="300" height="300" >
+        <inputUIs>
+            <hidden id="homeWindowDetailHql.id" />
+            <list id="homeWindowDetailHql.kindType" title="homeWindowDetailHql.kindType" forceOverride="true" enumType="SqlType" lastElement="true" returnType="string" width="100" emptyValue="false" defaultValue="SQL">
+                <hql><![CDATA[ select 
+					en.enumValue,
+					en.enumValue
+					from Enumerate en
+					where  en.enumType='SqlType'  ]]>
+                </hql>
+           	</list>
+           	<text id="homeWindowDetailHql.defValue" title="homeWindowDetailHql.defValue" forceOverride="true" trimSpace="true" length="10" lastElement="true" charCase=""/>
+            <text id="homeWindowDetailHql.insertId" title="homeWindowDetailHql.insertId" forceOverride="true" trimSpace="true" length="25" lastElement="true"  charCase=""/>	
+			<textArea id="homeWindowDetailHql.mainHql" title="homeWindowDetailHql.mainHql" forceOverride="true" trimSpace="true"  rows="100" cols="500" length="500" />
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="homeWindowDetailHql" className="com.core.business.model.home.HomeWindowDetailHql"/>
+                    <mapping id="homeWindowDetail.id" className="long"/>
+                </mappings>
+                <actions>
+                    <action managerName="homeManager" methodName="saveDetailHql" parameter="homeWindowDetailHql, homeWindowDetail.id"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

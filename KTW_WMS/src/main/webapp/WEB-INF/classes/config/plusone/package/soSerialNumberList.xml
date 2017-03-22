@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="soSerialNumberList" title="soSerialNumberList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="tripNumber" title="tripNumber" trimSpace="true" />
+			    <text id="soNumber" title="soNumber" trimSpace="true" />
+				<text id="boxSequence" title="boxSequence" trimSpace="true" />
+				<text id="skuCode" title="skuCode" trimSpace="true" />
+				<text id="serialNumber" title="serialNumber" trimSpace="true" />
+				<text id="labor" title="labor" trimSpace="true" />
+				<date id="snTimeFrom" title="snTimeFrom" showTime="true" />
+				<date id="snTimeTo" title="snTimeTo" showTime="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+ssn.id,
+ssn.packDetail.obdDetail.obd.relatedBill1,
+ssn.soNumber, 
+ssn.boxSequence,
+ssn.packDetail.obdPackage.status,
+ssn.skuCode,
+ssn.serialNumber,
+ssn.isClosed,
+ssn.createInfo.operatorName,
+ssn.createInfo.updateTime
+from SoSerialNumber ssn
+where 1=1 
+and ssn.packDetail.obdPackage.wh=#{SESSION_WAREHOUSE} 
+/~tripNumber: and ssn.packDetail.obdDetail.obd.relatedBill1 like {tripNumber}~/
+/~soNumber: and ssn.soNumber like {soNumber}~/
+/~boxSequence: and ssn.boxSequence like {boxSequence}~/
+/~skuCode: and ssn.skuCode like {skuCode}~/
+/~serialNumber: and ssn.serialNumber like {serialNumber}~/
+/~labor: and ssn.createInfo.operatorName like {labor}~/
+/~snTimeFrom: and to_char(ssn.createInfo.updateTime,'yyyy-mm-dd hh24:mi') >= to_char({snTimeFrom},'yyyy-mm-dd hh24:mi')~/
+/~snTimeTo: and to_char(ssn.createInfo.updateTime,'yyyy-mm-dd hh24:mi') <= to_char({snTimeTo},'yyyy-mm-dd hh24:mi')~/
+		]]></datasource>
+		<columns>
+			<column id="ssn.id" title="ID" visible="false" />
+			<column id="ssn.packDetail.obdDetail.obd.relatedBill1" title="tripNumber"/>
+			<column id="ssn.soNumber" title="soNumber"/>
+			<column id="ssn.boxSequence" title="boxSequence"/>
+			<column id="ssn.packDetail.obdPackage.status" title="title.status" format="enumFormat" formatParam="EnuPakcageDocStatus"/>
+			<column id="ssn.skuCode" title="skuCode"/>
+			<column id="ssn.serialNumber" title="serialNumber"/>
+			<column id="ssn.isClosed" title="sendHub" format="enumFormat" formatParam="BooleanTypeY"/>
+			<column id="ssn.createInfo.operatorName" title="labor" />
+			<column id="ssn.createInfo.updateTime" title="snTime" />
+		</columns>
+		<buttons>
+            <popup id="modify" title="modify" enableType="single" containId="true" pageId="editSoSerialNumber2" iconUrl="edit">
+            	<enableExpression><![CDATA[(${ssn.isClosed}==@{BooleanTypeY.0})]]></enableExpression>
+            </popup>
+            <commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+            	<enableExpression><![CDATA[(${ssn.isClosed}==@{BooleanTypeY.0})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list" />
+				</mappings>
+				<actions>
+					<action managerName="serialNumberManager" methodName="deleteSerilaNumber" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit> 
+		</buttons>
+	</maintainPage>
+</pages>

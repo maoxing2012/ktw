@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.user.PlantWarehousingProperties" table="WMS_PLANT_WH_PROPERTIES">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_whproperties</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>		
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID"/>
+        </many-to-one>        
+        	
+		<many-to-one name="lotInfo" class="com.core.scpwms.server.model.lot.LotInfo">
+			<column name="LOT_INFO_ID"/>
+		</many-to-one>		
+		
+        <many-to-one name="carrier" class="com.core.scpwms.server.model.user.Carrier">
+        	<column name="CARRIER_ID"/>
+        </many-to-one>
+        
+        <property name="lotSeqConf" column="LOT_SEQ_CONF" type="string" length="50"/>
+        <property name="toc" column="TOC" type="string" length="50"/>       
+        <property name="phyCycle" column="PHY_CYCLE" type="integer"/>
+		<property name="putawayBinFix" column="PUTAWAY_BIN_FIX" type="boolean"/>
+		<property name="pickBinFix" column="PICK_BIN_FIX" type="boolean"/>
+		<property name="supplyAfterPicking" column="SUPPLY_AFTER_PICKING" type="boolean"/>
+		<property name="invAllocate" column="INV_ALLOCATE" type="string" length="50"/>
+		
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+</hibernate-mapping>

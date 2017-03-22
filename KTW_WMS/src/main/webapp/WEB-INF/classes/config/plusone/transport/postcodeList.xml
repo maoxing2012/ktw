@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="postcodeList" title="postcodeList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="postcode" title="postcode" trimSpace="true" />
+				<text id="area.name" title="area.name" trimSpace="true" />
+				<text id="city.name" title="city.name" trimSpace="true" />
+				<text id="town.name" title="town.name" trimSpace="true" />
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+postcode.id,
+postcode.postcode,
+postcode.city.code,
+postcode.city.area.name,
+postcode.city.name,
+postcode.addr
+from PostCode postcode 
+where 1=1
+/~postcode: and postcode.postcode like {postcode}~/ 
+/~area.name: and postcode.city.area.name like {area.name}~/ 
+/~city.name: and postcode.city.name like {city.name}~/ 
+/~town.name: and postcode.addr like {town.name}~/ 
+		]]></datasource>
+		<columns>
+			<column id="postcode.id" title="ID" visible="false"/>
+			<column id="postcode.postcode" title="postcode"/>
+			<column id="postcode.city.code" title="city.code" visible="false"/>
+			<column id="postcode.city.area.name" title="area.name"/>
+			<column id="postcode.city.name" title="city.name"/>
+			<column id="postcode.addr" title="town.name"/>
+		</columns>
+		<buttons>
+			<popup id="new" title="new" enableType="none" containId="false" pageId="postcodeEdit"  iconUrl="new"/>
+			<popup id="edit" title="modify" enableType="single" containId="true" pageId="postcodeEdit" iconUrl="edit"/>
+		</buttons>
+	</maintainPage>
+</pages>

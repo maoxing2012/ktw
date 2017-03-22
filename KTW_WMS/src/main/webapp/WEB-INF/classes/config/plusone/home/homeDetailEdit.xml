@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="homeDetailEdit" title="homeDetailEdit" entityClass="com.core.business.model.home.HomeWindowDetail" onClose="refreshParent" width="500"  height="550" columnNum="20">
+		<modify>
+			<inputUIs>
+				<hidden id="homeWindowDetail.id" />
+				<numberText id="homeWindowDetail.sortIdx" title="homeWindowDetail.sortIdx" trimSpace="true" returnType="int" length="4" width="50" required="true"/>
+			    <list id="homeWindowDetail.proView" title="homeWindowDetail.proView" enumType="ViewStatus" returnType="string" width="100" emptyValue="false" defaultValue="Y" lastElement="true">
+                 	<hql><![CDATA[ select  
+						e.enumValue,
+						e.enumValue 
+						from Enumerate e 
+						where e.enumType = 'ViewStatus' 
+					]]></hql>
+                </list>
+				<numberText id="homeWindowDetail.viewChar" title="homeWindowDetail.viewChar" trimSpace="true" returnType="int" length="4" width="50" required="true"/>
+			    <list id="homeWindowDetail.viewKind" title="homeWindowDetail.viewKind" enumType="KindType" returnType="string" width="100" emptyValue="false" defaultValue="page">
+                 	<hql><![CDATA[ select  
+						e.enumValue,
+						e.enumValue 
+						from Enumerate e 
+						where e.enumType = 'KindType' 
+					]]></hql>
+					<eventListeners>
+	                    <eventListener id="homeWindowDetail.linkInfo" index="0" titleName="link.page" eventValue="page"/>
+	                    <eventListener id="homeWindowDetail.linkInfo" index="0" titleName="link.report" eventValue="report"/>
+                    </eventListeners>
+                </list>
+                <text id="homeWindowDetail.linkInfo" title="link.page" forceOverride="true" trimSpace="true" length="150" lastElement="true" charCase=""/>
+				<textArea id="homeWindowDetail.msgInfo" title="homeWindowDetail.msgInfo" forceOverride="true" trimSpace="true"  rows="50" cols="420" length="250" span="10" required="true"/>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="hd" className="com.core.business.model.home.HomeWindowDetail" />
+						<mapping id="homeWindow.id" className="long" />
+					</mappings>
+					<actions>
+						<action managerName="homeManager" methodName="saveHomeDetail" parameter="hd, homeWindow.id" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[select  
+homeWindowDetailHql.id,
+homeWindowDetailHql.insertId,
+homeWindowDetailHql.kindType,
+homeWindowDetailHql.defValue,
+homeWindowDetailHql.mainHql  
+from HomeWindowDetailHql homeWindowDetailHql
+where 1=1  
+and homeWindowDetailHql.homeDetail.id={homeWindowDetail.id}
+ ]]></datasource>
+			<columns>
+				<column id="homeWindowDetailHql.id" title="ID" visible="false" />
+				<column id="homeWindowDetailHql.insertId" title="homeWindowDetailHql.insertId"/>
+				<column id="homeWindowDetailHql.kindType" title="homeWindowDetailHql.kindType" format="enumFormat" formatParam="SqlType"/>
+				<column id="homeWindowDetailHql.defValue" title="homeWindowDetailHql.defValue"/>
+				<column id="homeWindowDetailHql.mainHql" title="homeWindowDetailHql.mainHql"/>
+			</columns>
+			<buttons>
+				<popup id="addDetail" title="addDetail" enableType="none" containId="false" pageId="homeDetailHqlEdit" iconUrl="new">
+					<enableExpression><![CDATA[(${homeWindowDetail.id}>0)]]></enableExpression>
+				</popup>
+				<popup id="modifyDetail" title="modifyDetail" enableType="single" containId="true" pageId="homeDetailHqlEdit" iconUrl="edit"/>
+				<commit id="deleteDetail" title="deleteDetail" enableType="multi" confirmMessage="delete.confirmMessage"  iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list" />
+					</mappings>
+					<actions>
+						<action managerName="homeManager" methodName="delHomeDetailHql" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+				<commit id="homeDetail.view" title="homeDetail.view" enableType="none" iconUrl="search">
+					<mappings>
+						<mapping id="homeWindowDetail.id" className="long" />
+						<mapping id="homeWindowDetail.msgInfo" className="string" />
+					</mappings>
+					<actions>
+						<action managerName="homeManager" methodName="msgView" parameter="homeWindowDetail.id, homeWindowDetail.msgInfo" />
+					</actions>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

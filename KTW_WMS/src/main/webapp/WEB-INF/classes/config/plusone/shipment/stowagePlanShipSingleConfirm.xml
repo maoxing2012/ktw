@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="stowagePlanShipSingleConfirm" title="stowagePlanShipSingleConfirm" entityClass="com.core.scpwms.server.model.shipment.StowagePlanDetail" width="300"  height="150" columnNum="8">
+        <inputUIs>
+            <hidden id="spd.id" />
+            <text id="spd.obdDetail.sku.code" title="sku.code" readOnly="true"/>
+            <text id="spd.obdDetail.sku.name" title="sku.name" readOnly="true"/>
+            <text id="spd.obdDetail.packageDetail.name" title="sku.name" readOnly="true"/>
+            <text id="spd.executeQty" title="shipedQty" readOnly="true"/>
+            <numberText id="spd.toShipQty" title="toShipQty" required="true"/>
+            <text id="spd.obdDetail.lotData.property1" title="lotInfo" readOnly="true"/>
+            <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role='SHIP'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" confirmMessage="shipConfirm.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="spd" className="com.core.scpwms.server.model.shipment.StowagePlanDetail" />
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="shipConfirm" parameter="spd,labor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

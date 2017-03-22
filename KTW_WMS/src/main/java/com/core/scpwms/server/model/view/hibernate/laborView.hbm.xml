@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.view.LaborView" table="WMS_LABOR_VIEW">
+		<id name="id" column="ID" type="long" />
+		
+		<property name="whId" column="WH_ID" type="long" />
+		<property name="disabled" column="DISABLED" type="boolean" />
+		<property name="code" column="CODE" type="string" />
+		<property name="name" column="NAME" type="string" />
+		<property name="type" column="TYPE" type="string" />
+		<property name="lgNm" column="LG_NM" type="string" />
+	</class>
+</hibernate-mapping>
+
+

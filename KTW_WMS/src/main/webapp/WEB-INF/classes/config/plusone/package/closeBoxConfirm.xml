@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="closeBoxConfirm" title="closeBoxConfirm" entityClass="com.core.scpwms.server.model.pack.OutboundPackage" width="300"  height="300" columnNum="2">
+        <inputUIs>
+            <hidden id="obdPackage.id" />
+            <numberText id="outboundPackage.length" title="length" required="true"/>
+            <numberText id="outboundPackage.width" title="width" required="true"/>
+            <numberText id="outboundPackage.height" title="height" required="true"/>
+            <numberText id="outboundPackage.grossWeight" title="weight" required="true"/>
+            <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role='SHIP'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" confirmMessage="closeBox.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="outboundPackageList.ids" className="list" />
+                    <mapping id="outboundPackage.length" className="double" />
+                    <mapping id="outboundPackage.width" className="double" />
+                    <mapping id="outboundPackage.height" className="double" />
+                    <mapping id="outboundPackage.grossWeight" className="double" />
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="packingManager" methodName="closeBox" parameter="outboundPackageList.ids,outboundPackage.length,outboundPackage.width,outboundPackage.height,outboundPackage.grossWeight,labor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

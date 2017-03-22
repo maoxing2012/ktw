@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+    <modifyDetailPage id="stowagePlanView" title="stowagePlanView" entityClass="com.core.scpwms.server.model.shipment.StowagePlan" onClose="refreshParent" width="1000" height="500" columnNum="8">
+         <modify>
+         <inputUIs>
+                <hidden id="stowagePlan.id" />
+                <text id="stowagePlan.stowageNumber" title="stowageNumber" />
+                <text id="stowagePlan.carNumber" title="carNumber"/>
+                <text id="stowagePlan.mainDriver" title="driver"/>
+                <textArea id="stowagePlan.description" title="title.desc" rows="50" cols="820" span="6" trimSpace="true"/>
+            </inputUIs>
+            <buttons>
+            </buttons> 
+            </modify>           
+        <detail autoQuery="false">
+            <datasource><![CDATA[select 
+spd.id,
+spd.obdDetail.obd.obdNumber, 
+spd.obdDetail.obd.relatedBill1, 
+spd.obdDetail.obd.status,
+spd.obdDetail.obd.customer.name,
+spd.obdDetail.obd.endCustomer,
+spd.obdDetail.sku.code,
+spd.obdDetail.sku.name,
+spd.obdDetail.sku.specs,
+spd.obdDetail.packageDetail.name,
+spd.planPackQty,
+spd.planQty,
+spd.executeQty,
+spd.obdDetail.lotData
+from StowagePlanDetail spd
+left join spd.obdDetail.obd.customer
+where 1=1 
+and spd.stowagePlan.id = {stowagePlan.id}
+            ]]></datasource>
+            <columns>
+                <column id="spd.id" title="ID" visible="false" />
+                <column id="spd.obdDetail.obd.obdNumber" title="obdNumber"/>
+                <column id="spd.obdDetail.obd.relatedBill1" title="custBillNo"/>
+                <column id="spd.obdDetail.obd.status" title="title.status" format="enumFormat" formatParam="EnuOutboundDeliveryStatus"/>
+                <column id="spd.obdDetail.obd.customer.name" title="customer"/>
+                <column id="spd.obdDetail.obd.endCustomer" title="endCustomer"/>
+                <column id="spd.obdDetail.sku.code" title="sku.code"/>
+                <column id="spd.obdDetail.sku.name" title="sku.name"/>
+                <column id="spd.obdDetail.sku.specs" title="specs"/>
+                <column id="spd.obdDetail.packageDetail.name" title="packDetail"/>
+                <column id="spd.planPackQty" title="planPackQty"/>
+                <column id="spd.planQty" title="planQty"/>
+                <column id="spd.executeQty" title="outboundQty"/>
+                <column id="spd.obdDetail.lotData" title="lotInfo"/>
+            </columns>
+            <buttons>
+            </buttons>
+        </detail>
+    </modifyDetailPage>
+</pages>

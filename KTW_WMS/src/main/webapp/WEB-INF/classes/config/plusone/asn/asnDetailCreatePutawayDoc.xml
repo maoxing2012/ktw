@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="asnDetailCreatePutawayDoc" title="asnDetailCreatePutawayDoc" entityClass="com.core.scpwms.server.model.inbound.AsnDetail" width="300" height="300" columnNum="2">
+        <inputUIs>
+            <hidden id="asnDetail.id" />
+            <checkbox id="autoAllocate" title="autoAllocate" defaultValue="true"  foreOverride="true"/>
+            <checkbox id="createWo" title="createWo" defaultValue="false"  foreOverride="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="creatPutPlan" title="creatPutPlan" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="asnDetail.id" className="long" />
+                    <mapping id="autoAllocate" className="boolean" />
+                    <mapping id="createWo" className="boolean" />
+                </mappings>
+                <actions>
+                    <action managerName="putawayDocManager" methodName="createPutawayDocByAsn" parameter="asnDetail.id,autoAllocate,createWo"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false"/>
+                    <forward name="closeWindow" newEnabled="false" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

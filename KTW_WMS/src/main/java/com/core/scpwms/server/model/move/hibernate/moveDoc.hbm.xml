@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.move.MoveDoc" table="WMS_MOVE_DOC">
+        <id name="id" column="ID" type="long">
+            <generator class="native">
+                <param name="sequence">wseq_move_doc</param>
+                <param name="parameters">START WITH 1000</param>
+            </generator>
+        </id>
+        <discriminator column="DISCRIMINATOR" type="string"/>
+        <version name="version" type="long" column="VERSION"/>
+        
+        <many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+            <column name="WH_ID"/>
+        </many-to-one>
+        <many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID"/>
+        </many-to-one>
+        <many-to-one name="orderType" class="com.core.scpwms.server.model.common.OrderType">
+            <column name="ORDER_TYPE_ID"/>
+        </many-to-one>
+        <many-to-one name="st" class="com.core.scpwms.server.model.warehouse.StorageType" >
+            <column name="ST_ID"/>
+        </many-to-one>
+        <many-to-one name="bg" class="com.core.scpwms.server.model.warehouse.BinGroup" >
+            <column name="BIN_GROUP_ID"/>
+        </many-to-one>
+        <property name="status" column="STATUS" type="long"/>
+        <property name="docSequence" column="DOC_SEQUENCE" type="string" length="50"/>
+        <property name="planQty" column="PLAN_QTY" type="double"/>
+        <property name="planPutawayQty" column="PLAN_PUTAWAY_QTY" type="double"/>
+        <property name="putawayQty" column="PUTAWAY_QTY" type="double"/>
+        <property name="moveType" column="MOVE_TYPE" type="string" length="50"/>
+        <property name="minBinInv" column="MIN_BIN_INV" type="double"/>
+        <property name="putawayDocSequence" column="PUTAWAY_DOC_SEQUENCE" type="string" length="50"/>
+
+        <set name="details" lazy="true" inverse="true" cascade="all-delete-orphan">
+        	<key column="DOC_ID"/>
+        	<one-to-many class="com.core.scpwms.server.model.move.MoveDocDetail"/>
+        </set>
+        
+        <property name="description" column="DESCRIPTION" type="string"/>
+        
+        <component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+            <property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="CREATE_TIME" type="timestamp" />
+        </component>
+        
+        <component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+            <property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+            <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+            <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+    </class>   
+</hibernate-mapping>
+
+

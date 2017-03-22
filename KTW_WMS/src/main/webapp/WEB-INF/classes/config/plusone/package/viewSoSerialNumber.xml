@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<modifyDetailPage id="viewSoSerialNumber" title="viewSoSerialNumber" entityClass="com.core.scpwms.server.model.pack.OutboundPackageDetail" onClose="refreshParent" width="1000" height="600" columnNum="8">
+		<modify>
+		 	<inputUIs>
+				<hidden id="outboundPackageDetail.id" />
+			</inputUIs>
+			<buttons>
+			</buttons> 
+		</modify>			
+		<detail autoQuery="false">
+			<datasource><![CDATA[select
+ssn.id,
+ssn.soNumber, 
+ssn.boxSequence,
+ssn.skuCode,
+ssn.serialNumber
+from SoSerialNumber ssn
+where 1=1 
+and ssn.packDetail.id = {outboundPackageDetail.id}
+ 			]]></datasource>
+			<columns>
+				<column id="ssn.id" title="ID" visible="false" />
+				<column id="ssn.soNumber" title="soNumber"/>
+				<column id="ssn.boxSequence" title="boxSequence"/>
+				<column id="ssn.skuCode" title="sku.code"/>
+				<column id="ssn.serialNumber" title="serialNumber"/>
+			</columns>
+			<buttons>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

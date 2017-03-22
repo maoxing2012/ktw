@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="boxStowagePlanShipBatchConfirm" title="boxStowagePlanShipBatchConfirm" entityClass="com.core.scpwms.server.model.shipment.StowagePlanDetail" width="300"  height="150" columnNum="8">
+        <inputUIs>
+            <hidden id="spd.id" />
+            <list id="labor" title="labor" forceOverride="true" returnType="long" required="true" multiple="true">
+                <hql><![CDATA[ SELECT  
+lgl.labor.id, 
+concat(lgl.labor.code,lgl.labor.name) 
+from LaborGroupLabor lgl
+where lgl.group.role='SHIP'
+and lgl.labor.wh = #{SESSION_WAREHOUSE} 
+                ]]></hql>
+            </list>
+        </inputUIs>
+        <buttons>
+            <commit id="confirm" title="confirm" enableType="none" confirmMessage="shipConfirm.confirmMessage" iconUrl="save">
+                <mappings>
+                    <mapping id="boxStowagePlanShipConfirm.ids" className="list" />
+                    <mapping id="labor" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="shipConfirmBatchBox" parameter="boxStowagePlanShipConfirm.ids,labor" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

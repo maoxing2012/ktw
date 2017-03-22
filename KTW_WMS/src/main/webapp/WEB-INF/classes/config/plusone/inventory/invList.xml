@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="invList" title="invList" pageLocale="false" autoQuery="false" useSum="true">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+                <selectText id="wa.id" title="wa" displayedTableHead="ID,code,name" >
+					<hql><![CDATA[ SELECT 
+wa.id,
+wa.code,
+wa.name  
+FROM WhArea wa
+WHERE wa.disabled = false
+and wa.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+				</selectText>
+				<selectText id="st.id" title="st" displayedTableHead="ID,code,name" >
+					<hql><![CDATA[ SELECT 
+st.id,
+st.code,
+st.name  
+FROM StorageType st
+WHERE st.disabled = false
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+				</selectText>
+			    <text id="binCode" title="bin.code" trimSpace="true" />
+			    <list id="invStatus" title="invStatus" enumType="EnuInvStatus">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvStatus'
+                    ]]></hql>
+                </list>
+                <list id="lockStatus" title="lockStatus" enumType="EnuBinLockType">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuBinLockType'
+					]]></hql>
+                </list>
+                <text id="skuCode" title="sku.code" trimSpace="true" />
+                <text id="skuName" title="sku.name" trimSpace="true" />
+                <text id="lotSequence" title="lotSequence" trimSpace="true" />
+                <text id="expDate" title="expDate" trimSpace="true" />
+                <list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+                <date id="inboundDate" title="inboundDate" showTime="false" />
+                <numberText id="expDateDaysTo" title="expDateDaysTo" returnType="double"/>
+                <numberText id="shipAlertDaysTo" title="shipAlertDaysTo" returnType="double"/>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+inv.id,
+inv.owner.name,
+inv.bin.storageType.wa.name,
+inv.bin.storageType.name,
+inv.bin.binCode,
+inv.status,
+inv.bin.lockStatus,
+inv.quantInv.quant.sku.code,
+inv.quantInv.quant.sku.name,
+inv.quantInv.quant.sku.specs,
+inv.basePackage.name,
+inv.baseQty,
+inv.queuedQty,
+inv.quantInv.quant.lotSequence,
+inv.quantInv.quant.dispLot as expDate,
+to_char(to_date(inv.quantInv.quant.dispLot,'YYYYMMDD') - coalesce(sku.properties.alertLeadingDays,0),'YYYYMMDD') as shipAlertDate,
+trunc(to_date(inv.quantInv.quant.dispLot,'YYYYMMDD') - current_date) as expDateDays,
+trunc((to_date(inv.quantInv.quant.dispLot,'YYYYMMDD') - coalesce(sku.properties.alertLeadingDays,0)) - current_date) as shipAlertDays,
+sku.tempDiv,
+inv.inboundDate,
+inv.trackSeq,
+inv.containerSeq
+from Inventory inv
+left join inv.quantInv.quant.sku sku
+where 1=1
+and inv.wh=#{SESSION_WAREHOUSE} 
+/~owner : and inv.owner.id = {owner}~/
+/~wa.id : and inv.bin.storageType.wa.id = {wa.id}~/
+/~st.id : and inv.bin.storageType.id = {st.id}~/
+/~binCode : and inv.bin.binCode like {binCode}~/
+/~invStatus : and inv.status = {invStatus}~/
+/~lockStatus : and inv.bin.lockStatus = {lockStatus}~/
+/~skuCode : and inv.quantInv.quant.sku.code like {skuCode}~/
+/~skuName : and inv.quantInv.quant.sku.name like {skuName}~/
+/~lotSequence : and inv.quantInv.quant.lotSequence like {lotSequence}~/
+/~expDate : and inv.quantInv.quant.dispLot like {expDate}~/
+/~tempDiv: and inv.quantInv.quant.sku.tempDiv = {tempDiv}~/ 
+/~inboundDate: and to_char(inv.inboundDate,'YYYY-MM-DD') = to_charcast({inboundDate} as timestamp),'YYYY-MM-DD')~/
+
+/~expDateDaysTo: and (trunc(to_date(inv.quantInv.quant.dispLot,'YYYYMMDD')-current_date)) <= {expDateDaysTo}~/
+/~shipAlertDaysTo: and (trunc((to_date(inv.quantInv.quant.dispLot,'YYYYMMDD')-coalesce(sku.properties.alertLeadingDays,0))-current_date)) <= {shipAlertDaysTo} ~/
+
+		]]></datasource>
+		<columns>
+			<column id="inv.id" title="ID" visible="false"/>
+			<column id="inv.owner.name" title="owner"/>
+			<column id="inv.bin.storageType.wa.name" title="wa"/>
+			<column id="inv.bin.storageType.name" title="st" />
+			<column id="inv.bin.binCode" title="bin" />
+			<column id="inv.status" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>		
+			<column id="inv.bin.lockStatus" title="lockStatus" format="enumFormat" formatParam="EnuBinLockType"/>
+			<column id="inv.quantInv.quant.sku.code" title="sku.code"/>
+			<column id="inv.quantInv.quant.sku.name" title="sku.name"/>
+			<column id="inv.quantInv.quant.sku.specs" title="specs"/>
+			<column id="inv.basePackage.name" title="p1000.name"/>
+			<column id="inv.baseQty" title="baseQty" canSum="true"/>
+			<column id="inv.queuedQty" title="queuedQty" canSum="true"/>
+			<column id="inv.quantInv.quant.lotSequence" title="lotSequence"/>
+			<column id="expDate" title="expDate"/>
+			<column id="shipAlertDate" title="shipAlertDate"/>
+			<column id="expDateDays" title="expDateDays"/>
+			<column id="shipAlertDays" title="shipAlertDays"/>
+			<column id="inv.quantInv.quant.sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTemperatureDiv" />
+			<column id="inv.inboundDate" title="inboundDate"/>
+			<column id="inv.trackSeq" title="asnNumber"/>
+			<column id="inv.containerSeq" title="containerSeq"/>
+		</columns>
+		<buttons>
+			<popup id="move" title="invMove" enableType="single" containId="true" pageId="invMoveEdit" iconUrl="action"/>
+            <popup id="invBatchMove" title="invBatchMove" enableType="multi" containId="true" pageId="invBatchMoveEdit" iconUrl="action"/>
+			<popup id="allocationInvView" title="allocationInvView" enableType="single" containId="true" pageId="allocationInvView" iconUrl="view"/>
+			<popup id="invLabelPrint" title="invLabelPrint"  enableType="multi" containId="true" pageId="invLabelPrint" iconUrl="report"/>
+		</buttons>
+	</maintainPage>
+</pages>

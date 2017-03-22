@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="qualityDocDetailByInv" title="qualityDocDetailByInv" onClose="refreshParent" autoQuery="true" width="1000" height="400">
+		<search>
+            <inputUIs>
+                <list id="wa.id" title="wa" returnType="long">
+                    <hql><![CDATA[ SELECT
+wa.id,
+wa.name
+FROM WhArea wa
+WHERE wa.disabled = false
+and wa.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </list>
+                <selectText id="st.id" title="st" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[ SELECT 
+st.id,
+st.code,
+st.name  
+FROM StorageType st
+WHERE st.disabled = false
+and st.wa.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+                <selectText id="binGroup.id" title="bin.group" displayColumn="3" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+binGroup.id,
+binGroup.code,
+binGroup.name 
+FROM BinGroup binGroup  
+WHERE 1=1 
+and binGroup.wh = #{SESSION_WAREHOUSE} 
+and binGroup.disabled = false
+                    ]]></hql>
+                </selectText>
+                <text id="binCode" title="bin.code" trimSpace="true" />
+                <list id="invStatus" title="invStatus" enumType="EnuInvStatus">
+                    <hql><![CDATA[ select  
+e.enumValue,
+e.enumValue
+from Enumerate e
+where  e.enumType = 'EnuInvStatus'
+and e.enumValue <> 'FREEZE'
+                    ]]></hql>
+                </list>
+                <text id="skuCode" title="sku.code" trimSpace="true" />
+                <text id="skuName" title="sku.name" trimSpace="true" />
+                <text id="dispLot" title="lotInfo" trimSpace="true" />
+                <text id="projectNo" title="projectNo" trimSpace="true" />
+            </inputUIs>
+        </search>
+		<datasource type="hql"><![CDATA[select 
+inv.id,
+inv.bin.storageType.wa.name,
+inv.bin.storageType.name,
+inv.status,
+inv.bin.binCode,
+inv.quantInv.quant.sku.code,
+inv.quantInv.quant.sku.name,
+inv.quantInv.quant.sku.specs,
+inv.basePackage.name,
+inv.baseQty - inv.queuedQty as usableQty,
+inv.quantInv.quant.dispLot,
+inv.trackSeq
+from Inventory inv 
+where 1=1
+and inv.wh = #{SESSION_WAREHOUSE}
+and inv.status <> 'FREEZE'
+and inv.bin.storageType.role <> 'R8020'
+and inv.bin.storageType.role <> 'R5000'
+and (inv.baseQty - inv.queuedQty) > 0
+and inv.id not in ( select detail.inventoryId from QualityDocDetail detail where detail.doc.id = {qualityDoc.id} )
+/~wa.id : and inv.bin.storageType.wa.id = {wa.id}~/
+/~st.id : and inv.bin.storageType.id = {st.id}~/
+/~binGroup.id : and inv.bin.id in ( select bg.bins.id from BinGroup bg where bg.id = {binGroup.id}) ~/
+/~binCode : and inv.bin.binCode like {binCode}~/
+/~dispLot : and inv.quantInv.quant.dispLot like {dispLot}~/
+/~invStatus : and inv.status = {invStatus}~/
+/~skuCode : and inv.quantInv.quant.sku.code like {skuCode}~/
+/~skuName : and inv.quantInv.quant.sku.name like {skuName}~/
+/~dispLot : and inv.quantInv.quant.dispLot like {dispLot}~/
+/~projectNo : and inv.trackSeq like {projectNo}~/
+		]]></datasource>
+		<columns>
+			<column id="inv.id" title="ID" visible="false"/>
+            <column id="inv.bin.storageType.wa.name" title="wa"/>
+            <column id="inv.bin.storageType.name" title="st"/>
+            <column id="inv.status" title="invStatus" format="enumFormat" formatParam="EnuInvStatus"/>
+            <column id="inv.bin.binCode" title="bin.code" />
+            <column id="inv.quantInv.quant.sku.code" title="sku.code"/>
+            <column id="inv.quantInv.quant.sku.name" title="sku.name"/>
+            <column id="inv.quantInv.quant.sku.specs" title="specs"/>
+            <column id="inv.basePackage.name" title="packDetail"/>
+            <column id="usableQty" title="usableQty"/>
+            <column id="inv.quantInv.quant.dispLot" title="lotInfo"/>
+            <column id="inv.trackSeq" title="projectNo"/>
+		</columns>
+		<buttons> 
+			<commit id="add" title="add" enableType="multi" confirmMessage="addToQuanlityDoc.confirmMessage"  iconUrl="new">
+				<mappings>
+					<mapping id="qualityDoc.id" className="long" />
+					<mapping id="ids" className="list" />
+				</mappings>
+				<actions>
+					<action managerName="qualityDocManager" methodName="addDetail" parameter="qualityDoc.id,ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+				</forwards>
+			</commit> 
+		</buttons>
+	</maintainPage>
+</pages>

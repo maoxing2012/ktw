@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="lotSettingList" title="lotSettingList" autoQuery="false" >
+         <search>
+             <inputUIs>
+                 <text id="lotInfo.code" title="lotInfo.code" trimSpace="true"/>
+                 <text id="lotInfo.name" title="lotInfo.name" trimSpace="true"/>
+                 <list id="lotInfo.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+             </inputUIs>
+         </search>
+         <datasource type="hql" ><![CDATA[select 
+lotInfo.id,
+lotInfo.code,
+lotInfo.name,
+lotInfo.disabled,
+lotInfo.ldi1,
+lotInfo.ldi2,
+lotInfo.ldi3,
+lotInfo.ldi4,
+lotInfo.ldi5,
+lotInfo.ldi6,
+lotInfo.ldi7,
+lotInfo.ldi8,
+lotInfo.ldi9,
+lotInfo.ldi10 
+from LotInfo lotInfo  
+where 1=1 
+/~lotInfo.code: and lotInfo.code like {lotInfo.code} ~/ 
+/~lotInfo.name: and lotInfo.name like {lotInfo.name} ~/ 
+/~lotInfo.disabled: and lotInfo.disabled = {lotInfo.disabled}~/ 
+         ]]></datasource>
+        <columns>
+            <column id="lotInfo.id" title="ID"  visible="false"/>
+            <column id="lotInfo.code" title="lotInfo.code"/>
+            <column id="lotInfo.name" title="lotInfo.name"/> 
+            <column id="lotInfo.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+            <column id="lotInfo.ldi1.title" title="lotInfo1" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi2.title" title="lotInfo2" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi3.title" title="lotInfo3" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi4.title" title="lotInfo4" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi5.title" title="lotInfo5" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi6.title" title="lotInfo6" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi7.title" title="lotInfo7" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi8.title" title="lotInfo8" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi9.title" title="lotInfo9" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+            <column id="lotInfo.ldi10.title" title="lotInfo10" format="enumFormat" formatParam="LotFieldType,LotFormat"/>
+        </columns>
+        <buttons>   
+            <popup id="new" title="new"  enableType="none" containId="false" pageId="lotSettingEdit" iconUrl="add"/>
+            <popup id="edit" title="modify" enableType="single" containId="true"  pageId="lotSettingEdit" iconUrl="edit">
+                <enableExpression><![CDATA[(${lotInfo.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+            </popup>
+            <commit id="enable" title="enable" pageLocale="false"  enableType="multi" confirmMessage="enable.confirmMessage" iconUrl="enable">
+                <enableExpression><![CDATA[(${lotInfo.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /> </mapping>
+                </mappings>
+                <actions>
+                    <action managerName="lotInfoManager" methodName="enableLotInfo" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="disable" title="disable"  enableType="multi" confirmMessage="disable.confirmMessage" iconUrl="disable">
+                <enableExpression><![CDATA[(${lotInfo.disabled}==@{BooleanTypeN.false})]]></enableExpression>
+                <mappings>
+                    <mapping id="ids" className="list"><entries /></mapping>
+                </mappings>
+                <actions>
+                    <action managerName="lotInfoManager" methodName="disableLotInfo" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+            <commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${lotInfo.disabled}==@{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="lotInfoManager" methodName="deleteLotInfo" parameter="ids" />
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+            <popup id="view" title="view"  enableType="single" containId="true" pageId="lotSettingView" iconUrl="view"/>
+        </buttons>
+     </maintainPage>
+</pages>

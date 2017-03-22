@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.core.scpwms.server.model.transport.Area" table="WMS_AREA">
+    	<id name="id" column="ID" type="long">
+    		<generator class="native">
+    			<param name="sequence">wseq_area</param>
+    			<param name="parametes">START WITH 1000</param>
+    		</generator>
+    	</id>
+    	 	
+    	<property name="code" column="CODE" type="string" length="50" unique="true"/>
+    	<property name="name" column="NAME" type="string" length="50"/>
+    </class>
+</hibernate-mapping>
+
+

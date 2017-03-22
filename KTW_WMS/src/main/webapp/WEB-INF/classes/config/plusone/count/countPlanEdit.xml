@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<modifyDetailPage id="countPlanEdit" title="countPlanEdit" entityClass="com.core.scpwms.server.model.count.CountPlan" onClose="refreshParent" width="900" height="550" columnNum="8">
+		<modify>
+			<inputUIs>
+				<hidden id="countPlan.id" />
+					<text id="countPlan.owner.name" title="owner" />
+					<list id="countPlan.countMethod" title="countMethod" editModel="uneditable" required="true" forceOverride="false" enumType="EnuCountMethod">
+						<hql><![CDATA[ SELECT 
+e.enumValue,
+e.enumValue From Enumerate e  
+where e.enumType = 'EnuCountMethod'
+and e.enumValue in ('FROM_SKU','FROM_BIN')
+						 ]]></hql>
+					</list>
+					<checkbox id="countPlan.binLock" title="binLock"/>
+					<checkbox id="countPlan.blindCount" title="blindCount"/>
+			</inputUIs>
+			<buttons>
+				<commit id="save" title="save" enableType="none" iconUrl="save">
+					<mappings>
+						<mapping id="countPlan" className="com.core.scpwms.server.model.count.CountPlan" />
+					</mappings>
+					<actions>
+						<action managerName="countPlanManager" methodName="save" parameter="countPlan" />
+					</actions>
+					<forwards>
+						<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					</forwards>
+				</commit>
+			</buttons>
+		</modify>
+		<detail autoQuery="false">
+			<datasource><![CDATA[SELECT 
+detail.id,
+detail.sku.code,
+detail.sku.name,
+detail.bin.binCode,
+detail.bin.storageType.name,
+detail.bin.storageType.wa.name
+from CountDetail detail 
+left join detail.countPlan 
+left join detail.sku 
+left join detail.sku.plant 
+left join detail.bin 
+left join detail.bin.storageType
+left join detail.bin.storageType.wa
+where 1=1
+and detail.countPlan.id = {countPlan.id}  
+ 			]]></datasource>
+ 			<columns>
+				<column id="detail.id" title="ID" visible="false" />
+				<column id="detail.sku.code" title="sku.code"/>
+				<column id="detail.sku.name" title="sku.name"/>
+				<column id="detail.bin.binCode" title="bin"/>
+				<column id="detail.bin.storageType.name" title="storageType"/>
+				<column id="detail.bin.storageType.wa,name" title="wa"/>
+			</columns>	
+			<buttons>
+				<popup id="fromSkuAddDetail" title="fromSkuAddDetail" enableType="none" containId="false" pageId="countDetailSkuEdit" iconUrl="new">
+					<enableExpression><![CDATA[(${countPlan.id}>0) && (${countPlan.countMethod}=='FROM_SKU')]]></enableExpression>
+				</popup>	
+				<popup id="fromBinAddDetail" title="fromBinAddDetail" enableType="none" containId="false" pageId="countDetailBinEdit" iconUrl="new">
+					<enableExpression><![CDATA[(${countPlan.id}>0) && (${countPlan.countMethod}=='FROM_BIN')]]></enableExpression>
+				</popup>
+				<popup id="addAllBin" title="addAllBin" enableType="none" containId="false" pageId="countDetailAddAllBin" iconUrl="add">
+					<enableExpression><![CDATA[(${countPlan.id}>0) && (${countPlan.countMethod}=='FROM_BIN')]]></enableExpression>
+				</popup>
+				<commit id="deleteDetail" title="deleteDetail"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+					<mappings>
+						<mapping id="ids" className="list"><entries /></mapping>
+					</mappings>
+					<actions>
+						<action managerName="countPlanManager" methodName="deleteCountDetail" parameter="ids" />
+					</actions>
+					<forwards>
+						<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+					</forwards>
+				</commit>
+			</buttons>
+		</detail>
+	</modifyDetailPage>
+</pages>

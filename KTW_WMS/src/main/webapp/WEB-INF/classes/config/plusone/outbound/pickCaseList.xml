@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<maintainPage id="pickCaseList" title="pickCaseList" autoQuery="false" useSum="true">
+		<search>
+			<inputUIs>
+				<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+and owner.plant.wh = #{SESSION_WAREHOUSE} 
+                    ]]></hql>
+                </selectText>
+                <list id="status" title="title.status" enumType="EnuWarehouseTaskSingleStatus" returnType="long" multiple="true" defaultValue="0,100">
+	                <hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuWarehouseTaskSingleStatus' 
+	                ]]></hql>
+	             </list>
+	            <text id="carrier.code" title="carrier.code" trimSpace="true" isPrecision="true"/>
+	            <text id="waveNo" title="waveNo"/>
+				<text id="obdNumber" title="obdNumber"/>
+				<text id="custBillNo" title="custBillNo"/>
+				<text id="deliveryNo" title="送り状No"/>
+				<text id="groupNo" title="グループNo"/>
+				<text id="caseNumber" title="個口No"/>
+	            <text id="orderSeq" title="custBillNo2"/>
+	            <list id="caseType" title="個口タイプ" enumType="EnuCaseType" returnType="long" multiple="true" >
+	                <hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuCaseType' 
+	                ]]></hql>
+	             </list>
+	             <text id="sku.code" title="sku.code" isPrecision="true"/>
+	             <list id="tempDiv" title="tempDiv" forceOverride="true" enumType="EnuTemperatureDiv" returnType="long" multiple="true">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'EnuTemperatureDiv' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[select 
+ws.id,
+ws.wt.obdDetail.obd.owner.name,
+ws.status,
+ws.wt.obdDetail.obd.carrier.code,
+ws.wt.obdDetail.obd.carrier.name,
+ws.wt.obdDetail.obd.waveDoc.waveNumber,
+ws.wt.obdDetail.obd.obdNumber,
+ws.wt.obdDetail.obd.relatedBill1,
+ws.wt.obdDetail.obd.customer.name,
+ws.wt.obdDetail.obd.extString1,
+ws.relatedBill3,
+ws.relatedBill2,
+ws.inx,
+ws.relatedBill1,
+ws.wt.obdDetail.extString2,
+sku.code,
+sku.name,
+sku.properties.packFlg4NS,
+sku.properties.packageInfo.p2100.coefficient,
+sku.properties.packageInfo.p2100.name,
+sku.properties.packageInfo.p2000.coefficient,
+sku.properties.packageInfo.p2000.name,
+ws.wt.invInfo.quant.dispLot,
+ws.wt.invInfo.inboundDate,
+ws.wt.invInfo.trackSeq,
+ws.wt.invInfo.bin.binCode,
+ws.wt.descBin.binCode,
+ws.qty,
+ws.caseType,
+sku.tempDiv
+from WarehouseTaskSingle ws
+left join ws.wt.invInfo.quant.sku sku
+where 1=1 
+and ws.wt.wh = #{SESSION_WAREHOUSE} 
+/~owner: and ws.wt.obdDetail.obd.owner.id = {owner}~/
+/~carrier.code: and ws.wt.obdDetail.obd.carrier.code like {carrier.code}~/ 
+/~waveNo: and ws.wt.obdDetail.obd.waveDoc.waveNumber like {waveNo}~/ 
+/~obdNumber: and ws.wt.obdDetail.obd.obdNumber like {obdNumber}~/ 
+/~custBillNo: and ws.wt.obdDetail.obd.relatedBill1 like {custBillNo}~/ 
+/~deliveryNo: and ws.relatedBill1 like {deliveryNo}~/ 
+/~groupNo: and ws.relatedBill3 like {groupNo}~/ 
+/~caseNumber: and ws.relatedBill2 like {caseNumber}~/ 
+/~orderSeq: and ws.wt.obdDetail.extString2 like {orderSeq}~/ 
+/~status: and ws.status = {status}~/ 
+/~caseType: and ws.caseType = {caseType}~/ 
+/~sku.code: and sku.code = {sku.code}~/
+/~tempDiv: and sku.tempDiv = {tempDiv}~/ 
+		]]></datasource>
+		<columns>
+			<column id="ws.id" title="ID"  visible="false"/>
+			<column id="ws.wt.obdDetail.obd.owner.name" title="owner"/>
+			<column id="ws.status" title="title.status" format="enumFormat" formatParam="EnuWarehouseTaskSingleStatus"/>
+			<column id="ws.wt.obdDetail.obd.carrier.code" title="carrier.code"/>
+			<column id="ws.wt.obdDetail.obd.carrier.name" title="carrier.name"/>
+			<column id="ws.wt.obdDetail.obd.waveDoc.waveNumber" title="waveNo"/>
+			<column id="ws.wt.obdDetail.obd.obdNumber" title="obdNumber"/>
+			<column id="ws.wt.obdDetail.obd.relatedBill1" title="custBillNo"/>
+			<column id="ws.wt.obdDetail.obd.customer.name" title="bizOrg.name"/>
+			<column id="ws.wt.obdDetail.obd.extString1" title="専用伝票区分" format="enumFormat" formatParam="EnuNohinsyo"/>
+            <column id="ws.relatedBill3" title="グループNo" />
+            <column id="ws.relatedBill2" title="個口No" />
+            <column id="ws.inx" title="順番"/>
+			<column id="ws.relatedBill1" title="送り状No"/>
+            <column id="ws.wt.obdDetail.extString2" title="custBillNo2" />
+            <column id="ws.wt.invInfo.quant.sku.code" title="sku.code" />
+            <column id="ws.wt.invInfo.quant.sku.name" title="sku.name"/>
+            <column id="ws.wt.invInfo.quant.sku.properties.packFlg4NS" title="packFlg4NS" format="enumFormat" formatParam="EnuPackFlg" />
+            <column id="sku.properties.packageInfo.p2100.coefficient" title="p2100.coefficient"/>
+            <column id="sku.properties.packageInfo.p2100.name" title="p2100.name"/>
+            <column id="sku.properties.packageInfo.p2000.coefficient" title="p2000.coefficient"/>
+            <column id="sku.properties.packageInfo.p2000.name" title="p2000.name"/>
+            
+            <column id="ws.wt.invInfo.quant.dispLot" title="expDate"/>
+            <column id="ws.wt.invInfo.inboundDate" title="inboundDate"/>
+            <column id="ws.wt.invInfo.trackSeq" title="asnNumber"/>
+            <column id="ws.wt.invInfo.bin.binCode" title="srcBin"/>
+            <column id="ws.wt.descBin.binCode" title="descBin"/>
+            <column id="ws.qty" title="qty" canSum="true"/>
+            <column id="wt.caseType" title="個口タイプ" format="enumFormat" formatParam="EnuCaseType"/>
+            <column id="sku.tempDiv" title="tempDiv" format="enumFormat" formatParam="EnuTempDiv"/>
+		</columns>
+		<buttons>
+			<!-- <popup id="pick" title="pickExecuteEdit" enableType="single" containId="true" pageId="pickExecuteEdit" iconUrl="action">
+                <enableExpression><![CDATA[(${ws.status} == @{EnuWarehouseTaskSingleStatus.0})]]></enableExpression>
+            </popup> -->
+            <popup id="batchPick" title="pickTaskBatchExecute" enableType="multi" containId="true" pageId="pickTaskBatchExecute" iconUrl="confirm">
+                <enableExpression><![CDATA[(${ws.status} == @{EnuWarehouseTaskSingleStatus.0})]]></enableExpression>
+            </popup>
+            <!-- <commit id="cancelPick" title="ピッキング取消" enableType="multi" confirmMessage="cancelPick.message" iconUrl="delete">
+                <enableExpression><![CDATA[(${ws.status} == @{EnuWarehouseTaskSingleStatus.200})]]></enableExpression><mappings>
+                <mapping id="ids" className="list">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                     <action managerName="warehouseTaskSingleManager" methodName="cancelPick" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit> -->
+            <!-- <popup id="check" title="checkExecuteEdit" enableType="single" containId="true" pageId="checkExecuteEdit" iconUrl="action">
+                <enableExpression><![CDATA[(${ws.status} == @{EnuWarehouseTaskSingleStatus.100})]]></enableExpression>
+            </popup> -->
+            <popup id="checkPick" title="checkBatchExecute" enableType="multi" containId="true" pageId="checkBatchExecute" iconUrl="confirm">
+                <enableExpression><![CDATA[(${ws.status} == @{EnuWarehouseTaskSingleStatus.100})]]></enableExpression>
+            </popup>
+            <commit id="cancelCheck" title="検品取消" enableType="multi" confirmMessage="cancelCheck.message" iconUrl="delete">
+                <enableExpression><![CDATA[(${ws.status} == @{EnuWarehouseTaskSingleStatus.200})]]></enableExpression><mappings>
+                <mapping id="ids" className="list">
+                        <entries />
+                    </mapping>
+                </mappings>
+                <actions>
+                     <action managerName="warehouseTaskSingleManager" methodName="cancelCheck" parameter="ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+                </forwards>
+            </commit>
+		</buttons>
+	</maintainPage>
+</pages>

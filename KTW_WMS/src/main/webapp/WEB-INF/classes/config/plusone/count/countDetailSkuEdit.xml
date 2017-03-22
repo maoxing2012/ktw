@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+	<maintainPage id="countDetailSkuEdit" title="countDetailSkuEdit" width="850" height="500" columnNum="6" autoQuery="true">
+		<search>
+			<inputUIs>
+				<hidden id="detail.id"/>
+				<hidden id="countPlan.id"/>
+				<text id="sku.code" title="sku.code"  forceOverride="true" trimSpace="true"/>
+				<text id="sku.name" title="sku.name"  forceOverride="true" trimSpace="true"/>
+				<text id="sku.specs" title="specs"  forceOverride="true" trimSpace="true"/>
+				<text id="sku.brandName" title="brandName" trimSpace="true"/>
+				<selectText id="bType" title="bType" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+st.id,
+st.code,
+st.name
+FROM SkuType st 
+WHERE st.disabled = '0'
+and st.typeKind = 'IT1000'
+                    ]]></hql>
+                </selectText>
+                <selectText id="mType" title="mType" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+st.id,
+st.code,
+st.name
+FROM SkuType st 
+WHERE st.disabled = '0'
+and st.typeKind = 'IT2000'
+                    ]]></hql>
+                </selectText>
+                <selectText id="lType" title="lType" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+st.id,
+st.code,
+st.name
+FROM SkuType st 
+WHERE st.disabled = '0'
+and st.typeKind = 'IT3000'
+                    ]]></hql>
+                </selectText>
+			</inputUIs>
+		</search>
+		<datasource type="hql"><![CDATA[ select  
+sku.id,
+sku.code,
+sku.name,
+sku.specs,
+sku.brandName,
+sku.it1000.name,
+sku.it2000.name,
+sku.it3000.name
+from Sku sku 
+left join sku.it1000
+left join sku.it2000
+left join sku.it3000
+where 1=1
+and sku.disabled = false
+and exists ( select 1 from Inventory inv where inv.quantInv.quant.sku.id = sku.id and inv.wh = #{SESSION_WAREHOUSE} )
+and sku.id not in(
+    select countDetail.sku.id 
+    from CountDetail countDetail
+	where countDetail.countPlan.id={countPlan.id}
+	) 
+/~sku.code: and sku.code like {sku.code} ~/ 
+/~sku.name: and sku.name like {sku.name} ~/
+/~sku.brandName: and sku.brandName like {sku.brandName}~/
+/~bType: and sku.it1000.id = {bType}~/
+/~mType: and sku.it2000.id = {mType}~/
+/~lType: and sku.it3000.id = {lType}~/ 
+/~sku.specs: and sku.specs = {sku.specs}~/ 
+ 		]]></datasource>
+		<columns>
+			<column id="sku.id" title="ID" visible="false"  />
+			<column id="sku.code" title="sku.code"/>
+			<column id="sku.name" title="sku.name"/>
+			<column id="sku.specs" title="specs"/>
+			<column id="sku.brandName" title="brandName"/>
+			<column id="sku.it1000.name" title="bType"/>
+			<column id="sku.it2000.name" title="mType"/>
+			<column id="sku.it3000.name" title="lType"/>
+		</columns>
+		<buttons>
+			<commit id="save" title="save" enableType="multi" iconUrl="save">
+				<mappings>
+                   	<mapping id="ids" className="list"/>
+                   	<mapping id="countPlan.id" className="long" />
+				</mappings>
+				<actions>
+					<action managerName="countPlanManager" methodName="saveSkuDetail" parameter="ids,countPlan.id" />
+				</actions>
+				<forwards>
+					<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+				</forwards>
+			</commit>
+		</buttons>
+	</maintainPage>
+</pages>

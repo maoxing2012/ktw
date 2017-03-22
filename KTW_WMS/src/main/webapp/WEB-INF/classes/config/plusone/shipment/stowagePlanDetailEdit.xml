@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="stowagePlanDetailEdit" title="stowagePlanDetailEdit" entityClass="com.core.scpwms.server.model.shipment.StowagePlanDetail" columnNum="4"  width="500" height="400" >
+        <inputUIs>
+            <hidden id="stowagePlanDetail.id" />
+            <text id="stowagePlanDetail.obdDetail.obd.obdNumber" title="obdNumber" readOnly="true"/>
+            <text id="stowagePlanDetail.obdDetail.obd.customer.name" title="customer"  readOnly="true"/>
+            <text id="stowagePlanDetail.obdDetail.obd.endCustomer" title="endCustomer"  readOnly="true"/>
+            <text id="stowagePlanDetail.obdDetail.sku.code" title="sku.code"  readOnly="true"/>
+            <text id="stowagePlanDetail.obdDetail.sku.name" title="sku.name"  readOnly="true"/>
+            <text id="stowagePlanDetail.obdDetail.sku.specs" title="specs"  readOnly="true"/>
+            <text id="stowagePlanDetail.obdDetail.packageDetail.name" title="packDetail"  readOnly="true"/>
+            <numberText id="stowagePlanDetail.planPackQty" title="planPackQty" required="true"/>
+            <text id="stowagePlanDetail.obdDetail.lotData" title="lotInfo"  readOnly="true"/>
+        </inputUIs>
+        <buttons>
+            <commit id="save" title="save" enableType="none" invisible="false" iconUrl="save">
+                <mappings>
+                    <mapping id="stowagePlanDetail" className="com.core.scpwms.server.model.shipment.StowagePlanDetail"/>
+                </mappings>
+                <actions>
+                    <action managerName="stowagePlanManager" methodName="editDetail" parameter="stowagePlanDetail"/>
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true"/>
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>

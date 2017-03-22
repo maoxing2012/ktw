@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages>
+     <maintainPage id="qualityCheckLaborKpiEdit" title="qualityCheckLaborKpiEdit" width="800" height="450" autoQuery="true">
+         <search>
+             <inputUIs>
+                <text id="labor.code" title="labor.code" trimSpace="true"/>
+                <text id="labor.name" title="labor.name" trimSpace="true"/>
+             </inputUIs>
+         </search>
+         <datasource type="hql"><![CDATA[select  
+labor.id,
+labor.code,
+labor.name
+from Labor labor 
+where 1=1 
+and labor.wh = #{SESSION_WAREHOUSE} 
+and labor.type='KEEPER'
+and labor.id not in ( select distinct lk.labor.id from LaborKpi lk where lk.relatedId = {qualityHistory.id} and lk.relatedClass='QualityHistory' and lk.processType = 'M4010')
+/~labor.code: and labor.code like {labor.code}~/ 
+/~labor.name: and labor.name like {labor.name}~/ 
+
+        ]]></datasource>
+        <columns>
+            <column id="labor.id" title="ID" visible="false" />
+            <column id="labor.code" title="labor.code"/>
+            <column id="labor.name" title="labor.name"/>
+        </columns>
+        <buttons>
+           <commit id="add" title="add" enableType="multi" iconUrl="save">
+               <mappings>
+                   <mapping id="qualityHistory.id" className="long" />
+                   <mapping id="ids" className="list"/>
+               </mappings>
+               <actions>
+                   <action managerName="laborKpiHelper" methodName="addQualityCheckLaborKpi" parameter="qualityHistory.id,ids"/>
+               </actions>
+               <forwards>
+                   <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                   <forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+               </forwards>
+           </commit>
+       </buttons>
+     </maintainPage>
+</pages>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.core.scpwms.server.model.rules.InventoryApplyRule" table="WMS_INV_APPLAY_RULE">
+		<id name="id" column="ID" type="long">
+			<generator class="native">
+				<param name="sequence">wseq_rule_inv</param>
+				<param name="parameters">START WITH 1000</param>
+			</generator>
+		</id>
+		<discriminator column="DISCRIMINATOR" type="string"/>
+		<version name="version" type="long" column="VERSION"/>
+		<many-to-one name="wh" class="com.core.scpwms.server.model.warehouse.Warehouse">
+			<column name="WAREHOUSE_ID" not-null="true" unique-key="UK_INVENTORYAPPLY_RULE"/>
+		</many-to-one>
+		<many-to-one name="sku" class="com.core.scpwms.server.model.common.Sku">
+			<column name="SKU_ID"/>
+		</many-to-one>
+		<many-to-one name="descBinGroup" class="com.core.scpwms.server.model.warehouse.BinGroup">
+			<column name="BINGROUP_ID"/>
+		</many-to-one>
+		<many-to-one name="bin" class="com.core.scpwms.server.model.warehouse.Bin">
+			<column name="BIN_ID"/>
+		</many-to-one>
+		<many-to-one name="plant" class="com.core.scpwms.server.model.user.Plant">
+            <column name="PLANT_ID" not-null="true" unique-key="UK_INVENTORYAPPLY_RULE"/>
+        </many-to-one>
+        <many-to-one name="abcProperties" class="com.core.scpwms.server.model.common.AbcProperties" >
+			<column name="ABC_ID"/>
+		</many-to-one>	
+		<property name="packageLevel" column="PACKAGE_LEVEL" type="string" length="30"/>
+		
+		<property name="maxStock" column="MAX_STOCK" type="double" />
+		<property name="minStock" column="MIN_STOCK" type="double"/>
+		<property name="stock" column="STOCK" type="double"/>
+		<property name="priority" column="priority" type="int" unique-key="UK_INVENTORYAPPLY_RULE"/>
+		<property name="alive" column="IS_ALIVE" type="boolean" />
+		
+		<component name="createInfo" class="com.core.business.model.domain.CreateInfo">
+			<property name="operatorId" column="CREATE_OPERATOR_ID" type="long" />
+			<property name="operatorName" column="CREATE_OPERATOR_NAME" type="string" length="50"/>
+			<property name="updateTime" column="CREATE_TIME" type="timestamp" />
+		</component>	
+		<component name="updateInfo" class="com.core.business.model.domain.UpdateInfo">
+	       	<property name="operatorId" column="UPDATE_OPERATOR_ID" type="long" />
+	        <property name="operatorName" column="UPDATE_OPERATOR_NAME" type="string" length="50"/>
+	        <property name="updateTime" column="UPDATE_TIME" type="timestamp" />
+        </component>
+	</class>
+</hibernate-mapping>
+
+

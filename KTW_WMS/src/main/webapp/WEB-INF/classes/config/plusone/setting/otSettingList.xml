@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <maintainPage id="otSettingList" title="otSettingList" autoQuery="false">
+		<search>
+			<inputUIs>
+				<text id="ot.code" title="orderType.code" trimSpace="true" />
+				<text id="ot.name" title="orderType.name" trimSpace="true" />
+				<list id="ot.processType" title="process.type" enumType="EnuInvProcessType">
+					<hql><![CDATA[ select 
+						e.enumValue,
+						e.enumValue
+						from Enumerate e
+						where  e.enumType = 'EnuInvProcessType' 
+					]]></hql>
+				</list>
+                <list id="ot.disabled" title="title.status" enumType="BooleanTypeN" returnType="boolean">
+                    <hql><![CDATA[ SELECT 
+                        e.enumValue,
+                        e.enumValue 
+                        From Enumerate e 
+                        where e.enumType = 'BooleanTypeN' 
+                    ]]></hql>
+                </list>
+			</inputUIs>
+		</search>
+		<datasource type="hql" ><![CDATA[ select 
+ot.id,
+ot.code,
+ot.name,
+ot.processType,
+ot.seqProperties.name,
+ot.disabled,
+ot.description
+from OrderType ot 
+where 1=1
+/~ot.code: and ot.code like {ot.code} ~/ 
+/~ot.name: and ot.name like {ot.name} ~/ 
+/~ot.processType: and ot.processType = {ot.processType}~/ 
+/~ot.disabled: and ot.disabled = {ot.disabled} ~/ 
+		 ]]></datasource>
+		<columns>
+			<column id="ot.id" title="ID"  visible="false"/>
+			<column id="ot.code" title="orderType.code"/>
+			<column id="ot.name" title="orderType.name"/>
+			<column id="ot.processType" title="processType" format="enumFormat" formatParam="EnuInvProcessType"/>
+			<column id="ot.seqProperties.name" title="seqSetting.name"/>
+			<column id="ot.disabled" title="title.status" format="enumFormat" formatParam="BooleanTypeN"/>
+			<column id="ot.description" title="title.desc"/>
+		</columns>
+		<buttons>   
+			<popup id="new" title="new"  enableType="none" containId="false" pageId="otSettingEdit" iconUrl="add"/>
+			<popup id="edit" title="modify" enableType="single" containId="true"  pageId="otSettingEdit" iconUrl="edit">
+				<enableExpression><![CDATA[(${ot.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+			</popup>
+			<commit id="enable" title="enable" enableType="multi" invisible="false" confirmMessage="enable.confirmMessage" iconUrl="enable">
+				<enableExpression><![CDATA[(${ot.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="otSettingManager" methodName="enableOt" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+			<commit id="disable" title="disable" enableType="multi" invisible="false" confirmMessage="disable.confirmMessage" iconUrl="disable">
+				<enableExpression><![CDATA[(${ot.disabled} == @{BooleanTypeN.false})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="otSettingManager" methodName="disabledOt" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+				</forwards>
+			</commit>
+			<commit id="delete" title="delete"  enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+				<enableExpression><![CDATA[(${ot.disabled} == @{BooleanTypeN.true})]]></enableExpression>
+				<mappings>
+					<mapping id="ids" className="list"/>
+				</mappings>
+				<actions>
+					<action managerName="otSettingManager" methodName="deleteOt" parameter="ids"/>
+				</actions>
+				<forwards>
+					<forward name="refreshWindow" newEnabled="true" editEnabled="true" />
+				</forwards>
+			</commit>
+			<popup id="view" title="view"  enableType="single" containId="true" pageId="otSettingView" iconUrl="view"/>
+		</buttons>
+	 </maintainPage>
+</pages>

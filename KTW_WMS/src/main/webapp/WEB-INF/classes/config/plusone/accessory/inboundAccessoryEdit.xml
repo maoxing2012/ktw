@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	<editPage id="inboundAccessoryEdit" title="inboundAccessoryEdit" entityClass="com.core.scpwms.server.model.accessory.AccessoryInventoryHistory" width="520" height="400" onClose="refreshParent">
+		<inputUIs>
+			<hidden id="aih.id" title="ID" />
+			<selectText id="aih.accessory.id" title="accessory.code" required="true" displayColumn="2" displayedTableHead="ID,Code,Name,accessory.unit,specs,brandName,bType,mType,lType" >
+            		<hql><![CDATA[SELECT 
+accessory.id,
+accessory.code,
+accessory.name,
+accessory.unit,
+accessory.specs,
+accessory.brandName
+FROM Accessory accessory 
+WHERE accessory.disabled = '0' 
+					]]></hql>
+					<eventListeners>
+						<eventListener id="name" index="3" refreshUI="true"/>
+						<eventListener id="unit" index="4" refreshUI="true"/>
+						<eventListener id="specs" index="5" refreshUI="true"/>
+						<eventListener id="brandName" index="6" refreshUI="true"/>
+					</eventListeners>
+        	</selectText>
+        	<text id="name" title="accessory.name" readOnly="true" />
+        	<text id="specs" title="specs" readOnly="true" />
+        	<text id="unit" title="accessory.unit" readOnly="true" />
+        	<text id="brandName" title="brandName" readOnly="true" />
+        	<numberText id="aih.qty" title="inboundQty" required="true" />
+        	<selectText id="aih.bin.id" title="bin" displayedTableHead="ID,Code,Name" required="true" displayColumn="2">
+					<hql><![CDATA[ SELECT 
+bin.id,
+bin.binCode,
+bin.description 
+FROM Bin bin  
+WHERE bin.disabled = false
+and bin.storageType.role='R8040' 
+and bin.wh = #{SESSION_WAREHOUSE} 
+					]]></hql>
+			</selectText>
+			<text id="aih.department" title="department" required="true" />
+			<selectText id="labor" title="labor" displayedTableHead="ID,code,name" required="true" >
+				<hql><![CDATA[SELECT 
+labor.id, 
+labor.code,
+labor.name
+from Labor labor
+where labor.wh = #{SESSION_WAREHOUSE} 
+and labor.disabled = '0'
+                    ]]></hql>
+			</selectText>
+			<list id="aih.status" title="invStatus" enumType="EnuInvStatus" returnType="string" required="true" >
+					<hql><![CDATA[ SELECT  
+e.enumValue, 
+e.enumValue   
+FROM Enumerate e   
+WHERE  e.enumType = 'EnuInvStatus' 
+					]]></hql>
+			</list>
+			<textArea id="aih.description" title="title.desc" trimSpace="true" rows="50" cols="371" span="3"/>
+		</inputUIs>
+		<buttons>
+            <commit id="save" title="save" enableType="none" iconUrl="save">
+                <mappings>
+                    <mapping id="aih.accessory.id" className="long" />
+					<mapping id="aih.qty" className="double" />
+					<mapping id="aih.bin.id" className="long" />
+					<mapping id="aih.department" className="string" />
+					<mapping id="labor" className="long" />
+					<mapping id="aih.status" className="string" />
+					<mapping id="aih.description" className="string" />
+                </mappings>
+                <actions>
+                    <action managerName="accessoryInventoryManager"  methodName="saveAihInbound"  parameter="aih.accessory.id,aih.qty,aih.bin.id,aih.department,labor,aih.status,aih.description" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+					<forward name="closeWindow" newEnabled="false" editEnabled="true" />
+					<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+	</editPage>
+</pages>

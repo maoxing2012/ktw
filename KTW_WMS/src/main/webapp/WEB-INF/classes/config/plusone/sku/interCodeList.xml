@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <maintainPage id="interCodeList" title="interCodeList" autoQuery="false">
+        <search>
+             <inputUIs>
+             	<selectText id="owner" title="owner" displayedTableHead="ID,code,name" >
+                    <hql><![CDATA[SELECT 
+owner.id,
+owner.code,
+owner.name
+FROM Owner owner 
+WHERE owner.disabled = '0'
+                    ]]></hql>
+                </selectText>
+             	<text id="sku.code" title="sku.code" trimSpace="true"/>
+                <text id="sku.name" title="sku.name" trimSpace="true"/>
+                <text id="barCode" title="barCode" trimSpace="true" />
+            </inputUIs>
+        </search>
+        <datasource type="hql"><![CDATA[select 
+code.id,
+code.sku.owner.code,
+code.sku.owner.name,
+code.sku.code,
+code.sku.name,
+code.packDetail.packageLevel as packLevelCode,
+code.packDetail.packageLevel as packLevel,
+code.barCode,
+code.packDetail.coefficient
+from SkuInterCode code 
+where 1=1 
+and code.sku.owner.plant.wh = #{SESSION_WAREHOUSE} 
+/~owner: and code.sku.owner.id = {owner}~/
+/~barCode: and code.barCode like {barCode}~/ 
+/~sku.code: and code.sku.code like {sku.code}~/
+/~sku.name: and code.sku.name like {sku.name}~/
+		]]></datasource>
+		<columns>
+            <column id="code.id" title="ID" visible="false"/>
+            <column id="code.sku.owner.code" title="owner.code" visible="false"/>
+            <column id="code.sku.owner.name" title="owner.name"/>
+            <column id="code.sku.code" title="sku.code"/>
+            <column id="code.sku.name" title="sku.name"/>
+            <column id="packLevelCode" title="packageLevelCode" visible="false"/>
+            <column id="packLevel" title="packageLevel"  format="enumFormat" formatParam="EnuPackageLevel"/>
+            <column id="code.barCode" title="barCode"/>
+            <column id="code.packDetail.coefficient" title="coefficient"/>
+        </columns>
+        <buttons>
+        	<popup id="new"  title="new" enableType="none" containId="false"  pageId="skuAddInterCode" iconUrl="new"/>
+        	<commit id="delete" title="deleteInterCode" enableType="multi" confirmMessage="delete.confirmMessage" containId="true" iconUrl="delete">
+                 <mappings>
+                     <mapping id="ids" className="list"/>
+                 </mappings>
+                 <actions>
+                     <action managerName="skuManager" methodName="deleteInterCode" parameter="ids"/>
+                 </actions>
+                 <forwards>
+                     <forward name="refreshWindow" newEnabled="true" editEnabled="false"/>
+                     <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                 </forwards>
+             </commit>
+        </buttons>
+    </maintainPage>
+</pages>

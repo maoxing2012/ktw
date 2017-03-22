@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+     <maintainPage id="addSkuSuppliers" title="addSkuSuppliers" autoQuery="true" filterCol="true" width="600" height="400">
+         <search>
+             <inputUIs>
+                 <hidden id="sku.id"/>
+                 <text id="supplier.code" title="supplier.code" trimSpace="true"/>
+                 <text id="supplier.name" title="supplier.name" trimSpace="true"/>
+             </inputUIs>
+         </search>
+	     <datasource type="hql"><![CDATA[select  
+s.id, 
+s.code, 
+s.name 
+from BizOrg s 
+where s.disabled = false 
+and s.type = 'V'  
+and s.id NOT IN (
+			select  
+			ss.supplier.id 
+			from SkuSupplier ss 
+			where 1=1 
+			/~sku.id: and ss.sku.id = {sku.id} ~/) 
+		]]></datasource>
+        <columns>
+             <column id="s.id" title="ID" visible="false"/>
+             <column id="s.code" title="supplier.code" typeId="supplier.code"/>
+             <column id="s.name" title="supplier.name" typeId="supplier.name"/>
+        </columns>
+        <buttons>
+           <commit id="add" title="add" enableType="multi" iconUrl="save">
+               <mappings>
+				  <mapping id="skuList.id" className="long"/>
+			      <mapping id="ids" className="list"/>
+               </mappings>
+               <actions>
+                   <action managerName="skuSupplierManager" methodName="saveSuppliers" parameter="skuList.id,ids"/>
+               </actions>
+               <forwards>
+                   <forward name="refreshParent" newEnabled="true" editEnabled="true"/>
+                   <forward name="closeWindow" newEnabled="true" editEnabled="false"/>
+               </forwards>
+           </commit>
+       </buttons>
+     </maintainPage>
+</pages>

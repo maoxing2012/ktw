@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+	 <modifyDetailPage id="editUsersPage" title="editUsersPage" entityClass="com.core.business.model.security.User" onClose="refreshParent" width="500" height="520">
+		 <modify>
+			 <inputUIs>
+				 <hidden id="user.id" />
+				 <text id="user.loginName" title="user.loginName" length="16" required="true" trimSpace="true" editModel="uneditable" charCase=""/>
+				 <text id="user.name" title="user.name" length="20" required="true" trimSpace="true" lastElement="true"/>
+				 <list id="user.locale" title="user.locale" required="true" enumType="LocalType" >
+					 <hql><![CDATA[ SELECT 
+					 enumerate.enumValue,
+					 enumerate.enumValue From Enumerate enumerate 
+					 where enumerate.enumType = 'LocalType']]></hql>
+				 </list>
+				 <password id="user.password" title="user.password" required="true"  forceOverride="false"  length="33" trimSpace="true" lastElement="true"/>
+				 <text id="user.email" title="user.email" forceOverride="false" span="3" width="360" length="100" trimSpace="true" lastElement="true"/>
+				 <date id="user.expiryDate" title="user.expiryDate"/>
+				 <date id="user.passwordExpiryDate" title="user.passwordExpiryDate" forceOverride="false"  showTime="false" defaultCurrentDate="false" lastElement="true"/>
+			 </inputUIs>
+			 <buttons>
+				 <commit id="save" title="save" enableType="none" iconUrl="save">
+					 <mappings>
+						 <mapping id="user" className="com.core.business.model.security.User"/>
+						 <mapping id="user.locale" className="locale"/>
+					 </mappings>
+					 <actions>
+					 	<action managerName="wmsUserManager" methodName="saveUser" parameter="user,user.locale"/>
+					 </actions>
+					 <forwards>
+					 	<forward name="refreshParent" newEnabled="true" editEnabled="true" />
+						<forward name="refreshWindow" newEnabled="true" editEnable="false" />
+						<forward name="resetWindow" newEnabled="true" editEnabled="false" />
+					 </forwards>
+				 </commit>
+			 </buttons>
+		 </modify>
+		 <detail autoQuery="false">
+			 <datasource><![CDATA[select 
+group.id, 
+group.code, 
+group.name 
+from Group group,User user 
+where 1=1
+and group in elements(user.groups) 
+and user.id = {user.id} 
+			 ]]></datasource>
+			 <columns>
+				 <column id="group.id" title="ID" visible="false"/>
+				 <column id="group.code" title="group.code"/>
+				 <column id="group.name" title="group.name"/>
+			 </columns>
+			 <buttons>
+				 <popup id="addGroup" title="addGroup" enableType="none" containId="false" pageId="addUserGroup" iconUrl="add">
+				 	<enableExpression><![CDATA[(${user.id} > 0)]]></enableExpression>
+				 </popup>
+				 <commit id="removeGroup" title="removeGroup" enableType="multi" confirmMessage="delete.confirmMessage" iconUrl="delete">
+					 <mappings>
+						 <mapping id="user.id" className="long"/>
+						 <mapping id="ids" className="list"/>
+					 </mappings>
+					 <actions>
+					 	<action managerName="userManager" methodName="moveUserGroups" parameter="user.id,ids"/>
+					 </actions>
+					 <forwards>
+					 	<forward name="refreshWindow" newEnabled="true" editEnabled="true"/>
+					 </forwards>
+				 </commit>
+			 </buttons>
+		 </detail>
+	 </modifyDetailPage>
+</pages>

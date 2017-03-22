@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages>
+    <editPage id="binLock" title="binLock" entityClass="com.core.scpwms.server.model.warehouse.Bin"  width="300" height="300" onClose="refreshParent" >
+        <inputUIs>
+                <hidden id="binSetting.id" title="ID" />
+                <list id="lockStatus" title="lockStatus" required="true" forceOverride="false" lastElement="true" enumType="EnuBinLockType">
+                    <hql>
+						<![CDATA[
+						SELECT
+						e.enumValue,
+						e.enumValue
+						FROM Enumerate e
+						WHERE  e.enumType = 'EnuBinLockType'
+						and e.enumValue <> 'LOCK_T4'
+						]]>
+                    </hql>
+                </list>
+                <textArea id="lockReason" title="lockReason" trimSpace="false" required="false" lastElement="true" rows="50" cols="355" span="2"/>
+        </inputUIs>
+        <buttons>
+            <commit id="lockBin" title="save" enableType="multi" iconUrl="save">
+                <mappings>
+                    <mapping id="lockStatus" className="string" />
+                    <mapping id="lockReason" className="string" />
+                    <mapping id="ids" className="list" />
+                </mappings>
+                <actions>
+                    <action managerName="binSettingManager"  methodName="lockBin"  parameter="lockStatus,lockReason,ids" />
+                </actions>
+                <forwards>
+                    <forward name="refreshParent" newEnabled="true" editEnabled="true" />
+                    <forward name="closeWindow" newEnabled="true" editEnabled="true" />
+                    <forward name="resetWindow" newEnabled="true" editEnabled="false" />
+                </forwards>
+            </commit>
+        </buttons>
+    </editPage>
+</pages>
