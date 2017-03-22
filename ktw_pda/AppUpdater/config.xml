@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <objects>
+    <!--<Scanner fullname="CasioScanner.Scanner" assemblyName="CasioScanner.dll"/>-->
+    <!--<Scanner fullname="UROVOScanner.ScannerEx" assemblyName="UROVOScanner.dll"/>-->
+    <Scanner fullname="MotorolaM9190.Scanner" assemblyName="MotorolaM9190.dll"/>
+    <MessagerHandler fullname="Framework.MessageHandler" assemblyName="Framework.dll"/>
+	  <!--打印机类-->
+	  <printer fullname="BiXoLon.SPPR300" assemblyName="BiXoLon.dll" />
+
+	  <!-- Views-->
+	  <othermenu fullname="WMSPDA.frmOther" assemblyName="WMSPDA"/>
+	  <personal fullname="WMSPDA.frmPersonalCenter" assemblyName="WMSPDA"/>
+	  <password fullname="WMSPDA.frmChangePassword" assemblyName="WMSPDA"/>
+	  <warehouse fullname="WMSPDA.frmWareHouse" assemblyName="WMSPDA"/>
+	  <barcode fullname="WMSPDA.frmBarcode" assemblyName="WMSPDA"/>
+	  <print fullname="WMSPDA.frmPrint" assemblyName="WMSPDA"/>
+	  <menuAsn fullname="StockIn.frmASN" assemblyName="StockIn"/>
+	  <menuPickup fullname="WMSPDA.frmPickup" assemblyName="WMSPDA"/>
+	  <asndetail fullname="StockIn.frmASNDetail" assemblyName="StockIn"/>
+	  <container fullname="StockIn.frmContainer" assemblyName="StockIn"/>
+	  <confirm fullname="StockIn.frmConfirm" assemblyName="StockIn"/>
+  </objects>
+  <hotkeys>   
+    <esc value="27" text="Esc"/>
+    <l value="126" text="R"/>
+	  <key1 value="49" text="1"/>
+	  <key2 value="50" text="2"/>
+	  <key3 value="51" text="3"/>
+	  <key4 value="52" text="4"/>
+	  <key5 value="53" text="5"/>
+	  <key6 value="54" text="6"/>
+	  <key7 value="55" text="7"/>
+	  <key8 value="56" text="8"/>
+	  <key9 value="57" text="9"/>
+	  <keyf1 value="112" text="F1"/>
+	  <keyf2 value="113" text="F2"/>
+  </hotkeys>
+  <ExceptionPolicy>
+    <Policy>
+      <name>Default</name>
+      <Handler id="MessagerHandler"/>
+    </Policy>
+  </ExceptionPolicy>
+	<setting>
+		<server value="172.16.67.57" web="/scpwms/webService/MobileServiceManager"/>
+		<com value="COM6:115200"/>
+		<version value="0.1" exe="WMSPDA.exe"/>
+	</setting>
+</configuration>

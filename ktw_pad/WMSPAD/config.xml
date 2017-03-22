@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <objects>
+    <!--<Scanner fullname="CasioScanner.Scanner" assemblyName="CasioScanner.dll"/>-->
+    <!--<Scanner fullname="UROVOScanner.ScannerEx" assemblyName="UROVOScanner.dll"/>-->
+    <Scanner fullname="Denso.BHT1300CL" assemblyName="Denso.dll"/>
+    <MessagerHandler fullname="Framework.MessageHandler" assemblyName="Framework.dll"/>
+    <!--print-->
+    <printer fullname="BiXoLon.SPPR300" assemblyName="BiXoLon.dll" />
+
+    <!-- Views-->
+    <othermenu fullname="WMSPDA.frmOther" assemblyName="WMSPDA"/>
+    <personal fullname="WMSPDA.frmPersonalCenter" assemblyName="WMSPDA"/>
+    <password fullname="WMSPDA.frmChangePassword" assemblyName="WMSPDA"/>
+    <warehouse fullname="WMSPDA.frmWareHouse" assemblyName="WMSPDA"/>
+    <barcode fullname="WMSPDA.frmBarcode" assemblyName="WMSPDA"/>
+    <print fullname="WMSPDA.frmPrint" assemblyName="WMSPDA"/>
+    
+    <incoming fullname="IncomingCheck.frmMenu" assemblyName="IncomingCheck"/>
+    <menuSingle fullname="IncomingCheck.frmCheck" assemblyName="IncomingCheck"/>
+    <menuMulti fullname="IncomingCheck.frmMultiList" assemblyName="IncomingCheck"/>
+
+    <menuOther fullname="Other.frmOther" assemblyName="Other"/>
+    <menuInventorySearch fullname="Other.frmInventorySearch" assemblyName="Other"/>
+    <inventorySearch fullname="Other.frmList" assemblyName="Other"/>
+    <!--<menuShipment fullname="Delivery.frmDeliveryList" assemblyName="Delivery"/>-->
+
+    <menuShift fullname="Shift.frmShift" assemblyName="Shift"/>
+    <menuInvInfoSearch fullname="Shift.frmInvInfoSearch" assemblyName="Shift"/>
+    <menuInvInfoSearchByQr fullname="Shift.frmInvInfoSearchByQr" assemblyName="Shift"/>
+    
+    <menuShipment fullname="StockTake.frmSearchCountPlan" assemblyName="StockTake"/>
+
+    <menuPackageIn fullname="Seize.frmCaseInfo" assemblyName="Seize"/>
+
+    <menuPickup fullname="Pick.frmPick" assemblyName="Pick"/>
+    <menuCsPick fullname="Pick.frmCsPick" assemblyName="Pick"/>
+    <menuPsPick fullname="Pick.frmPsPick" assemblyName="Pick"/>
+    <menuBatchPick fullname="Pick.frmBatchPick" assemblyName="Pick"/>
+    
+  </objects>
+  <hotkeys>
+    <esc value="27" text="Esc"/>
+    <green value="193" text="M1"/>
+    <red value="27" text="Esc"/>
+    <key1 value="49" text="1"/>
+    <key2 value="50" text="2"/>
+    <key3 value="51" text="3"/>
+    <key4 value="52" text="4"/>
+    <key5 value="53" text="5"/>
+    <key6 value="54" text="6"/>
+    <key7 value="55" text="7"/>
+    <key8 value="56" text="8"/>
+    <key9 value="57" text="9"/>
+    <keyf1 value="112" text="F1"/>
+    <keyf2 value="113" text="F2"/>
+    <keyf3 value="114" text="F3"/>
+    <keyf4 value="115" text="F4"/>
+    <keyf5 value="116" text="F5"/>
+    <keyf6 value="117" text="F6"/>
+    <keyf7 value="118" text="F7"/>
+    <keyf8 value="119" text="F8"/>
+    <keyf9 value="120" text="F9"/>
+    <keyf10 value="121" text="F10"/>
+    <keyf11 value="122" text="F11"/>
+	  <keyf12 value="123" text="F12"/>
+  </hotkeys>
+  <ExceptionPolicy>
+    <Policy>
+      <name>Default</name>
+      <Handler id="MessagerHandler"/>
+    </Policy>
+  </ExceptionPolicy>
+  <setting>
+    <!--<server value="153.127.228.73:8080/ktw-2.0" web="/scpwms/webService/MobileServiceManager"/>-->
+    <server value="172.16.73.163:9097" web="/scpwms/webService/MobileServiceManager"/>
+    <com value="E47FB26A7105"/>
+    <portno value="15003"/>
+	  <version value="0.1" exe="WMSPDA.exe"/>
+    <lastaccess value=""/>
+  </setting>
+</configuration>

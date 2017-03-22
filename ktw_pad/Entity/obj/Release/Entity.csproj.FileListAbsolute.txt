@@ -1,0 +1,5 @@
+D:\new_ktw\ktw_pad\Entity\bin\Release\Entity.dll
+D:\new_ktw\ktw_pad\Entity\bin\Release\Entity.pdb
+D:\new_ktw\ktw_pad\Entity\obj\Release\ResolveAssemblyReference.cache
+D:\new_ktw\ktw_pad\Entity\obj\Release\Entity.dll
+D:\new_ktw\ktw_pad\Entity\obj\Release\Entity.pdb

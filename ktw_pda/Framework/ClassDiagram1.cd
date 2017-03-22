@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Framework.AppContext" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICAIQAACCAIAIAQIggAAQAIQAAAAAwGAQAACIAAAAAE=</HashCode>
+      <FileName>AppContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.AlphaContainer" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAACAAAEAAAAAQAAAAAAAQIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\AlphaContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.AlphaControl" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAgAAQAAAAAAAAAABAAAIAAAASQAAAAA=</HashCode>
+      <FileName>Control\AlphaControl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Framework.AlphaImage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEIEAAgACAAAgCEAAAAAEAAAAAAQBAAAAAEAAAgQAA=</HashCode>
+      <FileName>Control\AlphaImage.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Framework.AlphaImageButton" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACACAEAgBGAACAIASQAAAAABAABAAgAQAAAAA=</HashCode>
+      <FileName>Control\AlphaImageButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.AlphaPanel" Collapsed="true">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQCABAAAACAAAAAAQACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\AlphaPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.AlphaPictureBox" Collapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAgAEAAAAAAAAAAAAQBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\AlphaPictureBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.BaseForm" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYKABAAQADSDBAQCQADhAIAHAIAFAABIAACiBZBEABA=</HashCode>
+      <FileName>Control\BaseForm.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Framework.ButtonEx" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQCAAEQAAABAAgDDQACAIgQeAiABZBBbAAAgSQAAAIA=</HashCode>
+      <FileName>Control\ButtonEx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Framework.ComboBoxEx" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEBAAACCCCAAAIAKCAAAACgAAAAAAIBIAAAAAABQA=</HashCode>
+      <FileName>Control\ComboBoxEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.GridEx" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAYAAACBAABAAAACAEAACAEAAAAAAAAAAgAQASAA=</HashCode>
+      <FileName>Control\GridEx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Framework.GroupBoxEx" Collapsed="true">
+    <Position X="15.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\GroupBoxEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.LabelEx" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAABEEgAAQEAAAAAQAAIBAAAIAACASAAAgAA=</HashCode>
+      <FileName>Control\LabelEx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Framework.NumericText" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAwAAIACAAgAAAAgDgAAAKAAgAAAAAAAAgBAAAAAA=</HashCode>
+      <FileName>Control\NumericText.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.PaintEventArgsEx" Collapsed="true">
+    <Position X="5.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\PaintEventArgsEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.PictureEx" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACCBAAgAOQACAIJQQADABZBBIABAASQAAQAA=</HashCode>
+      <FileName>Control\PictureEx.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Framework.TextEx" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASCAAIRACCECCBAACGCgAQSTAAAAUCCAAAAEAEABoAQ=</HashCode>
+      <FileName>Control\TextEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.ApplicationException" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exception\ApplicationException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.BusinessException" Collapsed="true">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Exception\BusinessException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.ExceptionPolicy" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Exception\ExceptionPolicy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.MessageHandler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Exception\MessageHandler.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Framework.MobileRequest" Collapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAggAAAIAACAAAAAgAAAAAAAAAAIAAAACAAAA=</HashCode>
+      <FileName>Service\MobileRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.MobileResponse&lt;T&gt;" Collapsed="true">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAgAABAIAACAAAAAgAAAAAAAAAAQA=</HashCode>
+      <FileName>Service\MobileResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.Config" Collapsed="true">
+    <Position X="10.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAIAEAAgAIAAAAIIAAEgAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\Config.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.Factory" Collapsed="true">
+    <Position X="5.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\Factory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.FormUtil" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Util\FormUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.FrameworkEx" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiBAAAABAAAAAAAAAAAAAAAAAgAAAEAAEBAAAAAQQAA=</HashCode>
+      <FileName>Util\FrameworkEx.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.HotKey" Collapsed="true">
+    <Position X="5.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgCAAAAAA=</HashCode>
+      <FileName>Util\HotKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.Message" Collapsed="true">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAQAkAAAAAAEAAAAA=</HashCode>
+      <FileName>Util\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.ScanArgs" Collapsed="true">
+    <Position X="10.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAECAAAAAAAAAAAAAAAAAAIAAAAABAAAAAA=</HashCode>
+      <FileName>Util\ScanArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.Sip" Collapsed="true">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAEAAAAAAAAAAEAgAIAAAAAAAAAAA=</HashCode>
+      <FileName>Util\Sip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.StringUtil" Collapsed="true">
+    <Position X="14" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgBAAAAAAAAAAAAAAAAAAAAAAAAAAEABAAAAAAAAAAA=</HashCode>
+      <FileName>Util\StringUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.Win32" Collapsed="true">
+    <Position X="7" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CABDACkMMkADBgMCICCIOEBAIYJECIIACECEDbCdQTA=</HashCode>
+      <FileName>Win32\Win32.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Framework.WndProcHooker" Collapsed="true">
+    <Position X="10.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAMAACAAAAAAAAAAAAgBgEAA=</HashCode>
+      <FileName>Win32\WndProcHooker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlatformAPI.DrawingAPI" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAACAAAAAg=</HashCode>
+      <FileName>Win32\AlphaBlend.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlatformAPI.AlphaBlend" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Win32\AlphaBlend.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Drawing.GradientFill" Collapsed="true">
+    <Position X="10.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\Gradientfill.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Drawing.GraphicsExtension" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAAQAAAgAAAACEAAAAgQAEAAAAAAABAAAAEUBCAgA=</HashCode>
+      <FileName>Win32\GraphicsExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Drawing.PlatformAPIs" Collapsed="true">
+    <Position X="8.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAg=</HashCode>
+      <FileName>Win32\PlatformAPIs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Drawing.Win32Helper" Collapsed="true">
+    <Position X="8.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIIAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Win32\Win32Helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="PlatformAPI.BlendFunction" Collapsed="true">
+    <Position X="8.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAABAAAAAAAAAAAAAAAAABAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Win32\AlphaBlend.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PlatformAPI.BitmapData" Collapsed="true">
+    <Position X="5.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAgAAAAEAAAAAEAAAAAAAQAAAAAAEAAAAAA=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PlatformAPI.ImageInfo" Collapsed="true">
+    <Position X="12.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABgAABAQAAQAAAAAAAGAAAAAAAAAAAAAAAQAAABA=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Microsoft.Drawing.BlendFunction" Collapsed="true">
+    <Position X="7" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAABAAAAAAAAAAAAAAAAABAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Win32\PlatformAPIs.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Microsoft.Drawing.TRIVERTEX" Collapsed="true">
+    <Position X="14" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAAAAAAAAAAAABAAAABgABAAAAA=</HashCode>
+      <FileName>Win32\Win32Helper.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Microsoft.Drawing.GRADIENT_RECT" Collapsed="true">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Win32\Win32Helper.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Framework.IAlphaControl" Collapsed="true">
+    <Position X="5.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Control\IAlphaControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Framework.IExceptionHandler" Collapsed="true">
+    <Position X="10.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Exception\IExceptionHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Framework.IView" Collapsed="true">
+    <Position X="10.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAAAAAAIAAAAAEAABAAAACAAAAAAA=</HashCode>
+      <FileName>Navigat\IView.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Framework.IFactory" Collapsed="true">
+    <Position X="12.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\IFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Framework.IPrint" Collapsed="true">
+    <Position X="7" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Util\IPrint.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Framework.IScan" Collapsed="true">
+    <Position X="8.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAgAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\IScan.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlatformAPI.IImagingFactory" Collapsed="true">
+    <Position X="15.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAQAAAAAAQAQAAAAAAAAAAIoIIAAAAwAAAAQIAA=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlatformAPI.IImage" Collapsed="true">
+    <Position X="14" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBGAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PlatformAPI.IBitmapImage" Collapsed="true">
+    <Position X="7" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAKAAAAAAAAAAAAAEAAAIAAAAAgAAAA=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Framework.HandleResult" Collapsed="true">
+    <Position X="7" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAEAAAA=</HashCode>
+      <FileName>Exception\HandleResult.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlatformAPI.BlendOperation" Collapsed="true">
+    <Position X="12.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\AlphaBlend.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlatformAPI.BlendFlags" Collapsed="true">
+    <Position X="10.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\AlphaBlend.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlatformAPI.SourceConstantAlpha" Collapsed="true">
+    <Position X="12.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\AlphaBlend.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlatformAPI.AlphaFormat" Collapsed="true">
+    <Position X="5.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\AlphaBlend.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlatformAPI.PixelFormatID" Collapsed="true">
+    <Position X="10.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>VQAAAAAAAAAEQCAAABgQRAAAABAAAAIAAAAAACAACII=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlatformAPI.BufferDisposalFlag" Collapsed="true">
+    <Position X="15.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgBAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlatformAPI.InterpolationHint" Collapsed="true">
+    <Position X="8.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAIAAAAACAQABAAAAAAAAA=</HashCode>
+      <FileName>Win32\IImagingFactory.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.Drawing.FillDirection" Collapsed="true">
+    <Position X="5.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\Gradientfill.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.Drawing.BlendOperation" Collapsed="true">
+    <Position X="14" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\PlatformAPIs.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.Drawing.BlendFlags" Collapsed="true">
+    <Position X="8.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\PlatformAPIs.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.Drawing.SourceConstantAlpha" Collapsed="true">
+    <Position X="14" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\PlatformAPIs.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.Drawing.AlphaFormat" Collapsed="true">
+    <Position X="7" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Win32\PlatformAPIs.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Microsoft.Drawing.TernaryRasterOperations" Collapsed="true">
+    <Position X="15.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQARBAAAAgAAAAEQAABgAAAkIAAAAMAgAA=</HashCode>
+      <FileName>Win32\PlatformAPIs.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Framework.GetBarCodeEventHandler" Collapsed="true">
+    <Position X="5.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Util\IScan.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

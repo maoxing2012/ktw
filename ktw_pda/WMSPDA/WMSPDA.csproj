@@ -1,0 +1,231 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{43D72F5C-0EE2-470E-A8F2-9729599D6DA8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WMSPDA</RootNamespace>
+    <AssemblyName>WMSPDA</AssemblyName>
+    <ProjectTypeGuids>{4D628B5B-2FBC-4AA6-8C16-197242AEB884};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PlatformFamilyName>WindowsCE</PlatformFamilyName>
+    <PlatformID>E2BECB1F-8C8C-41ba-B736-9BE7D946A398</PlatformID>
+    <OSVersion>5.00</OSVersion>
+    <DeployDirSuffix>WMSPDA</DeployDirSuffix>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <NativePlatformName>Windows CE</NativePlatformName>
+    <FormFactorID>
+    </FormFactorID>
+    <ApplicationIcon>ａ-favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;$(PlatformFamilyName)</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <FileAlignment>512</FileAlignment>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsCE.Forms" />
+    <Reference Include="mscorlib" />
+    <Reference Include="OpenNETCF, Version=2.3.12004.0, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CF\OpenNETCF.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.Configuration, Version=2.3.12004.0, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CF\OpenNETCF.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.Drawing, Version=2.3.12004.0, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CF\OpenNETCF.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.Windows.Forms, Version=2.3.12004.0, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CF\OpenNETCF.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.Windows.Forms2, Version=2.3.12004.0, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\CF\OpenNETCF.Windows.Forms2.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entity\OwnerList.cs" />
+    <Compile Include="frmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLogin.designer.cs">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.designer.cs">
+      <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOwnerList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOwnerList.designer.cs">
+      <DependentUpon>frmOwnerList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSetting.designer.cs">
+      <DependentUpon>frmSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="frmLogin.resx">
+      <DependentUpon>frmLogin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSetting.resx">
+      <DependentUpon>frmSetting.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="frmOwnerList.resx">
+      <DependentUpon>frmOwnerList.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\keyboardwhite.png" />
+    <EmbeddedResource Include="Images\home.png" />
+    <EmbeddedResource Include="Images\menu.png" />
+    <EmbeddedResource Include="Images\button3.png" />
+    <EmbeddedResource Include="Images\logo.gif" />
+    <EmbeddedResource Include="Images\close.png" />
+    <EmbeddedResource Include="Images\logo.png" />
+    <Content Include="LOGO.ico" />
+    <Content Include="Message.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ａ-favicon.ico" />
+    <EmbeddedResource Include="Images\back1.png" />
+    <EmbeddedResource Include="Images\back2.gif" />
+    <EmbeddedResource Include="Images\bottom.png" />
+    <EmbeddedResource Include="Images\button1.png" />
+    <EmbeddedResource Include="Images\button2.png" />
+    <EmbeddedResource Include="Images\header.PNG" />
+    <EmbeddedResource Include="Images\Keyboard.png" />
+    <EmbeddedResource Include="Images\LOGO.ico" />
+    <EmbeddedResource Include="Images\refresh.png" />
+    <EmbeddedResource Include="Images\setting.png" />
+    <EmbeddedResource Include="Images\tab1.gif" />
+    <EmbeddedResource Include="Images\tab1.PNG" />
+    <EmbeddedResource Include="Images\tab2.gif" />
+    <EmbeddedResource Include="Images\text.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.Config" />
+    <None Include="Properties\DataSources\Entity.OwnerInfo.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Denso\Denso.csproj">
+      <Project>{61F1680E-D4EA-4765-87DC-C9649F678E4E}</Project>
+      <Name>Denso</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entity\Entity.csproj">
+      <Project>{28ABE8C4-B39D-44C6-B3F4-8993F3D56293}</Project>
+      <Name>Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Framework\Framework.csproj">
+      <Project>{BADA96B6-772F-48ED-91D0-DB4A57AC0C70}</Project>
+      <Name>Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IncomingCheck\IncomingCheck.csproj">
+      <Project>{C693C0B8-362A-446C-A986-8B379DB546B6}</Project>
+      <Name>IncomingCheck</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Json\Json.csproj">
+      <Project>{2A8550A4-C95E-4191-B349-A4E21BF6E3D6}</Project>
+      <Name>Json</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Other\Other.csproj">
+      <Project>{32EAD069-FA5E-4B1C-8FF2-5C115EF663D9}</Project>
+      <Name>Other</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Pick\Pick.csproj">
+      <Project>{BEFB0849-62A7-4A77-8ABC-4845952425DD}</Project>
+      <Name>Pick</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SatoPrinter\SatoPrinter.csproj">
+      <Project>{689C2E1D-EF33-4034-9AF7-285153CD6AF3}</Project>
+      <Name>SatoPrinter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Seize\Seize.csproj">
+      <Project>{7EEA3FB6-E470-4C32-AA31-C54539F72381}</Project>
+      <Name>Seize</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shift\Shift.csproj">
+      <Project>{F9A34C4D-AF3E-470A-94B4-EC7D61D333C6}</Project>
+      <Name>Shift</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StockTake\StockTake.csproj">
+      <Project>{8A7CBDC1-46A5-4725-90B6-0CD3ECB0D7CC}</Project>
+      <Name>StockTake</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}">
+        <HostingProcess disable="1" />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

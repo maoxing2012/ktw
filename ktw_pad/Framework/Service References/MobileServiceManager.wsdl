@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://mobile.server.scpwms.core.com" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" targetNamespace="http://mobile.server.scpwms.core.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mobile.server.scpwms.core.com">
+      <xsd:element name="executeCount">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeCountResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeCsPick">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeCsPickResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchInventory">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchInventoryResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getNextPickInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getNextPickInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPsPickInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPsPickInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchAsn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchAsnResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executePsPick">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executePsPickResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="startMultiAsn">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="startMultiAsnResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCountInfoByQr">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCountInfoByQrResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeBatchPick">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeBatchPickResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchWaveDoc">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchWaveDocResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAsnDetailBySku">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAsnDetailBySkuResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getInvDetailInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getInvDetailInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCsPickInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCsPickInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getInvInfoByQr">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getInvInfoByQrResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="login">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="loginResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="startPsPick">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="startPsPickResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getInvInfoByBinCode">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getInvInfoByBinCodeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getSkuId">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getSkuIdResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAsnIdBySku4Multi">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAsnIdBySku4MultiResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchCountPlan">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="searchCountPlanResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeInvMove">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeInvMoveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="checkBin4Count">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="checkBin4CountResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCaseInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getCaseInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPickInfo4Batch">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getPickInfo4BatchResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAsnInfo4Multi">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getAsnInfo4MultiResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getSkuInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getSkuInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="receiveAsnDetail">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="receiveAsnDetailResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="checkedCase">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="checkedCaseResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getOwnerList">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="getOwnerListResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeBinMove">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="executeBinMoveResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="helloMobile">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="helloMobileResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="printAsnLabel">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="printAsnLabelResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getAsnDetailBySkuResponse">
+    <wsdl:part name="parameters" element="tns:getAsnDetailBySkuResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSkuInfoRequest">
+    <wsdl:part name="parameters" element="tns:getSkuInfo" />
+  </wsdl:message>
+  <wsdl:message name="getSkuIdResponse">
+    <wsdl:part name="parameters" element="tns:getSkuIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="helloMobileRequest">
+    <wsdl:part name="parameters" element="tns:helloMobile" />
+  </wsdl:message>
+  <wsdl:message name="executePsPickRequest">
+    <wsdl:part name="parameters" element="tns:executePsPick" />
+  </wsdl:message>
+  <wsdl:message name="getOwnerListRequest">
+    <wsdl:part name="parameters" element="tns:getOwnerList" />
+  </wsdl:message>
+  <wsdl:message name="getCaseInfoRequest">
+    <wsdl:part name="parameters" element="tns:getCaseInfo" />
+  </wsdl:message>
+  <wsdl:message name="loginResponse">
+    <wsdl:part name="parameters" element="tns:loginResponse" />
+  </wsdl:message>
+  <wsdl:message name="executeCountRequest">
+    <wsdl:part name="parameters" element="tns:executeCount" />
+  </wsdl:message>
+  <wsdl:message name="getPsPickInfoRequest">
+    <wsdl:part name="parameters" element="tns:getPsPickInfo" />
+  </wsdl:message>
+  <wsdl:message name="getInvInfoByQrRequest">
+    <wsdl:part name="parameters" element="tns:getInvInfoByQr" />
+  </wsdl:message>
+  <wsdl:message name="checkedCaseRequest">
+    <wsdl:part name="parameters" element="tns:checkedCase" />
+  </wsdl:message>
+  <wsdl:message name="executeBinMoveResponse">
+    <wsdl:part name="parameters" element="tns:executeBinMoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvDetailInfoRequest">
+    <wsdl:part name="parameters" element="tns:getInvDetailInfo" />
+  </wsdl:message>
+  <wsdl:message name="executeBatchPickResponse">
+    <wsdl:part name="parameters" element="tns:executeBatchPickResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvInfoByBinCodeRequest">
+    <wsdl:part name="parameters" element="tns:getInvInfoByBinCode" />
+  </wsdl:message>
+  <wsdl:message name="executePsPickResponse">
+    <wsdl:part name="parameters" element="tns:executePsPickResponse" />
+  </wsdl:message>
+  <wsdl:message name="executeCsPickRequest">
+    <wsdl:part name="parameters" element="tns:executeCsPick" />
+  </wsdl:message>
+  <wsdl:message name="helloMobileResponse">
+    <wsdl:part name="parameters" element="tns:helloMobileResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAsnInfo4MultiResponse">
+    <wsdl:part name="parameters" element="tns:getAsnInfo4MultiResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchInventoryResponse">
+    <wsdl:part name="parameters" element="tns:searchInventoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="startMultiAsnRequest">
+    <wsdl:part name="parameters" element="tns:startMultiAsn" />
+  </wsdl:message>
+  <wsdl:message name="getInvInfoByQrResponse">
+    <wsdl:part name="parameters" element="tns:getInvInfoByQrResponse" />
+  </wsdl:message>
+  <wsdl:message name="getSkuIdRequest">
+    <wsdl:part name="parameters" element="tns:getSkuId" />
+  </wsdl:message>
+  <wsdl:message name="searchCountPlanRequest">
+    <wsdl:part name="parameters" element="tns:searchCountPlan" />
+  </wsdl:message>
+  <wsdl:message name="printAsnLabelRequest">
+    <wsdl:part name="parameters" element="tns:printAsnLabel" />
+  </wsdl:message>
+  <wsdl:message name="getOwnerListResponse">
+    <wsdl:part name="parameters" element="tns:getOwnerListResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveAsnDetailResponse">
+    <wsdl:part name="parameters" element="tns:receiveAsnDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCaseInfoResponse">
+    <wsdl:part name="parameters" element="tns:getCaseInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="startPsPickRequest">
+    <wsdl:part name="parameters" element="tns:startPsPick" />
+  </wsdl:message>
+  <wsdl:message name="startMultiAsnResponse">
+    <wsdl:part name="parameters" element="tns:startMultiAsnResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveAsnDetailRequest">
+    <wsdl:part name="parameters" element="tns:receiveAsnDetail" />
+  </wsdl:message>
+  <wsdl:message name="searchWaveDocRequest">
+    <wsdl:part name="parameters" element="tns:searchWaveDoc" />
+  </wsdl:message>
+  <wsdl:message name="checkBin4CountResponse">
+    <wsdl:part name="parameters" element="tns:checkBin4CountResponse" />
+  </wsdl:message>
+  <wsdl:message name="getNextPickInfoResponse">
+    <wsdl:part name="parameters" element="tns:getNextPickInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAsnIdBySku4MultiResponse">
+    <wsdl:part name="parameters" element="tns:getAsnIdBySku4MultiResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchCountPlanResponse">
+    <wsdl:part name="parameters" element="tns:searchCountPlanResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPickInfo4BatchResponse">
+    <wsdl:part name="parameters" element="tns:getPickInfo4BatchResponse" />
+  </wsdl:message>
+  <wsdl:message name="getNextPickInfoRequest">
+    <wsdl:part name="parameters" element="tns:getNextPickInfo" />
+  </wsdl:message>
+  <wsdl:message name="searchWaveDocResponse">
+    <wsdl:part name="parameters" element="tns:searchWaveDocResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCountInfoByQrRequest">
+    <wsdl:part name="parameters" element="tns:getCountInfoByQr" />
+  </wsdl:message>
+  <wsdl:message name="executeCsPickResponse">
+    <wsdl:part name="parameters" element="tns:executeCsPickResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAsnIdBySku4MultiRequest">
+    <wsdl:part name="parameters" element="tns:getAsnIdBySku4Multi" />
+  </wsdl:message>
+  <wsdl:message name="printAsnLabelResponse">
+    <wsdl:part name="parameters" element="tns:printAsnLabelResponse" />
+  </wsdl:message>
+  <wsdl:message name="executeCountResponse">
+    <wsdl:part name="parameters" element="tns:executeCountResponse" />
+  </wsdl:message>
+  <wsdl:message name="executeInvMoveResponse">
+    <wsdl:part name="parameters" element="tns:executeInvMoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCsPickInfoRequest">
+    <wsdl:part name="parameters" element="tns:getCsPickInfo" />
+  </wsdl:message>
+  <wsdl:message name="executeInvMoveRequest">
+    <wsdl:part name="parameters" element="tns:executeInvMove" />
+  </wsdl:message>
+  <wsdl:message name="getPsPickInfoResponse">
+    <wsdl:part name="parameters" element="tns:getPsPickInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvDetailInfoResponse">
+    <wsdl:part name="parameters" element="tns:getInvDetailInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getPickInfo4BatchRequest">
+    <wsdl:part name="parameters" element="tns:getPickInfo4Batch" />
+  </wsdl:message>
+  <wsdl:message name="executeBinMoveRequest">
+    <wsdl:part name="parameters" element="tns:executeBinMove" />
+  </wsdl:message>
+  <wsdl:message name="getSkuInfoResponse">
+    <wsdl:part name="parameters" element="tns:getSkuInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getInvInfoByBinCodeResponse">
+    <wsdl:part name="parameters" element="tns:getInvInfoByBinCodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCsPickInfoResponse">
+    <wsdl:part name="parameters" element="tns:getCsPickInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="getCountInfoByQrResponse">
+    <wsdl:part name="parameters" element="tns:getCountInfoByQrResponse" />
+  </wsdl:message>
+  <wsdl:message name="getAsnInfo4MultiRequest">
+    <wsdl:part name="parameters" element="tns:getAsnInfo4Multi" />
+  </wsdl:message>
+  <wsdl:message name="searchInventoryRequest">
+    <wsdl:part name="parameters" element="tns:searchInventory" />
+  </wsdl:message>
+  <wsdl:message name="getAsnDetailBySkuRequest">
+    <wsdl:part name="parameters" element="tns:getAsnDetailBySku" />
+  </wsdl:message>
+  <wsdl:message name="searchAsnRequest">
+    <wsdl:part name="parameters" element="tns:searchAsn" />
+  </wsdl:message>
+  <wsdl:message name="executeBatchPickRequest">
+    <wsdl:part name="parameters" element="tns:executeBatchPick" />
+  </wsdl:message>
+  <wsdl:message name="checkedCaseResponse">
+    <wsdl:part name="parameters" element="tns:checkedCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="searchAsnResponse">
+    <wsdl:part name="parameters" element="tns:searchAsnResponse" />
+  </wsdl:message>
+  <wsdl:message name="startPsPickResponse">
+    <wsdl:part name="parameters" element="tns:startPsPickResponse" />
+  </wsdl:message>
+  <wsdl:message name="checkBin4CountRequest">
+    <wsdl:part name="parameters" element="tns:checkBin4Count" />
+  </wsdl:message>
+  <wsdl:message name="loginRequest">
+    <wsdl:part name="parameters" element="tns:login" />
+  </wsdl:message>
+  <wsdl:portType name="MobileServiceManagerPortType">
+    <wsdl:operation name="executeCount">
+      <wsdl:input name="executeCountRequest" message="tns:executeCountRequest" />
+      <wsdl:output name="executeCountResponse" message="tns:executeCountResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="executeCsPick">
+      <wsdl:input name="executeCsPickRequest" message="tns:executeCsPickRequest" />
+      <wsdl:output name="executeCsPickResponse" message="tns:executeCsPickResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchInventory">
+      <wsdl:input name="searchInventoryRequest" message="tns:searchInventoryRequest" />
+      <wsdl:output name="searchInventoryResponse" message="tns:searchInventoryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getNextPickInfo">
+      <wsdl:input name="getNextPickInfoRequest" message="tns:getNextPickInfoRequest" />
+      <wsdl:output name="getNextPickInfoResponse" message="tns:getNextPickInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getPsPickInfo">
+      <wsdl:input name="getPsPickInfoRequest" message="tns:getPsPickInfoRequest" />
+      <wsdl:output name="getPsPickInfoResponse" message="tns:getPsPickInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchAsn">
+      <wsdl:input name="searchAsnRequest" message="tns:searchAsnRequest" />
+      <wsdl:output name="searchAsnResponse" message="tns:searchAsnResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="executePsPick">
+      <wsdl:input name="executePsPickRequest" message="tns:executePsPickRequest" />
+      <wsdl:output name="executePsPickResponse" message="tns:executePsPickResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="startMultiAsn">
+      <wsdl:input name="startMultiAsnRequest" message="tns:startMultiAsnRequest" />
+      <wsdl:output name="startMultiAsnResponse" message="tns:startMultiAsnResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCountInfoByQr">
+      <wsdl:input name="getCountInfoByQrRequest" message="tns:getCountInfoByQrRequest" />
+      <wsdl:output name="getCountInfoByQrResponse" message="tns:getCountInfoByQrResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="executeBatchPick">
+      <wsdl:input name="executeBatchPickRequest" message="tns:executeBatchPickRequest" />
+      <wsdl:output name="executeBatchPickResponse" message="tns:executeBatchPickResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchWaveDoc">
+      <wsdl:input name="searchWaveDocRequest" message="tns:searchWaveDocRequest" />
+      <wsdl:output name="searchWaveDocResponse" message="tns:searchWaveDocResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAsnDetailBySku">
+      <wsdl:input name="getAsnDetailBySkuRequest" message="tns:getAsnDetailBySkuRequest" />
+      <wsdl:output name="getAsnDetailBySkuResponse" message="tns:getAsnDetailBySkuResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvDetailInfo">
+      <wsdl:input name="getInvDetailInfoRequest" message="tns:getInvDetailInfoRequest" />
+      <wsdl:output name="getInvDetailInfoResponse" message="tns:getInvDetailInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCsPickInfo">
+      <wsdl:input name="getCsPickInfoRequest" message="tns:getCsPickInfoRequest" />
+      <wsdl:output name="getCsPickInfoResponse" message="tns:getCsPickInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvInfoByQr">
+      <wsdl:input name="getInvInfoByQrRequest" message="tns:getInvInfoByQrRequest" />
+      <wsdl:output name="getInvInfoByQrResponse" message="tns:getInvInfoByQrResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="login">
+      <wsdl:input name="loginRequest" message="tns:loginRequest" />
+      <wsdl:output name="loginResponse" message="tns:loginResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="startPsPick">
+      <wsdl:input name="startPsPickRequest" message="tns:startPsPickRequest" />
+      <wsdl:output name="startPsPickResponse" message="tns:startPsPickResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getInvInfoByBinCode">
+      <wsdl:input name="getInvInfoByBinCodeRequest" message="tns:getInvInfoByBinCodeRequest" />
+      <wsdl:output name="getInvInfoByBinCodeResponse" message="tns:getInvInfoByBinCodeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getSkuId">
+      <wsdl:input name="getSkuIdRequest" message="tns:getSkuIdRequest" />
+      <wsdl:output name="getSkuIdResponse" message="tns:getSkuIdResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAsnIdBySku4Multi">
+      <wsdl:input name="getAsnIdBySku4MultiRequest" message="tns:getAsnIdBySku4MultiRequest" />
+      <wsdl:output name="getAsnIdBySku4MultiResponse" message="tns:getAsnIdBySku4MultiResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="searchCountPlan">
+      <wsdl:input name="searchCountPlanRequest" message="tns:searchCountPlanRequest" />
+      <wsdl:output name="searchCountPlanResponse" message="tns:searchCountPlanResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="executeInvMove">
+      <wsdl:input name="executeInvMoveRequest" message="tns:executeInvMoveRequest" />
+      <wsdl:output name="executeInvMoveResponse" message="tns:executeInvMoveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="checkBin4Count">
+      <wsdl:input name="checkBin4CountRequest" message="tns:checkBin4CountRequest" />
+      <wsdl:output name="checkBin4CountResponse" message="tns:checkBin4CountResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getCaseInfo">
+      <wsdl:input name="getCaseInfoRequest" message="tns:getCaseInfoRequest" />
+      <wsdl:output name="getCaseInfoResponse" message="tns:getCaseInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getPickInfo4Batch">
+      <wsdl:input name="getPickInfo4BatchRequest" message="tns:getPickInfo4BatchRequest" />
+      <wsdl:output name="getPickInfo4BatchResponse" message="tns:getPickInfo4BatchResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getAsnInfo4Multi">
+      <wsdl:input name="getAsnInfo4MultiRequest" message="tns:getAsnInfo4MultiRequest" />
+      <wsdl:output name="getAsnInfo4MultiResponse" message="tns:getAsnInfo4MultiResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getSkuInfo">
+      <wsdl:input name="getSkuInfoRequest" message="tns:getSkuInfoRequest" />
+      <wsdl:output name="getSkuInfoResponse" message="tns:getSkuInfoResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveAsnDetail">
+      <wsdl:input name="receiveAsnDetailRequest" message="tns:receiveAsnDetailRequest" />
+      <wsdl:output name="receiveAsnDetailResponse" message="tns:receiveAsnDetailResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="checkedCase">
+      <wsdl:input name="checkedCaseRequest" message="tns:checkedCaseRequest" />
+      <wsdl:output name="checkedCaseResponse" message="tns:checkedCaseResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getOwnerList">
+      <wsdl:input name="getOwnerListRequest" message="tns:getOwnerListRequest" />
+      <wsdl:output name="getOwnerListResponse" message="tns:getOwnerListResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="executeBinMove">
+      <wsdl:input name="executeBinMoveRequest" message="tns:executeBinMoveRequest" />
+      <wsdl:output name="executeBinMoveResponse" message="tns:executeBinMoveResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="helloMobile">
+      <wsdl:input name="helloMobileRequest" message="tns:helloMobileRequest" />
+      <wsdl:output name="helloMobileResponse" message="tns:helloMobileResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="printAsnLabel">
+      <wsdl:input name="printAsnLabelRequest" message="tns:printAsnLabelRequest" />
+      <wsdl:output name="printAsnLabelResponse" message="tns:printAsnLabelResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MobileServiceManagerHttpBinding" type="tns:MobileServiceManagerPortType">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="executeCount">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="executeCountRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="executeCountResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="executeCsPick">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="executeCsPickRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="executeCsPickResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchInventory">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchInventoryRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchInventoryResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getNextPickInfo">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getNextPickInfoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getNextPickInfoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPsPickInfo">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getPsPickInfoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPsPickInfoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchAsn">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchAsnRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchAsnResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="executePsPick">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="executePsPickRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="executePsPickResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="startMultiAsn">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="startMultiAsnRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="startMultiAsnResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCountInfoByQr">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getCountInfoByQrRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCountInfoByQrResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="executeBatchPick">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="executeBatchPickRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="executeBatchPickResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchWaveDoc">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchWaveDocRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchWaveDocResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAsnDetailBySku">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getAsnDetailBySkuRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAsnDetailBySkuResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvDetailInfo">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getInvDetailInfoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getInvDetailInfoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCsPickInfo">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getCsPickInfoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCsPickInfoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvInfoByQr">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getInvInfoByQrRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getInvInfoByQrResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="login">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="loginRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="loginResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="startPsPick">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="startPsPickRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="startPsPickResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getInvInfoByBinCode">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getInvInfoByBinCodeRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getInvInfoByBinCodeResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSkuId">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getSkuIdRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getSkuIdResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAsnIdBySku4Multi">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getAsnIdBySku4MultiRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAsnIdBySku4MultiResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="searchCountPlan">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="searchCountPlanRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="searchCountPlanResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="executeInvMove">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="executeInvMoveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="executeInvMoveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkBin4Count">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="checkBin4CountRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="checkBin4CountResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getCaseInfo">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getCaseInfoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getCaseInfoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPickInfo4Batch">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getPickInfo4BatchRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getPickInfo4BatchResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getAsnInfo4Multi">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getAsnInfo4MultiRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getAsnInfo4MultiResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getSkuInfo">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getSkuInfoRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getSkuInfoResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveAsnDetail">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="receiveAsnDetailRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="receiveAsnDetailResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkedCase">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="checkedCaseRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="checkedCaseResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getOwnerList">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getOwnerListRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="getOwnerListResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="executeBinMove">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="executeBinMoveRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="executeBinMoveResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="helloMobile">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="helloMobileRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="helloMobileResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="printAsnLabel">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="printAsnLabelRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="printAsnLabelResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MobileServiceManager">
+    <wsdl:port name="MobileServiceManagerHttpPort" binding="tns:MobileServiceManagerHttpBinding">
+      <wsdlsoap:address location="http://192.168.1.101:9097/scpwms/webService/MobileServiceManager" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

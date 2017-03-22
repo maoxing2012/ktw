@@ -1,0 +1,14 @@
+D:\new_ktw\ktw_pad\Seize\bin\Release\Seize.dll
+D:\new_ktw\ktw_pad\Seize\bin\Release\Seize.pdb
+D:\new_ktw\ktw_pad\Seize\bin\Release\Entity.dll
+D:\new_ktw\ktw_pad\Seize\bin\Release\Framework.dll
+D:\new_ktw\ktw_pad\Seize\bin\Release\Json.dll
+D:\new_ktw\ktw_pad\Seize\bin\Release\Framework.pdb
+D:\new_ktw\ktw_pad\Seize\bin\Release\Entity.pdb
+D:\new_ktw\ktw_pad\Seize\bin\Release\Json.pdb
+D:\new_ktw\ktw_pad\Seize\obj\Release\ResolveAssemblyReference.cache
+D:\new_ktw\ktw_pad\Seize\obj\Release\Seize.frmCaseInfo.resources
+D:\new_ktw\ktw_pad\Seize\obj\Release\Seize.frmUnitInfo.resources
+D:\new_ktw\ktw_pad\Seize\obj\Release\Seize.csproj.GenerateResource.Cache
+D:\new_ktw\ktw_pad\Seize\obj\Release\Seize.dll
+D:\new_ktw\ktw_pad\Seize\obj\Release\Seize.pdb

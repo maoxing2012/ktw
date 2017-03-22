@@ -1,0 +1,2 @@
+Filename	Extension	Path	Deleted	Dir	Attributes	Compr	Encr	Stream	Size	Creation Date	CrTime	Last Write Date	LWTime	Last Access Date	LATime	Record Mod. Date	RMTime	DelDate	DelTime	ID	Ofs	1st Cluster		Hash Set	Category	SC%	Mismatch
+Business		\WMSPAD\WMSPAD\Framework	x	D					4144	2017/02/25	18:18:31	2017/02/26	12:58:53	2017/02/26	12:58:53	2017/02/26	12:58:53			103208	3326910464	64930719					

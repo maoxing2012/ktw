@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{09FCBB5C-82B5-46DE-8A03-875ED80A2664}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Framework</RootNamespace>
+    <AssemblyName>Framework</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppContext.cs" />
+    <Compile Include="Business\BizUtil.cs" />
+    <Compile Include="Business\Entity\Sku.cs" />
+    <Compile Include="Business\Entity\SkuList.cs" />
+    <Compile Include="Business\frmList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Business\frmList.designer.cs">
+      <DependentUpon>frmList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Business\frmSkuIdSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Business\frmSkuIdSearch.designer.cs">
+      <DependentUpon>frmSkuIdSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Business\StockResult.cs" />
+    <Compile Include="Control\AlphaPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Control\BaseForm.designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ButtonEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\ComboBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\LabelEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\PictureEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\TextEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\TextEx.designer.cs">
+      <DependentUpon>TextEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Exception\ApplicationException.cs" />
+    <Compile Include="Exception\BusinessException.cs" />
+    <Compile Include="Exception\ExceptionPolicy.cs" />
+    <Compile Include="Exception\HandleResult.cs" />
+    <Compile Include="Exception\IExceptionHandler.cs" />
+    <Compile Include="Exception\MessageHandler.cs" />
+    <Compile Include="Navigat\IView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\Reference.cs" />
+    <Compile Include="Service\MobileRequest.cs" />
+    <Compile Include="Service\MobileResponse.cs" />
+    <Compile Include="Util\Config.cs" />
+    <Compile Include="Util\Factory.cs" />
+    <Compile Include="Util\FormUtil.cs" />
+    <Compile Include="Util\FrameworkEx.cs" />
+    <Compile Include="Util\HotKey.cs" />
+    <Compile Include="Util\IFactory.cs" />
+    <Compile Include="Util\IPrint.cs" />
+    <Compile Include="Util\IScan.cs" />
+    <Compile Include="Util\Log.cs" />
+    <Compile Include="Util\Message.cs" />
+    <Compile Include="Util\ScanArgs.cs" />
+    <Compile Include="Util\Sip.cs" />
+    <Compile Include="Util\StringUtil.cs" />
+    <Compile Include="Win32\AlphaBlend.cs" />
+    <Compile Include="Win32\Gradientfill.cs" />
+    <Compile Include="Win32\GraphicsExtension.cs" />
+    <Compile Include="Win32\IImagingFactory.cs" />
+    <Compile Include="Win32\InputMode.cs" />
+    <Compile Include="Win32\PlatformAPIs.cs" />
+    <Compile Include="Win32\Win32.cs" />
+    <Compile Include="Win32\Win32Helper.cs" />
+    <Compile Include="Win32\WndProcHooker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Business\frmList.resx">
+      <DependentUpon>frmList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Business\frmSkuIdSearch.resx">
+      <DependentUpon>frmSkuIdSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ButtonEx.resx">
+      <DependentUpon>ButtonEx.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\TextEx.resx">
+      <DependentUpon>TextEx.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entity\Entity.csproj">
+      <Project>{60996E5F-9730-4747-882B-0172768B1ADF}</Project>
+      <Name>Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Json\Json.csproj">
+      <Project>{E7100CF2-D1DC-49EA-85B0-52C4C18F3DDA}</Project>
+      <Name>Json</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MobileServiceManager.wsdl" />
+    <None Include="Service References\Reference.map" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
